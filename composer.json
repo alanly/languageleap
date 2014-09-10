@@ -22,7 +22,7 @@
 			"app/tests/TestCase.php"
 		],
 		"psr-0": {
-			"Leap\\": "app/"
+			"LangLeap\\": "app/"
 		}
 	},
 	"scripts": {
