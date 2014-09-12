@@ -1,0 +1,24 @@
+.centerProgressIndicators {
+	height: 30px;
+  	width: 100%;
+  	margin: auto;
+  	text-align: center;
+}
+
+.centerYoutubeVideo {
+  	width: 100%;
+  	margin: auto;
+  	text-align: center;
+}
+
+.buttonUnder {
+  	width: 100%;
+  	margin: auto;
+  	text-align: center;
+}
+
+.done {
+  	width: 100%;
+  	margin: auto;
+  	text-align: center;
+}
