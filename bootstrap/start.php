@@ -26,7 +26,9 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('homestead'),
+	'local'      => array('localhost', '*.app'),
+	'staging'    => array('staging.deploy.stumpfwerk.com', 'neon.net.elementalfoundries.com'),
+	'production' => array('production.deploy.stumpfwerk.com'),
 
 ));
 
