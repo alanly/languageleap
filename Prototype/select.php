@@ -77,6 +77,8 @@
 	$("#commercials").click(function() {
 	  	$('div.accordionContent.openDiv').slideUp('normal');
 		$('div.accordionContent.openDiv').removeClass('openDiv');
+		$('#accordionCommercials').slideDown('normal');
+		$('#accordionCommercials').addClass('openDiv');
 	});
 
 
