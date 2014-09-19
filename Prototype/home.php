@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!-- Latest compiled and minified CSS -->
+
+	<!-- Slider -->
+	<link rel="Stylesheet" type="text/css" href="Accordion/css/default/reset.css" /> 
+    <link rel="Stylesheet" type="text/css" href="Accordion/css/evoslider.css" />
+    <link rel="Stylesheet" type="text/css" href="Accordion/css/default/default.css" />
+
+	<!-- Bootstrap -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <!-- CSS -->
 	<link rel="stylesheet" href="CSS/main.css">
+
+	<!-- jQuery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="Accordion/js/jquery.browser.js" /></script>
+	<script type="text/javascript" src="Accordion/js/jquery.evoslider.lite-1.1.0.js"></script>
+	<script type="text/javascript" src="Accordion/js/jquery.easing.1.3.js"></script>
 
 </head>
 <body>
@@ -45,7 +58,10 @@
 var steps = ["select", "video", "script", "flashcard", "quiz", "done"];
 var currentStep = 0;
 
-loadStep(currentStep);
+$(document).ready(function(){
+   loadStep(currentStep);
+});
+
 
 $("#nextStep").click(function() {
   loadStep(currentStep);

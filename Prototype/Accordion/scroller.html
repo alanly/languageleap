@@ -1,0 +1,81 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>jQuery Evo Slider</title>
+    
+    <link rel="Stylesheet" type="text/css" href="css/default/reset.css" />
+    
+    <link rel="Stylesheet" type="text/css" href="css/evoslider.css" />
+    <link rel="Stylesheet" type="text/css" href="css/default/default.css" />   
+    
+    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="js/jquery.evoslider.lite-1.1.0.js"></script>        
+    
+</head>
+
+<body>
+
+<div id="mySlider" class="evoslider default"> <!-- start evo slider -->
+
+    <dl>
+    
+	    <dt>slide one</dt>
+	    <dd>
+	       slide one content	        
+	    </dd>
+	
+	    <dt>slide two</dt>
+	    <dd>
+	       slide two content        
+	    </dd>
+	
+	    <dt>slide three</dt>
+	    <dd>	        
+	       slide three content     
+	    </dd>
+	
+	    <dt>slide four</dt>
+	    <dd>        
+	       slide four content       
+	    </dd> 
+	    
+	    <dt>slide five</dt>
+	    <dd>
+	       slide five content	      
+	    </dd>
+	     	
+    </dl>
+
+</div> <!-- end evo slider -->
+
+<script type="text/javascript">
+            
+    $("#mySlider").evoSlider({
+        mode: "scroller",                  // Sets slider mode ("accordion", "slider", or "scroller")
+        width: 960,                         // The width of slider
+        height: 360,                        // The height of slider
+        slideSpace: 5,                      // The space between slides
+    
+        mouse: true,                        // Enables mousewheel scroll navigation
+        keyboard: true,                     // Enables keyboard navigation (left and right arrows)
+        speed: 500,                         // Slide transition speed in ms. (1s = 1000ms)
+        easing: "swing",                    // Defines the easing effect mode
+        loop: true,                         // Rotate slideshow
+    
+        autoplay: false,                     // Sets EvoSlider to play slideshow when initialized
+        interval: 5000,                     // Slideshow interval time in ms
+        pauseOnHover: true,                 // Pause slideshow if mouse over the slide
+        pauseOnClick: true,                 // Stop slideshow if playing
+        
+        directionNav: true,                 // Shows directional navigation when initialized
+        directionNavAutoHide: false,        // Shows directional navigation on hover and hide it when mouseout
+    
+        controlNav: true,                   // Enables control navigation
+        controlNavAutoHide: false           // Shows control navigation on mouseover and hide it when mouseout 
+    });                                
+    
+</script>
+    
+</body>
+</html>
