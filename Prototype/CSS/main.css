@@ -19,4 +19,31 @@
   	text-align: center;
 }
 
+/* Script page */
+#videoScript {
+	text-align: center;
+}
+
+#videoScript ul {
+	list-style-type: none;
+}
+
+#videoScript li {
+	margin: 4px 0;
+}
+
+#videoScript .wordSegment {
+	margin: 4px 0;
+	padding: 4px;
+}
+
+#videoScript .wordSegment:hover {
+	background-color: #D4D8D1;
+	cursor: pointer;
+}
+
+.selectedWordSegment {
+	background-color: #F04D41;
+	color: #FFFFFF;
+}
 
