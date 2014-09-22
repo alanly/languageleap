@@ -1,7 +1,7 @@
 <?php namespace LangLeap\Videos;
 
 
-class Video extends Eloquent implements Billable
+class Video extends Eloquent
 {
 
 
