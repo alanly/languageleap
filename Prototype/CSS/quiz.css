@@ -1,0 +1,16 @@
+.quiz .questions {
+	text-align: center;
+}
+.quiz .questions .item {
+	padding: 2rem 0;
+}
+.quiz .answers {
+	margin: 1rem 0;
+}
+.quiz .answers label {
+	font-weight: 300;
+}
+.quiz h1.grade {
+	font-size: 3rem;
+	font-weight: 700;
+}

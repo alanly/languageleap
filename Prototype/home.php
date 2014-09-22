@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="Filter/css/sunburst.css">
 	<link rel="stylesheet" href="flash_cards/css/style.css">
 	<link href="http://fonts.googleapis.com/css?family=Schoolbell" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="CSS/quiz.css">
 
 	<!-- jQuery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
