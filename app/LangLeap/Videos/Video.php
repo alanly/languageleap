@@ -19,5 +19,14 @@ class Video extends Eloquent
 	public function script()
 	{
 		return $this->hasOne('Script');
+	}
+	
+	/**
+	* This function defines the polymorphic relationships
+	*/
+
+	public function viewable()
+	{
+		return $this->morphTo();
 	}	
 }

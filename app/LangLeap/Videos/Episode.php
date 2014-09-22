@@ -26,6 +26,6 @@ class Episode extends Eloquent implements Billable
 
 	public function videos()
 	{
-		return $this->hasMany('Video');
+		return $this->morphMany('Video','viewable');
 	}	
 }

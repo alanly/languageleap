@@ -17,7 +17,8 @@ class Movie extends Eloquent implements Billable
 	* This function returns all the videos associated to this movie
 	*/
 	public function videos()
-	{
-		return $this->hasMany('Video');
-	}	
+        {
+                return $this->morphMany('Video','viewable');
+        }
+
 }

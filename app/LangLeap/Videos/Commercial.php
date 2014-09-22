@@ -17,7 +17,8 @@ class Commercial extends Eloquent implements Billable
 	* This function returns all the videos related to this commercial
 	*/
 	public function videos()
-	{
-		return $this->hasMany('Video');
-	}	
+        {
+                return $this->morphMany('Video','viewable');
+        }
+
 }
