@@ -15,12 +15,15 @@
 	<link rel="stylesheet" href="Filter/css/filtrify.css">
 	<link rel="stylesheet" href="Filter/css/style.css">
 	<link rel="stylesheet" href="Filter/css/sunburst.css">
+	<link rel="stylesheet" href="flash_cards/css/style.css">
+	<link href="http://fonts.googleapis.com/css?family=Schoolbell" rel="stylesheet" type="text/css">
 
 	<!-- jQuery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script type="text/javascript" src="Accordion/js/jquery.browser.js" /></script>
 	<script type="text/javascript" src="Accordion/js/jquery.evoslider.lite-1.1.0.js"></script>
 	<script type="text/javascript" src="Accordion/js/jquery.easing.1.3.js"></script>
+	<script src="flash_cards/js/vendor/modernizr-2.5.3.min.js"></script>
 
 	<!-- Videos -->
 	<script type="text/javascript" src="Filter/js/filtrify.min.js"></script>
@@ -57,7 +60,6 @@
     <div id="includedContent"></div>
 
     <button class="buttonUnder" id="nextStep" type="button" class="btn btn-default">Next</button>
-
 </body>
 </html>
 
@@ -91,3 +93,5 @@ function loadStep(step)
 
 
 </script>
+
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.7.2.min.js"><\/script>')</script>
