@@ -12,7 +12,7 @@ class CreateQuizTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('quiz', function($table){
+		Schema::create('quizzes', function($table){
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
 			$table->integer('video_id')->unsigned();
@@ -27,7 +27,7 @@ class CreateQuizTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('quiz');
+		Schema::dropIfExists('quizzes');
 	}
 
 }

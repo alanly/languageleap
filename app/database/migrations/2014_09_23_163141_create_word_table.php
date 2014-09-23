@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSeasonTable extends Migration {
+class CreateWordTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,12 @@ class CreateSeasonTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('seasons', function($table){
+		Schema::create('words', function($table){
 			$table->increments('id');
-			$table->integer('show_id')->unsigned();
-			$table->integer('season_number');
-			$table->string('description');		
-
+			$table->string('word');
+			$table->string('pronouciation');
+			$table->string('definition');
+			$table->string('full_definition');
 		});
 	}
 
@@ -28,7 +28,7 @@ class CreateSeasonTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('seasons');
+		Schema::dropIfExists('words');
 	}
 
 }

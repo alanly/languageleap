@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVideoTable extends Migration {
+class CreateCommercialTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,7 @@ class CreateVideoTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('videos', function($table){
-			$table->increments('id');
-			$table->integer('script_id')->unsigned();
-			$table->morphs('viewable');
-			$table->string('path');
-		});
+		//
 	}
 
 	/**
@@ -27,7 +22,7 @@ class CreateVideoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('videos');
+		//
 	}
 
 }
