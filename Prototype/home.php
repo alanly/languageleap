@@ -66,7 +66,7 @@
 
 <script>
 
-var steps = ["select", "video", "script", "flashcard", "quiz", "done"];
+var steps = ["select", "video", "flashcard", "quiz", "done"];
 var currentStep = 0;
 
 $(document).ready(function(){

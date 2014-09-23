@@ -1,9 +1,8 @@
 <div class="centerProgressIndicators">
 	<span class="label label-primary">Step 1: Select a video</span>
 	<span class="label label-danger">Step 2: Watch the video</span>
-	<span class="label label-danger">Step 3: Review the script</span>
-	<span class="label label-danger">Step 4: Review the flashcards</span>
-	<span class="label label-danger">Step 5: Answer the quiz</span>
+	<span class="label label-danger">Step 3: Review the flashcards</span>
+	<span class="label label-danger">Step 4: Answer the quiz</span>
 </div>
 
 <div id="mySlider" class="evoslider default">
