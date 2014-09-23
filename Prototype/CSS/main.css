@@ -5,8 +5,10 @@
 }
 
 .centerYoutubeVideo {
-  	width: 100%;
-  	text-align: center;
+  	width: 60%;
+    margin: auto;
+  	display: inline-block;
+  	float: left;
 }
 
 .buttonUnder {
@@ -20,8 +22,11 @@
 }
 
 /* Script page */
-#videoScript {
-	text-align: center;
+.videoScript {
+	width: 40%;
+	text-align: left;
+	display: inline-block;
+	float: right;
 }
 
 #videoScript ul {
