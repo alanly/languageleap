@@ -1,6 +1,7 @@
 <?php namespace LangLeap\Videos;
 
-
+use Eloquent;
+use LangLeap\Payments\Billable;
 class Season extends Eloquent implements Billable
 {
 
@@ -11,7 +12,7 @@ class Season extends Eloquent implements Billable
 	 * @var string
 	 */
 	protected $table = 'seasons';
-		
+	public $timestamps = false;		
 	
 	/**
 	* This function returns the show that this season belongs to
@@ -19,7 +20,7 @@ class Season extends Eloquent implements Billable
 	*/
 	public function show()
 	{
-		return $this->belongsTo('Show');
+		return $this->belongsTo('LangLeap\Videos\Show');
 	}
 	/**
 	* This function returns all the episodes that this season belongs to
@@ -27,6 +28,6 @@ class Season extends Eloquent implements Billable
 	*/
 	public function episodes()
 	{
-		return $this->hasMany('Episode');
+		return $this->hasMany('LangLeap\Videos\Episode');
 	}	
 }

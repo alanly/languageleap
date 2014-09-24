@@ -12,7 +12,13 @@ class CreateCommercialTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('commercials', function($table){
+			$table->increments('id');
+			$table->string('name');
+			$table->string('description')->nullable();
+			
+
+		});
 	}
 
 	/**
@@ -22,7 +28,7 @@ class CreateCommercialTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::dropIfExists('commercials');
 	}
 
 }

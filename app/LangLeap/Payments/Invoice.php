@@ -1,6 +1,6 @@
 <?php namespace LangLeap\Payments;
 
-
+use Eloquent;
 class Invoice extends Eloquent
 {
 
@@ -11,13 +11,13 @@ class Invoice extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'invoices';
-		
+	public $timestamps = false		
 	
 	/**
 	* This function returns the user that this invoice belongs to
 	*/
 	public function user()
 	{
-		return $this->hasOne('User');
+		return $this->hasOne('LangLeap\Accounts\User');
 	}	
 }

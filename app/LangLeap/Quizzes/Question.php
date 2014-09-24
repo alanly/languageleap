@@ -1,6 +1,6 @@
 <?php namespace LangLeap\Quizes;
 
-
+use Eloquent;
 class Question extends Eloquent
 {
 
@@ -11,13 +11,13 @@ class Question extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'question';
-
+	public $timestamps = false;
 	/**
 	*	This function returns the quiz that contains this question
 	*
 	*/
 	public function quiz()
     	{
-        	return $this->belongsTo('Quiz');
+        	return $this->belongsTo('LangLeap\Quizzes\Quiz');
     	}
 }

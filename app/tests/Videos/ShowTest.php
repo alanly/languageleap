@@ -13,10 +13,16 @@ class ShowTest extends TestCase {
 	public function testSeasonRelation()
 	{
 		$show = $this->getShowInstance();	
-		$season = $this->getSeasonInstance();
-		
-		$show->season_id = $season->id;
+		$show->name = 'TestShow';
+		$show->description = 'Test';
+		$show->image_path = 'test';
 		$show->save();
+
+		
+		$season = $this->getSeasonInstance();	
+		$season->show_id = $show->id;
+		$season->season_number = 1;
+		$season->save();
 		$this->assertCount(1, $show->seasons()->get());			
 	}
 	protected function getShowInstance()

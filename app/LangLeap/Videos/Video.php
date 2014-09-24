@@ -1,5 +1,6 @@
 <?php namespace LangLeap\Videos;
 
+use Eloquent;
 
 class Video extends Eloquent
 {
@@ -11,14 +12,14 @@ class Video extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'videos';
-		
+	public $timestamps = false;		
 	
 	/**
 	* This function returns the script that is associated with this video
 	*/
 	public function script()
 	{
-		return $this->hasOne('Script');
+		return $this->hasOne('LangLeap\Wrods\Script');
 	}
 	
 	/**

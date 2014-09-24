@@ -16,7 +16,8 @@ class CreateQuestionTable extends Migration {
 			$table->increments('id');
 			$table->integer('quiz_id')->unsigned();
 			$table->integer('script_word_id')->unsigned();
-			
+			$table->string('question');
+			$table->string('answer');			
 		});
 	}
 

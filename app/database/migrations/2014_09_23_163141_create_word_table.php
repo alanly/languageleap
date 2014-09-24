@@ -15,7 +15,7 @@ class CreateWordTable extends Migration {
 		Schema::create('words', function($table){
 			$table->increments('id');
 			$table->string('word');
-			$table->string('pronouciation');
+			$table->string('pronouciation')->nullable();
 			$table->string('definition');
 			$table->string('full_definition');
 		});

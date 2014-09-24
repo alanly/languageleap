@@ -1,4 +1,4 @@
-<?php namespace LangLeap\Payments
+<?php namespace LangLeap\Payments;
 
 
 interface Billable

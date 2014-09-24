@@ -11,4 +11,5 @@ class Word extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'words';
+	public $timestamp = false;
 }

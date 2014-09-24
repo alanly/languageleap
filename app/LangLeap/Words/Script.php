@@ -11,5 +11,11 @@ class Script extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'scripts';
-		
+	public $timestamps = false;
+
+	public function video()
+	{
+		$this->hasOne('LangLeap\Videos\Video');
+
+	}		
 }

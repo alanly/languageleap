@@ -11,12 +11,12 @@ class Script_Word extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'script_words';
-		
+	public $timestamps = false;		
 	/**
 	* This function returns the script that this particular word belongs to
 	*/
 	public function script()
 	{
-		return $this->belongsTo("Script");
+		return $this->belongsTo("LangLeap\Words\Script");
 	}	
 }

@@ -1,5 +1,6 @@
 <?php namespace LangLeap\Quizes;
 
+use Eloquent;
 
 class Quiz extends Eloquent
 {
@@ -18,7 +19,7 @@ class Quiz extends Eloquent
 	*/
 	public function user()
     	{
-        	return $this->belongsTo('User');
+        	return $this->belongsTo('LangLeap\Accounts\User');
     	}
 
 
@@ -28,6 +29,6 @@ class Quiz extends Eloquent
 	*/	
 	public function questions()
 	{
-		return $this->hasMany('Question');
+		return $this->hasMany('LangLeap\Quizzes\Question');
 	}
 }

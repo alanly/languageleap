@@ -15,10 +15,10 @@ class CreateMovieTable extends Migration {
 		Schema::create('movies', function($table){
 			$table->increments('id');
 			$table->string('name');
-			$table->string('description');
-			$table->string('director');
-                        $table->string('actor');
-                        $table->string('genre');
+			$table->string('description')->nullable();
+			$table->string('director')->nullable();
+                        $table->string('actor')->nullable();
+                        $table->string('genre')->nullable();
 		});
 	}
 

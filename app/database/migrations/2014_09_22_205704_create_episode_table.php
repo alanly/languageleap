@@ -17,7 +17,7 @@ class CreateEpisodeTable extends Migration {
 			$table->integer('season_id')->unsigned();
 			$table->integer('episode_number');
 			$table->string('name');
-			$table->string('description');
+			$table->string('description')->nullable();
 		});
 	}
 

@@ -16,7 +16,7 @@ class CreateSeasonTable extends Migration {
 			$table->increments('id');
 			$table->integer('show_id')->unsigned();
 			$table->integer('season_number');
-			$table->string('description');		
+			$table->string('description')->nullable();		
 
 		});
 	}
