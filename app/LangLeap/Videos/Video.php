@@ -19,7 +19,7 @@ class Video extends Eloquent
 	*/
 	public function script()
 	{
-		return $this->hasOne('LangLeap\Wrods\Script');
+		return $this->hasOne('LangLeap\Words\Script');
 	}
 	
 	/**

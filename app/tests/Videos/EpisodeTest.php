@@ -27,7 +27,6 @@ class EpisodeTest extends TestCase {
                 $episode->save();
 		
 
-
 		$this->assertCount(1, $episode->season()->get());			
 	}
 
