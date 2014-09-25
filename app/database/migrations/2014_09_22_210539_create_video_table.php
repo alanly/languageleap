@@ -14,7 +14,6 @@ class CreateVideoTable extends Migration {
 	{
 		Schema::create('videos', function($table){
 			$table->increments('id');
-			$table->integer('script_id')->unsigned();
 			$table->morphs('viewable');
 			$table->string('path');
 		});

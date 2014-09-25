@@ -15,6 +15,7 @@ class CreateScriptTable extends Migration {
 		Schema::create('scripts', function($table){
 			$table->increments('id');
 			$table->string('text');
+			$table->integer('video_id')->unsigned();
 		});
 	}
 

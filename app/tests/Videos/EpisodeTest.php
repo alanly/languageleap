@@ -44,19 +44,23 @@ class EpisodeTest extends TestCase {
                 $season->season_number = 1;
                 $season->save();
 
+		
 		$episode = $this->getEpisodeInstance();
 		$episode->season_id = $season->id;
 		$episode->episode_number = 1;
 		$episode->name = 'test';
 		$episode->save();
-		$script = $this->getScriptInstance();
-		
+
+
 		$video = $this->getVideoInstance();
-		$video->script_id = $script->id;
-		$video->path='';
-		$video->viewable_id = $episode->id;
-		$video->viewable_type = 'LangLeap\Videos\Episode';
-		$video->save();
+                $video->path='';
+                $video->viewable_id = $episode->id;
+                $video->viewable_type = 'LangLeap\Videos\Episode';
+                $video->save();
+
+		$script = $this->getScriptInstance();
+		$script->video_id = $video->id;
+		$script->save();	
 				
                 $this->assertCount(1, $episode->videos()->get());
 
@@ -88,7 +92,6 @@ class EpisodeTest extends TestCase {
 	{
 		$script = App::make('LangLeap\Words\Script');
 		$script->text = 'This is a test';
-		$script->save();
 		return $script;
 	}
 }
