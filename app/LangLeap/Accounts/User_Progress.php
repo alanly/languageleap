@@ -22,4 +22,4 @@ class User_Progress extends Eloquent
 		return $this->belongsTo('LangLeap\Accounts\User');
 	}
 
-}
+

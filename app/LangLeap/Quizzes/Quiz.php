@@ -1,4 +1,4 @@
-<?php namespace LangLeap\Quizes;
+<?php namespace LangLeap\Quizzes;
 
 use Eloquent;
 
@@ -11,8 +11,8 @@ class Quiz extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'quiz';
-
+	protected $table = 'quizzes';
+	public $timestamps = false;
 	/**
 	*	This function returns the use that is associated with this quiz
 	*

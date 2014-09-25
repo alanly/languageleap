@@ -12,7 +12,12 @@ class CreateUserProgressTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('user_progress', function($table){
+			$table->increments('id');
+			$table->integer('user_id')->unsigned();
+			$table->integer('word_id')->unsigned();
+
+		});
 	}
 
 	/**
@@ -22,7 +27,7 @@ class CreateUserProgressTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::dropIfExists();
 	}
 
 }

@@ -1,5 +1,6 @@
 <?php namespace LangLeap\Words;
 
+use Eloquent;
 
 class Word extends Eloquent
 {
@@ -11,5 +12,5 @@ class Word extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'words';
-	public $timestamp = false;
+	public $timestamps = false;
 }

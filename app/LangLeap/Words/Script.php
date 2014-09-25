@@ -16,7 +16,7 @@ class Script extends Eloquent
 
 	public function video()
 	{
-		$this->belongsTo('LangLeap\Videos\Video');
+		return $this->belongsTo('LangLeap\Videos\Video');
 
 	}		
 }

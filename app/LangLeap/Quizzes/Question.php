@@ -1,4 +1,4 @@
-<?php namespace LangLeap\Quizes;
+<?php namespace LangLeap\Quizzes;
 
 use Eloquent;
 class Question extends Eloquent
@@ -10,7 +10,7 @@ class Question extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'question';
+	protected $table = 'questions';
 	public $timestamps = false;
 	/**
 	*	This function returns the quiz that contains this question
@@ -20,4 +20,9 @@ class Question extends Eloquent
     	{
         	return $this->belongsTo('LangLeap\Quizzes\Quiz');
     	}
+
+	public function script_word()
+	{
+		return $this->belongsTo('LangLeap\Words\Script_Word');
+	}
 }

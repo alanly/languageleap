@@ -16,7 +16,7 @@ class CreateQuizTable extends Migration {
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
 			$table->integer('video_id')->unsigned();
-			$table->float('score');	
+			$table->float('score')->nullable();	
 		});
 	}
 
