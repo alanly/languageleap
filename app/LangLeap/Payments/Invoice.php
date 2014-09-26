@@ -11,13 +11,13 @@ class Invoice extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'invoices';
-	public $timestamps = false		
+	public $timestamps = false;		
 	
 	/**
 	* This function returns the user that this invoice belongs to
 	*/
 	public function user()
 	{
-		return $this->hasOne('LangLeap\Accounts\User');
+		return $this->belongsTo('LangLeap\Accounts\User');
 	}	
 }

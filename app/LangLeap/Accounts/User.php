@@ -24,5 +24,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 	 * @var array
 	 */
 	protected $hidden = array('password', 'remember_token');
-
+	public function invoices()
+	{
+		return $this->hasMany('LangLeap\Payments\Invoice');
+	}
 }
