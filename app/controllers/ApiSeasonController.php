@@ -3,6 +3,9 @@
 use LangLeap\Videos\Season;
 use LangLeap\Videos\Show;
 
+/**
+ * @author Alan Ly <hello@alan.ly>
+ */
 class ApiSeasonController extends \BaseController {
 
 	protected $seasons;
