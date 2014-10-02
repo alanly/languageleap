@@ -15,6 +15,9 @@ class ApiSeasonController extends \BaseController {
 	{
 		$this->seasons = $seasons;
 		$this->shows = $shows;
+
+		$this->beforeFilter('auth', ['on' => 'post']);
+		$this->beforeFilter('csrf', ['on' => 'post']);
 	}
 
 	/**
