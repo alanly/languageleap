@@ -1,4 +1,5 @@
 <?php
+use LangLeap\Videos\Show;
 
 class ApiShowController extends \BaseController {
 
@@ -9,7 +10,16 @@ class ApiShowController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		$shows = Show::all();
+		$showsArray = null;
+		foreach ($shows as $show)
+			$showsArray[] = $show->toResponseArray() ;
+		
+		return Response::json(array(
+			'success' => true,
+			'data' => $showsArray,
+		));
+		
 	}
 
 
