@@ -15,3 +15,24 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+// Routes for API controllers
+Route::group(array('prefix' => 'api',), function()
+{
+
+	// Media controllers
+	Route::group(['prefix' => 'media'], function()
+	{
+		// Commercials
+		Route::resource('commercials', 'ApiCommercialController');
+
+		// Movies
+		Route::resource('movies', 'ApiMovieController');
+
+		// Shows (and Seasons and Episodes)
+		Route::resource('shows', 'ApiShowController');
+		Route::resource('shows.seasons', 'ApiSeasonController');
+		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
+	});
+
+});
