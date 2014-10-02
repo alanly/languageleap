@@ -102,9 +102,39 @@ class ApiSeasonController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($showId, $seasonId)
 	{
-		//
+		$show = $this->shows->find($showId);
+
+		if (! $show)
+		{
+			return $this->apiResponse('error', "Show {$showId} not found.", 404);
+		}
+
+		$season = $show->seasons()->where('id', $seasonId)->first();
+
+		if (! $season)
+		{
+			return $this->apiResponse(
+				'error',
+				"Season {$seasonId} not found for show {$showId}.",
+				404
+			);
+		}
+
+		// Update the model attributes
+		$season->fill(Input::get());
+
+		if (! $season->save())
+		{
+			return $this->apiResponse(
+				'error',
+				"Error while updating season {$seasonId} for show {$showId}.",
+				500
+			);
+		}
+
+		return $this->getSeasonResponse($show, $season);
 	}
 
 
