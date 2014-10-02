@@ -13,8 +13,8 @@ class ApiShowTest extends TestCase {
 	public function testShowApi()
 	{
 		$response = $this->action('GET', 'ApiShowController@index');
-	        $this->assertResponseOk();
-        	$this->assertJson($response->getContent());
+	    $this->assertResponseOk();
+        $this->assertJson($response->getContent());
 	}
 	
 
