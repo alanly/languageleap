@@ -1,26 +1,36 @@
 <?php
 
+use LangLeap\Videos\Season;
+use LangLeap\Videos\Show;
+
 class ApiSeasonController extends \BaseController {
+
+	protected $seasons;
+	protected $shows;
+
+	public function __construct(Season $seasons, Show $shows)
+	{
+		$this->seasons = $seasons;
+		$this->shows = $shows;
+	}
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($showId)
 	{
-		//
-	}
+		$show = $this->shows->find($showId);
 
+		if (! $show)
+		{
+			return $this->apiResponse('error', "Show {$showId} not found.", 404);
+		}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
+		$showSeasons = $show->seasons()->get();
+
+		return $this->apiResponse('success', $showSeasons->toArray());
 	}
 
 
@@ -42,18 +52,6 @@ class ApiSeasonController extends \BaseController {
 	 * @return Response
 	 */
 	public function show($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
 	{
 		//
 	}
