@@ -54,9 +54,30 @@ class ApiSeasonController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($showId, $seasonId)
 	{
-		//
+		$show = $this->shows->find($showId);
+
+		if (! $show)
+		{
+			return $this->apiResponse('error', "Show {$showId} not found.", 404);
+		}
+
+		$season = $show->seasons()->where('id', $seasonId)->first();
+
+		if (! $season)
+		{
+			return $this->apiResponse(
+				'error',
+				"Season {$seasonId} not found for show {$showId}.",
+				404
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			['show' => $show->toArray(), 'season' => $season->toArray()]
+		);
 	}
 
 
