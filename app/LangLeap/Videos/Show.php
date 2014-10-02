@@ -29,7 +29,9 @@ class Show extends Eloquent implements Billable
 		$show = array(
 			'id' => $s->id,
 			'name' => $s->name,
-			'description' => $s->description
+			'description' => $s->description,
+			'image_path' => $s->image_path,
+			'director' => $s->director
 		);
 
 
