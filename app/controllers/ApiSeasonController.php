@@ -30,7 +30,10 @@ class ApiSeasonController extends \BaseController {
 
 		$showSeasons = $show->seasons()->get();
 
-		return $this->apiResponse('success', $showSeasons->toArray());
+		return $this->apiResponse(
+			'success',
+			['show' => $show->toArray(), 'seasons' => $showSeasons->toArray()]
+		);
 	}
 
 
