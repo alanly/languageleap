@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 	<script type="text/javascript" src="javaScript/accordion/accordionJS/evoslider.js"></script>
 	<script type="text/javascript" src="javaScript/accordion/accordionJS/easing.js"></script>
 
+	<script type="text/javascript" src="javaScript/filtrify/filtrifyJS/filtrify.js"></script>
+	<script type="text/javascript" src="javaScript/filtrify/filtrifyJS/highlight.pack.js"></script>
+	<script type="text/javascript" src="javaScript/filtrify/filtrifyJS/script.js"></script>
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
     <link rel="stylesheet" href="css/accordion/accordionCSS/evoslider.css" />
     <link rel="stylesheet" href="css/accordion/accordionCSS/default.css" />
     <link rel="stylesheet" href="css/accordion/accordionCSS/reset.css" />
+
+    <link rel="stylesheet" href="css/filtrify/filtrifyCSS/style.css">
+	<link rel="stylesheet" href="css/filtrify/filtrifyCSS/sunburst.css">
+	<link rel="stylesheet" href="css/filtrify/filtrifyCSS/filtrify.css">
 
 </head>
 <body>
@@ -16,9 +26,16 @@
 	    <dl>
 		    <dt id="firstTab">Select Media</dt>
 		    <dd>
-		    	<button id="commercial">Commercial</button>
-		    	<button id="movies">Movies</button>
-		    	<button id="series">Televeision Series</button>
+		    	<div id="main" role="main">
+				    <div id="content" class="demo">
+							<ul id="containerMedia">
+							    <li><strong>Movies</strong><img id="movies" src="" alt="Movies"></li>
+							    <li><strong>TV Series</strong><img id="series" src="" alt="TV Series"></li>
+							    <li><strong>Commercials</strong><img id="commercials" src="" alt="Commercials"></li>
+							</ul>
+					</div>
+				</div>
+
 
 		    </dd>
 
@@ -64,12 +81,13 @@
 
 		$(document).ready(function() {
     		disableAllTabs();
+    		$.filtrify("container", "placeHolder");
 		});
 		
-		$("#commercial").click(function() {
+		$("#commercials").click(function() {
 			disableExtraTabs();
 			accordion.next();
-			setTabName("firstTab", "commercial");
+			setTabName("firstTab", "commercials");
 			setTabName("secondTab", "Select Commercial");
 
 			$("#secondTab").removeClass("disabled");

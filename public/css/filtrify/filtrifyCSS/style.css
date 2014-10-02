@@ -128,9 +128,9 @@ div#header > iframe {
 #___plusone_0{ width:65px !important; }*/
 
 div#main {
-  background: #2D3743 url(../img/bg-main.png) repeat 0 0;
+  /*background: #2D3743 url(../images/bg-main.png) repeat 0 0;*/
   overflow-y: scroll;
-  height: 400px;
+  height: 100%;
 }
 
 div#content {
