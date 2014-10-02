@@ -42,9 +42,27 @@ class ApiSeasonController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($showId)
 	{
-		//
+		$show = $this->shows->find($showId);
+
+		if (! $show)
+		{
+			return $this->apiResponse('error', "Show {$showId} not found.", 404);
+		}
+
+		$season = $this->seasons->newInstance(Input::get());
+
+		if (! $show->seasons()->save($season))
+		{
+			return $this->apiResponse(
+				'error',
+				"Unable to create a new season for show {$showId}.",
+				500
+			);
+		}
+
+		return $this->getSeasonResponse($show, $season, 201);
 	}
 
 
