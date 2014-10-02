@@ -6,7 +6,6 @@ use LangLeap\Payments\Billable;
 class Movie extends Eloquent implements Billable
 {
 
-
 	/**
 	 * The database table used by the model.
 	 *
@@ -19,8 +18,8 @@ class Movie extends Eloquent implements Billable
 	* This function returns all the videos associated to this movie
 	*/
 	public function videos()
-        {
-                return $this->morphMany('LangLeap\Videos\Video','viewable');
-        }
+	{
+		return $this->morphMany('LangLeap\Videos\Video','viewable');
+	}
 
 }
