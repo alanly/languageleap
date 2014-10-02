@@ -23,4 +23,16 @@ class Show extends Eloquent implements Billable
 	{
 		return $this->hasMany('LangLeap\Videos\Season');
 	}	
+	public function toResponseArray()
+	{
+		$s = $this;
+		$show = array(
+			'id' => $s->id,
+			'name' => $s->name,
+			'description' => $s->description
+		);
+
+
+		return $show;
+	}
 }
