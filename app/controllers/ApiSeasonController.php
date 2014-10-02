@@ -74,10 +74,7 @@ class ApiSeasonController extends \BaseController {
 			);
 		}
 
-		return $this->apiResponse(
-			'success',
-			['show' => $show->toArray(), 'season' => $season->toArray()]
-		);
+		return $this->getSeasonResponse($show, $season);
 	}
 
 
