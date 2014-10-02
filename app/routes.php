@@ -21,7 +21,7 @@ Route::group(array('prefix' => 'api',), function()
 {
 
 	// Media controllers
-	Route::group(['prefix' => 'media'], function()
+	Route::group(['prefix' => 'metadata'], function()
 	{
 		// Commercials
 		Route::resource('commercials', 'ApiCommercialController');
@@ -34,5 +34,8 @@ Route::group(array('prefix' => 'api',), function()
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
 	});
+
+	// Video Controller
+	Route::resource('videos', 'ApiVideoController');
 
 });
