@@ -41,6 +41,12 @@
 
 		    <dt id="secondTab"></dt>
 		    <dd>
+		 <!--   	<div id="main" role="main">
+		    	<div id="content" class="demo" style="overflow:auto;">
+			       	<div id="placeHolder"></div>
+						<ul id="container">
+						    <li data-genre="Comedy" data-main-actors="John Di Girolamo, Mike Lavoie, Alan Ly" data-director="Amazon"><strong>Amazon Fire Phone</strong><img id="firePhone" src="Filter/img/film.png"><span>Genre: <i>Comedy</i></span><span>Actors: <i>John Di Girolamo, Mike Lavoie, Alan Ly</i></span><span>Director: <i>Amazon</i></span></li> -->
+
 		    </dd>
 		
 		    <dt id="thirdTab"></dt>
