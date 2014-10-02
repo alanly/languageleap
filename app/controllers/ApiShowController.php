@@ -13,7 +13,7 @@ class ApiShowController extends \BaseController {
 		$shows = Show::all();
 		$showsArray = null;
 		foreach ($shows as $show)
-			$showsArray[] = $show->toResponseArray() ;
+			$showsArray[] = $show->toResponseArray();
 		
 		return Response::json(array(
 			'success' => true,
