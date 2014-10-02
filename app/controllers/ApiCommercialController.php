@@ -1,5 +1,7 @@
 <?php
 
+use LangLeap\Videos\Commercial;
+
 class ApiCommercialController extends \BaseController {
 
 	protected $commercials;
@@ -8,7 +10,7 @@ class ApiCommercialController extends \BaseController {
 	{
 		$this->commercials = $commercials;
 	}
-	
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -53,7 +55,7 @@ class ApiCommercialController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($commercialId)
 	{
 		$commercial = Commercial::find($commercialId);
 
