@@ -1,6 +1,15 @@
 <?php
 
+use LangLeap\Videos\Commercial;
+
 class ApiCommercialController extends \BaseController {
+
+	protected $commercials;
+
+	public function __construct(Commercial $commercials)
+	{
+		$this->commercials = $commercials;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -9,7 +18,12 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		$commercials = Commercial::all();
+
+		return $this->apiResponse(
+			'success',
+			$commercials->toArray()
+		);
 	}
 
 
@@ -41,9 +55,23 @@ class ApiCommercialController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($commercialId)
 	{
-		//
+		$commercial = Commercial::find($commercialId);
+
+		if (! $commercial)
+		{
+			return $this->apiResponse(
+				'error',
+				"Commercial {$commercialId} not found.",
+				404
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$commercial->toArray()
+		);
 	}
 
 
