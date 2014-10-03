@@ -3,22 +3,22 @@
 <head>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-	<script type="text/javascript" src="javaScript/accordion/accordionJS/evoslider.js"></script>
-	<script type="text/javascript" src="javaScript/accordion/accordionJS/easing.js"></script>
+	<script type="text/javascript" src="libraries/accordion/js/evoslider.js"></script>
+	<script type="text/javascript" src="libraries/accordion/js/easing.js"></script>
 
-	<script type="text/javascript" src="javaScript/filtrify/filtrifyJS/filtrify.js"></script>
-	<script type="text/javascript" src="javaScript/filtrify/filtrifyJS/highlight.pack.js"></script>
-	<script type="text/javascript" src="javaScript/filtrify/filtrifyJS/script.js"></script>
+	<script type="text/javascript" src="libraries/filtrify/js/filtrify.js"></script>
+	<script type="text/javascript" src="libraries/filtrify/js/highlight.pack.js"></script>
+	<script type="text/javascript" src="libraries/filtrify/js/script.js"></script>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="css/accordion/accordionCSS/evoslider.css" />
-    <link rel="stylesheet" href="css/accordion/accordionCSS/default.css" />
-    <link rel="stylesheet" href="css/accordion/accordionCSS/reset.css" />
+    <link rel="stylesheet" href="libraries/accordion/css/evoslider.css" />
+    <link rel="stylesheet" href="libraries/accordion/css/default.css" />
+    <link rel="stylesheet" href="libraries/accordion/css/reset.css" />
 
-    <link rel="stylesheet" href="css/filtrify/filtrifyCSS/style.css">
-	<link rel="stylesheet" href="css/filtrify/filtrifyCSS/sunburst.css">
-	<link rel="stylesheet" href="css/filtrify/filtrifyCSS/filtrify.css">
+    <link rel="stylesheet" href="libraries/filtrify/css/style.css">
+	<link rel="stylesheet" href="libraries/filtrify/css/sunburst.css">
+	<link rel="stylesheet" href="libraries/filtrify/css/filtrify.css">
 
 </head>
 <body>
