@@ -15,3 +15,7 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+
+// Accordion
+Route::controller('Accordion', 'AccordionController');
