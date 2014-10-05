@@ -47,18 +47,20 @@ class AdminVideoController extends \BaseController {
 
 
 		$video->path = '';
-		$video->save();
+		//$video->save();
 
 		//set the path
 		$new_name = base64_encode($video->id);
 		$video->path = Config::get('media.paths.videos.shows') . DIRECTORY_SEPARATOR . $new_name;
-		$video_file = $file->move(Config::get('media.paths.videos.shows'),$new_name);
-		$video->save();
+		//$video_file = $file->move(Config::get('media.paths.videos.shows'),$new_name);
+		//$video->save();
 		
 		$script = new Script;
 		$script->text = $script_text;
 		$script->video_id = $video->id;
-		$script->save();
+		//$script->save();
+		
+		return View::make('admin.video.script', array('script' => $script->text));
 	}
 
 
