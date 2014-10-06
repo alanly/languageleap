@@ -18,7 +18,7 @@ class ApiWordController extends \BaseController {
 		$wordArray = array();
         
         foreach ($words as $word) {
-            $wordArray[] = $word->toResponseArray($word);
+            $wordArray[] = $word->toResponseArray();
         }
 
 		return $this->apiResponse("success",$wordArray);
@@ -79,19 +79,37 @@ class ApiWordController extends \BaseController {
 		return Redirect::to('admin');
 	}
 
-
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  var	$key
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($key)
 	{
-		//
+		$wordArray = array();
+
+		if(gettype($key) == "string")
+		{
+			$words = Word::where('word', '=', $key)->get();
+			foreach ($words as $w) 
+			{
+				$wordArray[] = $w->toResponseArray();
+			}
+		}
+		elseif(gettype($key) == "integer")
+		{
+			$w = Word::find($key);
+			if($w)
+			{
+				$wordArray[] = $w->toResponseArray();
+			}
+		}
+
+		return $this->apiResponse("success",$wordArray);
 	}
 
-
+	
 	/**
 	 * Show the form for editing the specified resource.
 	 *

@@ -13,4 +13,15 @@ class Word extends Eloquent
 	 */
 	protected $table = 'words';
 	public $timestamps = false;
+	
+	public function toResponseArray()
+	{
+		return array(
+			'id' => $this->id,
+			'word' => $this->word,
+			'pronouciation' => $this->pronouciation,
+			'definition' => $this->definition,
+			'full_definition' => $this->full_definition
+		);
+	}
 }
