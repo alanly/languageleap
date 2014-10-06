@@ -38,6 +38,10 @@ class ApiVideoController extends \BaseController {
 	/**
 	 * Store a newly created resource in storage.
 	 *
+	 * @input script 			The text for the script
+	 * @input video 			The video for the video
+	 * @input video_type		The video type (movie, commercial or show)
+	 *
 	 * @return Response
 	 */
 	public function store()
