@@ -12,15 +12,18 @@
 		<input type="radio" id="show" name="video_type" value="show"/><label>Show</label>
 		<br/>
 
-		<select id="movie-select" name="movies" style="display:none">
+		<select id="movie-select" name="movie" style="display:none">
 		</select>
-		<select id="commercial-select" name="commercials" style="display:none">
+		<select id="commercial-select" name="commercial" style="display:none">
 		</select>
 		<select id="show-select" name="shows" style="display:none">
 			<option value="-1"></option>
 		</select>
 
 		<select id="season-select" name="season" style="display:none;">
+			<option value="-1"></option>
+		</select>
+		<select id="episode-select" name="episode" style="display:none;">
 		</select>
 		<br/>
 		<label for='video'>Video</label> {{ Form::file('video')}} <br/>
@@ -32,7 +35,7 @@
 	{{ Form::close() }}
 </div>
 <script type="text/javascript">
-	//This is jsut for testing. In reality we will have 1 select with the data loaded through ajax.
+	//This is just for testing. In reality we will have 1 select with the data loaded through ajax.
 	$("#show").change(function () {
 		$("#show-select").show();
 		$("#movie-select").hide();
@@ -56,12 +59,24 @@
 		$("#season-select").show();
 		loadSeasonContent($(this).val());
 	});
+	$("#season-select").change(function(){
+		$("#episode-select").show();
+		loadEpisodeContent($("#show-select").val(), $("#season-select").val());
+	});
+
+
+	function loadEpisodeContent(show_id,season_id){
+		alert(show_id + " " + season_id);
+		$.getJSON("/api/metadata/shows/" + show_id + "/seasons/" + season_id + "/episodes" ,function(data){
+			
+		});
+	}
 
 	function loadSeasonContent(show_id){
 		$.getJSON("/api/metadata/shows/" + show_id + "/seasons",function(data){
 			if(data.status == "success")
 			{
-				var json = data.data;
+				var json = data.data.seasons;
 				var option = "";
 				$.each(json,function(index,value){
 					option += '<option value="' + value.id + ' ">'+ value.number + '</option>';

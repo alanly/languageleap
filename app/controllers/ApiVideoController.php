@@ -59,19 +59,19 @@ class ApiVideoController extends \BaseController {
 
 		if($type === "commercial")
 		{
-			$video->viewable_id = Input::get('commercials');
+			$video->viewable_id = Input::get('commercial');
 			$video->viewable_type = 'LangLeap\Videos\Commercial';
 			$path = Config::get('media.paths.videos.commercials');
 		}
 		elseif($type === "movie")
 		{
-			$video->viewable_id = Input::get('movies');;
+			$video->viewable_id = Input::get('movie');;
 			$video->viewable_type = 'LangLeap\Videos\Movie';
 			$path = Config::get('media.paths.videos.movies');
 		}
 		elseif($type === "show")
 		{
-			$video->viewable_id = Input::get('shows');;
+			$video->viewable_id = Input::get('episode');;
 			$video->viewable_type = 'LangLeap\Videos\Episode';
 			$path = Config::get('media.paths.videos.shows');
 		}

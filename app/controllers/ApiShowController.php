@@ -83,7 +83,7 @@ class ApiShowController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$show = Show::find($id)
+		$show = Show::find($id);
 
 		if(!$show)
 			App::abort(404);

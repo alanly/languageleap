@@ -90,11 +90,11 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$movie = Movie::find($id)
+		$movie = Movie::find($id);
 
 		if(!$movie)
 			App::abort(404);
-		
+
 		$movie->videos()->delete();
 		$movie->delete();
 	}

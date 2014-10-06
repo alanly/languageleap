@@ -111,7 +111,7 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$commercial = Commercial::find($id)
+		$commercial = Commercial::find($id);
 
 		if(!$commercial)
 			App::abort(404);
