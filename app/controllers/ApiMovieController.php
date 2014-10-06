@@ -11,14 +11,7 @@ class ApiMovieController extends \BaseController {
 	public function index()
 	{
 		$movies = Movie::all();
-		$arr = null;
-		foreach ($movies as $movie)
-			$arr[] = $movie->toResponseArray() ;
-		
-		return Response::json(array(
-			'success' => true,
-			'data' => $arr,
-		));
+		return $this->apiResponse("success",$movies->toArray());
 	}
 
 
