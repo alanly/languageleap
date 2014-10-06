@@ -5,6 +5,7 @@ use LangLeap\Videos\Commercial;
 use LangLeap\Videos\Movie;
 use LangLeap\Videos\Episode;
 use LangLeap\Words\Script;
+use LangLeap\Words\Word;
 class AdminVideoController extends \BaseController {
 
 	/**
@@ -60,7 +61,38 @@ class AdminVideoController extends \BaseController {
 		$script->video_id = $video->id;
 		//$script->save();
 		
-		return View::make('admin.video.script', array('script' => $script->text));
+		return View::make('admin.video.script', array('script' => $script->text, 'script_id' => $script->id));
+	}
+	
+	/**
+	 * Store only words with definitions
+	 * 
+	 */
+	public function storeDefinitions()
+	{
+		$definitions = Input::get('definitions');
+		$script_id = Input::get('script_id');
+		$words = [];
+		$wordPosition = 1;
+		
+		foreach($definitions as $word => $definition)
+		{
+			if(!$definition) // If the definition is blank, skip the word
+			{
+				continue;
+			}
+			
+			$w = new Word;
+			$w->script_id = $script_id;
+			$w->word = $word;
+			//$w->pronouciation = 
+			$w->position = $wordPosition++;
+			$w->definition = $definition;
+			//$w->full_definition = 
+			//$w->save();
+			
+			$words[] = $w;
+		}
 	}
 
 

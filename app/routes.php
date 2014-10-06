@@ -18,6 +18,7 @@ Route::get('/', function()
 
 Route::get('/admin', 'AdminVideoController@index');
 Route::post('/admin/video','AdminVideoController@store');
+Route::post('/admin/definitions','AdminVideoController@storeDefinitions');
 
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
