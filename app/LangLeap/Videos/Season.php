@@ -2,6 +2,7 @@
 
 use Eloquent;
 use LangLeap\Payments\Billable;
+
 class Season extends Eloquent implements Billable {
 
 	public    $timestamps = false;
