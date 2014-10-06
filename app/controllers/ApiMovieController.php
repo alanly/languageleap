@@ -11,7 +11,16 @@ class ApiMovieController extends \BaseController {
 	public function index()
 	{
 		$movies = Movie::all();
-		return $this->apiResponse("success",$movies->toArray());
+
+	
+		$movieArray = array();
+        
+        foreach ($movies as $mov) {
+            $movieArray[] = $mov->toResponseArray($mov);
+        }
+
+		return $this->apiResponse("success",$movieArray);
+		//return $this->apiResponse("success",$movies->toArray());
 	}
 
 
@@ -81,7 +90,13 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$movie = Movie::find($id)
+
+		if(!$movie)
+			App::abort(404);
+		
+		$movie->videos()->delete();
+		$movie->delete();
 	}
 
 

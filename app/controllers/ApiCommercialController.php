@@ -18,12 +18,16 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function index()
 	{
-		$commercials = Commercial::all();
+		$commercial = Commercial::all();
 
-		return $this->apiResponse(
-			'success',
-			$commercials->toArray()
-		);
+	
+		$commArray = array();
+        
+        foreach ($commercial as $comm) {
+            $commArray[] = $comm->toResponseArray($comm);
+        }
+
+		return $this->apiResponse("success",$commArray);
 	}
 
 
@@ -107,7 +111,12 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$commercial = Commercial::find($id)
+
+		if(!$commercial)
+			App::abort(404);
+		$commercial->videos()->delete();
+		$commercial->delete();
 	}
 
 

@@ -3,6 +3,9 @@
 use LangLeap\Videos\Video;
 use LangLeap\Words\Script;
 
+/**
+* @author Thomas Rahn <thomas@rahn.ca>
+*/
 class ApiVideoController extends \BaseController {
 
 	/**
@@ -12,6 +15,7 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function index()
 	{
+		//This is just to show something. This will be replaced with getting all videos for a certain Commercial, Movie or Episode.
 		$videos = Video::all();
 	
 		$videoArray = array();
@@ -102,7 +106,12 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$video = Video::find($id);
+		$videoArray = array(
+			"video" => $video->toResponseArray($video));
+
+		return $this->apiResponse("success",$videoArray);
+
 	}
 
 
@@ -138,7 +147,12 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$video = Video::find($id)
+
+		if(!$video)
+			App::abort(404);
+
+		$video->delete();
 	}
 
 
