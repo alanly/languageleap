@@ -1,7 +1,15 @@
-<?php
+<?php namespace LangLeap;
 
-class TestCase extends Illuminate\Foundation\Testing\TestCase {
+use Artisan;
 
+class TestCase extends \Illuminate\Foundation\Testing\TestCase {
+
+	public function setUp()
+	{
+		parent::setUp();
+
+		Artisan::call('migrate');
+	}
 	/**
 	 * Creates the application.
 	 *
