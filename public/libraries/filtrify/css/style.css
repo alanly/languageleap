@@ -129,8 +129,9 @@ div#header > iframe {
 
 div#main {
   /*background: #2D3743 url(../images/bg-main.png) repeat 0 0;*/
-  overflow-y: scroll;
-  height: 100%;
+  text-align: center;
+  overflow: auto;
+  height:100%;
 }
 
 div#content {
@@ -141,7 +142,7 @@ div#content {
   text-shadow: black 0 -1px;
   text-shadow: rgba(0, 0, 0, 0.7) 0 -1px;
   font-size: 80%;
-  min-height: 1000px;
+
 }
 
 div#content > div#browsers {

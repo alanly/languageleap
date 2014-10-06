@@ -1,16 +1,17 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	@include('layouts.jQuery')
 
 	<script type="text/javascript" src="libraries/accordion/js/evoslider.js"></script>
 	<script type="text/javascript" src="libraries/accordion/js/easing.js"></script>
+	<script type="text/javascript" src="js/accordion.js"></script>
 
 	<script type="text/javascript" src="libraries/filtrify/js/filtrify.js"></script>
 	<script type="text/javascript" src="libraries/filtrify/js/highlight.pack.js"></script>
 	<script type="text/javascript" src="libraries/filtrify/js/script.js"></script>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	@include('layouts.bootstrap')
 
     <link rel="stylesheet" href="libraries/accordion/css/evoslider.css" />
     <link rel="stylesheet" href="libraries/accordion/css/default.css" />
@@ -35,8 +36,6 @@
 							</ul>
 					</div>
 				</div>
-
-
 		    </dd>
 
 		    <dt id="secondTab"></dt>
@@ -85,89 +84,23 @@
 	        controlNavAutoHide: false           // Shows control navigation on mouseover and hide it when mouseout
 	    });
 
+
 		$(document).ready(function() {
     		disableAllTabs();
     		$.filtrify("container", "placeHolder");
 		});
 		
 		$("#commercials").click(function() {
-			disableExtraTabs();
-			accordion.next();
-			setTabName("firstTab", "commercials");
-			setTabName("secondTab", "Select Commercial");
-
-			$("#secondTab").removeClass("disabled");
+			commercialsClick();
 		});
 
 		$("#movies").click(function() {
-			disableExtraTabs();
-			accordion.next();
-			setTabName("firstTab", "movies");
-			setTabName("secondTab", "Select Movie");
-
-			$("#secondTab").removeClass("disabled");
+			moviesClick();
 		});
 
 		$("#series").click(function() {
-			enableExtraTabs();
-			accordion.next();
-			setTabName("firstTab", "series");
-			setTabName("secondTab", "Select Series");
-			setTabName("thirdTab", "Select Season");
-			setTabName("fourthTab", "Select Episode");
-
-			accordion.bindClicker(1);
-			$("#secondTab").removeClass("disabled");
+			seriesClick();
 		});
-
-		function disableExtraTabs()
-		{
-			$("#thirdTab").addClass("disabled");
-			$("#fourthTab").addClass("disabled");
-
-			setTabName("thirdTab", "");
-			setTabName("fourthTab", "");
-
-			disableClickableTabs();
-		}
-
-		function enableExtraTabs()
-		{
-			$("#thirdTab").removeClass("disabled");
-			$("#fourthTab").removeClass("disabled");
-
-			enableClickableTabs();
-
-		}
-
-		function setTabName(tabId, name)
-		{
-			$("#" + tabId).html();
-			$("#" + tabId).text(name);
-		}
-
-		function disableAllTabs()
-		{
-			$("#secondTab").addClass("disabled");
-			$("#thirdTab").addClass("disabled");
-			$("#fourthTab").addClass("disabled");
-
-			accordion.unbindClicker(1);
-			accordion.unbindClicker(2);
-			accordion.unbindClicker(3);
-		}
-
-		function enableClickableTabs()
-		{
-			accordion.bindClicker(2);
-			accordion.bindClicker(3);
-		}
-
-		function disableClickableTabs()
-		{
-			accordion.unbindClicker(2);
-			accordion.unbindClicker(3);
-		}
 
 	</script>
 
