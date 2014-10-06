@@ -5,6 +5,7 @@ use LangLeap\Videos\Commercial;
 use LangLeap\Videos\Movie;
 use LangLeap\Videos\Episode;
 use LangLeap\Words\Script;
+
 class AdminVideoController extends \BaseController {
 
 	/**
@@ -38,27 +39,52 @@ class AdminVideoController extends \BaseController {
 	{
 		$script_text = Input::get('script');
 		$file = Input::file('video');
-	
+		$type = Input::get('video_type');
+
 		$video = new Video;
+		$path = "";
 
-		//Get the parent object here THIS IS JUST FOR TESTING
-		$video->viewable_id = 1;
-		$video->viewable_type = 'LangLeap\Videos\Episode';
+		if($type === "commercial")
+		{
+			$video->viewable_id = Input::get('commercials');
+			$video->viewable_type = 'LangLeap\Videos\Commercial';
+			$path = Config::get('media.paths.videos.commercials');
+		}
+		elseif($type === "movie")
+		{
+			$video->viewable_id = Input::get('movies');;
+			$video->viewable_type = 'LangLeap\Videos\Movie';
+			$path = Config::get('media.paths.videos.movies');
 
+		}
+		elseif($type === "show")
+		{
+			$video->viewable_id = Input::get('shows');;
+			$video->viewable_type = 'LangLeap\Videos\Episode';
+			$path = Config::get('media.paths.videos.shows');
+
+		}
+		else
+		{
+			   return App::abort(400);
+		}
 
 		$video->path = '';
 		$video->save();
 
 		//set the path
 		$new_name = base64_encode($video->id);
-		$video->path = Config::get('media.paths.videos.shows') . DIRECTORY_SEPARATOR . $new_name;
-		$video_file = $file->move(Config::get('media.paths.videos.shows'),$new_name);
+		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
+		$video_file = $file->move($path,$new_name);
 		$video->save();
 		
+		//Save the script
 		$script = new Script;
 		$script->text = $script_text;
 		$script->video_id = $video->id;
 		$script->save();
+
+
 	}
 
 
@@ -106,7 +132,12 @@ class AdminVideoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$video = Video::find($id);
+
+        if (! $video)
+            return App::abort(404);
+
+        $video->delete();
 	}
 
 

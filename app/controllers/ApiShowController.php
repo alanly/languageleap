@@ -12,13 +12,12 @@ class ApiShowController extends \BaseController {
 	{
 		$shows = Show::all();
 		$showsArray = null;
+		
 		foreach ($shows as $show)
 			$showsArray[] = $show->toResponseArray();
 		
-		return Response::json(array(
-			'success' => true,
-			'data' => $showsArray,
-		));
+
+		return $this->apiResponse("success",$showsArray);
 		
 	}
 
