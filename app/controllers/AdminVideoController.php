@@ -82,18 +82,13 @@ class AdminVideoController extends \BaseController {
 			{
 				continue;
 			}
-
+			
+			$w; // var to store the word
 			try
 			{
-				$existingWord = Word::where('word', '=', $word)->where('definition', '=', $fields['def'])->firstOrFail(); // Should only have one result
-				
-				$sw = new Script_Word;
-				$sw->script_id = $script_id;
-				$sw->word_id = $existingWord->id;
-				$sw->position = $wordPosition++;
-				$sw->save();
+				$w = Word::where('word', '=', $word)->where('definition', '=', $fields['def'])->firstOrFail(); // Should only have one result
 			}
-			catch(ModelNotFoundException $e)
+			catch(ModelNotFoundException $e) // If the word was not found, create a new word
 			{
 				$w = new Word;
 				$w->word = $word;
@@ -101,13 +96,13 @@ class AdminVideoController extends \BaseController {
 				$w->definition = $fields['def'];
 				$w->full_definition = $fields['full_def'];
 				$w->save();
-				
-				$sw = new Script_Word;
-				$sw->script_id = $script_id;
-				$sw->word_id = $w->id;
-				$sw->position = $wordPosition++;
-				$sw->save();
 			}
+			
+			$sw = new Script_Word;
+			$sw->script_id = $script_id;
+			$sw->word_id = $w->id;
+			$sw->position = $wordPosition++;
+			$sw->save();
 		}
 		
 		return Redirect::to('admin');
