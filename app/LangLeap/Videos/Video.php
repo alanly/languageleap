@@ -5,7 +5,7 @@ use Eloquent;
 class Video extends Eloquent {
 
 	public    $timestamps = false;
-	protected $table      = 'videos';
+	protected $fillable   = ['path'];
 
 	public function script()
 	{

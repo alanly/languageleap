@@ -6,7 +6,7 @@ use LangLeap\Payments\Billable;
 class Episode extends Eloquent implements Billable {
 
 	public    $timestamps = false;
-	protected $table      = 'episodes';
+	protected $fillable   = ['season_id', 'number', 'name', 'description'];
 
 	public function season()
 	{

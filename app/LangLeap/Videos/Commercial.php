@@ -6,7 +6,7 @@ use LangLeap\Payments\Billable;
 class Commercial extends Eloquent implements Billable {
 
 	public    $timestamps = false;
-	protected $table      = 'commercials';
+	protected $fillable   = ['name', 'description'];
 	
 	public function videos()
 	{
