@@ -11,14 +11,8 @@ class ApiShowController extends \BaseController {
 	public function index()
 	{
 		$shows = Show::all();
-		$showsArray = null;
-		foreach ($shows as $show)
-			$showsArray[] = $show->toResponseArray();
-		
-		return Response::json(array(
-			'success' => true,
-			'data' => $showsArray,
-		));
+	
+		return $this->apiResponse("success",$shows->toArray());
 		
 	}
 

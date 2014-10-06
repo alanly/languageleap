@@ -1,5 +1,8 @@
 <?php
 
+use LangLeap\Videos\Video;
+use LangLeap\Words\Script;
+
 class ApiVideoController extends \BaseController {
 
 	/**
@@ -9,7 +12,15 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		$videos = Video::all();
+	
+		$videoArray = array();
+        
+        foreach ($videos as $vid) {
+            $videoArray[] = $vid->toResponseArray($vid);
+        }
+
+		return $this->apiResponse("success",$videoArray);
 	}
 
 
@@ -31,9 +42,95 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$script_text = Input::get('script');
+		$file = Input::file('video');
+		$type = Input::get('video_type');
+
+		$video = new Video;
+		$path = "";
+
+		if($type === "commercial")
+		{
+			$video->viewable_id = Input::get('commercials');
+			$video->viewable_type = 'LangLeap\Videos\Commercial';
+			$path = Config::get('media.paths.videos.commercials');
+		}
+		elseif($type === "movie")
+		{
+			$video->viewable_id = Input::get('movies');;
+			$video->viewable_type = 'LangLeap\Videos\Movie';
+			$path = Config::get('media.paths.videos.movies');
+		}
+		elseif($type === "show")
+		{
+			$video->viewable_id = Input::get('shows');;
+			$video->viewable_type = 'LangLeap\Videos\Episode';
+			$path = Config::get('media.paths.videos.shows');
+		}
+		else
+		{
+			   return App::abort(400);
+		}
+
+		$video->path = '';
+		$video->save();
+
+		//set the path
+		$new_name = base64_encode($video->id);
+		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
+		$video_file = $file->move($path,$new_name);
+		$video->save();
+		
+		//Save the script
+		$script = new Script;
+		$script->text = $script_text;
+		$script->video_id = $video->id;
+		$script->save();
+
+		return View::make('admin.video.script', array('script' => $script->text, 'script_id' => $script->id));
 	}
 
+	/**
+	 * Store only words with definitions
+	 * 
+	 */
+	public function storeDefinitions()
+	{
+		$definitions = Input::get('definitions');
+		$script_id = Input::get('script_id');
+		$wordPosition = 1;
+		
+		foreach($definitions as $word => $fields)
+		{
+			if(!$fields['def']) // If the definition is blank, skip the word
+			{
+				continue;
+			}
+			
+			$w; // var to store the word
+			try
+			{
+				$w = Word::where('word', '=', $word)->where('definition', '=', $fields['def'])->firstOrFail(); // Should only have one result
+			}
+			catch(ModelNotFoundException $e) // If the word was not found, create a new word
+			{
+				$w = new Word;
+				$w->word = $word;
+				$w->pronouciation = $fields['pronun'];
+				$w->definition = $fields['def'];
+				$w->full_definition = $fields['full_def'];
+				$w->save();
+			}
+			
+			$sw = new Script_Word;
+			$sw->script_id = $script_id;
+			$sw->word_id = $w->id;
+			$sw->position = $wordPosition++;
+			$sw->save();
+		}
+		
+		return Redirect::to('admin');
+	}
 
 	/**
 	 * Display the specified resource.

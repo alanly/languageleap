@@ -17,12 +17,12 @@ class EpisodeTest extends TestCase {
 		
 		$season = $this->getSeasonInstance();	
 		$season->show_id = $show->id;
-		$season->season_number = 1;
+		$season->number = 1;
 		$season->save();
 		
 		$episode = $this->getEpisodeInstance();
                 $episode->season_id = $season->id;
-                $episode->episode_number = 1;
+                $episode->number = 1;
                 $episode->name = 'test';
                 $episode->save();
 		
@@ -41,13 +41,13 @@ class EpisodeTest extends TestCase {
 
                 $season = $this->getSeasonInstance();
                 $season->show_id = $show->id;
-                $season->season_number = 1;
+                $season->number = 1;
                 $season->save();
 
 		
 		$episode = $this->getEpisodeInstance();
 		$episode->season_id = $season->id;
-		$episode->episode_number = 1;
+		$episode->number = 1;
 		$episode->name = 'test';
 		$episode->save();
 
