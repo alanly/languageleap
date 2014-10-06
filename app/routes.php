@@ -16,6 +16,8 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+// Accordion
+Route::controller('Accordion', 'AccordionController');
 Route::get('/admin', 'AdminVideoController@index');
 Route::post('/admin/video','AdminVideoController@store');
 
