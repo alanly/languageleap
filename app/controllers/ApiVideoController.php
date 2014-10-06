@@ -1,5 +1,8 @@
 <?php
 
+use LangLeap\Videos\Video;
+use LangLeap\Words\Script;
+
 class ApiVideoController extends \BaseController {
 
 	/**
@@ -9,7 +12,15 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		$videos = Video::all();
+	
+		$videoArray = array();
+        
+        foreach ($videos as $vid) {
+            $videoArray[] = $vid->toResponseArray($vid);
+        }
+
+		return $this->apiResponse("success",$videoArray);
 	}
 
 

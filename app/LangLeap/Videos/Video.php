@@ -1,7 +1,7 @@
 <?php namespace LangLeap\Videos;
 
 use Eloquent;
-
+use LangLeap\Words\Script;
 class Video extends Eloquent
 {
 
@@ -30,4 +30,21 @@ class Video extends Eloquent
 	{
 		return $this->morphTo();
 	}	
+
+
+	public function toResponseArray($vid)
+    {
+    	$script = $vid->script();
+    	//dd($script);
+    	$video = array(
+    		'id' => $vid->id,
+    		'viewable_id' => $vid->viewable_id,
+    		'viewable_type' => $vid->viewable_type,
+    		'path' => $vid->path,
+    		'script' => array(
+    			'id' => $script->id,
+    			'text' => $script->text,
+    		),
+    	);
+    }
 }
