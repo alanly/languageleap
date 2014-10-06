@@ -58,6 +58,7 @@ class ApiSeasonController extends \BaseController {
 		}
 
 		$season = $this->seasons->newInstance(Input::get());
+		$season->show_id = $showId;
 
 		if (! $show->seasons()->save($season))
 		{
