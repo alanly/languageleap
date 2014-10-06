@@ -6,6 +6,8 @@ function commercialsClick()
 	setTabName("secondTab", "Select Commercial");
 
 	$("#secondTab").removeClass("disabled");
+
+	fetchMedia();
 }
 
 function moviesClick()
@@ -16,6 +18,8 @@ function moviesClick()
 	setTabName("secondTab", "Select Movie");
 
 	$("#secondTab").removeClass("disabled");
+
+	fetchMedia();
 }
 
 function seriesClick()
@@ -29,6 +33,47 @@ function seriesClick()
 
 	accordion.bindClicker(1);
 	$("#secondTab").removeClass("disabled");
+
+	fetchSeries();
+}
+
+function fetchMedia()
+{
+
+}
+
+function fetchSeries()
+{
+	$.getJSON( "/api/metadata/shows", function(data) 
+	{
+		var json = data.data;
+		var content = "";
+		$.each(json, function(index, value)
+		{ 
+			var genre = getString(value.genre);
+			var actors = getString(value.actor);
+			var director = getString(value.director);
+			var altImage = getString(value.description);
+
+			content += '<li ';
+			content += 'id="' + value.id +  '" ';
+			content += 'data-genre="' + genre + '" ';
+			content += 'data-main-actors="' + actors + '" ';
+			content += 'data-director="' + director + '" ';
+			content += '>';
+
+			content += '<strong>' + value.name + '</strong>';
+
+			content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + altImage + '">';
+
+			content += '<span>Genre: <i>' + genre + '</i></span>';
+			content += '<span>Actors: <i>' + actors + '</i></span>';
+			content += '<span>Director: <i>' + director + '</i></span>';
+			content += '</li>';
+		});
+
+		$("#container").html(content);
+	});
 }
 
 function disableExtraTabs()
@@ -78,4 +123,19 @@ function disableClickableTabs()
 {
 	accordion.unbindClicker(2);
 	accordion.unbindClicker(3);
+}
+
+function toTitleCase(str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+function getString(str)
+{
+	if(str == null)
+	{
+		return "N/A";
+	}
+
+	return toTitleCase(str);
 }

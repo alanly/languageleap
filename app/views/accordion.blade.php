@@ -27,9 +27,9 @@
 	    <dl>
 		    <dt id="firstTab">Select Media</dt>
 		    <dd>
-		    	<div id="main" role="main">
-				    <div id="content" class="demo">
-							<ul id="containerMedia">
+		    	<div class="main" role="main">
+				    <div class="demo content">
+							<ul>
 							    <li><strong>Movies</strong><img id="movies" src="" alt="Movies"></li>
 							    <li><strong>TV Series</strong><img id="series" src="" alt="TV Series"></li>
 							    <li><strong>Commercials</strong><img id="commercials" src="" alt="Commercials"></li>
@@ -39,13 +39,14 @@
 		    </dd>
 
 		    <dt id="secondTab"></dt>
-		    <dd>
-		 <!--   	<div id="main" role="main">
-		    	<div id="content" class="demo" style="overflow:auto;">
-			       	<div id="placeHolder"></div>
-						<ul id="container">
-						    <li data-genre="Comedy" data-main-actors="John Di Girolamo, Mike Lavoie, Alan Ly" data-director="Amazon"><strong>Amazon Fire Phone</strong><img id="firePhone" src="Filter/img/film.png"><span>Genre: <i>Comedy</i></span><span>Actors: <i>John Di Girolamo, Mike Lavoie, Alan Ly</i></span><span>Director: <i>Amazon</i></span></li> -->
-
+		    <dd id="secondTabContent">
+		    	<div class="main" role="main">
+				    <div class="demo content">
+				    	<div id="placeHolder"></div>
+							<ul id="container">	
+							</ul>
+					</div>
+				</div>
 		    </dd>
 		
 		    <dt id="thirdTab"></dt>
