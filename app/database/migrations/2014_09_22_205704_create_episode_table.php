@@ -15,8 +15,8 @@ class CreateEpisodeTable extends Migration {
 		Schema::create('episodes', function($table){
 			$table->increments('id');
 			$table->integer('season_id')->unsigned();
-			$table->integer('episode_number');
-			$table->string('name');
+			$table->integer('number');
+			$table->string('name')->nullable();
 			$table->string('description')->nullable();
 		});
 	}

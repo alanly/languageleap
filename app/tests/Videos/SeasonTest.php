@@ -42,7 +42,7 @@ class SeasonTest extends TestCase {
 
 		$episode = $this->getEpisodeInstance();
 		$episode->season_id = $season->id;
-		$episode->episode_number = 1;
+		$episode->number = 1;
 		$episode->name = 'test';
 		$episode->save();
 	

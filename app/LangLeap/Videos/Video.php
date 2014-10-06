@@ -2,29 +2,17 @@
 
 use Eloquent;
 use LangLeap\Words\Script;
-class Video extends Eloquent
-{
+
+class Video extends Eloquent {
 
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'videos';
-	public $timestamps = false;		
-	
-	/**
-	* This function returns the script that is associated with this video
-	*/
+	public    $timestamps = false;
+	protected $fillable   = ['path'];
+
 	public function script()
 	{
 		return $this->hasOne('LangLeap\Words\Script');
 	}
-	
-	/**
-	* This function defines the polymorphic relationships
-	*/
 
 	public function viewable()
 	{
@@ -33,18 +21,22 @@ class Video extends Eloquent
 
 
 	public function toResponseArray($vid)
-    {
-    	$script = $vid->script();
-    	//dd($script);
-    	$video = array(
-    		'id' => $vid->id,
-    		'viewable_id' => $vid->viewable_id,
-    		'viewable_type' => $vid->viewable_type,
-    		'path' => $vid->path,
-    		'script' => array(
-    			'id' => $script->id,
-    			'text' => $script->text,
-    		),
-    	);
-    }
+	{
+		$script = $vid->script()->first();
+		if($script != null)
+			return array(
+				'id' => $vid->id,
+				'path' => $vid->path,
+				'viewable_id' => $vid->viewable_id,
+				'viewable_type' => $vid->viewable_type,
+				'script' => array(
+					'id' => $script->id,
+					'text' => $script->text,
+				),
+
+			);
+		else
+			return null;
+		
+	}
 }

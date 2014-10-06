@@ -17,8 +17,8 @@ class CreateMovieTable extends Migration {
 			$table->string('name');
 			$table->string('description')->nullable();
 			$table->string('director')->nullable();
-                        $table->string('actor')->nullable();
-                        $table->string('genre')->nullable();
+			$table->string('actor')->nullable();
+			$table->string('genre')->nullable();
 		});
 	}
 
