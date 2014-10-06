@@ -7,7 +7,7 @@ function commercialsClick()
 
 	$("#secondTab").removeClass("disabled");
 
-	fetchMedia();
+	fetchCommercials();
 }
 
 function moviesClick()
@@ -19,7 +19,7 @@ function moviesClick()
 
 	$("#secondTab").removeClass("disabled");
 
-	fetchMedia();
+	fetchMovies();
 }
 
 function seriesClick()
@@ -37,9 +37,60 @@ function seriesClick()
 	fetchSeries();
 }
 
-function fetchMedia()
+function fetchCommercials()
 {
+	$.getJSON( "/api/metadata/commercials", function(data) 
+	{
+		var json = data.data;
+		var content = "";
+		$.each(json, function(index, value)
+		{ 
+			var name = getString(value.name);
+			var description = getString(value.description);
 
+			content += '<li ';
+			content += 'id="' + value.id +  '" ';
+			content += '>';
+
+			content += '<strong>' + name + '</strong>';
+
+			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
+
+			content += '<span>Description: <i>' + description + '</i></span>';
+			content += '</li>';
+		});
+
+		$("#container").html(content);
+	});
+}
+
+function fetchMovies()
+{
+	$.getJSON( "/api/metadata/movies", function(data) 
+	{
+		var json = data.data;
+		var content = "";
+		$.each(json, function(index, value)
+		{ 
+			var name = getString(value.name);
+			var genre = getString(value.genre);
+			var actor = getString(value.actor);
+			var director = getString(value.director);
+			var description = getString(value.description);
+
+			content += createLiData(value.id, genre, actor, director);
+
+			content += '<strong>' + name + '</strong>';
+
+			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
+
+			content += createSpanData(description, genre, actor, director);
+
+			content += '</li>';
+		});
+
+		$("#container").html(content);
+	});
 }
 
 function fetchSeries()
@@ -50,25 +101,20 @@ function fetchSeries()
 		var content = "";
 		$.each(json, function(index, value)
 		{ 
+			var name = getString(value.name);
 			var genre = getString(value.genre);
-			var actors = getString(value.actor);
+			var actor = getString(value.actor);
 			var director = getString(value.director);
-			var altImage = getString(value.description);
+			var description = getString(value.description);
 
-			content += '<li ';
-			content += 'id="' + value.id +  '" ';
-			content += 'data-genre="' + genre + '" ';
-			content += 'data-main-actors="' + actors + '" ';
-			content += 'data-director="' + director + '" ';
-			content += '>';
+			content += createLiData(value.id, genre, actor, director);
 
-			content += '<strong>' + value.name + '</strong>';
+			content += '<strong>' + name + '</strong>';
 
-			content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + altImage + '">';
+			content += '<img id="' + value.id + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
 
-			content += '<span>Genre: <i>' + genre + '</i></span>';
-			content += '<span>Actors: <i>' + actors + '</i></span>';
-			content += '<span>Director: <i>' + director + '</i></span>';
+			content += createSpanData(description, genre, actor, director);
+
 			content += '</li>';
 		});
 
@@ -138,4 +184,27 @@ function getString(str)
 	}
 
 	return toTitleCase(str);
+}
+
+function createLiData(id, genre, actor, director)
+{
+	var data = '<li ';
+	data += 'id="' + id +  '" ';
+	data += 'data-genre="' + genre + '" ';
+	data += 'data-main-actors="' + actor + '" ';
+	data += 'data-director="' + director + '" ';
+	data += '>';
+
+	return data;
+}
+
+function createSpanData(description, genre, actor, director)
+{
+	
+	var data = '<span>Description: <i>' + description + '</i></span>';
+	data += '<span>Genre: <i>' + genre + '</i></span>';
+	data += '<span>Actors: <i>' + actor + '</i></span>';
+	data += '<span>Director: <i>' + director + '</i></span>';
+
+	return data;
 }
