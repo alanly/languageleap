@@ -31,7 +31,51 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$script_text = Input::get('script');
+		$file = Input::file('video');
+		$type = Input::get('video_type');
+
+		$video = new Video;
+		$path = "";
+
+		if($type === "commercial")
+		{
+			$video->viewable_id = Input::get('commercials');
+			$video->viewable_type = 'LangLeap\Videos\Commercial';
+			$path = Config::get('media.paths.videos.commercials');
+		}
+		elseif($type === "movie")
+		{
+			$video->viewable_id = Input::get('movies');;
+			$video->viewable_type = 'LangLeap\Videos\Movie';
+			$path = Config::get('media.paths.videos.movies');
+		}
+		elseif($type === "show")
+		{
+			$video->viewable_id = Input::get('shows');;
+			$video->viewable_type = 'LangLeap\Videos\Episode';
+			$path = Config::get('media.paths.videos.shows');
+		}
+		else
+		{
+			   return App::abort(400);
+		}
+
+		$video->path = '';
+		$video->save();
+
+		//set the path
+		$new_name = base64_encode($video->id);
+		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
+		$video_file = $file->move($path,$new_name);
+		$video->save();
+		
+		//Save the script
+		$script = new Script;
+		$script->text = $script_text;
+		$script->video_id = $video->id;
+		$script->save();
+
 	}
 
 
