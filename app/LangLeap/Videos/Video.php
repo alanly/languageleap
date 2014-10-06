@@ -2,32 +2,19 @@
 
 use Eloquent;
 
-class Video extends Eloquent
-{
+class Video extends Eloquent {
 
+	public    $timestamps = false;
+	protected $table      = 'videos';
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'videos';
-	public $timestamps = false;		
-	
-	/**
-	* This function returns the script that is associated with this video
-	*/
 	public function script()
 	{
 		return $this->hasOne('LangLeap\Words\Script');
 	}
-	
-	/**
-	* This function defines the polymorphic relationships
-	*/
 
 	public function viewable()
 	{
 		return $this->morphTo();
-	}	
+	}
+
 }
