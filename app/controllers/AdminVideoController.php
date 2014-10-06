@@ -33,6 +33,10 @@ class AdminVideoController extends \BaseController {
 	/**
 	 * Store a newly created resource in storage.
 	 *
+	 *
+	 * @input script  		-- The video Script
+	 * @input video 		-- The video file
+	 * @input video_type	-- 
 	 * @return Response
 	 */
 	public function store()
@@ -55,14 +59,12 @@ class AdminVideoController extends \BaseController {
 			$video->viewable_id = Input::get('movies');;
 			$video->viewable_type = 'LangLeap\Videos\Movie';
 			$path = Config::get('media.paths.videos.movies');
-
 		}
 		elseif($type === "show")
 		{
 			$video->viewable_id = Input::get('shows');;
 			$video->viewable_type = 'LangLeap\Videos\Episode';
 			$path = Config::get('media.paths.videos.shows');
-
 		}
 		else
 		{
