@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use LangLeap\Videos\Video;
 use LangLeap\Videos\Commercial;
 use LangLeap\Videos\Movie;
@@ -75,35 +76,41 @@ class AdminVideoController extends \BaseController {
 		$script_id = Input::get('script_id');
 		$wordPosition = 1;
 		
-		foreach($definitions as $word => $definition)
+		foreach($definitions as $word => $fields)
 		{
-			if(!$definition) // If the definition is blank, skip the word
+			if(!$fields['def']) // If the definition is blank, skip the word
 			{
 				continue;
 			}
 
 			try
 			{
-				$existingWord = Word::where('definition', '=', $definition)->firstOrFail(); // Should only have one result
+				$existingWord = Word::where('word', '=', $word)->where('definition', '=', $fields['def'])->firstOrFail(); // Should only have one result
 				
 				$sw = new Script_Word;
 				$sw->script_id = $script_id;
 				$sw->word_id = $existingWord->id;
-				$sw->position = wordPosition++;
+				$sw->position = $wordPosition++;
 				$sw->save();
 			}
-			catch(ModelNotFoundException)
+			catch(ModelNotFoundException $e)
 			{
 				$w = new Word;
-				$w->script_id = $script_id;
 				$w->word = $word;
-				//$w->pronouciation = 
-				$w->position = $wordPosition++;
-				$w->definition = $definition;
-				//$w->full_definition = 
+				$w->pronouciation = $fields['pronun'];
+				$w->definition = $fields['def'];
+				$w->full_definition = $fields['full_def'];
 				$w->save();
+				
+				$sw = new Script_Word;
+				$sw->script_id = $script_id;
+				$sw->word_id = $w->id;
+				$sw->position = $wordPosition++;
+				$sw->save();
 			}
 		}
+		
+		return Redirect::to('admin');
 	}
 
 

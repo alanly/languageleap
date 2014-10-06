@@ -12,12 +12,18 @@
 	
 	echo Form::open(array('url' => 'admin/definitions')) . "\n";
 	echo Form::hidden('script_id', $script_id) . "\n";
+	echo '<table>'."\n";
+	echo '<th>Word</th><th>Definition</th><th>Full Definition</th><th>Pronunciation</th>'."\n";
 	foreach($words as $word)
 	{
-		echo Form::label('definitions['.$word.']', $word);
-		echo Form::text('definitions['.$word.']');
-		echo "<br/>\n";
+		echo '<tr>';
+		echo '<td>' . Form::label('definitions['.$word.']', $word) . '</td>';
+		echo '<td>' . Form::text('definitions['.$word.'][def]') . '</td>';
+		echo '<td>' . Form::text('definitions['.$word.'][full_def]') . '</td>';
+		echo '<td>' . Form::text('definitions['.$word.'][pronun]') . '</td>';
+		echo "</tr><br/>\n";
 	}
+	echo '</table>'."\n";
 	echo Form::submit() . "\n";
 	echo Form::close() . "\n";
 	?>
