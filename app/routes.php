@@ -18,10 +18,12 @@ Route::get('/', function()
 
 // Accordion
 Route::controller('Accordion', 'AccordionController');
-Route::post('/admin/definitions','AdminVideoController@storeDefinitions');
 
 Route::get('/admin', function(){
 	return View::make('admin.video.video');
+});
+Route::get('/admin/new/script', function(){
+	return View::make('admin.video.script');
 });
 
 
@@ -45,6 +47,9 @@ Route::group(array('prefix' => 'api',), function()
 
 		// Videos
 		Route::resource('videos', 'ApiVideoController');
+		
+		// Words
+		Route::resource('words', 'ApiWordController');
 	});
 
 	// Video Controller

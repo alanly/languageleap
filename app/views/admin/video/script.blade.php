@@ -7,10 +7,12 @@
 
 	<?php
 	//$script contains the full string of the script
+	$script = Session::get('script');
+	$script_id = Session::get('script_id');
+	
 	$words = explode(" ", $script);
 	
-	
-	echo Form::open(array('url' => 'admin/definitions')) . "\n";
+	echo Form::open(array('url' => 'api/metadata/words')) . "\n";
 	echo Form::hidden('script_id', $script_id) . "\n";
 	echo '<table>'."\n";
 	echo '<th>Word</th><th>Definition</th><th>Full Definition</th><th>Pronunciation</th>'."\n";
@@ -23,7 +25,7 @@
 		echo '<td>' . Form::text('definitions['.$word.'][pronun]') . '</td>';
 		echo "</tr><br/>\n";
 	}
-	echo '</table>'."\n";
+	echo '</table><br/>'."\n";
 	echo Form::submit() . "\n";
 	echo Form::close() . "\n";
 	?>
