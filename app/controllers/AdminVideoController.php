@@ -6,6 +6,7 @@ use LangLeap\Videos\Movie;
 use LangLeap\Videos\Episode;
 use LangLeap\Words\Script;
 use LangLeap\Words\Word;
+use LangLeap\Words\Script_Word;
 class AdminVideoController extends \BaseController {
 
 	/**
@@ -48,18 +49,18 @@ class AdminVideoController extends \BaseController {
 
 
 		$video->path = '';
-		//$video->save();
+		$video->save();
 
 		//set the path
 		$new_name = base64_encode($video->id);
 		$video->path = Config::get('media.paths.videos.shows') . DIRECTORY_SEPARATOR . $new_name;
-		//$video_file = $file->move(Config::get('media.paths.videos.shows'),$new_name);
-		//$video->save();
+		$video_file = $file->move(Config::get('media.paths.videos.shows'),$new_name);
+		$video->save();
 		
 		$script = new Script;
 		$script->text = $script_text;
 		$script->video_id = $video->id;
-		//$script->save();
+		$script->save();
 		
 		return View::make('admin.video.script', array('script' => $script->text, 'script_id' => $script->id));
 	}
@@ -72,7 +73,6 @@ class AdminVideoController extends \BaseController {
 	{
 		$definitions = Input::get('definitions');
 		$script_id = Input::get('script_id');
-		$words = [];
 		$wordPosition = 1;
 		
 		foreach($definitions as $word => $definition)
@@ -81,17 +81,28 @@ class AdminVideoController extends \BaseController {
 			{
 				continue;
 			}
-			
-			$w = new Word;
-			$w->script_id = $script_id;
-			$w->word = $word;
-			//$w->pronouciation = 
-			$w->position = $wordPosition++;
-			$w->definition = $definition;
-			//$w->full_definition = 
-			//$w->save();
-			
-			$words[] = $w;
+
+			try
+			{
+				$existingWord = Word::where('definition', '=', $definition)->firstOrFail(); // Should only have one result
+				
+				$sw = new Script_Word;
+				$sw->script_id = $script_id;
+				$sw->word_id = $existingWord->id;
+				$sw->position = wordPosition++;
+				$sw->save();
+			}
+			catch(ModelNotFoundException)
+			{
+				$w = new Word;
+				$w->script_id = $script_id;
+				$w->word = $word;
+				//$w->pronouciation = 
+				$w->position = $wordPosition++;
+				$w->definition = $definition;
+				//$w->full_definition = 
+				$w->save();
+			}
 		}
 	}
 
