@@ -53,6 +53,7 @@ class ApiVideoController extends \BaseController {
 		$script_text = Input::get('script');
 		$file = Input::file('video');
 		$type = Input::get('video_type');
+		$ext = $file->getClientOriginalExtension();
 
 		$video = new Video;
 		$path = "";
@@ -82,9 +83,9 @@ class ApiVideoController extends \BaseController {
 
 		$video->path = '';
 		$video->save();
-
+	
 		//set the path
-		$new_name = base64_encode($video->id);
+		$new_name = $video->id . "." . $ext;
 		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
 		$video_file = $file->move($path,$new_name);
 		$video->save();

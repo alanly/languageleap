@@ -47,7 +47,9 @@ class ApiShowController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$shows = Show::find($id);
+		
+		return $this->apiResponse("success",$shows->toArray());
 	}
 
 
