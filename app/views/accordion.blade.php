@@ -11,6 +11,8 @@
 	<script type="text/javascript" src="libraries/filtrify/js/highlight.pack.js"></script>
 	<script type="text/javascript" src="libraries/filtrify/js/script.js"></script>
 
+	<script type="text/javascript" src="libraries/qtip/js/qtip.js"></script>
+
 	@include('layouts.bootstrap')
 
     <link rel="stylesheet" href="libraries/accordion/css/evoslider.css" />
@@ -21,6 +23,10 @@
 	<link rel="stylesheet" href="libraries/filtrify/css/sunburst.css">
 	<link rel="stylesheet" href="libraries/filtrify/css/filtrify.css">
 
+	<link rel="stylesheet" href="libraries/qtip/css/qtip.css">
+
+	<link rel="stylesheet" href="libraries/loading/css/loading.css">
+
 </head>
 <body>
 	<div id="accordion" class="evoslider default">
@@ -30,27 +36,48 @@
 		    	<div class="main" role="main">
 				    <div class="demo content">
 							<ul>
-							    <li><strong>Movies</strong><img id="movies" src="" alt="Movies"></li>
-							    <li><strong>TV Series</strong><img id="series" src="" alt="TV Series"></li>
-							    <li><strong>Commercials</strong><img id="commercials" src="" alt="Commercials"></li>
+							    <li>
+								    <strong>Movies</strong>
+							    	<a class="tooltiptext">
+							    		<img id="movies" src="" alt="Movies">
+							    	</a>
+								</li>
+							    <li>
+							    	<strong>TV Shows</strong>
+							    	<a class="tooltiptext">
+								    	<img id="shows" src="" alt="TV Shows">
+								    </a>
+							    </li>
+							    <li>
+							    	<strong>Commercials</strong>
+							    	<a class="tooltiptext">
+								    	<img id="commercials" src="" alt="Commercials">
+								    </a>
+							    </li>
 							</ul>
 					</div>
 				</div>
 		    </dd>
 
 		    <dt id="secondTab"></dt>
-		    <dd id="secondTabContent">
+		    <dd>
 		    	<div class="main" role="main">
 				    <div class="demo content">
 				    	<div id="placeHolder"></div>
-							<ul id="container">	
-							</ul>
+						<ul id="container">	
+						</ul>
 					</div>
 				</div>
 		    </dd>
 		
 		    <dt id="thirdTab"></dt>
-		    <dd>	        
+		    <dd>
+		    	<div class="main" role="main">
+			    	<div class="demo content">
+						<ul id="seasonContainer">	
+						</ul>
+					</div>
+				</div>        
 		    </dd>
 		
 		    <dt id="fourthTab"></dt>
@@ -89,6 +116,10 @@
 		$(document).ready(function() {
     		disableAllTabs();
     		$.filtrify("container", "placeHolder");
+
+    		displayMoreInfo("movies", "Movies","Learn through your favorite Movies!");
+    		displayMoreInfo("commercials", "Commercials", "Learn through fun and interesting Commercials!");
+    		displayMoreInfo("shows", "Television Shows", "Learn through your favorite Television Shows!");
 		});
 		
 		$("#commercials").click(function() {
@@ -99,8 +130,8 @@
 			moviesClick();
 		});
 
-		$("#series").click(function() {
-			seriesClick();
+		$("#shows").click(function() {
+			showsClick();
 		});
 
 	</script>

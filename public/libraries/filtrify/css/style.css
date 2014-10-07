@@ -274,13 +274,16 @@ div.content.demo > ul > li {
   padding: 5px;
   border-radius: 3px;
   max-width: 113px;
-  font-size: 85%;
+  font-size: 100%;
 }
-div.content.demo > ul > li > img {
+div.content.demo > ul > li > a > img {
   width: 103px;
   height: 168px;
   margin: 5px 0px;
   cursor: pointer;
+}
+div.content.demo > ul > li > a {
+  color: inherit;
 }
 div.content.demo > ul > li > span {
   display: block;
