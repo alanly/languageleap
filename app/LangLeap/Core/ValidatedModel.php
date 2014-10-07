@@ -11,7 +11,7 @@ abstract class ValidatedModel extends Eloquent {
 	 * 
 	 * @var array
 	 */
-	protected $rules;
+	protected $rules = [];
 
 	/**
 	 * An instance of the Validator.
