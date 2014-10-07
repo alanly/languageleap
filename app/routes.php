@@ -27,6 +27,9 @@ Route::get('/admin/new/script', function(){
 });
 
 
+// Route to get the definitions of specific words
+Route::post('/api/metadata/words/definitions', 'ApiWordController@getMultipleWords');
+
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
 {

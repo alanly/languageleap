@@ -145,5 +145,24 @@ class ApiWordController extends \BaseController {
 		//
 	}
 
-
+	/**
+	 * Get multiple words in one request
+	 *
+	 */
+	public function getMultipleWords()
+	{
+		$words = Input::get('words');
+		
+		$wordArray = array();
+		foreach($words as $word)
+		{
+			$dbresult = Word::where('word', '=', $word)->get();
+			foreach($dbresult as $w)
+			{
+				$wordArray[] = $w->toResponseArray();
+			}
+		}
+		
+		return $this->apiResponse("success",$wordArray);
+	}
 }

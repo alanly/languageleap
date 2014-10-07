@@ -1,6 +1,8 @@
 @extends('admin.master')
 
 @section('head')
+	<link rel="stylesheet" href="/libraries/typeahead/css/style.css"/>
+
 	<script type="text/javascript" src="/libraries/typeahead/js/typeahead.bundle.min.js"></script>
 	<script type="text/javascript" src="/libraries/typeahead/js/typeahead.jquery.min.js"></script>
 	
@@ -54,11 +56,15 @@
 	echo '<th>Word</th><th>Definition</th><th>Full Definition</th><th>Pronunciation</th>'."\n";
 	foreach($words as $word)
 	{
+		if(!$word)
+		{
+			continue;
+		}
 		echo '<tr>';
 		echo '<td>' . Form::label('definitions['.$word.']', $word) . '</td>';
-		echo '<td>' . Form::text('definitions['.$word.'][def]', null, $attributes = array('class'=>'load-definitions typeahead', 'data-word'=>$word)) . '</td>';
-		echo '<td>' . Form::text('definitions['.$word.'][full_def]') . '</td>';
-		echo '<td>' . Form::text('definitions['.$word.'][pronun]') . '</td>';
+		echo '<td>' . Form::text('definitions['.$word.'][def]', null, array('class'=>'load-definitions tt-query', 'data-word'=>$word)) . '</td>';
+		echo '<td>' . Form::text('definitions['.$word.'][full_def]', null, array('class'=>'tt-query')) . '</td>';
+		echo '<td>' . Form::text('definitions['.$word.'][pronun]', null, array('class'=>'tt-query')) . '</td>';
 		echo "</tr><br/>\n";
 	}
 	echo '</table><br/>'."\n";
@@ -71,7 +77,56 @@
 <script type="text/javascript">
 	
 	var definitionBoxes = $(".load-definitions");
+	var data = ['{"words":['];
 	for(var i = 0; i < definitionBoxes.length; i++)
+	{
+		if(i != definitionBoxes.length - 1)
+		{
+			data.push('"' + definitionBoxes[i].dataset.word + '",');
+		}
+		else
+		{
+			data.push('"' + definitionBoxes[i].dataset.word + '"');
+		}
+	}
+	data.push(']}');
+	data = data.join('');
+	data = $.parseJSON(data);
+	
+	$.ajax({
+		type: "POST",
+		url: "/api/metadata/words/definitions",
+		data: data,
+		dataType: "json",
+		async: false,
+		success: function(response, textstatus, xhr)
+		{
+			data = response.data;
+		}
+	});
+	
+	for(var i = 0; i < definitionBoxes.length; i++)
+	{
+		var definitions = [];
+		for(var j = 0; j < data.length; j++)
+		{
+			if(data[j].word == definitionBoxes[i].dataset.word)
+			{
+				definitions.push(data[j].definition);
+			}
+		}
+		$(definitionBoxes[i]).typeahead({
+			hint: true,
+			highlight: true,
+			minLength: 1
+		},
+		{
+			name: 'definition',
+			source: substringMatcher(definitions)
+		});
+	}
+	
+	/*for(var i = 0; i < definitionBoxes.length; i++)
 	{
 		// Get the definitions for the word
 		var definitions = [];
@@ -96,13 +151,14 @@
 		// Create the typeahead for that text area
 		$(definitionBoxes[i]).typeahead({
 			hint: true,
+			highlight: true,
 			minLength: 1
 		},
 		{
 			name: 'definitions',
 			source: substringMatcher(definitions)
 		});
-	}
+	}*/
 	
 </script>
 
