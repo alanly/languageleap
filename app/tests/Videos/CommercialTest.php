@@ -28,7 +28,7 @@ class CommercialTest extends TestCase {
 	protected function getCommercialInstance()
 	{
 		$comm =  App::make('LangLeap\Videos\Commercial');
-		$comm->name = '';
+		$comm->name = 'Test Commercial';
 		$comm->save();
 		return $comm;
 	}
