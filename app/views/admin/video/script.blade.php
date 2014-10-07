@@ -56,7 +56,7 @@
 	{
 		echo '<tr>';
 		echo '<td>' . Form::label('definitions['.$word.']', $word) . '</td>';
-		echo '<td>' . Form::text('definitions['.$word.'][def]', null, $attributes = array('class'=>'load-definitions', 'data-word'=>$word)) . '</td>';
+		echo '<td>' . Form::text('definitions['.$word.'][def]', null, $attributes = array('class'=>'load-definitions typeahead', 'data-word'=>$word)) . '</td>';
 		echo '<td>' . Form::text('definitions['.$word.'][full_def]') . '</td>';
 		echo '<td>' . Form::text('definitions['.$word.'][pronun]') . '</td>';
 		echo "</tr><br/>\n";
@@ -69,16 +69,19 @@
 </div>
 
 <script type="text/javascript">
-	var definitions;
-	$(".load-definitions").focus(function() {
-		definitions = [];
-		
-		$.ajax(
+	
+	var definitionBoxes = $(".load-definitions");
+	for(var i = 0; i < definitionBoxes.length; i++)
+	{
+		// Get the definitions for the word
+		var definitions = [];
+		$.ajax({
 			type: "GET",
-			url: "../../api/metadata/words/" + this.dataset.word, 
+			url: "../../api/metadata/words/" + definitionBoxes[i].dataset.word, 
 			dataType: "json",
 			async: false,
-			success: function(response) {
+			success: function(response, textstatus, xhr) 
+			{
 				if(response.data)
 				{
 					for(var i = 0; i < response.data.length; i++)
@@ -88,20 +91,18 @@
 					}
 				}
 			}
-		);
+		});
 		
-		/*$(this).typeahead({
+		// Create the typeahead for that text area
+		$(definitionBoxes[i]).typeahead({
 			hint: true,
-			highlight: true,
-			minLength: 1,
+			minLength: 1
 		},
 		{
 			name: 'definitions',
-			displayKey: 'value',
 			source: substringMatcher(definitions)
-		});*/
-	});
-	
+		});
+	}
 	
 </script>
 
