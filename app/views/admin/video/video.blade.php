@@ -66,7 +66,7 @@
 
 
 	function loadEpisodeContent(show_id,season_id){
-		alert(show_id + " " + season_id);
+
 		$.getJSON("/api/metadata/shows/" + show_id + "/seasons/" + season_id + "/episodes" ,function(data){
 			
 		});

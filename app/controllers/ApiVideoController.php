@@ -147,7 +147,7 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$video = Video::find($id)
+		$video = Video::find($id);
 
 		if(!$video)
 			App::abort(404);

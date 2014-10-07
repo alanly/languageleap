@@ -12,15 +12,11 @@ class ApiMovieController extends \BaseController {
 	{
 		$movies = Movie::all();
 
-	
-		$movieArray = array();
-        
-        foreach ($movies as $mov) {
-            $movieArray[] = $mov->toResponseArray($mov);
-        }
+		return $this->apiResponse(
+			'success',
+			$movies->toArray()
+		);
 
-		return $this->apiResponse("success",$movieArray);
-		//return $this->apiResponse("success",$movies->toArray());
 	}
 
 
@@ -54,7 +50,9 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$movie = Movie::find($id);
+
+		return $this->apiResponse("success",$movie->toResponseArray($movie));
 	}
 
 
