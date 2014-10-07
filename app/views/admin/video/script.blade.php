@@ -1,9 +1,38 @@
 @extends('admin.master')
 
 @section('head')
+	<script type="text/javascript" src="/libraries/typeahead/js/typeahead.bundle.min.js"></script>
+	<script type="text/javascript" src="/libraries/typeahead/js/typeahead.jquery.min.js"></script>
+	
+	<script>
+	var substringMatcher = function(strs) 
+	{
+		return function findMatches(q, cb) 
+		{
+			var matches, substrRegex;
+ 
+			// an array that will be populated with substring matches
+			matches = [];
 
-	<!-- Need autocomplete library here -->
+			// regex used to determine if a string contains the substring `q`
+			substrRegex = new RegExp(q, 'i');
 
+			// iterate through the pool of strings and for any string that
+			// contains the substring `q`, add it to the `matches` array
+			$.each(strs, function(i, str) 
+			{
+				if (substrRegex.test(str)) 
+				{
+					// the typeahead jQuery plugin expects suggestions to a
+					// JavaScript object, refer to typeahead docs for more info
+					matches.push({ value: str });
+				}
+			});
+
+		cb(matches);
+		};
+	};
+	</script>
 @stop
 
 @section('content')
@@ -43,17 +72,37 @@
 	var definitions;
 	$(".load-definitions").focus(function() {
 		definitions = [];
-		$.getJSON("../../api/metadata/words/" + this.dataset.word, function(response) {
-			if(response.data)
-			{
-				for(var i = 0; i < response.data.length; i++)
+		
+		$.ajax(
+			type: "GET",
+			url: "../../api/metadata/words/" + this.dataset.word, 
+			dataType: "json",
+			async: false,
+			success: function(response) {
+				if(response.data)
 				{
-					definitions.push(response.data[i].definition);
-					console.log(response.data[i].definition);
+					for(var i = 0; i < response.data.length; i++)
+					{
+						definitions.push(response.data[i].definition);
+						console.log(response.data[i].definition);
+					}
 				}
 			}
-		});
+		);
+		
+		/*$(this).typeahead({
+			hint: true,
+			highlight: true,
+			minLength: 1,
+		},
+		{
+			name: 'definitions',
+			displayKey: 'value',
+			source: substringMatcher(definitions)
+		});*/
 	});
+	
+	
 </script>
 
 @stop
