@@ -8,7 +8,6 @@ class Commercial extends ValidatedModel {
 	protected $fillable   = ['name', 'description'];
 	protected $rules      = [
 		'name'        => 'required',
-		'description' => 'alpha_dash',
 	];
 	
 	public function videos()
