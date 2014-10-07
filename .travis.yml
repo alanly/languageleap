@@ -7,3 +7,6 @@ php:
   - hhvm
 
 install: composer install --prefer-source --no-interaction
+
+notifications:
+  slack: languageleap:iSnqN0nELulTlljZCPYKbhz3
