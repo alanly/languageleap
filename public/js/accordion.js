@@ -64,19 +64,19 @@ function fetchCommercials()
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
-			content += '<img id=commercials"' + value.id + '" src="" alt="' + description + '">';
+			content += '<img id="commercials' + value.id + '" src="" alt="' + name + '">';
 			content += '</a>';
 
 			content += '</li>';
 
-			listOfData.push([value.id, "Description: " + description]);
+			listOfData.push([value.id, name, "Description: " + description]);
 		});
 
 		$("#container").html(content);
 
 		for(var i = 0; i < listOfData.length; i++)
 		{
-   			displayMoreInfo("commercials"+ listOfData[i][0], name, listOfData[i][1]);
+   			displayMoreInfo("commercials"+ listOfData[i][0], listOfData[i][1], listOfData[i][2]);
 		}
 	});
 }
@@ -105,19 +105,19 @@ function fetchMovies()
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
-			content += '<img id=movies"' + value.id + '" src="" alt="' + description + '">';
+			content += '<img id="movies' + value.id + '" src="" alt="' + name + '">';
 			content += '</a>';
 
 			content += '</li>';
 
-			listOfData.push([value.id, createHoverData(description, genre, actor, director)]);
+			listOfData.push([value.id, name, createHoverData(description, genre, actor, director)]);
 		});
 
 		$("#container").html(content);
 
 		for(var i = 0; i < listOfData.length; i++)
 		{
-   			displayMoreInfo("movies"+ listOfData[i][0], name, listOfData[i][1]);
+   			displayMoreInfo("movies"+ listOfData[i][0], listOfData[i][1], listOfData[i][2]);
 		}
 	});
 }
@@ -175,7 +175,7 @@ function fetchShowsSeason(event)
 		var content = "";
 		var listOfData = [];
 
-		$.each(json, function(index, value)
+		$.each(json.seasons, function(index, value)
 		{ 
 			var name = getString(value.name);
 
@@ -183,23 +183,23 @@ function fetchShowsSeason(event)
 			content += 'id="' + value.id +  '" ';
 			content += '>';
 
-			content += '<strong>' + name + '</strong>';
+			content += '<strong>Season' + value.number + '</strong>';
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
-			content += '<img id="seasons' + value.id + '" src="" alt="' + name + '">';
+			content += '<img id="seasons' + value.id + '" src="" alt=Season "' + value.number + '">';
 			content += '</a>';
 
 			content += '</li>';
 
-			listOfData.push([value.id, name, event.data.id]);
+			listOfData.push([value.id, value.number, event.data.id]);
 		});
 
 		$("#seasonContainer").html(content);
 
 		for(var i = 0; i < listOfData.length; i++)
 		{
-			$("#seasons" + listOfData[i][0]).click({seasonId: listOfData[i][0], name: listOfData[i][1], showId: listOfData[i][2]}, fetchSeasonsEpisode);
+			$("#seasons" + listOfData[i][0]).click({seasonId: listOfData[i][0], number: listOfData[i][1], showId: listOfData[i][2]}, fetchSeasonsEpisode);
 		}
 	});
 }
@@ -207,7 +207,7 @@ function fetchShowsSeason(event)
 
 function fetchSeasonsEpisode(event)
 {
-	setTabName("thirdTab", event.data.name);
+	setTabName("thirdTab", "Season " + event.data.number);
 	accordion.next();
 	fetchBegin("episodeContainer");
 
@@ -218,7 +218,7 @@ function fetchSeasonsEpisode(event)
 		var content = "";
 		var listOfData = [];
 
-		$.each(json, function(index, value)
+		$.each(json.episodes, function(index, value)
 		{ 
 			var name = getString(value.name);
 
@@ -226,7 +226,7 @@ function fetchSeasonsEpisode(event)
 			content += 'id="' + value.id +  '" ';
 			content += '>';
 
-			content += '<strong>' + name + '</strong>';
+			content += '<strong>Episode' + value.number + '</strong>';
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
