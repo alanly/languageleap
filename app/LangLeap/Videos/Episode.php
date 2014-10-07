@@ -1,12 +1,16 @@
 <?php namespace LangLeap\Videos;
 
-use Eloquent;
+use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
 
-class Episode extends Eloquent implements Billable {
+class Episode extends ValidatedModel implements Billable {
 
 	public    $timestamps = false;
 	protected $fillable   = ['season_id', 'number', 'name', 'description'];
+	protected $rules      = [
+		'season_id'   => 'required|integer',
+		'number'      => 'required|integer',
+	];
 
 	public function season()
 	{
