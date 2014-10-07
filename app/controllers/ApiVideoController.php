@@ -3,6 +3,9 @@
 use LangLeap\Videos\Video;
 use LangLeap\Words\Script;
 
+/**
+* @author Thomas Rahn <thomas@rahn.ca>
+*/
 class ApiVideoController extends \BaseController {
 
 	/**
@@ -12,6 +15,7 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function index()
 	{
+		//This is just to show something. This will be replaced with getting all videos for a certain Commercial, Movie or Episode.
 		$videos = Video::all();
 	
 		$videoArray = array();
@@ -38,6 +42,10 @@ class ApiVideoController extends \BaseController {
 	/**
 	 * Store a newly created resource in storage.
 	 *
+	 * @input script 			The text for the script
+	 * @input video 			The video for the video
+	 * @input video_type		The video type (movie, commercial or show)
+	 *
 	 * @return Response
 	 */
 	public function store()
@@ -45,25 +53,26 @@ class ApiVideoController extends \BaseController {
 		$script_text = Input::get('script');
 		$file = Input::file('video');
 		$type = Input::get('video_type');
+		$ext = $file->getClientOriginalExtension();
 
 		$video = new Video;
 		$path = "";
 
 		if($type === "commercial")
 		{
-			$video->viewable_id = Input::get('commercials');
+			$video->viewable_id = Input::get('commercial');
 			$video->viewable_type = 'LangLeap\Videos\Commercial';
 			$path = Config::get('media.paths.videos.commercials');
 		}
 		elseif($type === "movie")
 		{
-			$video->viewable_id = Input::get('movies');;
+			$video->viewable_id = Input::get('movie');;
 			$video->viewable_type = 'LangLeap\Videos\Movie';
 			$path = Config::get('media.paths.videos.movies');
 		}
 		elseif($type === "show")
 		{
-			$video->viewable_id = Input::get('shows');;
+			$video->viewable_id = Input::get('episode');;
 			$video->viewable_type = 'LangLeap\Videos\Episode';
 			$path = Config::get('media.paths.videos.shows');
 		}
@@ -74,9 +83,9 @@ class ApiVideoController extends \BaseController {
 
 		$video->path = '';
 		$video->save();
-
+	
 		//set the path
-		$new_name = base64_encode($video->id);
+		$new_name = $video->id . "." . $ext;
 		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
 		$video_file = $file->move($path,$new_name);
 		$video->save();
@@ -98,7 +107,12 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$video = Video::find($id);
+		$videoArray = array(
+			"video" => $video->toResponseArray($video));
+
+		return $this->apiResponse("success",$videoArray);
+
 	}
 
 
@@ -134,7 +148,12 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$video = Video::find($id);
+
+		if(!$video)
+			App::abort(404);
+
+		$video->delete();
 	}
 
 

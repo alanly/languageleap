@@ -47,7 +47,9 @@ class ApiShowController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$shows = Show::find($id);
+		
+		return $this->apiResponse("success",$shows->toArray());
 	}
 
 
@@ -83,7 +85,12 @@ class ApiShowController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$show = Show::find($id);
+
+		if(!$show)
+			App::abort(404);
+
+		$show->delete();
 	}
 
 
