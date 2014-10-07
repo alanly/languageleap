@@ -1,9 +1,8 @@
 <?php namespace LangLeap\Videos;
 
 use LangLeap\Core\ValidatedModel;
-use LangLeap\Payments\Billable;
 
-class Commercial extends ValidatedModel implements Billable {
+class Commercial extends ValidatedModel {
 
 	public    $timestamps = false;
 	protected $fillable   = ['name', 'description'];
