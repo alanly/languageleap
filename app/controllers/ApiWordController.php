@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use LangLeap\Words\Word;
-use LangLeap\Words\Script_Word;
+use LangLeap\Words\ScriptWord;
 
 class ApiWordController extends \BaseController {
 
@@ -69,7 +69,7 @@ class ApiWordController extends \BaseController {
 				$w->save();
 			}
 			
-			$sw = new Script_Word;
+			$sw = new ScriptWord;
 			$sw->script_id = $script_id;
 			$sw->word_id = $w->id;
 			$sw->position = $wordPosition++;
@@ -159,7 +159,7 @@ class ApiWordController extends \BaseController {
 			$dbresult = Word::where('word', '=', $word)->get();
 			foreach($dbresult as $w)
 			{
-				$wordArray[] = $w->toResponseArray();
+				$wordArray[$word][] = $w->toResponseArray();
 			}
 		}
 		

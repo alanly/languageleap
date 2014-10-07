@@ -108,57 +108,28 @@
 	for(var i = 0; i < definitionBoxes.length; i++)
 	{
 		var definitions = [];
-		for(var j = 0; j < data.length; j++)
+		var wordData = eval("data." + definitionBoxes[i].dataset.word);
+		if(wordData) // Get the data of the specific word
 		{
-			if(data[j].word == definitionBoxes[i].dataset.word)
+			for(var j = 0; j < wordData.length; j++)
 			{
-				definitions.push(data[j].definition);
+				definitions.push(wordData[j].definition);
 			}
 		}
-		$(definitionBoxes[i]).typeahead({
-			hint: true,
-			highlight: true,
-			minLength: 1
-		},
-		{
-			name: 'definition',
-			source: substringMatcher(definitions)
-		});
-	}
-	
-	/*for(var i = 0; i < definitionBoxes.length; i++)
-	{
-		// Get the definitions for the word
-		var definitions = [];
-		$.ajax({
-			type: "GET",
-			url: "../../api/metadata/words/" + definitionBoxes[i].dataset.word, 
-			dataType: "json",
-			async: false,
-			success: function(response, textstatus, xhr) 
-			{
-				if(response.data)
-				{
-					for(var i = 0; i < response.data.length; i++)
-					{
-						definitions.push(response.data[i].definition);
-						console.log(response.data[i].definition);
-					}
-				}
-			}
-		});
 		
-		// Create the typeahead for that text area
-		$(definitionBoxes[i]).typeahead({
-			hint: true,
-			highlight: true,
-			minLength: 1
-		},
+		if(definitions.length > 0) // Create a typeahead if there is at least one definition
 		{
-			name: 'definitions',
-			source: substringMatcher(definitions)
-		});
-	}*/
+			$(definitionBoxes[i]).typeahead({
+				hint: true,
+				highlight: true,
+				minLength: 1
+			},
+			{
+				name: 'definition',
+				source: substringMatcher(definitions)
+			});
+		}
+	}
 	
 </script>
 

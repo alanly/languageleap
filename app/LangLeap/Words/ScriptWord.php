@@ -2,7 +2,7 @@
 
 use Eloquent;
 
-class Script_Word extends Eloquent
+class ScriptWord extends Eloquent
 {
 
 
@@ -21,8 +21,8 @@ class Script_Word extends Eloquent
 		return $this->belongsTo("LangLeap\Words\Script");
 	}	
 	public function word()
-        {
-                return $this->belongsTo("LangLeap\Words\Word");
-        }
+	{
+		return $this->belongsTo("LangLeap\Words\Word");
+	}
 
 }
