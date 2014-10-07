@@ -48,9 +48,18 @@ class ApiMovieController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($movieId)
 	{
 		$movie = Movie::find($id);
+
+		if (! $movie)
+		{
+			return $this->apiResponse(
+				'error',
+				"Movie {$movieId} not found.",
+				404
+			);
+		}
 
 		return $this->apiResponse("success",$movie->toResponseArray($movie));
 	}

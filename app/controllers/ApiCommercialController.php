@@ -112,6 +112,7 @@ class ApiCommercialController extends \BaseController {
 
 		if(!$commercial)
 			App::abort(404);
+		
 		$commercial->videos()->delete();
 		$commercial->delete();
 	}
