@@ -1,5 +1,10 @@
 @extends('admin.master')
 
+@section('head')
+
+	<!-- Need autocomplete library here -->
+
+@stop
 
 @section('content')
 
@@ -10,6 +15,8 @@
 	$script = Session::get('script');
 	$script_id = Session::get('script_id');
 	
+	$script = strtolower($script);
+	$script = preg_replace('/[^[:alpha:] ]/', '', $script);
 	$words = explode(" ", $script);
 	
 	echo Form::open(array('url' => 'api/metadata/words')) . "\n";
@@ -20,7 +27,7 @@
 	{
 		echo '<tr>';
 		echo '<td>' . Form::label('definitions['.$word.']', $word) . '</td>';
-		echo '<td>' . Form::text('definitions['.$word.'][def]') . '</td>';
+		echo '<td>' . Form::text('definitions['.$word.'][def]', null, $attributes = array('class'=>'load-definitions', 'data-word'=>$word)) . '</td>';
 		echo '<td>' . Form::text('definitions['.$word.'][full_def]') . '</td>';
 		echo '<td>' . Form::text('definitions['.$word.'][pronun]') . '</td>';
 		echo "</tr><br/>\n";
@@ -31,5 +38,22 @@
 	?>
 	
 </div>
+
+<script type="text/javascript">
+	var definitions;
+	$(".load-definitions").focus(function() {
+		definitions = [];
+		$.getJSON("../../api/metadata/words/" + this.dataset.word, function(response) {
+			if(response.data)
+			{
+				for(var i = 0; i < response.data.length; i++)
+				{
+					definitions.push(response.data[i].definition);
+					console.log(response.data[i].definition);
+				}
+			}
+		});
+	});
+</script>
 
 @stop
