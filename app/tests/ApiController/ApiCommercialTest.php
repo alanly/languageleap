@@ -1,7 +1,6 @@
 <?php 
 
 use LangLeap\TestCase;
-use LangLeap\Videos\Commercial;
 
 class ApiCommercialTest extends TestCase {
 
@@ -24,9 +23,16 @@ class ApiCommercialTest extends TestCase {
 	 */
 	public function testShow()
 	{
-		$this->seed();
+		$this->seed('CommercialTableSeeder');
+
+		$commercial = App::make('LangLeap\Videos\Commercial')->first();
 		
-		$response = $this->action('GET', 'ApiCommercialController@show', array(Commercial::all()->first()->id));
+		$response = $this->action(
+			'GET',
+			'ApiCommercialController@show',
+			[$commercial->id]
+		);
+
 		$this->assertResponseOk();
 		$this->assertJson($response->getContent());
 	}

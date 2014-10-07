@@ -53,7 +53,7 @@ class EpisodeTest extends TestCase {
 
 
 		$video = $this->getVideoInstance();
-                $video->path='';
+                $video->path='/path/to/somewhere';
                 $video->viewable_id = $episode->id;
                 $video->viewable_type = 'LangLeap\Videos\Episode';
                 $video->save();
