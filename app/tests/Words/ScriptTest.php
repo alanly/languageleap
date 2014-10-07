@@ -15,7 +15,7 @@ class ScriptTest extends TestCase {
 		$script = $this->getScriptInstance();
 		$script->text='';
 		$video = $this->getVideoInstance();
-		$video->path='';
+		$video->path='/path/to/somewhere';
 		$video->viewable_id = 1;
 		$video->viewable_type = 'LangLeap\Videos\Commercial';
 		$video->save();

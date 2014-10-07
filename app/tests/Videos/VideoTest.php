@@ -16,7 +16,7 @@ class VideoTest extends TestCase {
 		$script = $this->getScriptInstance();
 
 		$video = $this->getVideoInstance();
-		$video->path='';
+		$video->path='/path/to/somewhere';
 		$video->viewable_id = 1;
 		$video->viewable_type = 'LangLeap\Videos\Commercial';
 		$video->save();
@@ -31,7 +31,7 @@ class VideoTest extends TestCase {
                 $script = $this->getScriptInstance();
 
                 $video = $this->getVideoInstance();
-                $video->path='';
+                $video->path='/path/to/somewhere';
                 $video->viewable_id = $commercial->id;
                 $video->viewable_type = 'LangLeap\Videos\Commercial';
 		$video->save();

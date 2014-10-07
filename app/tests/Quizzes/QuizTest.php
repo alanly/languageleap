@@ -54,7 +54,7 @@ class QuizTest extends TestCase {
 		$comm->save();
 		$video->viewable_id = $comm->id;
 		$video->viewable_type = 'LangLeap\Videos\Commercial';		
-		$video->path = '';
+		$video->path = '/path/to/somewhere';
 		$video->save();
 		return $video;
 	}

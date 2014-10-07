@@ -35,7 +35,7 @@ class MovieTest extends TestCase {
 	protected function getVideoInstance()
 	{
 		$video =  App::make('LangLeap\Videos\Video');
-		$video->path = '';
+		$video->path = '/path/to/somewhere';
 		return $video;
 	}
 	
