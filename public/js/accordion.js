@@ -150,14 +150,14 @@ function fetchShows()
 
 			content += '</li>';
 
-			listOfData.push([value.id, createHoverData(description, genre, actor, director)]);
+			listOfData.push([value.id, createHoverData(description, genre, actor, director), name]);
 		});
 
 		$("#container").html(content);
 
 		for(var i = 0; i < listOfData.length; i++)
 		{
-			$("#shows" + listOfData[i][0]).click({id: listOfData[i][0]}, fetchShowsSeason);
+			$("#shows" + listOfData[i][0]).click({showId: listOfData[i][0], name: listOfData[i][2]}, fetchShowsSeason);
    			displayMoreInfo("shows"+ listOfData[i][0], name, listOfData[i][1]);
 		}
 	});
@@ -165,11 +165,11 @@ function fetchShows()
 
 function fetchShowsSeason(event)
 {
+	setTabName("secondTab", event.data.name);
 	accordion.next();
 	fetchBegin("seasonContainer");
 
-
-	$.getJSON( "/api/metadata/shows/" + event.data.id + "/seasons", function(data) 
+	$.getJSON( "/api/metadata/shows/" + event.data.showId + "/seasons/", function(data) 
 	{
 		var json = data.data;
 		var content = "";
@@ -187,13 +187,57 @@ function fetchShowsSeason(event)
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
-			content += '<img id=seasons"' + value.id + '" src="" alt="' + description + '">';
+			content += '<img id="seasons' + value.id + '" src="" alt="' + name + '">';
+			content += '</a>';
+
+			content += '</li>';
+
+			listOfData.push([value.id, name, event.data.id]);
+		});
+
+		$("#seasonContainer").html(content);
+
+		for(var i = 0; i < listOfData.length; i++)
+		{
+			$("#seasons" + listOfData[i][0]).click({seasonId: listOfData[i][0], name: listOfData[i][1], showId: listOfData[i][2]}, fetchSeasonsEpisode);
+		}
+	});
+}
+
+
+function fetchSeasonsEpisode(event)
+{
+	setTabName("thirdTab", event.data.name);
+	accordion.next();
+	fetchBegin("episodeContainer");
+
+
+	$.getJSON( "/api/metadata/shows/" + event.data.showId + "/seasons/" + event.data.seasonId, function(data) 
+	{
+		var json = data.data;
+		var content = "";
+		var listOfData = [];
+
+		$.each(json, function(index, value)
+		{ 
+			var name = getString(value.name);
+
+			content += '<li ';
+			content += 'id="' + value.id +  '" ';
+			content += '>';
+
+			content += '<strong>' + name + '</strong>';
+
+			content += '<a class="tooltiptext">';
+			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
+			content += '<img id="episodes' + value.id + '" src="" alt="' + name + '">';
 			content += '</a>';
 
 			content += '</li>';
 		});
 
-		$("#container").html(content);
+		$("#episodeContainer").html(content);
+
 	});
 }
 
