@@ -28,7 +28,7 @@ class MovieTest extends TestCase {
 	protected function getMovieInstance()
 	{
 		$mov =  App::make('LangLeap\Videos\Movie');
-		$mov->name = '';
+		$mov->name = 'Test Movie';
 		$mov->save();
 		return $mov;
 	}

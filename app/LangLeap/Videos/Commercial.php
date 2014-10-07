@@ -6,9 +6,7 @@ class Commercial extends ValidatedModel {
 
 	public    $timestamps = false;
 	protected $fillable   = ['name', 'description'];
-	protected $rules      = [
-		'name'        => 'required',
-	];
+	protected $rules      = ['name' => 'required'];
 	
 	public function videos()
 	{
