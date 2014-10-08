@@ -5,44 +5,43 @@
 </head>
 
 @section('content')
-<div id="mainContainer" class="video">
-	<div class="videoTitle">
+<div id="jp_container_1" class="jp-video">
+	<div class="jp-title">
 		<h1>Test Video Title</h1>
 	</div>
-	
-	<div class="playerHolder">
-		<div id="jPlayerPlayer" class="videoPlayer"></div>
-		<div class="gui">
-			<div class="playIconHolder">
-				<a href="javascript:;" class="playIcon" tabindex="1">&#61515;</a>
-			</div>
-			<div class="playerUI">
-				<div class="controlsHolder">
-					<ul class="playerControls">
-						<li><a href="javascript:;" class="playerPlay" tabindex="1">&#61515;</a></li>
-						<li><a href="javascript:;" class="playerPause" tabindex="1">&#61516;</a></li>
-						<li><a href="javascript:;" class="mutePlayer" tabindex="1">&#61480;</a></li>
-						<li><a href="javascript:;" class="unmutePlayer" tabindex="1">&#61478;</a></li>
-					</ul>
-					<div class="volumeBarHolder">
-						<div class="volumeBarValue"></div>
-					</div>
-					<ul class="toggleScreen">
-						<li><a href="javascript:;" class="fullScreen" tabindex="1" title="full screen"> &#61541;</a></li>
-						<li><a href="javascript:;" class="restoreScreen" tabindex="1" title="normal screen"> &#61542;</a></li>
-				</div>
-				
-				<div class="progressHolder">
-					<div class="seekBar">
-						<div class="progressBar"></div>
-					</div>
-				</div>
-				
-				<div class="currentTime"></div>
-			</div>
+	<div class="jp-type-single">
+		<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+		<div class="jp-gui">
+		<div class="jp-video-play">
+			<a href="javascript:;" class="jp-video-play-icon" tabindex="1">&#61515;</a>
 		</div>
-	</div>
-		
+		<div class="jp-interface">
+			<div class="jp-controls-holder">
+				<ul class="jp-controls">
+					<li><a href="javascript:;" class="jp-play" tabindex="1">&#61515;</a></li>
+					<li><a href="javascript:;" class="jp-pause" tabindex="1">&#61516;</a></li>
+					<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">&#61480;</a></li>
+					<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">&#61478;</a></li>
+				</ul>
+				<div class="jp-volume-bar">
+					<div class="jp-volume-bar-value"></div>
+				</div>
+				<ul class="jp-toggles">
+					<li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen"> &#61541;</a></li>
+					<li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen"> &#61542;</a></li>
+				</ul>
+			</div>
+			
+			<div class="jp-progress">
+				<div class="jp-seek-bar">
+					<div class="jp-play-bar"></div>
+				</div>
+			</div>
+			<div class="jp-current-time"></div>
+		</div>
+		</div>
+		</div>
 </div>
+
 
 @stop

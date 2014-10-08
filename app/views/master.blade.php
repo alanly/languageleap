@@ -20,7 +20,7 @@
 		<link rel="stylesheet" href="libraries/jplayer/css/style.css">
 		<script>  
 			$(document).ready(function(){  
-				$("#jPlayerPlayer").jPlayer({  
+				$("#jquery_jplayer_1").jPlayer({  
 					ready: function () {  
 						$(this).jPlayer("setMedia", {  
 							m4v: "videos/TestVideo.mp4",  
@@ -29,7 +29,7 @@
 						});  
 					},  
 					swfPath: "libraries/jplayer/js/Jplayer.swf",  
-					supplied: "m4v,ogv"  
+					supplied: "m4v,ogv"
 				});  
 			});  
 		</script>  

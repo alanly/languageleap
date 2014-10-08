@@ -15,49 +15,56 @@ a
 	text-decoration: none;
 }
 
-.
-
-.video
+.jp-video
 {
 	margin: 0 auto;
 	position: relative;
+	left: -430px;
 	font-family: Arial, sans-serif;
 }
 
-.video-270p
+.jp-video-270p
 {
 	width: 480px;
 }
 
-.videoTitle
+.jp-video-270p .jp-type-single
 {
-	font-size: 1em;
-	padding-left: 20px;
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.jp-title h1
+{
+	font-size: 2em;
+	padding-left: 10px;
 	color: #555;
 }
 
-.playIconHolder
+/*Video*/
+
+.jp-video-play
 {
 	font-family: "FontAwesome";
 	position: absolute;
-	top: 25%;
-	left: 15%;
+	top: 45%;
+	left: 45%;
 }
 
-.playIconHolder a
+.jp-video-play a
 {
     font-size: 1.5em;  
-    color: rgba(255,255,255,.7);  
+    color: rgba(255,255,255,0.7);  
     display: inline-block;  
     width: 50px;  
     height: 50px;  
     line-height: 55px;  
     text-align: center;  
-    background-color: rgba(0,0,0,.8);  
+    background-color: rgba(0,0,0,0.8);  
     border-radius: 5px; 
 }
 
-.playerUI
+.jp-interface
 {
 	width: 100%;
 	bottom: 0;
@@ -68,39 +75,39 @@ a
 	background: -webkit-linear-gradient(top,  #5151d4 0%,#0000ff 100%);  
     background: -o-linear-gradient(top,  #5151d4 0%,#0000ff 100%);  
     background: -ms-linear-gradient(top,  #5151d4 0%,#0000ff 100%);  
-    background: linear-gradient(to bottombottom,  #5151d4 0%,#0000ff 100%);
+    background: linear-gradient(to bottom,  #5151d4 0%,#0000ff 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5151d4', endColorstr='#0000ff',GradientType=0 );  
     overflow: hidden;  
     -webkit-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.1);  
     box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.1);   
 }
 
-.playerUI a
+.jp-interface a
 {
 	color: #fff;
 	text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
 
-.playerControls, .toggleScreen {  
+.jp-controls, .jp-toggles
+{  
     padding: 0;  
     margin: 0;   
     font-family: "FontAwesome"  
 }
 
-.toggleScreen
+.jp-toggles
 {
 	position: absolute;
 	top: 6px;
 	right: 14px;
-	
 }
 
-.playerControls li, .toggleScreen li
+.jp-controls li, .jp-toggles li
 {
 	display: inline;
 }
 
-.playerPlay, .playerPause
+.jp-play, .jp-pause
 {
 	width: 43px;
 	height: 30px;
@@ -109,41 +116,42 @@ a
 	line-height: 32px;
 }
 
-.mutePlayer, .unmutePlayer
+.jp-mute, .jp-unmute
 {
 	position: absolute;
 	right: 95px;
 	top: 0;
-	width: 20px;
+	width: 10px;
 	height: 30px;
 	display: inline-block;
 	line-height: 32px;
 }
 
-.progressHolder
+.jp-progress
 {
 	background-color: #00005c;
 	border-radius: 20px 20px 20px 20px;
 	overflow: hidden;
 	position: absolute;
-	left: 100px;
+	left: 45px;
 	top:12px;
-	width: 55%;
-	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2) inset;  
-	display: inline;
+	width: 58%;
+	height: 8px;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2) inset;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2) inset;
 }
 
-.progressBar
+.jp-play-bar
 {
 	height: 8px;  
     background-color: #fff;  
     border-radius: 20px 20px 20px 20px;  
 }
 
-.volumeBarHolder
+.jp-volume-bar
 {
 	position: absolute;  
-    right: 50px;  
+    right: 40px;  
     top: 12px;  
     width: 45px;  
     height: 8px;  
@@ -154,20 +162,54 @@ a
     overflow: hidden;  
 }
 
-.volumeBarValue
+.jp-volume-bar-value
 {
 	background-color: #fff;
 	height: 8px;
 	border-radius: 20px 20px 20px 20px;
 }
 
-.currentTime
+.jp-current-time
 {
 	color: #fff;
-	font-size: 12px;
-	line-height: 32px;
+	font-size: 11px;
+	line-height: 14px;
 	position: absolute;
 	right: 115px;
-	top: 13px;
+	top: 9px;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
 }
+
+.jp-video-full .jp-jplayer
+{
+	top: 0;
+	left: 0;
+	position: fixed !important; 
+	position: relative; /* Rules for IE6 (full-screen) */
+	overflow: hidden;
+}
+
+.jp-video-full .jp-interface
+{
+	position: absolute !important;
+	position: relative; /* Rules for IE6 (full-screen) */
+	bottom: 0;
+	left: 0;
+}
+
+.jp-video-full .jp-gui
+{
+	position: fixed !important; 
+	position: static; /* Rules for IE6 (full-screen) */
+	top: 0;
+	left: 0;
+	width:100%;
+	height:100%;
+	z-index:1001; /* 1 layer above the others. */
+}
+
+.jp-video-full .jp-progress
+{
+	width: 86%;
+}
+
