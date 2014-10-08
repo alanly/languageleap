@@ -1,13 +1,18 @@
 <?php namespace LangLeap\Videos;
 
-use Eloquent;
 use LangLeap\Words\Script;
+use LangLeap\Core\ValidatedModel;
 
-class Video extends Eloquent {
+class Video extends ValidatedModel {
 
 
 	public    $timestamps = false;
 	protected $fillable   = ['path'];
+	protected $rules      = [
+		'path'          => 'required',
+		'viewable_id'   => 'required|integer',
+		'viewable_type' => 'required',
+	];
 
 	public function script()
 	{

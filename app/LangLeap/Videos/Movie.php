@@ -1,12 +1,13 @@
 <?php namespace LangLeap\Videos;
 
-use Eloquent;
+use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
 
-class Movie extends Eloquent implements Billable {
+class Movie extends ValidatedModel implements Billable {
 
 	public    $timestamps = false;
 	protected $fillable   = ['name', 'description', 'director', 'actor', 'genre'];
+	protected $rules      = ['name' => 'required'];
 
 	public function videos()
 	{
