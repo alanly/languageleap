@@ -183,11 +183,11 @@ function fetchShowsSeason(event)
 			content += 'id="' + value.id +  '" ';
 			content += '>';
 
-			content += '<strong>Season' + value.number + '</strong>';
+			content += '<strong>Season ' + value.number + '</strong>';
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
-			content += '<img id="seasons' + value.id + '" src="" alt=Season "' + value.number + '">';
+			content += '<img id="seasons' + value.id + '" src="" alt="Season ' + value.number + '">';
 			content += '</a>';
 
 			content += '</li>';
@@ -226,11 +226,11 @@ function fetchSeasonsEpisode(event)
 			content += 'id="' + value.id +  '" ';
 			content += '>';
 
-			content += '<strong>Episode' + value.number + '</strong>';
+			content += '<strong>Episode ' + value.number + '</strong>';
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
-			content += '<img id="episodes' + value.id + '" src="" alt="' + name + '">';
+			content += '<img id="episodes' + value.id + '" src="" alt="Episode ' + value.number + '">';
 			content += '</a>';
 
 			content += '</li>';

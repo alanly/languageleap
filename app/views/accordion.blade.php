@@ -93,7 +93,6 @@
 	</div>
 
 	<script type="text/javascript">
-
 	    var accordion = $("#accordion").evoSlider({
 	        mode: "accordion",                  // Sets slider mode ("accordion", "slider", or "scroller")
 	        width: screen.width - 50,           // The width of slider
