@@ -13,6 +13,11 @@
 		<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.0.3/css/font-awesome.min.css">
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css">	
         <link rel="stylesheet" href="/css/style.css">
+		
+		<!--jPlayer stuff are all here-->
+		<script type="text/javascript" src="/jplayer/js/jquery.jplayer.min.js"></script>
+	
+		<link rel="stylesheet" href="/jplayer/css/style.css">
 	</head>
 	<body>
 		@yield('content')
