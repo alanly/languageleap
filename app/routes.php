@@ -44,3 +44,7 @@ Route::group(array('prefix' => 'api',), function()
 	Route::resource('videos', 'ApiVideoController');
 
 });
+
+Route::get('/player', function(){
+    return View::make('player.player');
+});
