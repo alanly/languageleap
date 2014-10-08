@@ -16,8 +16,23 @@
 		
 		<!--jPlayer stuff are all here-->
 		<script type="text/javascript" src="/jplayer/js/jquery.jplayer.min.js"></script>
-	
 		<link rel="stylesheet" href="/jplayer/css/style.css">
+		<script>  
+			$(document).ready(function(){  
+				$("#jquery_jplayer_1").jPlayer({  
+					ready: function () {  
+						$(this).jPlayer("setMedia", {  
+							m4v: "app/TestVideo.mp4",  
+							ogv: "",  
+							poster: "app/TestVideo.jpg"  
+						});  
+					},  
+					swfPath: "/jplayer/js",  
+					supplied: "m4v,ogv"  
+				});  
+			});  
+		</script>  
+		
 	</head>
 	<body>
 		@yield('content')
