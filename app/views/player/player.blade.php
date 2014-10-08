@@ -5,13 +5,13 @@
 </head>
 
 @section('content')
-<div id="mainContainer">
+<div id="mainContainer" class="video">
 	<div class="videoTitle">
 		<h1>Test Video Title</h1>
 	</div>
 	
 	<div class="playerHolder">
-		<div id="jq_jp_1" class="videoPlayer"></div>
+		<div id="jPlayerPlayer" class="videoPlayer"></div>
 		<div class="gui">
 			<div class="playIconHolder">
 				<a href="javascript:;" class="playIcon" tabindex="1">&#61515;</a>
@@ -21,10 +21,15 @@
 					<ul class="playerControls">
 						<li><a href="javascript:;" class="playerPlay" tabindex="1">&#61515;</a></li>
 						<li><a href="javascript:;" class="playerPause" tabindex="1">&#61516;</a></li>
+						<li><a href="javascript:;" class="mutePlayer" tabindex="1">&#61480;</a></li>
+						<li><a href="javascript:;" class="unmutePlayer" tabindex="1">&#61478;</a></li>
 					</ul>
 					<div class="volumeBarHolder">
 						<div class="volumeBarValue"></div>
 					</div>
+					<ul class="toggleScreen">
+						<li><a href="javascript:;" class="fullScreen" tabindex="1" title="full screen"> &#61541;</a></li>
+						<li><a href="javascript:;" class="restoreScreen" tabindex="1" title="normal screen"> &#61542;</a></li>
 				</div>
 				
 				<div class="progressHolder">
@@ -33,7 +38,7 @@
 					</div>
 				</div>
 				
-				<div class="timeHolder"></div>
+				<div class="currentTime"></div>
 			</div>
 		</div>
 	</div>

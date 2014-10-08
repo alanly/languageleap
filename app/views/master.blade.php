@@ -15,19 +15,20 @@
         <link rel="stylesheet" href="/css/style.css">
 		
 		<!--jPlayer stuff are all here-->
-		<script type="text/javascript" src="/jplayer/js/jquery.jplayer.min.js"></script>
-		<link rel="stylesheet" href="/jplayer/css/style.css">
+		<script type="text/javascript" src="libraries/jplayer/js/jquery-2.1.1.js"></script>
+		<script type="text/javascript" src="libraries/jplayer/js/jquery.jplayer.min.js"></script>
+		<link rel="stylesheet" href="libraries/jplayer/css/style.css">
 		<script>  
 			$(document).ready(function(){  
-				$("#jquery_jplayer_1").jPlayer({  
+				$("#jPlayerPlayer").jPlayer({  
 					ready: function () {  
 						$(this).jPlayer("setMedia", {  
-							m4v: "app/TestVideo.mp4",  
+							m4v: "videos/TestVideo.mp4",  
 							ogv: "",  
-							poster: "app/TestVideo.jpg"  
+							poster: "videos/TestVideo.png"  
 						});  
 					},  
-					swfPath: "/jplayer/js",  
+					swfPath: "libraries/jplayer/js/Jplayer.swf",  
 					supplied: "m4v,ogv"  
 				});  
 			});  

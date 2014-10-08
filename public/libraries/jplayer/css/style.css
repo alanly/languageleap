@@ -1,0 +1,173 @@
+@font-face
+{
+	font-family: "FontAwesome";
+	src: 	url('font-awesome-4.2.0/fonts/fontawesome-webfont.eot');
+	src: 	url('font-awesome-4.2.0/fonts/fontawesome-webfont.eot?#iefix') format('eot'),
+			url('font-awesome-4.2.0/fonts/fontawesome-webfont.woff') format('woff'),
+			url('font-awesome-4.2.0/fonts/fontawesome-webfont.ttf') format('truetype'),
+			url('font-awesome-4.2.0/fonts/fontawesome-webfont.svg#FontAwesome') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+.
+
+.video
+{
+	margin: 0 auto;
+	position: relative;
+	font-family: Arial, sans-serif;
+}
+
+.video-270p
+{
+	width: 480px;
+}
+
+.videoTitle
+{
+	font-size: 1em;
+	padding-left: 20px;
+	color: #555;
+}
+
+.playIconHolder
+{
+	font-family: "FontAwesome";
+	position: absolute;
+	top: 25%;
+	left: 15%;
+}
+
+.playIconHolder a
+{
+    font-size: 1.5em;  
+    color: rgba(255,255,255,.7);  
+    display: inline-block;  
+    width: 50px;  
+    height: 50px;  
+    line-height: 55px;  
+    text-align: center;  
+    background-color: rgba(0,0,0,.8);  
+    border-radius: 5px; 
+}
+
+.playerUI
+{
+	width: 100%;
+	bottom: 0;
+	position: relative;
+	background: #5151d4;
+	background: -moz-linear-gradient(top, #5151d4 0%, #0000ff 100%);
+	background: -webkit-gradient(linear, lefttop, left bottom, color-stop(0%,#5151d4), color-stop(100%,#0000ff));
+	background: -webkit-linear-gradient(top,  #5151d4 0%,#0000ff 100%);  
+    background: -o-linear-gradient(top,  #5151d4 0%,#0000ff 100%);  
+    background: -ms-linear-gradient(top,  #5151d4 0%,#0000ff 100%);  
+    background: linear-gradient(to bottombottom,  #5151d4 0%,#0000ff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5151d4', endColorstr='#0000ff',GradientType=0 );  
+    overflow: hidden;  
+    -webkit-box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.1);  
+    box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.1);   
+}
+
+.playerUI a
+{
+	color: #fff;
+	text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+}
+
+.playerControls, .toggleScreen {  
+    padding: 0;  
+    margin: 0;   
+    font-family: "FontAwesome"  
+}
+
+.toggleScreen
+{
+	position: absolute;
+	top: 6px;
+	right: 14px;
+	
+}
+
+.playerControls li, .toggleScreen li
+{
+	display: inline;
+}
+
+.playerPlay, .playerPause
+{
+	width: 43px;
+	height: 30px;
+	display: inline-block;
+	text-align: center;
+	line-height: 32px;
+}
+
+.mutePlayer, .unmutePlayer
+{
+	position: absolute;
+	right: 95px;
+	top: 0;
+	width: 20px;
+	height: 30px;
+	display: inline-block;
+	line-height: 32px;
+}
+
+.progressHolder
+{
+	background-color: #00005c;
+	border-radius: 20px 20px 20px 20px;
+	overflow: hidden;
+	position: absolute;
+	left: 100px;
+	top:12px;
+	width: 55%;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2) inset;  
+	display: inline;
+}
+
+.progressBar
+{
+	height: 8px;  
+    background-color: #fff;  
+    border-radius: 20px 20px 20px 20px;  
+}
+
+.volumeBarHolder
+{
+	position: absolute;  
+    right: 50px;  
+    top: 12px;  
+    width: 45px;  
+    height: 8px;  
+    border-radius: 20px 20px 20px 20px;  
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1) inset;  
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1) inset;  
+    background-color: #00005c;  
+    overflow: hidden;  
+}
+
+.volumeBarValue
+{
+	background-color: #fff;
+	height: 8px;
+	border-radius: 20px 20px 20px 20px;
+}
+
+.currentTime
+{
+	color: #fff;
+	font-size: 12px;
+	line-height: 32px;
+	position: absolute;
+	right: 115px;
+	top: 13px;
+	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+}
