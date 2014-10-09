@@ -50,3 +50,10 @@ Route::group(array('prefix' => 'api',), function()
 	Route::resource('videos', 'ApiVideoController');
 
 });
+
+// Routes for API controllers
+Route::group(array(['prefix' => 'admin']), function()
+{
+	Route::resource('videos', 'AdminVideoController');
+	Route::resource('scripts', 'AdminScriptController');
+});

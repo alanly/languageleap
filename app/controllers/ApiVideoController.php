@@ -2,7 +2,7 @@
 
 use LangLeap\Videos\Video;
 use LangLeap\Words\Script;
-
+use LangLeap\Words\Script_Word;
 /**
 * @author Thomas Rahn <thomas@rahn.ca>
 */
@@ -57,6 +57,9 @@ class ApiVideoController extends \BaseController {
 
 		$video = new Video;
 		$path = "";
+
+		$word = new Script_Word;
+		
 
 		if($type === "commercial")
 		{
@@ -153,6 +156,7 @@ class ApiVideoController extends \BaseController {
 		if(!$video)
 			App::abort(404);
 
+		$script = $video->script()->delete();
 		$video->delete();
 	}
 
