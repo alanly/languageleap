@@ -24,10 +24,11 @@ class ApiEpisodeControllerTest extends TestCase {
 		$this->assertResponseOk();
 
 		$data = $response->getData()->data;
+		$episodes = Show::find(1)->seasons()->where('id', 1)->first()->episodes()->get();
 
 		$this->assertEquals(1, $data->show->id);
 		$this->assertEquals(1, $data->season->id);
-		$this->assertCount(1, $data->episodes);
+		$this->assertCount($episodes->count(), $data->episodes);
 	}
 
 	public function testStore()
