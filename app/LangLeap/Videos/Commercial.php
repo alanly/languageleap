@@ -8,6 +8,18 @@ class Commercial extends ValidatedModel {
 	protected $fillable   = ['name', 'description'];
 	protected $rules      = ['name' => 'required'];
 	
+
+	public static function boot()
+	{
+		parent::boot();
+
+		static::deleting(function($commercial)
+		{
+			$commercial->vdeos()->delete();
+		});
+
+	}
+
 	public function videos()
 	{
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
