@@ -12,6 +12,17 @@ class Episode extends ValidatedModel implements Billable {
 		'number'      => 'required|integer',
 	];
 
+	public static function boot()
+	{
+		parent::boot();
+
+		static::deleting(function($episode)
+		{
+			$episode->vdeos()->delete();
+		});
+
+	}
+
 	public function season()
 	{
 		return $this->belongsTo('LangLeap\Videos\Season');

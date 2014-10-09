@@ -13,9 +13,15 @@ class Show extends ValidatedModel implements Billable {
 		'description' => 'required',
 	];
 
-	public function episodes()
+	public static function boot()
 	{
-		return $this->hasManyThrough('LangLeap\Videos\Episode', 'LangLeap\Videos\Season');
+		parent::boot();
+
+		static::deleting(function($show)
+		{
+			$show->seasons()->delete();
+		});
+
 	}
 
 	public function seasons()

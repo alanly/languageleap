@@ -1,14 +1,15 @@
 @extends('admin.master')
 
-@content('section')
+
+@section('content')
 
 <div class="container">
 	<table class="table table-condensed table-hover">
 		<thead>
 			<tr>
 				<th>Id</th>
-				<th></th>
-				<th></th>
+				<th>Name</th>
+				<th>Description</th>
 				<th></th>
 				<th>Manage</th>
 			</tr>
@@ -22,9 +23,10 @@
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		//load videos here
+		//load movies here
 	});
 
 
 </script>
+
 @stop

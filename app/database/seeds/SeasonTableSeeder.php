@@ -14,5 +14,7 @@ class SeasonTableSeeder extends Seeder {
 		DB::table('seasons')->delete();
 		$user_id = Show::all()->first()->id;
 	    Season::create(array("number" => 1, "show_id"=>$user_id));
+	    Season::create(array("number" => 2, "show_id"=>$user_id));
+	    Season::create(array("number" => 3, "show_id"=>$user_id));
 	}
 }

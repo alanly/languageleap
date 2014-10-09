@@ -45,7 +45,7 @@ class ApiMovieController extends \BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int  $movieId
 	 * @return Response
 	 */
 	public function show($movieId)
