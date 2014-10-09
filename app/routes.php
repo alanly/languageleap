@@ -16,6 +16,13 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+
+//DO NOT FORGET TO ADD BEFORE => AUTH
+Route::get('/admin', function()
+{
+	return View::make('admin.index');
+});
+
 // Accordion
 Route::controller('Accordion', 'AccordionController');
 
@@ -43,13 +50,3 @@ Route::group(array('prefix' => 'api',), function()
 	});
 });
 
-// Routes for Admin controllers
-
-//DO NOT FORGET TO ADD BEFORE => AUTH
-Route::group(array('prefix' => 'admin'), function()
-{
-
-	Route::get('movies', 'AdminMovieController@getIndex');
-	Route::get('videos', 'AdminVideoController@getIndex');
-	Route::get('scripts', 'AdminScriptController@getIndex');
-});

@@ -3,6 +3,7 @@
 use LangLeap\Videos\Video;
 use LangLeap\Words\Script;
 use LangLeap\Words\Script_Word;
+use LangLeap\WordUtilities\ScriptFile;
 /**
 * @author Thomas Rahn <thomas@rahn.ca>
 */
@@ -50,16 +51,20 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function store()
 	{
-		$script_text = Input::get('script');
+		$script_text = Input::file('script');
 		$file = Input::file('video');
 		$type = Input::get('video_type');
+
+		//open file of script
+		//read it
+		//save it in DB
+		$value = ScriptFile::retrieveText($file);
+
+
 		$ext = $file->getClientOriginalExtension();
 
 		$video = new Video;
 		$path = "";
-
-		$word = new Script_Word;
-		
 
 		if($type === "commercial")
 		{
@@ -105,12 +110,22 @@ class ApiVideoController extends \BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int  $videoId
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($videoId)
 	{
 		$video = Video::find($id);
+
+		if (! $video)
+		{
+			return $this->apiResponse(
+				'error',
+				"Video {$videoId} not found.",
+				404
+			);
+		}
+
 		$videoArray = array(
 			"video" => $video->toResponseArray($video));
 
