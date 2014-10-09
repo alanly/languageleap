@@ -7,7 +7,7 @@
 	<script type="text/javascript" src="/libraries/typeahead/js/typeahead.jquery.min.js"></script>
 	
 	<script>
-	var substringMatcher = function(strs) 
+	var substringMatcher = function(strs) // Public code from https://twitter.github.io/typeahead.js/examples/ to find if a string is a substring of another string
 	{
 		return function findMatches(q, cb) 
 		{
@@ -76,6 +76,7 @@
 
 <script type="text/javascript">
 	
+	// Get all the words to find their definition, put them in JSON format.
 	var definitionBoxes = $(".load-definitions");
 	var data = ['{"words":['];
 	for(var i = 0; i < definitionBoxes.length; i++)
@@ -93,6 +94,7 @@
 	data = data.join('');
 	data = $.parseJSON(data);
 	
+	// Request all available definitions from the server
 	$.ajax({
 		type: "POST",
 		url: "/api/metadata/words/definitions",
@@ -105,6 +107,7 @@
 		}
 	});
 	
+	// For all the words, put in definition suggestions if there are any
 	for(var i = 0; i < definitionBoxes.length; i++)
 	{
 		var definitions = [];
