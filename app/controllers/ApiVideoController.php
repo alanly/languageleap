@@ -43,67 +43,21 @@ class ApiVideoController extends \BaseController {
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @input script 			The text for the script
-	 * @input video 			The video for the video
+	 * @input script 			The text file for the script
+	 * @input video 			The video file for the video
 	 * @input video_type		The video type (movie, commercial or show)
 	 *
 	 * @return Response
 	 */
 	public function store()
 	{
-		$script_text = Input::file('script');
+		$script_file = Input::file('script');
 		$file = Input::file('video');
 		$type = Input::get('video_type');
 
-		//open file of script
-		//read it
-		//save it in DB
-		$value = ScriptFile::retrieveText($file);
-
-
-		$ext = $file->getClientOriginalExtension();
-
-		$video = new Video;
-		$path = "";
-
-		if($type === "commercial")
-		{
-			$video->viewable_id = Input::get('commercial');
-			$video->viewable_type = 'LangLeap\Videos\Commercial';
-			$path = Config::get('media.paths.videos.commercials');
-		}
-		elseif($type === "movie")
-		{
-			$video->viewable_id = Input::get('movie');;
-			$video->viewable_type = 'LangLeap\Videos\Movie';
-			$path = Config::get('media.paths.videos.movies');
-		}
-		elseif($type === "show")
-		{
-			$video->viewable_id = Input::get('episode');;
-			$video->viewable_type = 'LangLeap\Videos\Episode';
-			$path = Config::get('media.paths.videos.shows');
-		}
-		else
-		{
-			   return App::abort(400);
-		}
-
-		$video->path = '';
-		$video->save();
-	
-		//set the path
-		$new_name = $video->id . "." . $ext;
-		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
-		$video_file = $file->move($path,$new_name);
-		$video->save();
+		$video = $this->setVideo($file,$type,null);
 		
-		//Save the script
-		$script = new Script;
-		$script->text = $script_text;
-		$script->video_id = $video->id;
-		$script->save();
-
+		$this->setScript($script_file, $video->id);
 	}
 
 
@@ -154,7 +108,25 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$video = Video::find($id);
+
+		if (! $video)
+		{
+			return $this->apiResponse(
+				'error',
+				"Video {$videoId} not found.",
+				404
+			);
+		}
+
+		$script_file = Input::file('script');
+		$file = Input::file('video');
+		$type = Input::get('video_type');
+
+		
+		$video = $this->setVideo($file,$type, $video);
+	
+		$this->setScript($script_file, $video_id,$video->script());
 	}
 
 
@@ -174,6 +146,82 @@ class ApiVideoController extends \BaseController {
 		$script = $video->script()->delete();
 		$video->delete();
 	}
+
+	/**
+	*	This method will create a script from a file and a video id
+	*
+	*	@param File $file 
+	*	@param int $video_id 
+	*/
+
+	private function setScript($file,$video_id, Script $script = null)
+	{
+		if($script == null)
+		{
+			$script = new Script;
+		}
+
+		$script_text = ScriptFile::retrieveText($file);
+		$script->text = $script_text;
+		$script->video_id = $video_id;
+		$script->save();
+	}
+
+	/**
+	*	This function is used to take the file and type that is sent from the user to create/set a video object
+	*
+	*	@param File
+	*	@param String
+	*	@param Video
+	*
+	*	@return Video
+	*/
+	private function setVideo($file, $type, Video $video = null)
+	{
+		$ext = $file->getClientOriginalExtension();
+
+		if($video == null)
+		{
+			$video = new Video;
+		}	
+
+		$path = "";
+
+		if($type === "commercial")
+		{
+			$video->viewable_id = Input::get('commercial');
+			$video->viewable_type = 'LangLeap\Videos\Commercial';
+			$path = Config::get('media.paths.videos.commercials');
+		}
+		elseif($type === "movie")
+		{
+			$video->viewable_id = Input::get('movie');;
+			$video->viewable_type = 'LangLeap\Videos\Movie';
+			$path = Config::get('media.paths.videos.movies');
+		}
+		elseif($type === "show")
+		{
+			$video->viewable_id = Input::get('episode');;
+			$video->viewable_type = 'LangLeap\Videos\Episode';
+			$path = Config::get('media.paths.videos.shows');
+		}
+		else
+		{
+			   return App::abort(400);
+		}
+
+		$video->path = '';
+		$video->save();
+	
+		//set the path
+		$new_name = $video->id . "." . $ext;
+		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
+		$video_file = $file->move($path,$new_name);
+		$video->save();
+
+		return $video;
+	}
+
 
 
 }
