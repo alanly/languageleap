@@ -62,11 +62,36 @@ class ApiEpisodeController extends \BaseController {
 	/**
 	 * Store a newly created resource in storage.
 	 *
+	 * @param  integer  $showId
+	 * @param  integer  $seasonId
 	 * @return Response
 	 */
-	public function store()
+	public function store($showId, $seasonId)
 	{
-		//
+		$show = $this->shows->find($showId);
+
+		if (! $show)
+		{
+			return $this->apiResponse('error', "Show {$showId} could not be found.", 404);
+		}
+
+		$season = $show->seasons()->where('id', $seasonId)->first();
+
+		if (! $season)
+		{
+			return $this->apiResponse(
+				'error', "Season {$seasonId} not found for show {$showId}.", 404
+			);
+		}
+
+		$episode = $this->episodes->newInstance(Input::get());
+		
+		if (! $season->episodes()->save($episode))
+		{
+			return $this->apiResponse('error', $episode->getErrors(), 400);
+		}
+
+		return $this->generateResponse($show, $season, $episode, 201);
 	}
 
 
