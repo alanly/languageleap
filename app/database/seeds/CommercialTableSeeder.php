@@ -1,7 +1,5 @@
 <?php
 
-use LangLeap\Videos\Commercial;
-
 class CommercialTableSeeder extends Seeder {
 
 	/**
@@ -12,6 +10,8 @@ class CommercialTableSeeder extends Seeder {
 	public function run()
 	{
 		DB::table('commercials')->delete();
-		Commercial::create(array('name' => 'TestCommercial', 'description'=>'This is a test commercial'));
+
+		$c = App::make('LangLeap\Videos\Commercial');
+		$c = $c->create(['name' => 'Test Commercial']);
 	}
 }
