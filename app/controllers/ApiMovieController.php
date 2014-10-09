@@ -3,6 +3,14 @@ use LangLeap\Videos\Movie;
 
 class ApiMovieController extends \BaseController {
 
+
+	protected $movies;
+
+	public function __construct(Movie $movies)
+	{
+		$this->movies = $movies;
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *

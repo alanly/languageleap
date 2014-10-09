@@ -3,6 +3,12 @@ use LangLeap\Videos\Show;
 
 class ApiShowController extends \BaseController {
 
+	protected $shows;
+
+	public function __construct(Show $shows)
+	{
+		$this->shows = $shows;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
