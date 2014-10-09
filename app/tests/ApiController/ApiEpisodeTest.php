@@ -112,5 +112,28 @@ class ApiEpisodeControllerTest extends TestCase {
 
 		$this->assertEquals('test update episode', $data->episode->name);
 	}
+
+	public function testDestroy()
+	{
+		$this->seed();
+
+		// Delete Show 1 > Season 1 > Episode 1
+		$response = $this->action(
+			'DELETE',
+			'ApiEpisodeController@show',
+			[1, 1, 1]
+		);
+
+		$this->assertResponseStatus(204);
+
+		// Get Show 1 > Season 1 > Episode 1
+		$response = $this->action(
+			'GET',
+			'ApiEpisodeController@show',
+			[1, 1, 1]
+		);
+
+		$this->assertResponseStatus(404);
+	}
 	
 }
