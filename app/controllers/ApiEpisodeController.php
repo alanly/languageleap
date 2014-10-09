@@ -137,7 +137,7 @@ class ApiEpisodeController extends \BaseController {
 			);
 		}
 
-		$episode = $season->episodes->first();
+		$episode = $show->episodes->first();
 
 		if (! $episode)
 		{
