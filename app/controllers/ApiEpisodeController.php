@@ -1,6 +1,22 @@
 <?php
 
+use LangLeap\Videos\Show;
+use LangLeap\Videos\Season;
+use LangLeap\Videos\Episode;
+
 class ApiEpisodeController extends \BaseController {
+
+	/**
+	 * An Episode instance.
+	 * 
+	 * @var LangLeap\Videos\Episode;
+	 */
+	protected $episodes;
+
+	public function __construct(Episode $episodes)
+	{
+		$this->episodes = $episodes;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -9,7 +25,7 @@ class ApiEpisodeController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		
 	}
 
 
@@ -57,6 +73,31 @@ class ApiEpisodeController extends \BaseController {
 	public function destroy($id)
 	{
 		//
+	}
+
+
+	/**
+	 * @param  LangLeap\Videos\Show           $show
+	 * @param  LangLeap\Videos\Season         $season
+	 * @param  array|LangLeap\Videos\Episode  $episode
+	 * @return Illuminate\Http\JsonResponse
+	 */
+	protected function generateResponse(
+		Show $show, Season $season, $episodes, $code = 200
+	)
+	{
+		$data = ['show' => $show, 'season' => $season];
+
+		if (is_array($episodes))
+		{
+			$data['episodes'] = $episodes;
+		}
+		else
+		{
+			$data['episode'] = $episodes;
+		}
+
+		return $this->apiResponse('success', $data, $code);
 	}
 
 
