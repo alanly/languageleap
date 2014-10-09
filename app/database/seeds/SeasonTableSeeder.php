@@ -15,5 +15,7 @@ class SeasonTableSeeder extends Seeder {
 
 		$show = Show::first();
 		$show->seasons()->create(['number' => 1]);
+		$show->seasons()->create(['number' => 2]);
+		$show->seasons()->create(['number' => 3]);
 	}
 }
