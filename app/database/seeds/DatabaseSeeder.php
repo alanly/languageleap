@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder {
 		$this->call('MovieTableSeeder');
 		$this->call('ShowTableSeeder');
 		$this->call('CommercialTableSeeder');
+		$this->call('SeasonTableSeeder');
+		$this->call('EpisodeTableSeeder');
 	}
 
 }

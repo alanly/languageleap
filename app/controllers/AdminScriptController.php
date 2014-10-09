@@ -1,7 +1,6 @@
 <?php
-use LangLeap\Videos\Show;
 
-class ApiShowController extends \BaseController {
+class AdminScriptController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -10,10 +9,7 @@ class ApiShowController extends \BaseController {
 	 */
 	public function index()
 	{
-		$shows = Show::all();
-	
-		return $this->apiResponse("success",$shows->toArray());
-		
+		//
 	}
 
 
@@ -47,9 +43,7 @@ class ApiShowController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$shows = Show::find($id);
-		
-		return $this->apiResponse("success",$shows->toArray());
+		//
 	}
 
 
@@ -85,12 +79,7 @@ class ApiShowController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$show = Show::find($id);
-
-		if(!$show)
-			App::abort(404);
-
-		$show->delete();
+		//
 	}
 
 

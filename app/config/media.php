@@ -12,7 +12,4 @@ return array(
 		'img' => __DIR__ . '/../storage/media/img',
 
 	),
-
-
-
 );	
