@@ -111,4 +111,32 @@ class ApiMovieTest extends TestCase {
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(500);
 	}
+
+	public function testDestroy()
+	{
+		$this->seed();
+		$movie = Movie::all()->first();
+		$id = $movie->id;
+		$response = $this->action(
+			'DELETE',
+			'ApiMovieController@destroy',
+			[$movie->id]
+		);
+
+		$this->assertResponseOk();
+
+		$movie = Movie::find($id);
+		$this->assertNUll($movie);
+
+	}
+	public function testDestroyWithInvalidID()
+	{
+		$response = $this->action(
+			'DELETE',
+			'ApiMovieController@destroy',
+			[-1]
+		);
+
+		$this->assertResponseStatus(404);
+	}
 }

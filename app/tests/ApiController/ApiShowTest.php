@@ -110,4 +110,31 @@ class ApiShowTest extends TestCase {
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(500);
 	}
+	public function testDestroy()
+	{
+		$this->seed();
+		$show = Show::all()->first();
+		$id = $show->id;
+		$response = $this->action(
+			'DELETE',
+			'ApiShowController@destroy',
+			[$show->id]
+		);
+
+		$this->assertResponseOk();
+
+		$show = Show::find($id);
+		$this->assertNUll($show);
+
+	}
+	public function testDestroyWithInvalidID()
+	{
+		$response = $this->action(
+			'DELETE',
+			'ApiShowController@destroy',
+			[-1]
+		);
+
+		$this->assertResponseStatus(404);
+	}
 }

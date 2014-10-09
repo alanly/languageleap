@@ -111,4 +111,32 @@ class ApiCommercialTest extends TestCase {
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(500);
 	}
+
+	public function testDestroy()
+	{
+		$this->seed();
+		$commercial = Commercial::all()->first();
+		$id = $commercial->id;
+		$response = $this->action(
+			'DELETE',
+			'ApiCommercialController@destroy',
+			[$commercial->id]
+		);
+
+		$this->assertResponseOk();
+
+		$commercial = Commercial::find($id);
+		$this->assertNUll($commercial);
+
+	}
+	public function testDestroyWithInvalidID()
+	{
+		$response = $this->action(
+			'DELETE',
+			'ApiCommercialController@destroy',
+			[-1]
+		);
+
+		$this->assertResponseStatus(404);
+	}
 }
