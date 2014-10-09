@@ -65,9 +65,9 @@
 		echo '<td>' . Form::text('definitions['.$word.'][def]', null, array('class'=>'load-definitions tt-query', 'data-word'=>$word)) . '</td>';
 		echo '<td>' . Form::text('definitions['.$word.'][full_def]', null, array('class'=>'tt-query')) . '</td>';
 		echo '<td>' . Form::text('definitions['.$word.'][pronun]', null, array('class'=>'tt-query')) . '</td>';
-		echo "</tr><br/>\n";
+		echo "</tr>\n";
 	}
-	echo '</table><br/>'."\n";
+	echo '</table>'."\n<br><br>";
 	echo Form::submit() . "\n";
 	echo Form::close() . "\n";
 	?>
@@ -122,7 +122,7 @@
 			$(definitionBoxes[i]).typeahead({
 				hint: true,
 				highlight: true,
-				minLength: 1
+				minLength: 0
 			},
 			{
 				name: 'definition',

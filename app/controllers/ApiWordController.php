@@ -152,17 +152,13 @@ class ApiWordController extends \BaseController {
 	public function getMultipleWords()
 	{
 		$words = Input::get('words');
-		
+		$dbresult = Word::whereIn('word', $words)->get();
 		$wordArray = array();
-		foreach($words as $word)
-		{
-			$dbresult = Word::where('word', '=', $word)->get();
-			foreach($dbresult as $w)
-			{
-				$wordArray[$word][] = $w->toResponseArray();
-			}
-		}
 		
+		foreach($dbresult as $word)
+		{
+			$wordArray[$word->word][] = $word->toResponseArray();
+		}
 		return $this->apiResponse("success",$wordArray);
 	}
 }
