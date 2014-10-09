@@ -19,10 +19,6 @@ Route::get('/', function()
 // Accordion
 Route::controller('Accordion', 'AccordionController');
 
-Route::get('/admin', function(){
-	return View::make('admin.video.video');
-});
-
 
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
@@ -45,15 +41,13 @@ Route::group(array('prefix' => 'api',), function()
 		// Videos
 		Route::resource('videos', 'ApiVideoController');
 	});
-
-	// Video Controller
-	Route::resource('videos', 'ApiVideoController');
-
 });
 
-// Routes for API controllers
-Route::group(array(['prefix' => 'admin']), function()
+// Routes for Admin controllers
+
+//DO NOT FORGET TO ADD BEFORE => AUTH
+Route::group(array('prefix' => 'admin'), function()
 {
-	Route::resource('videos', 'AdminVideoController');
-	Route::resource('scripts', 'AdminScriptController');
+	Route::get('videos', 'AdminVideoController@getIndex');
+	Route::get('scripts', 'AdminScriptController@getIndex');
 });
