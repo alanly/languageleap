@@ -1,6 +1,6 @@
 <?php
 
-class AdminVideoController extends \BaseController {
+class AdminScriptController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,8 +9,6 @@ class AdminVideoController extends \BaseController {
 	 */
 	public function getIndex()
 	{
-		return View::make('admin.video.index');
-	}
-
-
+		return View::make('admin.script.index');
+	}	
 }

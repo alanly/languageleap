@@ -13,4 +13,18 @@ class Commercial extends ValidatedModel {
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
+	public function toResponseArray($comm)
+	{
+		$videos = $comm->videos()->get();
+		$videos_array = array();
+		foreach($videos as $video){
+			$videos_array[] = $video->toResponseArray($video);
+		}
+		return array(
+			'id' => $comm->id,
+			'name' => $comm->name,
+			'description' => $comm->description,
+			'videos' => $videos_array,
+		);
+	}
 }
