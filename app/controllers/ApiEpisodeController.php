@@ -145,13 +145,13 @@ class ApiEpisodeController extends \BaseController {
 	{
 		$data = ['show' => $show, 'season' => $season];
 
-		if (is_array($episodes) || $episodes instanceof Illuminate\Database\Eloquent\Collection)
+		if ($episodes instanceof Episode)
 		{
-			$data['episodes'] = $episodes;
+			$data['episode'] = $episodes;
 		}
 		else
 		{
-			$data['episode'] = $episodes;
+			$data['episodes'] = $episodes;
 		}
 
 		return $this->apiResponse('success', $data, $code);
