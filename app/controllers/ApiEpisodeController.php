@@ -4,28 +4,58 @@ use LangLeap\Videos\Show;
 use LangLeap\Videos\Season;
 use LangLeap\Videos\Episode;
 
+/**
+ * @author Alan Ly <hello@alan.ly>
+ */
 class ApiEpisodeController extends \BaseController {
 
-	/**
-	 * An Episode instance.
-	 * 
-	 * @var LangLeap\Videos\Episode;
-	 */
+	protected $shows;
+	protected $seasons;
 	protected $episodes;
 
-	public function __construct(Episode $episodes)
+	public function __construct(Show $shows, Season $seasons, Episode $episodes)
 	{
+		$this->shows = $shows;
+		$this->seasons = $seasons;
 		$this->episodes = $episodes;
 	}
 
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * @param  integer  $showId
+	 * @param  integer  $seasonId
 	 * @return Response
 	 */
-	public function index()
+	public function index($showId, $seasonId)
 	{
-		
+		$show = $this->shows->find($showId);
+
+		if (! $show)
+		{
+			return $this->apiResponse(
+				'error',
+				"Show {$showId} could not be found.",
+				404
+			);
+		}
+
+		$season = $show->seasons()->where('id', $seasonId)->first();
+
+		if (! $season)
+		{
+			return $this->apiResponse(
+				'error',
+				"Season {$seasonId} not found for show {$showId}.",
+				404
+			);
+		}
+
+		return $this->generateResponse(
+			$show,
+			$season,
+			$season->episodes()->get()
+		);
 	}
 
 
@@ -79,7 +109,7 @@ class ApiEpisodeController extends \BaseController {
 	/**
 	 * @param  LangLeap\Videos\Show           $show
 	 * @param  LangLeap\Videos\Season         $season
-	 * @param  array|LangLeap\Videos\Episode  $episode
+	 * @param  mixed|LangLeap\Videos\Episode  $episode
 	 * @return Illuminate\Http\JsonResponse
 	 */
 	protected function generateResponse(
@@ -88,7 +118,7 @@ class ApiEpisodeController extends \BaseController {
 	{
 		$data = ['show' => $show, 'season' => $season];
 
-		if (is_array($episodes))
+		if (is_array($episodes) || $episodes instanceof Illuminate\Database\Eloquent\Collection)
 		{
 			$data['episodes'] = $episodes;
 		}
