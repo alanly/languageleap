@@ -155,12 +155,64 @@ class ApiEpisodeController extends \BaseController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  int  $showId
+	 * @param  int  $seasonId
+	 * @param  int  $episodeId
 	 * @return JsonResponse
 	 */
-	public function update($id)
+	public function update($showId, $seasonId, $episodeId)
 	{
-		//
+		// Retrieve the show, and eagerload season and episode.
+		$show = $this->shows
+			->with(['seasons' => function($query) use ($seasonId)
+			{
+				$query->where('id', $seasonId);
+			}])
+			->with(['episodes' => function($query) use ($episodeId)
+			{
+				$query->where('episodes.id', $episodeId);
+			}])
+			->find($showId);
+
+		if (! $show)
+		{
+			return $this->apiResponse(
+				'error',
+				"Show {$showId} could not be found.",
+				404
+			);
+		}
+
+		$season = $show->seasons->first();
+
+		if (! $season)
+		{
+			return $this->apiResponse(
+				'error',
+				"Season {$seasonId} of show {$showId} could not be found.",
+				404
+			);
+		}
+
+		$episode = $season->episodes->first();
+
+		if (! $episode)
+		{
+			return $this->apiResponse(
+				'error',
+				"Episode {$episodeId} of season {$seasonId} for show {$showId} could not be found.",
+				404
+			);
+		}
+
+		$episode->fill(Input::get());
+
+		if (! $episode->save())
+		{
+			return $this->apiResponse('error', $episode->getErrors(), 400);
+		}
+
+		return $this->generateResponse($show, $season, $episode);
 	}
 
 
