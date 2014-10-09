@@ -17,7 +17,6 @@ class CreateScriptWordsTable extends Migration {
 			$table->integer('script_id')->unsigned();
 			$table->integer('word_id')->unsigned();
 			$table->integer('position');
-
 		});
 	}
 

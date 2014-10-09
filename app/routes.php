@@ -48,6 +48,8 @@ Route::group(array('prefix' => 'api',), function()
 //DO NOT FORGET TO ADD BEFORE => AUTH
 Route::group(array('prefix' => 'admin'), function()
 {
+
+	Route::get('movies', 'AdminMovieController@getIndex');
 	Route::get('videos', 'AdminVideoController@getIndex');
 	Route::get('scripts', 'AdminScriptController@getIndex');
 });
