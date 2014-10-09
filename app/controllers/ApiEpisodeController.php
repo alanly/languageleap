@@ -23,9 +23,9 @@ class ApiEpisodeController extends \BaseController {
 	/**
 	 * Display a listing of the resource.
 	 *
-	 * @param  integer  $showId
-	 * @param  integer  $seasonId
-	 * @return Response
+	 * @param  int  $showId
+	 * @param  int  $seasonId
+	 * @return JsonResponse
 	 */
 	public function index($showId, $seasonId)
 	{
@@ -62,9 +62,9 @@ class ApiEpisodeController extends \BaseController {
 	/**
 	 * Store a newly created resource in storage.
 	 *
-	 * @param  integer  $showId
-	 * @param  integer  $seasonId
-	 * @return Response
+	 * @param  int  $showId
+	 * @param  int  $seasonId
+	 * @return JsonResponse
 	 */
 	public function store($showId, $seasonId)
 	{
@@ -98,12 +98,14 @@ class ApiEpisodeController extends \BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @param  int  $showId
+	 * @param  int  $seasonId
+	 * @param  int  $episodeId
+	 * @return JsonResponse
 	 */
-	public function show($id)
+	public function show($showId, $seasonId, $episodeId)
 	{
-		//
+		
 	}
 
 
@@ -111,7 +113,7 @@ class ApiEpisodeController extends \BaseController {
 	 * Update the specified resource in storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return JsonResponse
 	 */
 	public function update($id)
 	{
@@ -123,7 +125,7 @@ class ApiEpisodeController extends \BaseController {
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  int  $id
-	 * @return Response
+	 * @return JsonResponse
 	 */
 	public function destroy($id)
 	{
