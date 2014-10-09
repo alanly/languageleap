@@ -105,7 +105,50 @@ class ApiEpisodeController extends \BaseController {
 	 */
 	public function show($showId, $seasonId, $episodeId)
 	{
-		
+		// Retrieve the show, and eagerload season and episode.
+		$show = $this->shows
+			->with(['seasons' => function($query) use ($seasonId)
+			{
+				$query->where('id', $seasonId);
+			}])
+			->with(['episodes' => function($query) use ($episodeId)
+			{
+				$query->where('episodes.id', $episodeId);
+			}])
+			->find($showId);
+
+		if (! $show)
+		{
+			return $this->apiResponse(
+				'error',
+				"Show {$showId} could not be found.",
+				404
+			);
+		}
+
+		$season = $show->seasons->first();
+
+		if (! $season)
+		{
+			return $this->apiResponse(
+				'error',
+				"Season {$seasonId} of show {$showId} could not be found.",
+				404
+			);
+		}
+
+		$episode = $season->episodes->first();
+
+		if (! $episode)
+		{
+			return $this->apiResponse(
+				'error',
+				"Episode {$episodeId} of season {$seasonId} for show {$showId} could not be found.",
+				404
+			);
+		}
+
+		return $this->generateResponse($show, $season, $episode);
 	}
 
 
