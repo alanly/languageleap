@@ -35,19 +35,36 @@ class ApiShowController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$show = new Show;
+
+		$show->fill(Input::get());
+
+		if (! $show->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$show->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$show->toArray(),
+			201
+		);	
 	}
 
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int  $showId
 	 * @return Response
 	 */
 	public function show($showId)
 	{
-		$shows = Show::find($id);
+		$shows = Show::find($showId);
 		
 		if (! $shows)
 		{
@@ -82,7 +99,33 @@ class ApiShowController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$show = Show::find($id);
+
+		if (! $show)
+		{
+			return $this->apiResponse(
+				'error',
+				"Movie {$id} not found.",
+				404
+			);
+		}
+
+		$show->fill(Input::get());
+
+		if (! $show->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$show->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$show->toArray(),
+			200
+		);
 	}
 
 
@@ -96,15 +139,22 @@ class ApiShowController extends \BaseController {
 	{
 		$show = Show::find($id);
 
-		if(!$show)
-			App::abort(404);
+		if (! $show)
+		{
+			return $this->apiResponse(
+				'error',
+				"Show {$id} not found.",
+				404
+			);
+		}
 
+		$show->seasons()->delete();
 		$show->delete();
 
 		return $this->apiResponse(
 			'success',
-			'Show deleted.',
-			204
+			'Show {$id} has been removed',
+			200
 		);
 	}
 

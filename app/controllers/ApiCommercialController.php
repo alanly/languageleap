@@ -48,7 +48,24 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$commercial = new Commercial;
+
+		$commercial->fill(Input::get());
+
+		if (! $commercial->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$commercial->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$commercial->toArray(),
+			201
+		);	
 	}
 
 
@@ -96,7 +113,32 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$commercial = Commercial::find($id);
+
+		if (! $commercial)
+		{
+			return $this->apiResponse(
+				'error',
+				"Commercial {$id} not found.",
+				404
+			);
+		}
+
+		$commercial->fill(Input::get());
+		
+		if (! $commercial->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$commercial->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$commercial->toArray()
+		);
 	}
 
 
@@ -110,11 +152,23 @@ class ApiCommercialController extends \BaseController {
 	{
 		$commercial = Commercial::find($id);
 
-		if(!$commercial)
-			App::abort(404);
-		
+		if (! $commercial)
+		{
+			return $this->apiResponse(
+				'error',
+				"Commercial {$id} not found.",
+				404
+			);
+		}
+
 		$commercial->videos()->delete();
 		$commercial->delete();
+
+		return $this->apiResponse(
+			'success',
+			'Commercial {$id} has been removed',
+			200
+		);
 	}
 
 
