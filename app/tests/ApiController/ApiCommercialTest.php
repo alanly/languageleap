@@ -1,11 +1,18 @@
 <?php 
 
 use LangLeap\TestCase;
+use LangLeap\Videos\Commercial;
 
+
+/**
+*
+*	@author Thomas Rahn <Thomas@rahn.ca>
+*
+*/
 class ApiCommercialTest extends TestCase {
 
 	/**
-	 * Testing getting all commercials.
+	 * Test geting all movies.
 	 *
 	 * @return void
 	 */
@@ -16,26 +23,92 @@ class ApiCommercialTest extends TestCase {
 		$this->assertJson($response->getContent());
 	}
 
-	/**
-	 * Testing getting all commercials.
-	 *
-	 * @return void
-	 */
 	public function testShow()
 	{
-		$this->seed('CommercialTableSeeder');
+		$this->seed();
+		$response = $this->action('GET', 'ApiCommercialController@show', [1]);
 
-		$commercial = App::make('LangLeap\Videos\Commercial')->first();
-		
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+
+		$data = $response->getData()->data;
+
+		$this->assertObjectHasAttribute('videos', $data);
+		$this->assertObjectHasAttribute('name', $data);
+
+		$this->assertEquals(1, $data->id);
+	}
+
+	public function testShowWithInvalidId()
+	{
+		$this->seed();
+		$response = $this->action('GET', 'ApiCommercialController@show', [-1]);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(404);
+	}
+
+	public function testStore()
+	{
 		$response = $this->action(
-			'GET',
-			'ApiCommercialController@show',
-			[$commercial->id]
+			'POST',
+			'ApiCommercialController@store',
+			[],
+			['name' => 'Test']
+		);
+
+		$this->assertResponseStatus(201);
+
+		$data = $response->getData();
+
+		$this->assertEquals('success', $data->status);
+	}
+
+	public function testUpdate()
+	{
+		$this->seed();
+
+		$commercial = Commercial::all()->first();
+		$response = $this->action(
+			'PUT',
+			'ApiCommercialController@update',
+			[$commercial->id],
+			['name' => 'Test']
 		);
 
 		$this->assertResponseOk();
-		$this->assertJson($response->getContent());
-	}
-	
+		
+		$data = $response->getData();
 
+		$this->assertEquals('Test', $data->data->name);
+	}
+
+	public function testUpdateWithInvalidID()
+	{
+		$response = $this->action(
+			'PUT',
+			'ApiCommercialController@update',
+			[-1],
+			['name' => 'Test']
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(404);
+	}
+
+	public function testUpdateWithInvalidName()
+	{
+		$this->seed();
+
+		$commercial = Commercial::all()->first();
+		$response = $this->action(
+			'PUT',
+			'ApiCommercialController@update',
+			[$commercial->id],
+			['name' => '']
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(500);
+	}
 }
