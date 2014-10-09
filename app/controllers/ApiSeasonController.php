@@ -27,7 +27,7 @@ class ApiSeasonController extends \BaseController {
 	 */
 	public function index($showId)
 	{
-		$show = $this->shows->find($showId);
+		$show = $this->shows->with('seasons')->find($showId);
 
 		if (! $show)
 		{
