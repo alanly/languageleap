@@ -22,10 +22,15 @@ Route::get('/admin', function()
 {
 	return View::make('admin.index');
 });
+Route::get('/admin/new/script', function(){
+	return View::make('admin.video.script');
+});
+
+// Route to get the definitions of specific words
+Route::post('/api/metadata/words/definitions', 'ApiWordController@getMultipleWords');
 
 // Accordion
 Route::controller('Accordion', 'AccordionController');
-
 
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
@@ -47,6 +52,9 @@ Route::group(array('prefix' => 'api',), function()
 
 		// Videos
 		Route::resource('videos', 'ApiVideoController');
+		
+		// Words
+		Route::resource('words', 'ApiWordController');
 	});
 });
 

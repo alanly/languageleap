@@ -1,7 +1,7 @@
 <?php namespace LangLeap\Videos;
 
-use LangLeap\Words\Script;
 use LangLeap\Core\ValidatedModel;
+use LangLeap\Words\Script;
 
 class Video extends ValidatedModel {
 
@@ -54,6 +54,5 @@ class Video extends ValidatedModel {
 			return null;
 		
 	}
-
 	
 }

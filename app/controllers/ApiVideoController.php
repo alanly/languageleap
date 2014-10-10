@@ -103,9 +103,12 @@ class ApiVideoController extends \BaseController {
 		$script->text = $script_text;
 		$script->video_id = $video->id;
 		$script->save();
-
+		
+		Session::put('script', $script->text);
+		Session::put('script_id', $script->id);
+		
+		return Redirect::to('admin/new/script');
 	}
-
 
 	/**
 	 * Display the specified resource.
