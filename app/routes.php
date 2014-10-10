@@ -15,3 +15,38 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+// Accordion
+Route::controller('Accordion', 'AccordionController');
+
+Route::get('/admin', function(){
+	return View::make('admin.video.video');
+});
+
+
+// Routes for API controllers
+Route::group(array('prefix' => 'api',), function()
+{
+
+	// Media controllers
+	Route::group(['prefix' => 'metadata'], function()
+	{
+		// Commercials
+		Route::resource('commercials', 'ApiCommercialController');
+
+		// Movies
+		Route::resource('movies', 'ApiMovieController');
+
+		// Shows (and Seasons and Episodes)
+		Route::resource('shows', 'ApiShowController');
+		Route::resource('shows.seasons', 'ApiSeasonController');
+		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
+
+		// Videos
+		Route::resource('videos', 'ApiVideoController');
+	});
+
+	// Video Controller
+	Route::resource('videos', 'ApiVideoController');
+
+});
