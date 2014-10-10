@@ -1,13 +1,25 @@
 <?php namespace LangLeap\Videos;
 
-use Eloquent;
-use LangLeap\Payments\Billable;
+use LangLeap\Core\ValidatedModel;
 
-class Commercial extends Eloquent implements Billable {
+class Commercial extends ValidatedModel {
 
 	public    $timestamps = false;
 	protected $fillable   = ['name', 'description'];
+	protected $rules      = ['name' => 'required'];
 	
+
+	public static function boot()
+	{
+		parent::boot();
+
+		static::deleting(function($commercial)
+		{
+			$commercial->vdeos()->delete();
+		});
+
+	}
+
 	public function videos()
 	{
 		return $this->morphMany('LangLeap\Videos\Video','viewable');

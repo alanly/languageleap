@@ -4,12 +4,6 @@ use Artisan;
 
 class TestCase extends \Illuminate\Foundation\Testing\TestCase {
 
-	public function setUp()
-	{
-		parent::setUp();
-
-		Artisan::call('migrate');
-	}
 	/**
 	 * Creates the application.
 	 *
@@ -22,6 +16,13 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
 		$testEnvironment = 'testing';
 
 		return require __DIR__.'/../../bootstrap/start.php';
+	}
+
+	public function setUp()
+	{
+		parent::setUp();
+
+		Artisan::call('migrate');
 	}
 
 }

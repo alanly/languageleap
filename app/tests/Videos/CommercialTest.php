@@ -28,14 +28,14 @@ class CommercialTest extends TestCase {
 	protected function getCommercialInstance()
 	{
 		$comm =  App::make('LangLeap\Videos\Commercial');
-		$comm->name = '';
+		$comm->name = 'Test Commercial';
 		$comm->save();
 		return $comm;
 	}
 	protected function getVideoInstance()
 	{
 		$video =  App::make('LangLeap\Videos\Video');
-		$video->path = '';
+		$video->path = '/path/to/somewhere';
 		return $video;
 	}
 	

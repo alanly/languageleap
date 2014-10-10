@@ -12,7 +12,10 @@ class SeasonTableSeeder extends Seeder {
 	public function run()
 	{
 		DB::table('seasons')->delete();
-		$user_id = Show::all()->first()->id;
-	    Season::create(array("number" => 1, "show_id"=>$user_id));
+
+		$show = Show::first();
+		$show->seasons()->create(['number' => 1]);
+		$show->seasons()->create(['number' => 2]);
+		$show->seasons()->create(['number' => 3]);
 	}
 }

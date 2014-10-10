@@ -28,14 +28,14 @@ class MovieTest extends TestCase {
 	protected function getMovieInstance()
 	{
 		$mov =  App::make('LangLeap\Videos\Movie');
-		$mov->name = '';
+		$mov->name = 'Test Movie';
 		$mov->save();
 		return $mov;
 	}
 	protected function getVideoInstance()
 	{
 		$video =  App::make('LangLeap\Videos\Video');
-		$video->path = '';
+		$video->path = '/path/to/somewhere';
 		return $video;
 	}
 	
