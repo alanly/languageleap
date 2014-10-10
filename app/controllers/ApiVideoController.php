@@ -44,8 +44,9 @@ class ApiVideoController extends \BaseController {
 		$type = Input::get('video_type');
 
 		$video = $this->setVideo($file,$type,null);
-		
 		$this->setScript($script_file, $video->id);
+
+		return $this->apiResponse("success",$video->toResponseArray());
 	}
 
 
@@ -154,12 +155,11 @@ class ApiVideoController extends \BaseController {
 	private function setVideo($file, $type, Video $video = null)
 	{
 		$ext = $file->getClientOriginalExtension();
-
 		if($video == null)
 		{
 			$video = new Video;
 		}	
-
+		
 		$path = "";
 
 		if($type === "commercial")
@@ -180,18 +180,17 @@ class ApiVideoController extends \BaseController {
 			$video->viewable_type = 'LangLeap\Videos\Episode';
 			$path = Config::get('media.paths.videos.shows');
 		}
-		else
-		{
-			   return App::abort(400);
-		}
 
 		$video->path = '';
 		$video->save();
-	
+		
 		//set the path
 		$new_name = $video->id . "." . $ext;
 		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
-		$video_file = $file->move($path,$new_name);
+
+		if (!App::environment('testing')) {
+			$video_file = $file->move($path,$new_name);
+		}
 		$video->save();
 
 		return $video;
