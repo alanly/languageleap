@@ -75,7 +75,7 @@ class ApiMovieController extends \BaseController {
 			);
 		}
 
-		return $this->apiResponse("success",$movie->toResponseArray($movie));
+		return $this->apiResponse("success",$movie->toResponseArray());
 	}
 
 	/**

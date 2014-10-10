@@ -35,8 +35,9 @@ class Video extends ValidatedModel {
 	}	
 
 
-	public function toResponseArray($vid)
+	public function toResponseArray()
 	{
+		$vid = $this;
 		$script = $vid->script()->first();
 		if($script != null)
 			return array(
@@ -55,5 +56,5 @@ class Video extends ValidatedModel {
 		
 	}
 
-	
+
 }

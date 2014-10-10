@@ -14,12 +14,13 @@ class Movie extends ValidatedModel implements Billable {
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
-	public function toResponseArray($movie)
+	public function toResponseArray()
 	{
+		$movie = $this;
 		$videos = $movie->videos()->get();
 		$videos_array = array();
 		foreach($videos as $video){
-			$videos_array[] = $video->toResponseArray($video);
+			$videos_array[] = $video->toResponseArray();
 		}
 		return array(
 			'id' => $movie->id,

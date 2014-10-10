@@ -78,7 +78,7 @@ class ApiCommercialController extends \BaseController {
 		}
 
 
-		return $this->apiResponse("success",$commercial->toResponseArray($commercial));
+		return $this->apiResponse("success",$commercial->toResponseArray());
 	}
 
 

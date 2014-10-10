@@ -22,7 +22,7 @@ class ApiVideoController extends \BaseController {
 		$videoArray = array();
         
         foreach ($videos as $vid) {
-            $videoArray[] = $vid->toResponseArray($vid);
+            $videoArray[] = $vid->toResponseArray();
         }
 
 		return $this->apiResponse("success",$videoArray);
@@ -69,7 +69,7 @@ class ApiVideoController extends \BaseController {
 		}
 
 		$videoArray = array(
-			"video" => $video->toResponseArray($video));
+			"video" => $video->toResponseArray());
 
 		return $this->apiResponse("success",$videoArray);
 
