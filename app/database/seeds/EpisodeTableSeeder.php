@@ -12,8 +12,9 @@ class EpisodeTableSeeder extends Seeder {
 	public function run()
 	{
 		DB::table('episodes')->delete();
-		$season_id = Season::all()->first()->id;
-	    Episode::create(array("season_id"=>$season_id, "number"=>1,"name"=>"Howard learns to ride a bike","description"=>"The main character learns how to make a bike move"));
-	    Episode::create(array("season_id"=>$season_id, "number"=>2,"name"=>"Leonerd and penny get married","description"=>"They get married OMG!"));
+
+		$season = Season::first();
+		$season->episodes()->create(['number' => 1, 'name' => 'Test 1', 'description' => 'Test episode 1.']);
+		$season->episodes()->create(['number' => 2, 'name' => 'Test 2', 'description' => 'Test episode 2.']);
 	}
 }

@@ -22,7 +22,7 @@ class ApiMovieController extends \BaseController {
 
 		return $this->apiResponse(
 			'success',
-			$movies->toArray()
+			$movies
 		);
 
 	}

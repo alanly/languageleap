@@ -34,5 +34,4 @@ class BaseController extends Controller {
 		);
 	}
 	
-
 }

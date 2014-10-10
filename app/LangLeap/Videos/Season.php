@@ -7,8 +7,9 @@ class Season extends ValidatedModel implements Billable {
 
 	public    $timestamps = false;
 	protected $fillable   = ['show_id', 'number', 'description'];
+	protected $hidden     = ['episodes'];
 	protected $rules      = [
-		'show_id' => 'required|integer',
+		'show_id' => 'required|integer|exists:shows,id',
 		'number'  => 'required|integer',
 	];
 
