@@ -297,6 +297,7 @@ class ApiEpisodeController extends \BaseController {
 		if ($episodes instanceof Episode)
 		{
 			$data['episode'] = $episodes;
+			$data['videos'] = $episodes->videos;
 		}
 		else
 		{
