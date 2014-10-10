@@ -47,7 +47,18 @@ class ApiShowController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$shows = Show::find($id);
+		
+		if (!$shows)
+		{
+			return $this->apiResponse(
+				'error',
+				"Show {$id} not found.",
+				404
+			);
+		}
+		
+		return $this->apiResponse("success", $shows->toArray());
 	}
 
 
@@ -83,8 +94,17 @@ class ApiShowController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$show = Show::find($id);
+
+		if(!$show)
+			App::abort(404);
+
+		$show->delete();
+
+		return $this->apiResponse(
+			'success',
+			'Show deleted.',
+			204
+		);
 	}
-
-
 }

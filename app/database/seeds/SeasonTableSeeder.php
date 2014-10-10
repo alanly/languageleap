@@ -1,6 +1,7 @@
 <?php
 
 use LangLeap\Videos\Season;
+use LangLeap\Videos\Show;
 class SeasonTableSeeder extends Seeder {
 
 	/**
@@ -12,6 +13,9 @@ class SeasonTableSeeder extends Seeder {
 	{
 		DB::table('seasons')->delete();
 
-	    Season::create(array("number" => 1, "show_id"=>1));
+		$show = Show::first();
+		$show->seasons()->create(['number' => 1]);
+		$show->seasons()->create(['number' => 2]);
+		$show->seasons()->create(['number' => 3]);
 	}
 }

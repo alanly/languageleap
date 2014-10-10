@@ -8,9 +8,35 @@ class Commercial extends ValidatedModel {
 	protected $fillable   = ['name', 'description'];
 	protected $rules      = ['name' => 'required'];
 	
+
+	public static function boot()
+	{
+		parent::boot();
+
+		static::deleting(function($commercial)
+		{
+			$commercial->vdeos()->delete();
+		});
+
+	}
+
 	public function videos()
 	{
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
+	public function toResponseArray($comm)
+	{
+		$videos = $comm->videos()->get();
+		$videos_array = array();
+		foreach($videos as $video){
+			$videos_array[] = $video->toResponseArray($video);
+		}
+		return array(
+			'id' => $comm->id,
+			'name' => $comm->name,
+			'description' => $comm->description,
+			'videos' => $videos_array,
+		);
+	}
 }

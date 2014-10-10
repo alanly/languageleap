@@ -12,6 +12,8 @@ class ShowTableSeeder extends Seeder {
 	{
 		DB::table('shows')->delete();
 
-	        Show::create(array('name' => 'TestShow', 'description'=>'This is a test show'));
+		$show = Show::create([
+			'name' => 'Test Show', 'description' => 'Test show description.'
+		]);
 	}
 }

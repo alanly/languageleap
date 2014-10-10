@@ -14,6 +14,16 @@ class Video extends ValidatedModel {
 		'viewable_type' => 'required',
 	];
 
+	public static function boot()
+	{
+		parent::boot();
+
+		static::deleting(function($video)
+		{
+			$video->script()->delete();
+		});
+	}
+
 	public function script()
 	{
 		return $this->hasOne('LangLeap\Words\Script');
@@ -44,4 +54,5 @@ class Video extends ValidatedModel {
 			return null;
 		
 	}
+	
 }
