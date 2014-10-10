@@ -16,7 +16,6 @@ class ApiMovieController extends \BaseController {
 			'success',
 			$movies
 		);
-
 	}
 
 
@@ -45,23 +44,23 @@ class ApiMovieController extends \BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $movieId
+	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($movieId)
+	public function show($id)
 	{
 		$movie = Movie::find($id);
 
-		if (! $movie)
+		if (!$movie)
 		{
 			return $this->apiResponse(
 				'error',
-				"Movie {$movieId} not found.",
+				"Movie {$id} not found.",
 				404
 			);
 		}
 
-		return $this->apiResponse("success",$movie->toResponseArray($movie));
+		return $this->apiResponse("success", $movie->toResponseArray($movie));
 	}
 
 
@@ -105,6 +104,4 @@ class ApiMovieController extends \BaseController {
 		$movie->videos()->delete();
 		$movie->delete();
 	}
-
-
 }
