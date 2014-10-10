@@ -1,8 +1,10 @@
 <?php namespace LangLeap\Videos;
 
+use LangLeap\Words\Script;
 use LangLeap\Core\ValidatedModel;
 
 class Video extends ValidatedModel {
+
 
 	public    $timestamps = false;
 	protected $fillable   = ['path'];
@@ -12,6 +14,16 @@ class Video extends ValidatedModel {
 		'viewable_type' => 'required',
 	];
 
+	public static function boot()
+	{
+		parent::boot();
+
+		static::deleting(function($video)
+		{
+			$video->script()->delete();
+		});
+	}
+
 	public function script()
 	{
 		return $this->hasOne('LangLeap\Words\Script');
@@ -20,6 +32,28 @@ class Video extends ValidatedModel {
 	public function viewable()
 	{
 		return $this->morphTo();
+	}	
+
+
+	public function toResponseArray($vid)
+	{
+		$script = $vid->script()->first();
+		if($script != null)
+			return array(
+				'id' => $vid->id,
+				'path' => $vid->path,
+				'viewable_id' => $vid->viewable_id,
+				'viewable_type' => $vid->viewable_type,
+				'script' => array(
+					'id' => $script->id,
+					'text' => $script->text,
+				),
+
+			);
+		else
+			return null;
+		
 	}
 
+	
 }

@@ -11,14 +11,8 @@ class ApiShowController extends \BaseController {
 	public function index()
 	{
 		$shows = Show::all();
-		$showsArray = null;
-		foreach ($shows as $show)
-			$showsArray[] = $show->toResponseArray();
-		
-		return Response::json(array(
-			'success' => true,
-			'data' => $showsArray,
-		));
+	
+		return $this->apiResponse("success",$shows->toArray());
 		
 	}
 
@@ -51,9 +45,20 @@ class ApiShowController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($showId)
 	{
-		//
+		$shows = Show::find($id);
+		
+		if (! $shows)
+		{
+			return $this->apiResponse(
+				'error',
+				"Show {$showId} not found.",
+				404
+			);
+		}
+		
+		return $this->apiResponse("success",$shows->toArray());
 	}
 
 
@@ -89,7 +94,18 @@ class ApiShowController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$show = Show::find($id);
+
+		if(!$show)
+			App::abort(404);
+
+		$show->delete();
+
+		return $this->apiResponse(
+			'success',
+			'Show deleted.',
+			204
+		);
 	}
 
 

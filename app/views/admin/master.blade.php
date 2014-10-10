@@ -6,7 +6,7 @@
 
         <title>Language Leap</title>
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script src="//cdn.jsdelivr.net/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.0.3/css/bootstrap.min.css">
 

@@ -16,10 +16,16 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+
+//DO NOT FORGET TO ADD BEFORE => AUTH
+Route::get('/admin', function()
+{
+	return View::make('admin.index');
+});
+
 // Accordion
 Route::controller('Accordion', 'AccordionController');
-Route::get('/admin', 'AdminVideoController@index');
-Route::post('/admin/video','AdminVideoController@store');
+
 
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
@@ -38,9 +44,9 @@ Route::group(array('prefix' => 'api',), function()
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
+
+		// Videos
+		Route::resource('videos', 'ApiVideoController');
 	});
-
-	// Video Controller
-	Route::resource('videos', 'ApiVideoController');
-
 });
+
