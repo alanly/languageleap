@@ -58,7 +58,7 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function show($videoId)
 	{
-		$video = Video::find($id);
+		$video = Video::find($videoId);
 
 		if (! $video)
 		{
@@ -90,7 +90,7 @@ class ApiVideoController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Video {$videoId} not found.",
+				"Video {$id} not found.",
 				404
 			);
 		}
@@ -101,8 +101,10 @@ class ApiVideoController extends \BaseController {
 
 		
 		$video = $this->setVideo($file,$type, $video);
-	
-		$this->setScript($script_file, $video_id,$video->script());
+		
+		$this->setScript($script_file, $video->id,$video->script()->first());
+
+		return $this->apiResponse("success",$video->toResponseArray());
 	}
 
 
@@ -121,6 +123,12 @@ class ApiVideoController extends \BaseController {
 
 		$script = $video->script()->delete();
 		$video->delete();
+
+		return $this->apiResponse(
+			'success',
+			'Video {$id} has been removed',
+			200
+		);
 	}
 
 	/**
