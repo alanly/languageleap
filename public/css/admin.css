@@ -38,6 +38,9 @@ h1,h2,h3,h4,h5,h6 {
 .modal-footer {
 	margin-top: 0;
 }
+.modal-footer div.span2 {
+	cursor: pointer;
+}
 input.rounded {
 	border: 1px solid #ccc;
 	-moz-border-radius: 10px;

@@ -22,7 +22,8 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h2 class="modal-title"></h2>
       </div>
-      <div class="modal-body">
+			
+      <div class="modal-body info" aria-hidden="false" style="display: block;">
 		    <div class="row">
 		        <div class="col-xs-4">
 		        	<img class="modal-image" src="" />
@@ -36,24 +37,37 @@
 		        </div>
 		    </div>
       </div>
+			
+      <div class="modal-body media" aria-hidden="true" style="display: none;">
+				Media goes here
+      </div>
+			
+      <div class="modal-body script" aria-hidden="true" style="display: none;">
+				Script goes here
+      </div>
+			
+      <div class="modal-body flash" aria-hidden="true" style="display: none;">
+				Flashcards go here
+      </div>
+			
       <div class="modal-footer">
 		    <div class="row-fluid">
-					<div class="span2 text-center">
+					<div id="footer-info" class="span2 text-center">
 						Info
 					</div>
-					<div class="span2 text-center">
+					<div id="footer-media" class="span2 text-center">
 						Media
 					</div>
-					<div class="span2 text-center">
+					<div id="footer-script" class="span2 text-center">
 						Script
 					</div>
-					<div class="span2 text-center">
+					<div id="footer-flash" class="span2 text-center">
 						Flashcards
 					</div>
-					<div class="span2 text-center">
+					<div id="" class="span2 text-center">
 						Aaaaaa
 					</div>
-					<div class="span2 text-center">
+					<div id="" class="span2 text-center">
 						Bbbbbb
 					</div>
 				</div>				
@@ -108,6 +122,25 @@ $('#content').on('click', 'span.media', function(event)
 		
 		$('#media-modal').modal('show');
 	});
+});
+
+$('.modal-footer').on('click', '.span2', function(event)
+{
+	var id = $(this).attr('id');
+	$('.modal-body').attr("aria-hidden", true);
+	$('.modal-body').css("display", "none");
+	
+	if (id == "footer-info")
+	{
+		$('.modal-body.info').attr("aria-hidden", false);
+		$('.modal-body.info').css("display", "block");
+	}
+	else if (id == "footer-script")
+	{
+		$('.modal-body.script').attr("aria-hidden", false);
+		$('.modal-body.script').css("display", "block");
+	}
+
 });
 </script>
 @stop
