@@ -22,7 +22,10 @@ Route::get('/admin', function()
 {
 	return View::make('admin.index');
 });
-
+Route::get('/admin/video', function()
+{
+	return View::make('admin.video.video');
+});
 // Accordion
 Route::controller('Accordion', 'AccordionController');
 
