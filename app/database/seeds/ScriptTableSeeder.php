@@ -13,6 +13,7 @@ class ScriptTableSeeder extends Seeder {
 	public function run()
 	{
 		DB::table('scripts')->delete();
+
 		$videos = Video::all();
 
 		foreach ($videos as $video)

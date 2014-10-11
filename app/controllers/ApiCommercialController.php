@@ -31,24 +31,30 @@ class ApiCommercialController extends \BaseController {
 
 
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
-
-	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
 	public function store()
 	{
-		//
+		$commercial = new Commercial;
+
+		$commercial->fill(Input::get());
+
+		if (! $commercial->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$commercial->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$commercial->toArray(),
+			201
+		);	
 	}
 
 
@@ -72,19 +78,7 @@ class ApiCommercialController extends \BaseController {
 		}
 
 
-		return $this->apiResponse("success",$commercial->toResponseArray($commercial));
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
+		return $this->apiResponse("success",$commercial->toResponseArray());
 	}
 
 
@@ -96,7 +90,32 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$commercial = Commercial::find($id);
+
+		if (! $commercial)
+		{
+			return $this->apiResponse(
+				'error',
+				"Commercial {$id} not found.",
+				404
+			);
+		}
+
+		$commercial->fill(Input::get());
+		
+		if (! $commercial->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$commercial->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$commercial->toArray()
+		);
 	}
 
 
@@ -110,11 +129,23 @@ class ApiCommercialController extends \BaseController {
 	{
 		$commercial = Commercial::find($id);
 
-		if(!$commercial)
-			App::abort(404);
-		
+		if (! $commercial)
+		{
+			return $this->apiResponse(
+				'error',
+				"Commercial {$id} not found.",
+				404
+			);
+		}
+
 		$commercial->videos()->delete();
 		$commercial->delete();
+
+		return $this->apiResponse(
+			'success',
+			'Commercial {$id} has been removed',
+			200
+		);
 	}
 
 

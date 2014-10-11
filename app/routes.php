@@ -16,12 +16,17 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
-
 //DO NOT FORGET TO ADD BEFORE => AUTH
 Route::get('/admin', function()
 {
 	return View::make('admin.index');
 });
+
+Route::get('/admin/video', function()
+{
+	return View::make('admin.video.video');
+});
+
 Route::get('/admin/new/script', function(){
 	return View::make('admin.video.script');
 });
