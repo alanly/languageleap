@@ -31,6 +31,7 @@ class ApiVideoControllerTest extends TestCase {
 	{
 		$this->seed();
 		$commercial = Commercial::first();
+		
 		$video = new Symfony\Component\HttpFoundation\File\UploadedFile(Config::get('media.test') . DIRECTORY_SEPARATOR . '1.mkv', '1.mkv','video/x-matroska',null,null,true);
 		$script = new Symfony\Component\HttpFoundation\File\UploadedFile(Config::get('media.test') . DIRECTORY_SEPARATOR . '1.txt', '1.txt');
 
@@ -49,18 +50,19 @@ class ApiVideoControllerTest extends TestCase {
 		$this->seed();
 		$episode = Episode::first();
 		$video = Video::first();
+
 		$video_file = new Symfony\Component\HttpFoundation\File\UploadedFile(Config::get('media.test') . DIRECTORY_SEPARATOR . '1.mkv', '1.mkv','video/x-matroska',null,null,true);
-        $script = new Symfony\Component\HttpFoundation\File\UploadedFile(Config::get('media.test') . DIRECTORY_SEPARATOR . '1.txt', '1.txt');
+		$script = new Symfony\Component\HttpFoundation\File\UploadedFile(Config::get('media.test') . DIRECTORY_SEPARATOR . '1.txt', '1.txt');
 
-        $response = $this->action(
-                'PATCH',
-                'ApiVideoController@update',
-                [$video->id],['video_type'=>'episode','episode'=>$episode->id],
-                ['video'=> $video_file, 'script' => $script]
-        );
+		$response = $this->action(
+			'PATCH',
+			'ApiVideoController@update',
+			[$video->id],['video_type'=>'episode','episode'=>$episode->id],
+			['video'=> $video_file, 'script' => $script]
+		);
 
-        $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-        $this->assertResponseOk();
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
 
 	}
 	public function testDestroy()
@@ -69,13 +71,13 @@ class ApiVideoControllerTest extends TestCase {
 		$video = Video::first();
 		$id = $video->id;
 		$response = $this->action(
-            'DELETE',
-            'ApiVideoController@destroy',
-            [$id]
-        );
+			'DELETE',
+			'ApiVideoController@destroy',
+			[$id]
+		);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-        $this->assertResponseOk();
+		$this->assertResponseOk();
 		$this->assertNull(Video::find($id));
 	}
 }
