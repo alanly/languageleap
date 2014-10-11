@@ -20,10 +20,10 @@ class ApiVideoController extends \BaseController {
 		$videos = Video::all();
 	
 		$videoArray = array();
-        
-        foreach ($videos as $vid) {
-            $videoArray[] = $vid->toResponseArray();
-        }
+		
+		foreach ($videos as $vid) {
+			$videoArray[] = $vid->toResponseArray();
+		}
 
 		return $this->apiResponse("success",$videoArray);
 	}
@@ -86,7 +86,7 @@ class ApiVideoController extends \BaseController {
 	{
 		$video = Video::find($id);
 
-		if (! $video)
+		if (!$video)
 		{
 			return $this->apiResponse(
 				'error',
