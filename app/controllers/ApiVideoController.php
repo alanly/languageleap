@@ -49,7 +49,6 @@ class ApiVideoController extends \BaseController {
 		return $this->apiResponse("success",$video->toResponseArray());
 	}
 
-
 	/**
 	 * Display the specified resource.
 	 *
@@ -203,7 +202,5 @@ class ApiVideoController extends \BaseController {
 
 		return $video;
 	}
-
-
 
 }

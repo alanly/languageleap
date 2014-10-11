@@ -71,6 +71,7 @@ class ApiEpisodeControllerTest extends TestCase {
 		$this->assertObjectHasAttribute('show', $data);
 		$this->assertObjectHasAttribute('season', $data);
 		$this->assertObjectHasAttribute('episode', $data);
+		$this->assertObjectHasAttribute('videos', $data);
 
 		$this->assertEquals(1, $data->episode->id);
 	}

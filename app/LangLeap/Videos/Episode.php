@@ -3,6 +3,10 @@
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
 
+/**
+ * @author  Thomas Rahn <thomas@rahn.ca>
+ * @author  Alan Ly <hello@alan.ly>
+ */
 class Episode extends ValidatedModel implements Billable {
 
 	public    $timestamps = false;

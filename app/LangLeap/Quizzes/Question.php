@@ -23,6 +23,6 @@ class Question extends Eloquent
 
 	public function script_word()
 	{
-		return $this->belongsTo('LangLeap\Words\Script_Word');
+		return $this->belongsTo('LangLeap\Words\ScriptWord');
 	}
 }

@@ -57,20 +57,20 @@ class ApiShowController extends \BaseController {
 	 * @param  int  $showId
 	 * @return Response
 	 */
-	public function show($showId)
+	public function show($id)
 	{
-		$shows = Show::find($showId);
+		$shows = Show::find($id);
 		
-		if (! $shows)
+		if (!$shows)
 		{
 			return $this->apiResponse(
 				'error',
-				"Show {$showId} not found.",
+				"Show {$id} not found.",
 				404
 			);
 		}
 		
-		return $this->apiResponse("success",$shows->toArray());
+		return $this->apiResponse("success", $shows->toArray());
 	}
 
 	/**
@@ -139,6 +139,4 @@ class ApiShowController extends \BaseController {
 			200
 		);
 	}
-
-
 }

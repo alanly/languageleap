@@ -1,5 +1,8 @@
 <?php
+
 use LangLeap\Videos\Video;
+use LangLeap\Words\Script;
+
 class ScriptTableSeeder extends Seeder {
 
 	/**
@@ -11,7 +14,13 @@ class ScriptTableSeeder extends Seeder {
 	{
 		DB::table('scripts')->delete();
 
-		$s = Video::first();
-		$s->script()->create(['text' => 'Test script']);
+		$videos = Video::all();
+
+		foreach ($videos as $video)
+		{
+			$path = explode('\\', $video->viewable_type);
+			$type = array_pop($path);
+			Script::create(array('text' => "This is a test script for $type.", 'video_id' => $video->id));
+		}
 	}
 }

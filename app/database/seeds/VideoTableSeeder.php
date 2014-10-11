@@ -1,5 +1,10 @@
 <?php
+
+use LangLeap\Videos\Video;
+use LangLeap\Videos\Episode;
+use LangLeap\Videos\Movie;
 use LangLeap\Videos\Commercial;
+
 class VideoTableSeeder extends Seeder {
 
 	/**
@@ -11,7 +16,8 @@ class VideoTableSeeder extends Seeder {
 	{
 		DB::table('videos')->delete();
 
-		$c = Commercial::first();
-		$c->videos()->create(['path' => '/path/to/somewhere/1mkv']);
+		Commercial::first()->videos()->create(['path' => '/path/to/somewhere/1.mkv']);
+		Movie::first()->videos()->create(['path' => '/path/to/somewhere/2.mkv']);
+		Episode::first()->videos()->create(['path' => '/path/to/somewhere/3.mkv']);
 	}
 }
