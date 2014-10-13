@@ -237,7 +237,7 @@ function fetchShows()
 		for(var i = 0; i < listOfData.length; i++)
 		{
 			$("#shows" + listOfData[i][0]).click({showId: listOfData[i][0], name: listOfData[i][2]}, fetchShowsSeason);
-   			displayMoreInfo("shows"+ listOfData[i][0], name, listOfData[i][1]);
+   			displayMoreInfo("shows"+ listOfData[i][0], listOfData[i][2], listOfData[i][1]);
 		}
 	});
 }
@@ -298,6 +298,7 @@ function fetchSeasonsEpisode(event)
 		$.each(json.episodes, function(index, value)
 		{ 
 			var name = getString(value.name);
+			var description = getString(value.description)
 
 			content += '<li>';
 
@@ -310,7 +311,7 @@ function fetchSeasonsEpisode(event)
 
 			content += '</li>';
 
-			listOfData.push([value.id, value.number, event.data.showId, event.data.seasonId]);
+			listOfData.push([value.id, value.number, event.data.showId, event.data.seasonId, name, description]);
 		});
 
 		$("#episodeContainer").html(content);
@@ -319,6 +320,7 @@ function fetchSeasonsEpisode(event)
 		for(var i = 0; i < listOfData.length; i++)
 		{
 			$("#episodes" + listOfData[i][0]).click({episodeId: listOfData[i][0], episodeNumber: listOfData[i][1], showId: listOfData[i][2], seasonId: listOfData[i][3]}, fetchEpisodeVideos);
+			displayMoreInfo("episodes"+ listOfData[i][0], listOfData[i][4], listOfData[i][5]);
 		}
 	});
 }
