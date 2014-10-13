@@ -3,6 +3,10 @@
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
 
+/**
+ * @author  Thomas Rahn <thomas@rahn.ca>
+ * @author  Alan Ly <hello@alan.ly>
+ */
 class Episode extends ValidatedModel implements Billable {
 
 	public    $timestamps = false;
@@ -11,6 +15,17 @@ class Episode extends ValidatedModel implements Billable {
 		'season_id'   => 'required|integer',
 		'number'      => 'required|integer',
 	];
+
+	public static function boot()
+	{
+		parent::boot();
+
+		static::deleting(function($episode)
+		{
+			$episode->vdeos()->delete();
+		});
+
+	}
 
 	public function season()
 	{

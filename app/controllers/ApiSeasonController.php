@@ -60,11 +60,11 @@ class ApiSeasonController extends \BaseController {
 		$season = $this->seasons->newInstance(Input::get());
 		$season->show_id = $showId;
 
-		if (! $show->seasons()->save($season))
+		if (! $season->save())
 		{
 			return $this->apiResponse(
 				'error',
-				"Unable to create a new season for show {$showId}.",
+				$season->getErrors(),
 				500
 			);
 		}
@@ -136,7 +136,7 @@ class ApiSeasonController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Error while updating season {$seasonId} for show {$showId}.",
+				$season->getErrors(),
 				500
 			);
 		}

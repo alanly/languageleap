@@ -11,6 +11,8 @@
 	<script type="text/javascript" src="libraries/filtrify/js/highlight.pack.js"></script>
 	<script type="text/javascript" src="libraries/filtrify/js/script.js"></script>
 
+	<script type="text/javascript" src="libraries/qtip/js/qtip.js"></script>
+
 	@include('layouts.bootstrap')
 
     <link rel="stylesheet" href="libraries/accordion/css/evoslider.css" />
@@ -21,18 +23,37 @@
 	<link rel="stylesheet" href="libraries/filtrify/css/sunburst.css">
 	<link rel="stylesheet" href="libraries/filtrify/css/filtrify.css">
 
+	<link rel="stylesheet" href="libraries/qtip/css/qtip.css">
+
+	<link rel="stylesheet" href="libraries/loading/css/loading.css">
+
 </head>
 <body>
 	<div id="accordion" class="evoslider default">
 	    <dl>
 		    <dt id="firstTab">Select Media</dt>
 		    <dd>
-		    	<div id="main" role="main">
-				    <div id="content" class="demo">
-							<ul id="containerMedia">
-							    <li><strong>Movies</strong><img id="movies" src="" alt="Movies"></li>
-							    <li><strong>TV Series</strong><img id="series" src="" alt="TV Series"></li>
-							    <li><strong>Commercials</strong><img id="commercials" src="" alt="Commercials"></li>
+		    	<div class="main" role="main">
+				    <div class="demo content">
+							<ul>
+							    <li>
+								    <strong>Movies</strong>
+							    	<a class="tooltiptext">
+							    		<img id="movies" src="" alt="Movies">
+							    	</a>
+								</li>
+							    <li>
+							    	<strong>TV Shows</strong>
+							    	<a class="tooltiptext">
+								    	<img id="shows" src="" alt="TV Shows">
+								    </a>
+							    </li>
+							    <li>
+							    	<strong>Commercials</strong>
+							    	<a class="tooltiptext">
+								    	<img id="commercials" src="" alt="Commercials">
+								    </a>
+							    </li>
 							</ul>
 					</div>
 				</div>
@@ -40,26 +61,38 @@
 
 		    <dt id="secondTab"></dt>
 		    <dd>
-		 <!--   	<div id="main" role="main">
-		    	<div id="content" class="demo" style="overflow:auto;">
-			       	<div id="placeHolder"></div>
-						<ul id="container">
-						    <li data-genre="Comedy" data-main-actors="John Di Girolamo, Mike Lavoie, Alan Ly" data-director="Amazon"><strong>Amazon Fire Phone</strong><img id="firePhone" src="Filter/img/film.png"><span>Genre: <i>Comedy</i></span><span>Actors: <i>John Di Girolamo, Mike Lavoie, Alan Ly</i></span><span>Director: <i>Amazon</i></span></li> -->
-
+		    	<div class="main" role="main">
+				    <div class="demo content">
+				    	<div id="placeHolder"></div>
+						<ul id="container">	
+						</ul>
+					</div>
+				</div>
 		    </dd>
 		
 		    <dt id="thirdTab"></dt>
-		    <dd>	        
+		    <dd>
+		    	<div class="main" role="main">
+			    	<div class="demo content">
+						<ul id="seasonContainer">	
+						</ul>
+					</div>
+				</div>        
 		    </dd>
 		
 		    <dt id="fourthTab"></dt>
-		    <dd>        
+		    <dd> 
+		    	<div class="main" role="main">
+			    	<div class="demo content">
+						<ul id="episodeContainer">	
+						</ul>
+					</div>
+				</div>       
 		    </dd>  	
 	    </dl>
 	</div>
 
 	<script type="text/javascript">
-
 	    var accordion = $("#accordion").evoSlider({
 	        mode: "accordion",                  // Sets slider mode ("accordion", "slider", or "scroller")
 	        width: screen.width - 50,           // The width of slider
@@ -88,6 +121,10 @@
 		$(document).ready(function() {
     		disableAllTabs();
     		$.filtrify("container", "placeHolder");
+
+    		displayMoreInfo("movies", "Movies","Learn through your favorite Movies!");
+    		displayMoreInfo("commercials", "Commercials", "Learn through fun and interesting Commercials!");
+    		displayMoreInfo("shows", "Television Shows", "Learn through your favorite Television Shows!");
 		});
 		
 		$("#commercials").click(function() {
@@ -98,8 +135,8 @@
 			moviesClick();
 		});
 
-		$("#series").click(function() {
-			seriesClick();
+		$("#shows").click(function() {
+			showsClick();
 		});
 
 	</script>

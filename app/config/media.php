@@ -10,9 +10,6 @@ return array(
 			'shows' => __DIR__ . '/../storage/media/videos/shows',
 		),
 		'img' => __DIR__ . '/../storage/media/img',
-
 	),
-
-
-
+	'test' => __DIR__ . '/../storage/media/tests',
 );	

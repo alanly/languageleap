@@ -50,7 +50,6 @@ ul.ft-menu > li.ft-field > span.ft-label:before {
     width: 20px;
 }
 ul.ft-menu > li.ft-field > span.ft-label:after { 
-    font-size: 80%; 
     content: " \25bc"; 
 }
 ul.ft-menu > li.ft-field > span.ft-label.ft-active:before { 

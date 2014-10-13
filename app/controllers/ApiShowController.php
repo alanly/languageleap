@@ -3,6 +3,12 @@ use LangLeap\Videos\Show;
 
 class ApiShowController extends \BaseController {
 
+	protected $shows;
+
+	public function __construct(Show $shows)
+	{
+		$this->shows = $shows;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -11,26 +17,9 @@ class ApiShowController extends \BaseController {
 	public function index()
 	{
 		$shows = Show::all();
-		$showsArray = null;
-		foreach ($shows as $show)
-			$showsArray[] = $show->toResponseArray();
+	
+		return $this->apiResponse("success",$shows->toArray());
 		
-		return Response::json(array(
-			'success' => true,
-			'data' => $showsArray,
-		));
-		
-	}
-
-
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
 	}
 
 
@@ -41,33 +30,48 @@ class ApiShowController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$show = new Show;
+
+		$show->fill(Input::get());
+
+		if (! $show->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$show->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$show->toArray(),
+			201
+		);	
 	}
 
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int  $showId
 	 * @return Response
 	 */
 	public function show($id)
 	{
-		//
+		$shows = Show::find($id);
+		
+		if (!$shows)
+		{
+			return $this->apiResponse(
+				'error',
+				"Show {$id} not found.",
+				404
+			);
+		}
+		
+		return $this->apiResponse("success", $shows->toArray());
 	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
 
 	/**
 	 * Update the specified resource in storage.
@@ -77,7 +81,33 @@ class ApiShowController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$show = Show::find($id);
+
+		if (! $show)
+		{
+			return $this->apiResponse(
+				'error',
+				"Movie {$id} not found.",
+				404
+			);
+		}
+
+		$show->fill(Input::get());
+
+		if (! $show->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$show->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$show->toArray(),
+			200
+		);
 	}
 
 
@@ -89,8 +119,24 @@ class ApiShowController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$show = Show::find($id);
+
+		if (! $show)
+		{
+			return $this->apiResponse(
+				'error',
+				"Show {$id} not found.",
+				404
+			);
+		}
+
+		$show->seasons()->delete();
+		$show->delete();
+
+		return $this->apiResponse(
+			'success',
+			'Show {$id} has been removed',
+			200
+		);
 	}
-
-
 }

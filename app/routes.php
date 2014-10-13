@@ -16,10 +16,26 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+//DO NOT FORGET TO ADD BEFORE => AUTH
+Route::get('/admin', function()
+{
+	return View::make('admin.index');
+});
+
+Route::get('/admin/video', function()
+{
+	return View::make('admin.video.video');
+});
+
+Route::get('/admin/new/script', function(){
+	return View::make('admin.video.script');
+});
+
+// Route to get the definitions of specific words
+Route::post('/api/metadata/words/definitions', 'ApiWordController@getMultipleWords');
+
 // Accordion
 Route::controller('Accordion', 'AccordionController');
-Route::get('/admin', 'AdminVideoController@index');
-Route::post('/admin/video','AdminVideoController@store');
 
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
@@ -38,11 +54,13 @@ Route::group(array('prefix' => 'api',), function()
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
+
+		// Videos
+		Route::resource('videos', 'ApiVideoController');
+		
+		// Words
+		Route::resource('words', 'ApiWordController');
 	});
-
-	// Video Controller
-	Route::resource('videos', 'ApiVideoController');
-
 });
 
 Route::get('/player', function(){

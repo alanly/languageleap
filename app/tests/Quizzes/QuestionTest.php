@@ -50,7 +50,7 @@ class QuestionTest extends TestCase {
 	}
 	protected function getScriptWordInstance()
 	{
-		$script_w = App::make('LangLeap\Words\Script_Word');
+		$script_w = App::make('LangLeap\Words\ScriptWord');
 		$script_w->word_id = 1;
 		$script_w->script_id =1;
 		$script_w->position =1;
