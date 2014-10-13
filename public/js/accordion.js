@@ -109,11 +109,11 @@ function fetchCommercialVideos(event)
 		{ 
 			content += '<li>';
 
-			content += '<strong>' + name + '</strong>';
+			content += '<strong>Video ' + counter + '</strong>';
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
-			content += '<img id="videos' + counter + '" src="" alt="Video ' + counter + '">';
+			content += '<img id="commercialVideos' + value.id + '" src="" alt="Video ' + counter + '">';
 			content += '</a>';
 
 			content += '</li>';
@@ -185,11 +185,11 @@ function fetchMovieVideos(event)
 		{ 
 			content += '<li>';
 
-			content += '<strong>' + name + '</strong>';
+			content += '<strong>Video ' + counter + '</strong>';
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
-			content += '<img id="videos' + counter + '" src="" alt="Video ' + counter + '">';
+			content += '<img id="movieVideos' + value.id + '" src="" alt="Video ' + counter + '">';
 			content += '</a>';
 
 			content += '</li>';
@@ -340,11 +340,11 @@ function fetchEpisodeVideos(event)
 		{ 
 			content += '<li>';
 
-			content += '<strong>' + name + '</strong>';
+			content += '<strong>Video ' + counter + '</strong>';
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
-			content += '<img id="videos' + counter + '" src="" alt="Video ' + counter + '">';
+			content += '<img id="episodeVideos' + value.id + '" src="" alt="Video ' + counter + '">';
 			content += '</a>';
 
 			content += '</li>';
