@@ -1,13 +1,17 @@
 function commercialsClick()
 {
 	disableExtraTabs();
+	clearTabs();
 	accordion.next();
 	setTabName("firstTab", "commercials");
 	setTabName("secondTab", "Select Commercial");
+	setTabName("thirdTab", "Select Video");
 
 	$("#secondTab").removeClass("disabled");
+	$("#thirdTab").removeClass("disabled");
 
 	accordion.bindClicker(1);
+	accordion.bindClicker(2);
 
 	fetchCommercials();
 }
@@ -15,13 +19,17 @@ function commercialsClick()
 function moviesClick()
 {
 	disableExtraTabs();
+	clearTabs();
 	accordion.next();
 	setTabName("firstTab", "movies");
 	setTabName("secondTab", "Select Movie");
+	setTabName("thirdTab", "Select Video");
 
 	$("#secondTab").removeClass("disabled");
+	$("#thirdTab").removeClass("disabled");
 
 	accordion.bindClicker(1);
+	accordion.bindClicker(2);
 
 	fetchMovies();
 }
@@ -29,11 +37,13 @@ function moviesClick()
 function showsClick()
 {
 	enableExtraTabs();
+	clearTabs();
 	accordion.next();
 	setTabName("firstTab", "shows");
 	setTabName("secondTab", "Select Shows");
 	setTabName("thirdTab", "Select Season");
 	setTabName("fourthTab", "Select Episode");
+	setTabName("fifthTab", "Select Video");
 
 	accordion.bindClicker(1);
 	$("#secondTab").removeClass("disabled");
@@ -77,9 +87,44 @@ function fetchCommercials()
 		for(var i = 0; i < listOfData.length; i++)
 		{
    			displayMoreInfo("commercials"+ listOfData[i][0], listOfData[i][1], listOfData[i][2]);
+   			$("#commercials" + listOfData[i][0]).click({commercialId: listOfData[i][0], commercialName: listOfData[i][1]}, fetchCommercialVideos);
 		}
 	});
 }
+
+function fetchCommercialVideos(event)
+{
+	fetchBegin("seasonContainer");
+	setTabName("secondTab", event.data.commercialName);
+	accordion.next();
+
+	$.getJSON( "/api/metadata/commercials/" + event.data.commercialId, function(data) 
+	{
+		var json = data.data;
+		var content = "";
+		var listOfData = [];
+		var counter = 1;
+
+		$.each(json.videos, function(index, value)
+		{ 
+			content += '<li>';
+
+			content += '<strong>' + name + '</strong>';
+
+			content += '<a class="tooltiptext">';
+			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
+			content += '<img id="videos' + counter + '" src="" alt="Video ' + counter + '">';
+			content += '</a>';
+
+			content += '</li>';
+
+			counter++;
+		});
+
+		$("#seasonContainer").html(content);
+	});
+}
+
 
 function fetchMovies()
 {
@@ -118,7 +163,41 @@ function fetchMovies()
 		for(var i = 0; i < listOfData.length; i++)
 		{
    			displayMoreInfo("movies"+ listOfData[i][0], listOfData[i][1], listOfData[i][2]);
+   			$("#movies" + listOfData[i][0]).click({movieId: listOfData[i][0], movieName: listOfData[i][1]}, fetchMovieVideos);
 		}
+	});
+}
+
+function fetchMovieVideos(event)
+{
+	fetchBegin("seasonContainer");
+	setTabName("secondTab", event.data.movieName);
+	accordion.next();
+
+	$.getJSON( "/api/metadata/movies/" + event.data.movieId, function(data) 
+	{
+		var json = data.data;
+		var content = "";
+		var listOfData = [];
+		var counter = 1;
+
+		$.each(json.videos, function(index, value)
+		{ 
+			content += '<li>';
+
+			content += '<strong>' + name + '</strong>';
+
+			content += '<a class="tooltiptext">';
+			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
+			content += '<img id="videos' + counter + '" src="" alt="Video ' + counter + '">';
+			content += '</a>';
+
+			content += '</li>';
+
+			counter++;
+		});
+
+		$("#seasonContainer").html(content);
 	});
 }
 
@@ -179,9 +258,7 @@ function fetchShowsSeason(event)
 		{ 
 			var name = getString(value.name);
 
-			content += '<li ';
-			content += 'id="' + value.id +  '" ';
-			content += '>';
+			content += '<li>';
 
 			content += '<strong>Season ' + value.number + '</strong>';
 
@@ -192,7 +269,7 @@ function fetchShowsSeason(event)
 
 			content += '</li>';
 
-			listOfData.push([value.id, value.number, event.data.id]);
+			listOfData.push([value.id, value.number, event.data.showId]);
 		});
 
 		$("#seasonContainer").html(content);
@@ -212,7 +289,7 @@ function fetchSeasonsEpisode(event)
 	fetchBegin("episodeContainer");
 
 
-	$.getJSON( "/api/metadata/shows/" + event.data.showId + "/seasons/" + event.data.seasonId, function(data) 
+	$.getJSON( "/api/metadata/shows/" + event.data.showId + "/seasons/" + event.data.seasonId + "/episodes/", function(data) 
 	{
 		var json = data.data;
 		var content = "";
@@ -222,9 +299,7 @@ function fetchSeasonsEpisode(event)
 		{ 
 			var name = getString(value.name);
 
-			content += '<li ';
-			content += 'id="' + value.id +  '" ';
-			content += '>';
+			content += '<li>';
 
 			content += '<strong>Episode ' + value.number + '</strong>';
 
@@ -234,10 +309,50 @@ function fetchSeasonsEpisode(event)
 			content += '</a>';
 
 			content += '</li>';
+
+			listOfData.push([value.id, value.number, event.data.showId, event.data.seasonId]);
 		});
 
 		$("#episodeContainer").html(content);
 
+
+		for(var i = 0; i < listOfData.length; i++)
+		{
+			$("#episodes" + listOfData[i][0]).click({episodeId: listOfData[i][0], episodeNumber: listOfData[i][1], showId: listOfData[i][2], seasonId: listOfData[i][3]}, fetchEpisodeVideos);
+		}
+	});
+}
+
+function fetchEpisodeVideos(event)
+{
+	fetchBegin("videoContainer");
+	setTabName("thirdTab", event.data.episodeName);
+	accordion.next();
+
+	$.getJSON( "/api/metadata/shows/" + event.data.showId + "/seasons/" + event.data.seasonId + "/episodes/" + event.data.episodeId, function(data) 
+	{
+		var json = data.data;
+		var content = "";
+		var listOfData = [];
+		var counter = 1;
+
+		$.each(json.videos, function(index, value)
+		{ 
+			content += '<li>';
+
+			content += '<strong>' + name + '</strong>';
+
+			content += '<a class="tooltiptext">';
+			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
+			content += '<img id="videos' + counter + '" src="" alt="Video ' + counter + '">';
+			content += '</a>';
+
+			content += '</li>';
+
+			counter++;
+		});
+
+		$("#videoContainer").html(content);
 	});
 }
 
@@ -257,9 +372,11 @@ function disableExtraTabs()
 {
 	$("#thirdTab").addClass("disabled");
 	$("#fourthTab").addClass("disabled");
+	$("#fifthTab").addClass("disabled");
 
 	setTabName("thirdTab", "");
 	setTabName("fourthTab", "");
+	setTabName("fifthTab", "");
 
 	disableClickableTabs();
 }
@@ -288,6 +405,7 @@ function enableExtraTabs()
 {
 	$("#thirdTab").removeClass("disabled");
 	$("#fourthTab").removeClass("disabled");
+	$("#fifthTab").removeClass("disabled");
 
 	enableClickableTabs();
 }
@@ -303,22 +421,26 @@ function disableAllTabs()
 	$("#secondTab").addClass("disabled");
 	$("#thirdTab").addClass("disabled");
 	$("#fourthTab").addClass("disabled");
+	$("#fifthTab").addClass("disabled");
 
 	accordion.unbindClicker(1);
 	accordion.unbindClicker(2);
 	accordion.unbindClicker(3);
+	accordion.unbindClicker(4);
 }
 
 function enableClickableTabs()
 {
 	accordion.bindClicker(2);
 	accordion.bindClicker(3);
+	accordion.bindClicker(4);
 }
 
 function disableClickableTabs()
 {
 	accordion.unbindClicker(2);
 	accordion.unbindClicker(3);
+	accordion.unbindClicker(4);
 }
 
 function toTitleCase(str)
@@ -339,7 +461,6 @@ function getString(str)
 function createLiData(id, genre, actor, director)
 {
 	var data = '<li ';
-	data += 'id="' + id +  '" ';
 	data += 'data-genre="' + genre + '" ';
 	data += 'data-main-actors="' + actor + '" ';
 	data += 'data-director="' + director + '" ';
@@ -368,4 +489,11 @@ function createHoverData(description, genre, actor, director)
 	data += ' Director: ' + director;
 
 	return data;
+}
+
+function clearTabs()
+{
+	$("#seasonContainer").html("");
+	$("#episodeContainer").html("");
+	$("#videoContainer").html("");
 }

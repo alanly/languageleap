@@ -61,7 +61,7 @@
 	    	<div class="main" role="main">
 			    <div class="demo content">
 			    	<div id="placeHolder"></div>
-					<ul id="container">	
+					<ul id="container">
 					</ul>
 				</div>
 			</div>
@@ -85,7 +85,17 @@
 					</ul>
 				</div>
 			</div>       
-	    </dd>  	
+	    </dd>
+
+	    <dt id="fifthTab"></dt>
+	    <dd> 
+	    	<div class="main" role="main">
+		    	<div class="demo content">
+					<ul id="videoContainer">	
+					</ul>
+				</div>
+			</div>       
+	    </dd>  	  	
     </dl>
 </div>
 
