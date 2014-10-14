@@ -35,7 +35,7 @@ Route::get('/admin/new/script', function(){
 Route::post('/api/metadata/words/definitions', 'ApiWordController@getMultipleWords');
 
 // Accordion
-Route::controller('Accordion', 'AccordionController');
+Route::controller('accordion', 'AccordionController');
 
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
