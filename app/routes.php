@@ -61,7 +61,7 @@ Route::group(array('prefix' => 'api',), function()
 		// Words
 		Route::resource('words', 'ApiWordController');
 
-		// Flashcards
+		// Flashcard
 		Route::resource('flashcard', 'ApiFlashcardController');
 	});
 });
@@ -69,3 +69,9 @@ Route::group(array('prefix' => 'api',), function()
 Route::get('/player', function(){
     return View::make('player.player');
 });
+
+// Flashcard
+Route::controller('flashcard', 'FlashcardController');
+
+
+
