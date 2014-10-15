@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="libraries/qtip/css/qtip.css">
 
 <link rel="stylesheet" href="libraries/loading/css/loading.css">
+<link rel="stylesheet" href="css/accordion.css">
 @stop
 
 @section('content')

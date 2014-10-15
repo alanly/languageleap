@@ -64,13 +64,15 @@ function fetchCommercials()
 		$.each(json, function(index, value)
 		{ 
 			var name = getString(value.name);
-			var description = getString(value.description);
+			var description = getStringCapitalise(value.description);
 
 			content += '<li ';
 			content += 'id="' + value.id +  '" ';
 			content += '>';
 
-			content += '<strong>' + name + '</strong>';
+			content += '<div class="media-title">'
+			content += '<strong>' + trimName(name) + '</strong>';
+			content += '</div>'
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
@@ -139,14 +141,16 @@ function fetchMovies()
 		$.each(json, function(index, value)
 		{ 
 			var name = getString(value.name);
-			var genre = getString(value.genre);
+			var genre = getStringCapitalise(value.genre);
 			var actor = getString(value.actor);
 			var director = getString(value.director);
-			var description = getString(value.description);
+			var description = getStringCapitalise(value.description);
 
 			content += createLiData(value.id, genre, actor, director);
 
-			content += '<strong>' + name + '</strong>';
+			content += '<div class="media-title">'
+			content += '<strong>' + trimName(name) + '</strong>';
+			content += "</div>"
 
 			content += '<a class="tooltiptext">';
 			//content += '<img id="' + value.name + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + description + '">';
@@ -214,14 +218,16 @@ function fetchShows()
 		$.each(json, function(index, value)
 		{ 
 			var name = getString(value.name);
-			var genre = getString(value.genre);
+			var genre = getStringCapitalise(value.genre);
 			var actor = getString(value.actor);
 			var director = getString(value.director);
-			var description = getString(value.description);
+			var description = getStringCapitalise(value.description);
 
 			content += createLiData(value.id, genre, actor, director);
 
-			content += '<strong>' + name + '</strong>';
+			content += '<div class="media-title">'
+			content += '<strong>' + trimName(name) + '</strong>';
+			content += '</div>'
 
 			content += '<a class="tooltiptext">';
 			content += '<img id="shows' + value.id + '" src="' + ((value.image_path == null) ? '' : value.image_path) + '" alt="' + name + '">';
@@ -298,7 +304,7 @@ function fetchSeasonsEpisode(event)
 		$.each(json.episodes, function(index, value)
 		{ 
 			var name = getString(value.name);
-			var description = getString(value.description)
+			var description = getStringCapitalise(value.description)
 
 			content += '<li>';
 
@@ -328,7 +334,7 @@ function fetchSeasonsEpisode(event)
 function fetchEpisodeVideos(event)
 {
 	fetchBegin("videoContainer");
-	setTabName("thirdTab", event.data.episodeName);
+	setTabName("fourthTab", "Episode " + event.data.episodeNumber);
 	accordion.next();
 
 	$.getJSON( "/api/metadata/shows/" + event.data.showId + "/seasons/" + event.data.seasonId + "/episodes/" + event.data.episodeId, function(data) 
@@ -460,6 +466,16 @@ function getString(str)
 	return toTitleCase(str);
 }
 
+function getStringCapitalise(str)
+{
+	if(str == null)
+	{
+		return "N/A";
+	}
+	str = str.toLowerCase();
+	return  str.substring(0,1).toUpperCase() + str.substring(1,str.length);
+}
+
 function createLiData(id, genre, actor, director)
 {
 	var data = '<li ';
@@ -498,4 +514,14 @@ function clearTabs()
 	$("#seasonContainer").html("");
 	$("#episodeContainer").html("");
 	$("#videoContainer").html("");
+}
+
+function trimName(str)
+{
+	if(str.length < 25)
+	{
+		return str;
+	}
+
+	return str.substring(0, 25) + "...";
 }
