@@ -18,7 +18,7 @@
 
     <dl>
     	<?php
-	    	/*foreach($words as $key => $value)
+	    	foreach($words as $key => $value)
 	    	{
 	    		$data = "<dt></dt>";
 	    		$data .= "<dd>";
@@ -28,7 +28,7 @@
 	    		$data .= "</dd>";
 
 	    		echo $data;
-	    	}*/
+	    	}
     	?>
     	<dt></dt>
     	<dd>

@@ -14,14 +14,14 @@ class FlashcardController extends BaseController {
 	|
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
-	*/
+	
 
 	public function getIndex()
 	{
 		return View::make('flashcard');
-	}
+	}*/
 
-/*
+
 	public function postIndex()
 	{
 		$words = Input::get();
@@ -34,5 +34,5 @@ class FlashcardController extends BaseController {
 		}
 
 		return View::make('flashcard')->with('words', $wordArray);
-	}*/
+	}
 }
