@@ -29,8 +29,8 @@ TABLE OF CONTENTS
 	position: relative;
 	width :960px; /* set width via option */
 	height :360px; /* set height via option */
-    margin: 0 auto;
-    margin-top: 20px;
+	margin: 0 auto;
+	margin-top: 20px;
 	border: 5px solid #fafafa;
 	border-radius: 15px;
 	padding: 5px;
