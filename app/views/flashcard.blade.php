@@ -30,45 +30,6 @@
 	    		echo $data;
 	    	}
     	?>
-    	<dt></dt>
-    	<dd>
-    		<div class="word">
-    		Something
-    		</div>
-    		<div class="pronounciation">
-    		Sum-ting
-    		</div>
-    		<div class="definition">
-    		A thing that is unspecified or unknown.
-    		</div>
-    	</dd>
-
-    	<dt></dt>
-    	<dd>
-    		<div class="word">
-    		Something
-    		</div>
-    		<div class="pronounciation">
-    		Sum-ting
-    		</div>
-    		<div class="definition">
-    		A thing that is unspecified or unknown.
-    		</div>
-    	</dd>
-
-    	<dt></dt>
-    	<dd>
-    		<div class="word">
-    		Something
-    		</div>
-    		<div class="pronounciation">
-    		Sum-ting
-    		</div>
-    		<div class="definition">
-    		A thing that is unspecified or unknown.
-    		</div>
-    	</dd>
-
     </dl>
 
 </div> <!-- end evo slider -->
