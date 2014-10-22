@@ -63,6 +63,6 @@ Route::group(array('prefix' => 'api',), function()
 	});
 });
 
-Route::get('/player', function(){
-    return View::make('player.player');
+Route::get('/video/play/{id}', function($id){
+    return View::make('player.player')->with("video_id",$id);
 });
