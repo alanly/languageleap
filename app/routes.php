@@ -61,5 +61,6 @@ Route::group(array('prefix' => 'api',), function()
 		// Words
 		Route::resource('words', 'ApiWordController');
 	});
+	
 });
 
