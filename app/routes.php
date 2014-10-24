@@ -61,6 +61,15 @@ Route::group(array('prefix' => 'api',), function()
 		// Words
 		Route::resource('words', 'ApiWordController');
 	});
-	
+
+});
+
+// Routing group for static content.
+Route::group(array('prefix' => 'content'), function()
+{
+
+	// Handle requests for video clips.
+	Route::get('videos/{id}', 'VideoContentController@getVideo');
+
 });
 
