@@ -34,7 +34,6 @@ TABLE OF CONTENTS
 	padding: 5px;
 	background :#4e4e4e;
 	overflow : visible ;
-	box-sizing: content-box ;
 	
 	/* shadow */
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -70,7 +69,6 @@ To give unique custom appearance for each title, you can give a unique class for
 	text-align : left;
 	padding-left: 20px;
     background: #4e4e4e url('title-bar.png') no-repeat;
-    box-sizing: content-box;
     
     /* text shadow */
 	text-shadow: -1px 1px 1px #9f9f9f;
@@ -89,7 +87,6 @@ To give unique custom appearance for each title, you can give a unique class for
 	color: #4e4e4e;
 	background: #4e4e4e url('title-bar.png') no-repeat;
 	cursor :default;
-	box-sizing: content-box;
 }
 
 /* 
@@ -100,7 +97,6 @@ The width and height will automatically be defined by the plugin.
 .evoslider.default dd 
 {
 	background: #fff;
-	box-sizing: content-box;
 }
 
 /*  _______________________________________

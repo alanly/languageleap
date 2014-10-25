@@ -35,7 +35,7 @@ Route::get('/admin/new/script', function(){
 Route::post('/api/metadata/words/definitions', 'ApiWordController@getMultipleWords');
 
 // Accordion
-Route::controller('Accordion', 'AccordionController');
+Route::controller('accordion', 'AccordionController');
 
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
@@ -60,6 +60,18 @@ Route::group(array('prefix' => 'api',), function()
 		
 		// Words
 		Route::resource('words', 'ApiWordController');
+
+		// Flashcard
+		Route::resource('flashcard', 'ApiFlashcardController');
 	});
 });
+
+Route::get('/player', function(){
+    return View::make('player.player');
+});
+
+// Flashcard
+Route::controller('flashcard', 'FlashcardController');
+
+
 
