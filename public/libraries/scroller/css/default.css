@@ -29,11 +29,14 @@ TABLE OF CONTENTS
 	position: relative;
 	width :960px; /* set width via option */
 	height :360px; /* set height via option */
-    margin: 0 auto;
-	border: 10px solid #fafafa;
+	margin: 0 auto;
+	margin-top: 20px;
+	border: 5px solid #fafafa;
+	border-radius: 15px;
 	padding: 5px;
 	background :#4e4e4e;
 	overflow : visible ;
+	box-sizing: content-box ;
 	
 	/* shadow */
 	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -58,17 +61,15 @@ To give unique custom appearance for each title, you can give a unique class for
 */ 
 .evoslider.default dt
 {
-	height : 45px;
-    color :#4e4e4e;
-    font-family :Arial , Verdana;
-    font-size: 13px;
-	font-weight: bold;
-	text-transform: uppercase;
-	letter-spacing :1px;
-	line-height: 40px;
-	text-align : left;
-	padding-left: 20px;
-    background: #4e4e4e url('title-bar.png') no-repeat;
+	position: relative;
+	width :960px; /* set width via option */
+	height :360px; /* set height via option */
+    margin: 0 auto;
+	border: 5px solid #fafafa;
+	border-radius: 15px;
+	padding: 5px;
+	background :#4e4e4e;
+	overflow : visible ;
     
     /* text shadow */
 	text-shadow: -1px 1px 1px #9f9f9f;
@@ -85,8 +86,8 @@ To give unique custom appearance for each title, you can give a unique class for
 .evoslider.default dt.active
 {
 	color: #4e4e4e;
-	background: #4e4e4e url('title-bar.png') no-repeat;
 	cursor :default;
+	box-sizing: content-box;
 }
 
 /* 
@@ -96,7 +97,8 @@ The width and height will automatically be defined by the plugin.
 */
 .evoslider.default dd 
 {
-	background: #fff;
+	background: #E1E1D6;
+	box-sizing: content-box;
 }
 
 /*  _______________________________________
@@ -187,7 +189,7 @@ The width and height will automatically be defined by the plugin.
 	margin : 5px;
 	padding :0;
 	border :none;
-	background : #eee;
+	background : #888F80;
 	overflow: visible;
 	font-size: 12px;
 	text-align: center;
@@ -203,7 +205,7 @@ The width and height will automatically be defined by the plugin.
 /* The hover state of the bullets control */
 .evoslider.default .controlNav li.bullets:hover
 {
-	background: #4e4e4e;
+	background: #ffffff;
 	color: #fafafa;
 }
 

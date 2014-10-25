@@ -57,7 +57,20 @@ Route::group(array('prefix' => 'api',), function()
 		
 		// Words
 		Route::resource('words', 'ApiWordController');
+
+		// Flashcard
+		Route::resource('flashcard', 'ApiFlashcardController');
 	});
+
+});
+
+// Routing group for static content.
+Route::group(array('prefix' => 'content'), function()
+{
+
+	// Handle requests for video clips.
+	Route::get('videos/{id}', 'VideoContentController@getVideo');
+
 });
 
 
@@ -65,3 +78,9 @@ Route::group(array('prefix' => 'api',), function()
 Route::get('/video/play/{id}', function($id){
     return View::make('player.player')->with("video_id",$id);
 });
+
+// Flashcard
+Route::controller('flashcard', 'FlashcardController');
+
+
+
