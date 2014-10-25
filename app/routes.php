@@ -64,6 +64,16 @@ Route::group(array('prefix' => 'api',), function()
 		// Flashcard
 		Route::resource('flashcard', 'ApiFlashcardController');
 	});
+
+});
+
+// Routing group for static content.
+Route::group(array('prefix' => 'content'), function()
+{
+
+	// Handle requests for video clips.
+	Route::get('videos/{id}', 'VideoContentController@getVideo');
+
 });
 
 Route::get('/player', function(){
