@@ -58,7 +58,7 @@
 		success : function(data){
 			alert("test");
 			vid.find("source").attr("src", url);
-			vid.load();
+		//	vid.load();
 		},
 		error : function(data){
 			var json = $.parseJSON(data.responseText);
