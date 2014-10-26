@@ -35,13 +35,22 @@ class VideoContentControllerTest extends TestCase {
 		$fileInfoFactory->shouldReceive('makeInstance')->once()->andReturn($fileInfo);
 		App::instance('LangLeap\Core\FileInfoFactory', $fileInfoFactory);
 
-		// Call the route appropriately.
+		// Set the appropriate server and call route.
+		Config::set('media.paths.xsendfile.server', 'apache');
 		$response = $this->action('GET', 'VideoContentController@getVideo', [$video->id]);
-
-		$this->assertResponseOk();
 		$this->assertEquals($path, $response->headers->get('X-Sendfile'));
+
+		Config::set('media.paths.xsendfile.server', 'lighttpd');
+		$response = $this->action('GET', 'VideoContentController@getVideo', [$video->id]);
 		$this->assertEquals($path, $response->headers->get('X-LIGHTTPD-send-file'));
+
+		Config::set('media.paths.xsendfile.server', 'nginx');
+		$response = $this->action('GET', 'VideoContentController@getVideo', [$video->id]);
 		$this->assertStringEndsWith('/1.mkv', $response->headers->get('X-Accel-Redirect'));
+
+		Config::set('media.paths.xsendfile.server', null);
+		$response = $this->action('GET', 'VideoContentController@getVideo', [$video->id]);
+		$this->assertCount(8, $response->headers->all());
 	}
 
 

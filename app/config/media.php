@@ -18,24 +18,39 @@ return array(
 		'img' => __DIR__.'/../storage/media/img',
 
 		/**
-		 * Map to the internal location stanzas in the Nginx configuration for
-		 * Nginx's XSendfile functionality (they call it X-Accel).
-		 * 
-		 * Refer to Nginx official documentation,
-		 * - http://wiki.nginx.org/X-accel
-		 * - http://wiki.nginx.org/XSendfile
+		 * Configuration associated with the X-Sendfile implementation of the
+		 * deploying web server.
 		 */
 		'xsendfile' => array(
 
 			/**
-			 * Map internal for videos. This location should alias to the parent
-			 * directory of the individual 'videos' from above.
+			 * The web server being used with the application.
+			 * Choices available are:
+			 *
+			 * 	Apache   -> apache
+			 * 	Lighttpd -> lighttpd
+			 * 	Nginx    -> nginx
+			 * 	Disable  -> null
+			 * 	
+			 */
+			'server' => null,
+
+			/**
+			 * 
+			 * Map to the internal location stanzas in the Nginx configuration for
+			 * Nginx's X-Sendfile functionality (they call it X-Accel). This location
+			 * should alias to the parent directory of the individual 'videos' from
+			 * above.
 			 *
 			 * For example,
 			 * 	'commercials' => __DIR__.'/../storage/media/videos/commercials'
 			 *
 			 * The internal location in Nginx should alias to:
 			 * 	__DIR__.'/../storage/media/videos
+			 *
+			 * Refer to Nginx official documentation,
+			 * - http://wiki.nginx.org/X-accel
+			 * - http://wiki.nginx.org/XSendfile
 			 */
 			'videos' => '/internal/videos',
 
