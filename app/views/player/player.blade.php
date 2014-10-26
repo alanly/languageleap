@@ -50,15 +50,13 @@
 </div>
 
 <script>  
-	var vid = document.getElementById("video-player");
 	var url = "/content/videos/{{$video_id}}";
 	$.ajax({
 		type : "GET",
 		url : url,
 		success : function(data){
-			alert("test");
-			vid.find("source").attr("src", url);
-		//	vid.load();
+			$("#video-player").find("source").attr("src", url);
+			$("#video-player").load();
 		},
 		error : function(data){
 			var json = $.parseJSON(data.responseText);
