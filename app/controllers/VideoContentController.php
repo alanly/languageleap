@@ -61,13 +61,19 @@ class VideoContentController extends \BaseController {
 	 */
 	protected function getSendfileHeadersForFile(SplFileInfo $file)
 	{
+		$server = Config::get('media.paths.xsendfile.server');
+
+		if (! $server) return [];
+
 		$parentDirName = dirname($file->getRealPath()).'/';
 
-		return [
-			'X-Sendfile'           => $file->getRealPath(), // Sendfile path for Apache
-			'X-LIGHTTPD-send-file' => $file->getRealPath(), // Sendfile path for Lighttpd
-			'X-Accel-Redirect'     => Config::get('media.paths.xsendfile.videos').$parentDirName.$file->getFilename(),
+		$headers = [
+			'apache'   => ['X-Sendfile'           => $file->getRealPath()],
+			'lighttpd' => ['X-LIGHTTPD-send-file' => $file->getRealPath()],
+			'nginx'    => ['X-Accel-Redirect'     => Config::get('media.paths.xsendfile.videos').$parentDirName.$file->getFilename()],
 		];
+
+		return $headers[$server];
 	}
 
 }
