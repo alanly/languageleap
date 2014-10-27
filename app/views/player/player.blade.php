@@ -20,7 +20,6 @@
 				<video width="100%" controls id="video-player" preload='none'>
 					<source class="source" type="video/mp4">
 					<p>Your browser does not support HTML5 video.</p>
-
 				</video>
 			</div>
 		</div>
