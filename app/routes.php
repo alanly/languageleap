@@ -10,10 +10,9 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
-Route::get('/', function()
-{
-	return View::make('hello');
+// Accordion
+Route::get('/', function(){
+	return View::make('index');
 });
 
 //DO NOT FORGET TO ADD BEFORE => AUTH
@@ -27,15 +26,14 @@ Route::get('/admin/video', function()
 	return View::make('admin.video.video');
 });
 
-Route::get('/admin/new/script', function(){
+Route::get('/admin/new/script', function()
+{
 	return View::make('admin.video.script');
 });
 
 // Route to get the definitions of specific words
 Route::post('/api/metadata/words/definitions', 'ApiWordController@getMultipleWords');
 
-// Accordion
-Route::controller('accordion', 'AccordionController');
 
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
@@ -76,8 +74,11 @@ Route::group(array('prefix' => 'content'), function()
 
 });
 
-Route::get('/player', function(){
-    return View::make('player.player');
+
+//video player
+Route::get('/video/play/{id}', function($id)
+{
+    return View::make('player.player')->with("video_id",$id);
 });
 
 // Flashcard

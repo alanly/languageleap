@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Language Leap</title>
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="//cdn.jsdelivr.net/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.0.3/css/bootstrap.min.css">
 		<link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.0.3/css/font-awesome.min.css">
