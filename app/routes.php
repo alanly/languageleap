@@ -26,7 +26,8 @@ Route::get('/admin/video', function()
 	return View::make('admin.video.video');
 });
 
-Route::get('/admin/new/script', function(){
+Route::get('/admin/new/script', function()
+{
 	return View::make('admin.video.script');
 });
 
@@ -75,7 +76,8 @@ Route::group(array('prefix' => 'content'), function()
 
 
 //video player
-Route::get('/video/play/{id}', function($id){
+Route::get('/video/play/{id}', function($id)
+{
     return View::make('player.player')->with("video_id",$id);
 });
 
