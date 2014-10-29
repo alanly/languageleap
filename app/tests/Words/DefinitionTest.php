@@ -16,7 +16,7 @@ class DefinitionTest extends TestCase {
 		$def->definition = "This is a definition.";
 		$def->full_definition = "This is a full definition.";
 		$def->pronunciation = "Def-inition.";
-		$this->assertCount(1, $def);	
+		$this->assertNotNull($def);	
 	}
 
 	protected function createDefinition()
