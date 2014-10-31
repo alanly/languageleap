@@ -11,9 +11,11 @@
 |
 */
 // Accordion
-Route::get('/', function(){
+Route::get('/', function()
+{
 	return View::make('index');
 });
+
 
 // Route grouping for administration interface.
 Route::group(['prefix' => 'admin'], function()
@@ -38,6 +40,7 @@ Route::group(['prefix' => 'admin'], function()
 	});
 
 });
+
 
 // Routes for API controllers
 Route::group(['prefix' => 'api'], function()
@@ -72,6 +75,7 @@ Route::group(['prefix' => 'api'], function()
 
 });
 
+
 // Routing group for static content.
 Route::group(array('prefix' => 'content'), function()
 {
@@ -88,8 +92,6 @@ Route::get('/video/play/{id}', function($id)
     return View::make('player.player')->with("video_id",$id);
 });
 
+
 // Flashcard
 Route::controller('flashcard', 'FlashcardController');
-
-
-
