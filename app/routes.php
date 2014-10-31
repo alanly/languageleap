@@ -67,9 +67,6 @@ Route::group(['prefix' => 'api'], function()
 	// Words
 	Route::resource('words', 'ApiWordController');
 
-	// Flashcard
-	Route::resource('flashcard', 'ApiFlashcardController');
-
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
 
