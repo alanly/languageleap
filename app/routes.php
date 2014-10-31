@@ -15,24 +15,32 @@ Route::get('/', function(){
 	return View::make('index');
 });
 
-//DO NOT FORGET TO ADD BEFORE => AUTH
-Route::get('/admin', function()
+// Route grouping for administration interface.
+Route::group(['prefix' => 'admin'], function()
 {
-	return View::make('admin.index');
-});
 
-Route::get('/admin/video', function()
-{
-	return View::make('admin.video.video');
-});
+	// Interface index
+	Route::get('/', function()
+	{
+		return View::make('admin.index');
+	});
 
-Route::get('/admin/new/script', function()
-{
-	return View::make('admin.video.script');
+	// Video interface
+	Route::get('video', function()
+	{
+		return View::make('admin.video.video');
+	});
+
+	// Script interface
+	Route::get('new/script', function()
+	{
+		return View::make('admin.video.script');
+	});
+
 });
 
 // Routes for API controllers
-Route::group(array('prefix' => 'api',), function()
+Route::group(['prefix' => 'api'], function()
 {
 
 	// Media controllers
