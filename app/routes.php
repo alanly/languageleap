@@ -31,10 +31,6 @@ Route::get('/admin/new/script', function()
 	return View::make('admin.video.script');
 });
 
-// Route to get the definitions of specific words
-Route::post('/api/metadata/words/definitions', 'ApiWordController@getMultipleWords');
-
-
 // Routes for API controllers
 Route::group(array('prefix' => 'api',), function()
 {
@@ -55,6 +51,9 @@ Route::group(array('prefix' => 'api',), function()
 
 		// Videos
 		Route::resource('videos', 'ApiVideoController');
+
+		// Route to get the definitions of specific words
+		Route::post('words/definitions', 'ApiWordController@getMultipleWords');
 		
 		// Words
 		Route::resource('words', 'ApiWordController');
