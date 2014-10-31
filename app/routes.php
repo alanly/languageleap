@@ -46,7 +46,7 @@ Route::group(['prefix' => 'admin'], function()
 Route::group(['prefix' => 'api'], function()
 {
 
-	// Media controllers
+	// Metadata controllers for media resources.
 	Route::group(['prefix' => 'metadata'], function()
 	{
 		// Commercials
@@ -59,19 +59,19 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
-
-		// Videos
-		Route::resource('videos', 'ApiVideoController');
-
-		// Route to get the definitions of specific words
-		Route::post('words/definitions', 'ApiWordController@getMultipleWords');
-		
-		// Words
-		Route::resource('words', 'ApiWordController');
-
-		// Flashcard
-		Route::resource('flashcard', 'ApiFlashcardController');
 	});
+
+	// Route to get the definitions of specific words
+	Route::post('words/definitions', 'ApiWordController@getMultipleWords');
+
+	// Words
+	Route::resource('words', 'ApiWordController');
+
+	// Flashcard
+	Route::resource('flashcard', 'ApiFlashcardController');
+
+	// Videos
+	Route::resource('videos', 'ApiVideoController');
 
 });
 
