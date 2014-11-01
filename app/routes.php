@@ -11,35 +11,42 @@
 |
 */
 // Accordion
-Route::get('/', function(){
+Route::get('/', function()
+{
 	return View::make('index');
 });
 
-//DO NOT FORGET TO ADD BEFORE => AUTH
-Route::get('/admin', function()
-{
-	return View::make('admin.index');
-});
 
-Route::get('/admin/video', function()
+// Route grouping for administration interface.
+Route::group(['prefix' => 'admin'], function()
 {
-	return View::make('admin.video.video');
-});
 
-Route::get('/admin/new/script', function()
-{
-	return View::make('admin.video.script');
-});
+	// Interface index
+	Route::get('/', function()
+	{
+		return View::make('admin.index');
+	});
 
-// Route to get the definitions of specific words
-Route::post('/api/metadata/words/definitions', 'ApiWordController@getMultipleWords');
+	// Video interface
+	Route::get('video', function()
+	{
+		return View::make('admin.video.video');
+	});
+
+	// Script interface
+	Route::get('new/script', function()
+	{
+		return View::make('admin.video.script');
+	});
+
+});
 
 
 // Routes for API controllers
-Route::group(array('prefix' => 'api',), function()
+Route::group(['prefix' => 'api'], function()
 {
 
-	// Media controllers
+	// Metadata controllers for media resources.
 	Route::group(['prefix' => 'metadata'], function()
 	{
 		// Commercials
@@ -52,18 +59,19 @@ Route::group(array('prefix' => 'api',), function()
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
-
-		// Videos
-		Route::resource('videos', 'ApiVideoController');
-		
-		// Words
-		Route::resource('words', 'ApiWordController');
-
-		// Flashcard
-		Route::resource('flashcard', 'ApiFlashcardController');
 	});
 
+	// Route to get the definitions of specific words
+	Route::post('words/definitions', 'ApiWordController@getMultipleWords');
+
+	// Words
+	Route::resource('words', 'ApiWordController');
+
+	// Videos
+	Route::resource('videos', 'ApiVideoController');
+
 });
+
 
 // Routing group for static content.
 Route::group(array('prefix' => 'content'), function()
@@ -81,8 +89,6 @@ Route::get('/video/play/{id}', function($id)
     return View::make('player.player')->with("video_id",$id);
 });
 
+
 // Flashcard
 Route::controller('flashcard', 'FlashcardController');
-
-
-

@@ -50,7 +50,7 @@
 	$script = preg_replace('/[^[:alpha:] ]/', '', $script);
 	$words = explode(" ", $script);
 	
-	echo Form::open(array('url' => 'api/metadata/words')) . "\n";
+	echo Form::open(array('url' => 'api/words')) . "\n";
 	echo Form::hidden('script_id', $script_id) . "\n";
 	echo '<table>'."\n";
 	echo '<th>Word</th><th>Definition</th><th>Full Definition</th><th>Pronunciation</th>'."\n";
@@ -97,7 +97,7 @@
 	// Request all available definitions from the server
 	$.ajax({
 		type: "POST",
-		url: "/api/metadata/words/definitions",
+		url: "/api/words/definitions",
 		data: data,
 		dataType: "json",
 		async: false,
