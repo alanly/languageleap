@@ -5,7 +5,7 @@
 
 <div class="container">
 
-	{{ Form::open(array('url' => 'api/metadata/videos','files' => true)) }}
+	{{ Form::open(array('url' => 'api/videos','files' => true)) }}
 
 		<input type="radio" id="comm" name="video_type" value="commercial"/><label>Commercial</label>
 		<input type="radio" id="mov" name="video_type" value="movie"/><label>Movie</label>
