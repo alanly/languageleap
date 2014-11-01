@@ -59,13 +59,13 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
+		
+		// Get single definition using new definition model
+		Route::resource('definitions', 'ApiDefinitionController');
 	});
 
 	// Route to get the definitions of specific words
 	Route::post('words/definitions', 'ApiWordController@getMultipleWords');
-
-	// Get single definition using new definition model
-	Route::resource('definitions', 'ApiDefinitionController');
 
 	// Words
 	Route::resource('words', 'ApiWordController');
