@@ -39,6 +39,12 @@ Route::group(['prefix' => 'admin'], function()
 		return View::make('admin.video.script');
 	});
 
+	// Dev script interface
+	Route::get('dev/script', function()
+	{
+		return View::make('admin.script.index');
+	});
+
 });
 
 
