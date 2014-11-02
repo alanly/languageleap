@@ -3,6 +3,12 @@ use LangLeap\Videos\Show;
 
 class ApiShowController extends \BaseController {
 
+	protected $shows;
+
+	public function __construct(Show $shows)
+	{
+		$this->shows = $shows;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -18,31 +24,37 @@ class ApiShowController extends \BaseController {
 
 
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
-
-	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
 	public function store()
 	{
-		//
+		$show = new Show;
+
+		$show->fill(Input::get());
+
+		if (! $show->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$show->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$show->toArray(),
+			201
+		);	
 	}
 
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int  $showId
 	 * @return Response
 	 */
 	public function show($id)
@@ -61,19 +73,6 @@ class ApiShowController extends \BaseController {
 		return $this->apiResponse("success", $shows->toArray());
 	}
 
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-
 	/**
 	 * Update the specified resource in storage.
 	 *
@@ -82,7 +81,33 @@ class ApiShowController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$show = Show::find($id);
+
+		if (! $show)
+		{
+			return $this->apiResponse(
+				'error',
+				"Movie {$id} not found.",
+				404
+			);
+		}
+
+		$show->fill(Input::get());
+
+		if (! $show->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$show->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$show->toArray(),
+			200
+		);
 	}
 
 
@@ -96,15 +121,22 @@ class ApiShowController extends \BaseController {
 	{
 		$show = Show::find($id);
 
-		if(!$show)
-			App::abort(404);
+		if (! $show)
+		{
+			return $this->apiResponse(
+				'error',
+				"Show {$id} not found.",
+				404
+			);
+		}
 
+		$show->seasons()->delete();
 		$show->delete();
 
 		return $this->apiResponse(
 			'success',
-			'Show deleted.',
-			204
+			'Show {$id} has been removed',
+			200
 		);
 	}
 }

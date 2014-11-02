@@ -59,7 +59,7 @@ class ScriptWordTest extends TestCase {
 	}
 	protected function getScriptWordInstance()
         {
-                return App::make('LangLeap\Words\Script_Word');
+                return App::make('LangLeap\Words\ScriptWord');
         }
 
 	

@@ -127,14 +127,14 @@ div#header > iframe {
 /* put +1 button on a diet 
 #___plusone_0{ width:65px !important; }*/
 
-div#main {
+div.main {
   /*background: #2D3743 url(../images/bg-main.png) repeat 0 0;*/
   text-align: center;
   overflow: auto;
   height:100%;
 }
 
-div#content {
+div.content {
   max-width: 800px;
   margin: 0 auto;
   padding: 0 20px 300px 20px;
@@ -142,22 +142,21 @@ div#content {
   text-shadow: black 0 -1px;
   text-shadow: rgba(0, 0, 0, 0.7) 0 -1px;
   font-size: 80%;
-
 }
 
-div#content > div#browsers {
+div.content > div#browsers {
   margin-top: 25px;
   text-align: center;
   color: #2D3743;
 }
-div#content > div#browsers > em {
+div.content > div#browsers > em {
   margin: 0 5px;
 }
-div#content > div#browsers + h2 {
+div.content > div#browsers + h2 {
   margin-top: 40px;
 }
 
-div#content > h2 {
+div.content > h2 {
   font: italic bold 200% Georgia, serif;
   margin-top: 60px;
   margin-bottom: 30px;
@@ -167,12 +166,12 @@ div#content > h2 {
   box-shadow: rgba(0, 0, 0, 0.1) 0 1px, rgba(0, 0, 0, 0.01) 0 2px;
 }
 
-div#content > p {
+div.content > p {
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
-div#content pre {
+div.content pre {
   background: #111111;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 5px;
@@ -182,29 +181,29 @@ div#content pre {
   position: relative;
 }
 
-div#content pre:before {
+div.content pre:before {
   position: absolute;
   content: attr(class);
   top: 5px;
   right: 10px;
 }
 
-div#content > ul > li {
+div.content > ul > li {
   margin: 10px 0;
 }
 
-div#content > h3 {
+div.content > h3 {
   text-transform: uppercase;
 }
 
-div#content > dl {
+div.content > dl {
   margin-bottom: 35px;
 }
-div#content > dl > dt {
+div.content > dl > dt {
   margin: 20px 0 5px;
   font-weight: bold;
 }
-div#content > dl > dt > i {
+div.content > dl > dt > i {
   font-weight: normal;
   border-radius: 3px;
   margin-left: 5px;
@@ -213,31 +212,31 @@ div#content > dl > dt > i {
   background: gray;
   background: rgba(255, 255, 255, 0.2);
 }
-div#content > dl > dt > i.required {
+div.content > dl > dt > i.required {
   background: red;
   background: rgba(255, 0, 0, 0.2);
 }
-div#content > dl > dt > i.opcional {
+div.content > dl > dt > i.opcional {
   background: green;
   background: rgba(0, 250, 0, 0.2);
 }
-div#content > dl > dt > i.default {
+div.content > dl > dt > i.default {
   background: #333333;
   background: rgba(0, 0, 0, 0.3);
 }
-div#content > dl > dd { 
+div.content > dl > dd { 
   margin: 0; 
 }
 
 /* Demo */
 
-div#content.demo > h2 {
+div.content.demo > h2 {
   margin-bottom: 15px;
 }
-div#content.demo > pre {
+div.content.demo > pre {
   cursor: pointer;
 }
-div#content.demo > pre.show {
+div.content.demo > pre.show {
   background: none;
   display: inline-block;
   *dislay: inline;
@@ -245,26 +244,26 @@ div#content.demo > pre.show {
   margin: 0 20px 0 0;
   padding: 0;
 }
-div#content.demo > pre.show:before {
+div.content.demo > pre.show:before {
   position: relative;
   right: 0; top: 0;
   font: normal normal 100% sans-serif;
 }
-div#content.demo > pre.show > code {
+div.content.demo > pre.show > code {
   display: none;
 }
 
 
-div#content.demo > div#placeHolder {
+div.content.demo > div#placeHolder {
   margin-top: 50px;
 }
 
-div#content.demo > ul { 
+div.content.demo > ul { 
   list-style: none; 
   margin: 30px -10px;
   padding: 0;z
 }
-div#content.demo > ul > li { 
+div.content.demo > ul > li { 
   display: inline-block; 
   *display: inline; 
   *zoom: 1; 
@@ -275,57 +274,60 @@ div#content.demo > ul > li {
   padding: 5px;
   border-radius: 3px;
   max-width: 113px;
-  font-size: 85%;
+  font-size: 100%;
 }
-div#content.demo > ul > li > img {
+div.content.demo > ul > li > a > img {
   width: 103px;
   height: 168px;
   margin: 5px 0px;
   cursor: pointer;
 }
-div#content.demo > ul > li > span {
+div.content.demo > ul > li > a {
+  color: inherit;
+}
+div.content.demo > ul > li > span {
   display: block;
   color: gray;
 }
-div#content.demo > ul > li > span + span {
+div.content.demo > ul > li > span + span {
   margin-top: 5px;
 }
-div#content.demo > ul > li > span > i{
+div.content.demo > ul > li > span > i{
   color: white;
   margin-left: 3px;
 }
 
-div#content.demo > div#legend {
+div.content.demo > div#legend {
   margin-top: 30px;
 }
-div#content.demo > div#legend > p > span {
+div.content.demo > div#legend > p > span {
   margin-right: 15px;
 }
-div#content.demo > div#legend > p > em {
+div.content.demo > div#legend > p > em {
   margin-right: 5px;
   color: #2D3743;
 }
 
-div#content.demo > div#triggers {
+div.content.demo > div#triggers {
   margin-top: 30px;
 }
-div#content.demo > div#triggers > strong {
+div.content.demo > div#triggers > strong {
   font-style: italic;
   margin-right: 20px;
 }
-div#content.demo > div#triggers > span {
+div.content.demo > div#triggers > span {
   margin-right: 30px;
   cursor: pointer;
 }
 
-div#content.demo > div#reset {
+div.content.demo > div#reset {
   margin-top: 30px;
 }
-div#content.demo > div#reset > span {
+div.content.demo > div#reset > span {
   cursor: pointer;
 }
 
-div#content.demo > p + pre {
+div.content.demo > p + pre {
   margin-top: 30px !important;
 }
 

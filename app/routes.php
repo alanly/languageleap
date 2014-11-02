@@ -10,28 +10,43 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
+// Accordion
 Route::get('/', function()
 {
-	return View::make('hello');
+	return View::make('index');
 });
 
 
-//DO NOT FORGET TO ADD BEFORE => AUTH
-Route::get('/admin', function()
+// Route grouping for administration interface.
+Route::group(['prefix' => 'admin'], function()
 {
-	return View::make('admin.index');
-});
 
-// Accordion
-Route::controller('Accordion', 'AccordionController');
+	// Interface index
+	Route::get('/', function()
+	{
+		return View::make('admin.index');
+	});
+
+	// Video interface
+	Route::get('video', function()
+	{
+		return View::make('admin.video.video');
+	});
+
+	// Script interface
+	Route::get('new/script', function()
+	{
+		return View::make('admin.video.script');
+	});
+
+});
 
 
 // Routes for API controllers
-Route::group(array('prefix' => 'api',), function()
+Route::group(['prefix' => 'api'], function()
 {
 
-	// Media controllers
+	// Metadata controllers for media resources.
 	Route::group(['prefix' => 'metadata'], function()
 	{
 		// Commercials
@@ -44,9 +59,36 @@ Route::group(array('prefix' => 'api',), function()
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
-
-		// Videos
-		Route::resource('videos', 'ApiVideoController');
 	});
+
+	// Route to get the definitions of specific words
+	Route::post('words/definitions', 'ApiWordController@getMultipleWords');
+
+	// Words
+	Route::resource('words', 'ApiWordController');
+
+	// Videos
+	Route::resource('videos', 'ApiVideoController');
+
 });
 
+
+// Routing group for static content.
+Route::group(array('prefix' => 'content'), function()
+{
+
+	// Handle requests for video clips.
+	Route::get('videos/{id}', 'VideoContentController@getVideo');
+
+});
+
+
+//video player
+Route::get('/video/play/{id}', function($id)
+{
+    return View::make('player.player')->with("video_id",$id);
+});
+
+
+// Flashcard
+Route::controller('flashcard', 'FlashcardController');
