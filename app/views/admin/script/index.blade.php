@@ -1,17 +1,13 @@
 @extends('admin.master')
 
 @section('head')
-	<link rel="stylesheet" href="/css/admin.script.css"/>
-	<script type="text/javascript" src="/js/admin.script.js"></script>
+	<link rel="stylesheet" href="/css/script-editor.admin.css"/>
+	<script type="text/javascript" src="/js/script-editor.admin.js"></script>
 @stop
 
 @section('content')
-	<div id="script" contenteditable=true>
-		Quoted references can also be helpful. References to people can also be made through the written accounts of 
-		interviews and debates confirming the factuality of the writer's information and the reliability of his source. 
-		The writer can use redirection to ensure that the reader keeps reading the article and to draw her attention to other articles. 
-		For example, phrases like "Continued on page 3" redirect the reader to a page where the article is continued.
-	</div>
+	<div id="script" contenteditable=true></div>
+	<button type="button" class="btn btn-success" onclick="saveScript(1);">Save</button>
 
 	<div id="edit-modal" class="modal fade" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog">

@@ -202,6 +202,9 @@ function cleanSpans() {
 }
 
 $(function() {
+	// Load the script into the contenteditable div
+	loadScript(1);
+
 	// Make sure that tooltips are added to existing spans
 	refreshTooltips();
 
@@ -258,3 +261,54 @@ $(function() {
 		return false;
 	});
 })
+
+//////////////////////////////////////////////////////////////
+// JSON stuff                                               //
+//////////////////////////////////////////////////////////////
+function loadScript(scriptId) {
+	$.getJSON('/api/scripts/' + scriptId, function(data) {
+		if (data.status == 'success') {
+			var scriptText = data.data.text;
+			$('#script').html(scriptText);
+
+			loadDefinitions();
+		} else {
+			// Handle failure
+		}
+	});
+}
+
+function saveScript(scriptId) {
+	$.ajax({
+		type: 'PUT',
+		url: '/api/scripts/' + scriptId,
+		data: {
+			'text': $('#script').text()
+		},
+		success: function(data) {
+			if (data.status == 'success') {
+				console.log('woot');
+			}
+		},
+		dataType: 'json'
+	});
+}
+
+function loadDefinitions() {
+	$('#script span[data-type=word]').each(function() {
+		var $this = $(this);
+		var definitionId = $(this).data('id');
+
+		$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
+			if (data.status == 'success') {
+				$this.data('meta', data.data.definition);
+			} else {
+				// Handle failure
+			}
+		});
+	});
+}
+
+function saveDefinitions(scriptId) {
+
+}
