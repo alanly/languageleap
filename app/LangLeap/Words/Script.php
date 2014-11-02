@@ -11,6 +11,7 @@ class Script extends Eloquent
 	 *
 	 * @var string
 	 */
+	
 	protected $table = 'scripts';
 	public $timestamps = false;
 

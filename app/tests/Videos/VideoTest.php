@@ -24,23 +24,6 @@ class VideoTest extends TestCase {
 		$script->save();
 		$this->assertCount(1, $video->script()->get());			
 	}
-
-	public function testMorphToRelation()
-	{
-		$commercial = $this->getCommercialInstance();
-                $script = $this->getScriptInstance();
-
-                $video = $this->getVideoInstance();
-                $video->path='/path/to/somewhere';
-                $video->viewable_id = $commercial->id;
-                $video->viewable_type = 'LangLeap\Videos\Commercial';
-		$video->save();
-
-	        $script->video_id = $video->id;
-                $script->save();  
-
-//  	        $this->assertInstanceOf('LangLeap\Videos\Commercial', $video->morphTo()->getParent());
-	}	
 	
 	protected function getVideoInstance()
 	{
@@ -55,8 +38,8 @@ class VideoTest extends TestCase {
 	protected function getCommercialInstance()
 	{
 		$comm = App::make('LangLeap\Videos\Commercial');
-                $comm->name='Test';
-                $comm->save();
+		$comm->name='Test';
+		$comm->save();
 
 		return $comm;
 	}
