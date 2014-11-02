@@ -69,6 +69,9 @@ Route::group(['prefix' => 'api'], function()
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
+	
+	// Scripts
+	Route::resource('scripts', 'ApiScriptController');
 
 });
 
