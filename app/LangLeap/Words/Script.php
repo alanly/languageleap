@@ -2,18 +2,12 @@
 
 use Eloquent;
 
-class Script extends Eloquent
-{
+class Script extends Eloquent {
 
+	public    $timestamps = false;
+	protected $fillable   = ['text', 'video_id'];
+	protected $table      = 'scripts';
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	
-	protected $table = 'scripts';
-	public $timestamps = false;
 
 	public static function boot()
 	{
@@ -25,9 +19,10 @@ class Script extends Eloquent
 		});
 	}
 
+
 	public function video()
 	{
 		return $this->belongsTo('LangLeap\Videos\Video');
+	}
 
-	}		
 }
