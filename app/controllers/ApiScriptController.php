@@ -1,7 +1,15 @@
 <?php
+
 use LangLeap\Words\Script;
 
 class ApiScriptController extends \BaseController {
+
+	protected $scripts;
+
+	public function __construct(Script $scripts)
+	{
+		$this->scripts = $scripts;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -10,7 +18,7 @@ class ApiScriptController extends \BaseController {
 	 */
 	public function index()
 	{
-		$scripts = Script::all();
+		$scripts = $this->scripts->all();
 
 		return $this->apiResponse(
 			'success',
@@ -26,11 +34,11 @@ class ApiScriptController extends \BaseController {
 	 */
 	public function store()
 	{
-		$script = new Script;
+		$script = $this->scripts->newInstance();
 
 		$script->fill(Input::get());
 
-		if (!$script->save())
+		if (! $script->save())
 		{
 			return $this->apiResponse(
 				'error',
@@ -55,9 +63,9 @@ class ApiScriptController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$script = Script::find($id);
+		$script = $this->scripts->find($id);
 
-		if (!$script)
+		if (! $script)
 		{
 			return $this->apiResponse(
 				'error',
@@ -77,9 +85,9 @@ class ApiScriptController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$script = Script::find($id);
+		$script = $this->scripts->find($id);
 
-		if (!$script)
+		if (! $script)
 		{
 			return $this->apiResponse(
 				'error',
@@ -90,7 +98,7 @@ class ApiScriptController extends \BaseController {
 
 		$script->fill(Input::get());
 
-		if (!$script->save())
+		if (! $script->save())
 		{
 			return $this->apiResponse(
 				'error',
@@ -115,9 +123,9 @@ class ApiScriptController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$script = Script::find($id);
+		$script = $this->scripts->find($id);
 
-		if (!$script)
+		if (! $script)
 		{
 			return $this->apiResponse(
 				'error',

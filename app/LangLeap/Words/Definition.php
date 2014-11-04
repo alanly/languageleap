@@ -2,18 +2,15 @@
 
 use Eloquent;
 
-class Definition extends Eloquent
-{
+/**
+ * @author David Siekut <davidsiekut@gmail.com>
+ * @author Michael Lavoie <lavoie6453@gmail.com>
+ */
+class Definition extends Eloquent {
 
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'definitions';
+	public    $timestamps = false;
+	protected $table      = 'definitions';
 	protected $fillable   = ['definition', 'full_definition', 'pronunciation'];
-	public $timestamps = false;
 	
 	public function toResponseArray()
 	{
@@ -24,4 +21,5 @@ class Definition extends Eloquent
 			'pronunciation' => $this->pronunciation
 		);
 	}
+
 }

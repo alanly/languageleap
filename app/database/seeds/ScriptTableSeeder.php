@@ -18,6 +18,7 @@ class ScriptTableSeeder extends Seeder {
 		<span data-type="actor" data-meta="0:10">Jim</span> Here is another test <span data-type="word" data-id="2">definition</span>.';
 
 		$videos = Video::all();
+
 		foreach ($videos as $video)
 		{
 			$path = explode('\\', $video->viewable_type);
@@ -26,4 +27,5 @@ class ScriptTableSeeder extends Seeder {
 			Script::create(array('text' => $scriptText, 'video_id' => $video->id));
 		}
 	}
+
 }
