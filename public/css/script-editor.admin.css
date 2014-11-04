@@ -1,13 +1,14 @@
 #edit-container {
 	line-height: 45px;
 	letter-spacing: 3px;
-	margin: 50px auto;
+	margin: 0 auto;
 	outline: none;
 	width: 800px;
 }
 
 #script {
 	border: 1px solid #000;
+	margin-top: 125px;
 	padding: 20px;
 }
 
@@ -39,6 +40,13 @@
 
 #script span:hover {
 	cursor: pointer;
+}
+
+#save-success {
+	display: none;
+	top: 25px;
+	position: fixed;
+	width: 800px;
 }
 
 [data-type="actor"],

@@ -7,6 +7,7 @@
 
 @section('content')
 	<div id="edit-container">
+		<div id="save-success" class="alert alert-success" role="alert">Script saved successfully</div>
 		<div id="script" contenteditable=true></div>
 		<button type="button" class="btn btn-success" onclick="saveDefinitions(4);">Save</button>
 	</div>
