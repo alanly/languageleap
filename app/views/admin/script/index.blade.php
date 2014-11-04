@@ -6,9 +6,10 @@
 @stop
 
 @section('content')
-	<div id="script" contenteditable=true></div>
-	<button type="button" class="btn btn-success" onclick="saveScript(1);">Save</button>
-
+	<div id="edit-container">
+		<div id="script" contenteditable=true></div>
+		<button type="button" class="btn btn-success" onclick="saveDefinitions(4);">Save</button>
+	</div>
 	<div id="edit-modal" class="modal fade" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog">
 			<div class="modal-content">

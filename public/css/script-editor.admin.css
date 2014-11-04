@@ -1,9 +1,14 @@
-#script {
+#edit-container {
 	line-height: 45px;
 	letter-spacing: 3px;
 	margin: 50px auto;
 	outline: none;
 	width: 800px;
+}
+
+#script {
+	border: 1px solid #000;
+	padding: 20px;
 }
 
 /* Important: Keep the -moz-selection and other selections separate for firefox compatibility */
