@@ -13,6 +13,7 @@ class DefinitionTest extends TestCase {
 	public function testGetDefinition()
 	{
 		$def = $this->createDefinition();
+		$def->word = "Word";
 		$def->definition = "This is a definition.";
 		$def->full_definition = "This is a full definition.";
 		$def->pronunciation = "Def-inition.";

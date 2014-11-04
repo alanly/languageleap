@@ -42,8 +42,9 @@ class ApiDefinitionTest extends TestCase {
 		$response = $this->action(
 			'POST',
 			'ApiDefinitionController@store',
-			['definition' => 'Test definition'],
-			['full_definition' => 'Test full definition']
+			['word' => 'Test word', 
+			'definition' => 'Test definition',
+			'full_definition' => 'Test full definition']
 		);
 
 		$this->assertResponseStatus(201);
