@@ -1,0 +1,20 @@
+div .word
+{
+	text-align: center;
+	font-size: 100px;
+	padding-top: 50px;
+}
+
+div .pronounciation
+{
+	text-align: center;
+	font-size: 50px;
+	padding-top: 75px;
+}
+
+div .definition
+{
+	text-align: center;
+	font-size: 35px;
+	padding-top: 125px;
+}

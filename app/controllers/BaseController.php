@@ -15,4 +15,23 @@ class BaseController extends Controller {
 		}
 	}
 
+	/**
+	 * Create a response intended for the JSON API.
+	 *
+	 * @param string  $status
+	 * @param mixed   $data
+	 * @param integer $code
+	 * @return Illuminate\Http\JsonResponse
+	 */
+	protected function apiResponse($status, $data, $code = 200)
+	{
+		return Response::json(
+			[
+				'status' => $status,
+				'data'   => $data,
+			],
+			$code
+		);
+	}
+	
 }
