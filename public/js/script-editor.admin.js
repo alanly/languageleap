@@ -218,7 +218,7 @@ function prepareSpans() {
 
 $(function() {
 	// Load the script into the contenteditable div
-	loadScript(4);
+	loadScript(1);
 
 	// Make sure that tooltips are added to existing spans
 	refreshTooltips();
