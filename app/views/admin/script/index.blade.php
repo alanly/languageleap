@@ -9,7 +9,7 @@
 	<div id="edit-container">
 		<div id="save-success" class="alert alert-success" role="alert">Script saved successfully</div>
 		<div id="script" contenteditable=true></div>
-		<button type="button" class="btn btn-success" onclick="saveDefinitions(4);">Save</button>
+		<button type="button" class="btn btn-success" onclick="saveDefinitions(1);">Save</button>
 	</div>
 	<div id="edit-modal" class="modal fade" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog">
