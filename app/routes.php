@@ -39,6 +39,12 @@ Route::group(['prefix' => 'admin'], function()
 		return View::make('admin.video.script');
 	});
 
+	// Dev script interface
+	Route::get('dev/script', function()
+	{
+		return View::make('admin.script.index');
+	});
+
 });
 
 
@@ -59,6 +65,9 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
+		
+		// Get single definition using new definition model
+		Route::resource('definitions', 'ApiDefinitionController');
 	});
 
 	// Route to get the definitions of specific words
@@ -69,6 +78,9 @@ Route::group(['prefix' => 'api'], function()
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
+	
+	// Scripts
+	Route::resource('scripts', 'ApiScriptController');
 
 });
 
