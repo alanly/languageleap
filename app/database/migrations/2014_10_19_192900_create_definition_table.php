@@ -15,6 +15,7 @@ class CreateDefinitionTable extends Migration {
 		Schema::create('definitions', function($table)
 		{
 			$table->increments('id');
+			$table->string('word');
 			$table->string('definition');
 			$table->string('full_definition');
 			$table->string('pronunciation')->nullable();
