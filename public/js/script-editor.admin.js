@@ -203,7 +203,7 @@ function cleanSpans() {
 
 $(function() {
 	// Load the script into the contenteditable div
-	loadScript(1);
+	loadScript(4);
 
 	// Make sure that tooltips are added to existing spans
 	refreshTooltips();
@@ -260,10 +260,12 @@ $(function() {
 		saveButtonClick();
 		return false;
 	});
+
+	$('f')
 })
 
 //////////////////////////////////////////////////////////////
-// JSON stuff                                               //
+// AJAX stuff                                               //
 //////////////////////////////////////////////////////////////
 function loadScript(scriptId) {
 	$.getJSON('/api/scripts/' + scriptId, function(data) {
@@ -279,25 +281,32 @@ function loadScript(scriptId) {
 }
 
 function saveScript(scriptId) {
+	// Some sanitization before saving to the database
+	cleanSpans();
+
 	$.ajax({
 		type: 'PUT',
 		url: '/api/scripts/' + scriptId,
-		data: {
-			'text': $('#script').text()
-		},
+		data: JSON.stringify({ 
+			'text': $('#script').html()
+		}),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
 		success: function(data) {
 			if (data.status == 'success') {
-				console.log('woot');
+				console.log('script saved');
 			}
-		},
-		dataType: 'json'
+		}
 	});
 }
 
 function loadDefinitions() {
 	$('#script span[data-type=word]').each(function() {
 		var $this = $(this);
-		var definitionId = $(this).data('id');
+		var definitionId = $this.data('id');
+
+		if (definitionId == undefined)
+			return;
 
 		$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
 			if (data.status == 'success') {
@@ -310,5 +319,58 @@ function loadDefinitions() {
 }
 
 function saveDefinitions(scriptId) {
+	var $wordSpans = $('#script span[data-type=word]');
+	
+	// When this becomes 0, all definitions have been saved
+	var ajaxRequestsRemaining = $wordSpans.length;
 
+	$wordSpans.each(function() {
+		var $this = $(this);
+		if ($this.data('id')) {
+			$.ajax({
+				type: 'PUT',
+				url: '/api/metadata/definitions/' + $this.data('id'),
+				data: JSON.stringify({ 
+					'definition': $this.data('meta')
+				}),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function(data) {
+					if (data.status == 'success') {
+						console.log('definition updated');
+					}
+				},
+				complete: function() {
+					ajaxRequestsRemaining--;
+
+					if (ajaxRequestsRemaining <= 0) {
+						saveScript(scriptId);
+					}
+				}
+			});
+		} else {
+			$.ajax({
+				type: 'POST',
+				url: '/api/metadata/definitions/',
+				data: JSON.stringify({ 
+					'definition': $this.data('meta')
+				}),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function(data) {
+					if (data.status == 'success') {
+						console.log('definition stored');
+						$this.attr('data-id', data.data.id);
+					}
+				},
+				complete: function() {
+					ajaxRequestsRemaining--;
+
+					if (ajaxRequestsRemaining <= 0) {
+						saveScript(scriptId);
+					}
+				}
+			});
+		}
+	});
 }
