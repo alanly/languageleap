@@ -12,6 +12,7 @@ class Definition extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'definitions';
+	protected $fillable   = ['definition', 'full_definition', 'pronunciation'];
 	public $timestamps = false;
 	
 	public function toResponseArray()
