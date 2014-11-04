@@ -113,6 +113,9 @@ function wordButtonClick() {
 	$('#word-definition textarea').prop('required', true);
 	$('#time-stamp').hide();
 
+	// Meta in the tag is not need for definitions. Only timestamps need the data-meta attribute
+	$('#script').data('modal-context').removeAttr('data-meta');
+
 	setTagType('word');
 }
 
@@ -195,10 +198,16 @@ function textSelected() {
 }
 
 /*
-* This function should be run before saving to the database.
+* This function should be run before saving the script to the database.
 */
-function cleanSpans() {
+function prepareSpans() {
+	// Remove useless data
 	$('#script span').removeAttr('data-original-title').removeAttr('title');
+
+	// Add timestamps as data attributes so they are stored with the script in the database
+	$('#script span').each(function () {
+		$(this).attr('data-meta', $(this).data('meta'));
+	});
 }
 
 $(function() {
@@ -282,7 +291,7 @@ function loadScript(scriptId) {
 
 function saveScript(scriptId) {
 	// Some sanitization before saving to the database
-	cleanSpans();
+	prepareSpans();
 
 	$.ajax({
 		type: 'PUT',
@@ -295,6 +304,7 @@ function saveScript(scriptId) {
 		success: function(data) {
 			if (data.status == 'success') {
 				console.log('script saved');
+				$('#save-success').fadeIn(500).delay(2000).fadeOut(500);
 			}
 		}
 	});
@@ -373,4 +383,7 @@ function saveDefinitions(scriptId) {
 			});
 		}
 	});
+
+	if (ajaxRequestsRemaining <= 0)
+		saveScript(scriptId);
 }
