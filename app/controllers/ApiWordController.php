@@ -26,17 +26,6 @@ class ApiWordController extends \BaseController {
 
 
 	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
-
-
-	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
@@ -109,18 +98,6 @@ class ApiWordController extends \BaseController {
 		return $this->apiResponse("success",$wordArray);
 	}
 
-	
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
 
 	/**
 	 * Update the specified resource in storage.
@@ -152,13 +129,20 @@ class ApiWordController extends \BaseController {
 	public function getMultipleWords()
 	{
 		$words = Input::get('words');
+
+		if (! is_array($words))
+		{
+			return $this->apiResponse('error', 'No words were requested.', 400);
+		}
+
 		$dbresult = Word::whereIn('word', $words)->get();
 		$wordArray = array();
 		
-		foreach($dbresult as $word)
+		foreach ($dbresult as $word)
 		{
 			$wordArray[$word->word][] = $word->toResponseArray();
 		}
-		return $this->apiResponse("success",$wordArray);
+
+		return $this->apiResponse('success', $wordArray);
 	}
 }

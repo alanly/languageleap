@@ -32,4 +32,14 @@ class ApiWordTest extends TestCase {
 		$this->assertResponseOk();
 		$this->assertJson($response->getContent());
 	}
+
+	public function testGetMultipleDefinitionsWhenNoWords()
+	{
+		$response = $this->action(
+			'POST',
+			'ApiWordController@getMultipleWords'
+		);
+
+		$this->assertResponseStatus(400);
+	}
 }
