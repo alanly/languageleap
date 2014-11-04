@@ -102,6 +102,7 @@ function cancelButtonClick() {
 
 function noTagButtonClick() {
 	$('#word-definition').hide();
+	$('#time-stamp input').prop('required', false);
 	$('#word-definition textarea').prop('required', false);
 	$('#time-stamp').hide();
 
@@ -110,6 +111,7 @@ function noTagButtonClick() {
 
 function wordButtonClick() {
 	$('#word-definition').show();
+	$('#time-stamp input').prop('required', false);
 	$('#word-definition textarea').prop('required', true);
 	$('#time-stamp').hide();
 
@@ -123,6 +125,7 @@ function actorButtonClick() {
 	$('#time-stamp').show();
 	$('#word-definition').hide();
 	$('#word-definition textarea').prop('required', false);
+	$('#time-stamp input').prop('required', true);
 
 	setTagType('actor');
 }
@@ -150,17 +153,20 @@ function showModalForm($context) {
 		$('#word-radio').prop('checked', true);
 		$('#word-definition textarea').val($context.data('meta'));
 		$('#word-definition textarea').prop('required', true);
+		$('#time-stamp input').prop('required', false);
 	} else if ($context.data('type') == 'actor') {
 		$('#remove-button').show();
 		$('#time-stamp').show();
 		$('#word-definition').hide();
 		$('#word-definition textarea').prop('required', false);
+		$('#time-stamp input').prop('required', true);
 		$('#actor-radio').prop('checked', true);
 		$('#time-stamp input').val($context.data('meta'));
 	} else {
 		$('#no-tag-radio').prop('checked', true);
 		$('#word-definition').hide();
 		$('#word-definition textarea').prop('required', false);
+		$('#time-stamp input').prop('required', false);
 		$('#time-stamp').hide();
 		$('#remove-button').hide();
 	}
