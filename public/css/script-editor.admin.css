@@ -64,9 +64,8 @@
 	padding-left: 5px;
 }
 
-#word-definition,
-#time-stamp,
-#remove-button {
+#word-form,
+#actor-form {
 	display: none;
 }
 

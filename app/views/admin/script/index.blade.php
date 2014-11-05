@@ -9,7 +9,7 @@
 	<div id="edit-container">
 		<div id="save-success" class="alert alert-success" role="alert">Script saved successfully</div>
 		<div id="script" contenteditable=true></div>
-		<button type="button" class="btn btn-success" onclick="saveDefinitions(4);">Save</button>
+		<button type="button" class="btn btn-success" onclick="saveDefinitions(1);">Save</button>
 	</div>
 	<div id="edit-modal" class="modal fade" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog">
@@ -43,13 +43,25 @@
 								</label>
 							</div>
 						</div>
-						<div id="time-stamp" class="form-group">
-							<label>Timestamp</label>
-							<input type="text" class="form-control" title="'#:##' (ie. 2:46)" placeholder="Enter the clip time (ie. 2:46)" pattern="^\d+:\d\d$" />
+						<div id="actor-form">
+							<div id="timestamp" class="form-group">
+								<label>Timestamp</label>
+								<input type="text" class="form-control" title="'#:##' (ie. 2:46)" placeholder="Enter the clip time (ie. 2:46)" pattern="^\d+:\d\d$" />
+							</div>
 						</div>
-						<div id="word-definition" class="form-group">
-							<label>Definition</label>
-							<textarea type="text" class="form-control" placeholder="Enter a definition"></textarea>
+						<div id="word-form">
+							<div id="definition" class="form-group">
+								<label>Definition</label>
+								<textarea type="text" class="form-control" placeholder="Enter a definition"></textarea>
+							</div>
+							<div id="full-definition" class="form-group">
+								<label>Full Definition (Optional)</label>
+								<textarea type="text" class="form-control" placeholder="Enter a full definition"></textarea>
+							</div>
+							<div id="pronunciation" class="form-group">
+								<label>Pronunciation (Optional)</label>
+								<input type="text" class="form-control" placeholder="Enter the pronunciation" />
+							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
