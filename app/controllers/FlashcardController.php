@@ -2,13 +2,13 @@
 
 use LangLeap\Words\Definition;
 
-class FlashcardController extends BaseController {
+class FlashcardController extends \BaseController {
 
 	public function postIndex()
 	{
-		$words = Input::get();
-		$wordArray = array();
 
+		$words = Input::get("definitions");
+		$wordArray = array();
 		foreach($words as $wordKey => $wordId)
 		{
 			$word = Definition::find($wordId);

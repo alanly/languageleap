@@ -1,8 +1,19 @@
 @extends('master')
 
+@section('javascript')
+	<script type="text/javascript" src="/libraries/scroller/js/easing.js"></script>
+	<script type="text/javascript" src="/libraries/scroller/js/evoslider.js"></script>
+	<script type="text/javascript" src="/js/scroller.js"></script>      
+@stop
+
 @section('css')
+	<link rel="Stylesheet" type="text/css" href="/libraries/scroller/css/reset.css" />
+	<link rel="Stylesheet" type="text/css" href="/libraries/scroller/css/evoslider.css" />
+	<link rel="Stylesheet" type="text/css" href="/libraries/scroller/css/default.css" />
+	<link rel="Stylesheet" type="text/css" href="/css/flashcard.css" />      
 	<link rel="stylesheet" href="/css/video-script.css">
 @stop
+
 
 @section('content')
 	<div id="wrapper">
@@ -18,8 +29,11 @@
 		<div id="script">
 		</div>
 	</div>
-
+	<div class="clear" style="clear:both;"></div>
+	<div id="flashcard"></div>
+	<a class="define btn btn-primary">Define</a>
 	<script>
+		var definitions = [];
 		function loadScript()
 		{
 			$.ajax({
@@ -54,9 +68,36 @@
 			});
 		}
 
+		function loadDefinitions() {
+			definitions = [];
+			$('#script span[data-type=word]').each(function(index) {
+				var def_id = $(this).data("id");
+				if(def_id != null && $(this).hasClass("word-selected")){
+					var key = "word" + index;
+					//definitions.push({ key :  def_id });
+					definitions.push(def_id);
+				}
+			});
+		}
+
+		function loadFlashcards(){
+			loadDefinitions();
+			if(definitions.length > 0){
+				$("#flashcard").load('/flashcard', { definitions : definitions }, function(data){
+					$("#flashcard").dialog({
+						height: 500,
+						width : 500,
+						dialogClass : 'test'
+					});
+				});
+			}
+		}
+
 		$(function() {
 			loadVideo();
-
+			$(".define").click(function(){
+				loadFlashcards();
+			});
 			$('#script').on('mouseenter', 'span[data-type=word]', function() {
 				$(this).addClass('word-hover');
 			})
