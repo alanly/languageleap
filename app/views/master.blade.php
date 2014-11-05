@@ -13,8 +13,6 @@
 	
 		@yield('javascript')
 	
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css">
-		<link rel="stylesheet" href="/css/admin.css">
 		@yield('css')
 	</head>
 	<body>

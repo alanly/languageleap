@@ -3,16 +3,12 @@
 use Eloquent;
 
 class Script extends Eloquent {
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
+	
 	public    $timestamps = false;
 	protected $fillable   = ['text', 'video_id'];
 	protected $table      = 'scripts';
-	
+
+
 	public static function boot()
 	{
 		parent::boot();
