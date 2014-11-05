@@ -22,8 +22,7 @@ class FlashcardTest extends TestCase {
 		$this->seed();
 
 		$word = Definition::find(1);
-
-		$response = $this->action('POST', 'FlashcardController@postIndex', [], array("word1" => 1));
+		$response = $this->action('POST', 'FlashcardController@postIndex', [], array("definitions" => array(1)));
 		$this->assertResponseOk();
 
 		$view = $response->original;
