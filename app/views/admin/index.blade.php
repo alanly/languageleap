@@ -42,8 +42,16 @@
 				Media goes here
       </div>
 			
-      <div class="modal-body script" aria-hidden="true" style="display: none;">
-				Script goes here
+      <div class="modal-body script clearfix" aria-hidden="true" style="display: none;">
+				<?php
+					// change route and function to whatever you need
+					echo Form::open(array('url' => 'foo/bar', 'class'=>'form-script'));
+					//echo Form::model($script, array('route' => array('script.create', $script->id)));
+					echo Form::label('text', 'Script');
+					echo Form::textarea('text');
+					echo Form::submit('Submit');
+					echo Form::close();
+				?>
       </div>
 			
       <div class="modal-body flash" aria-hidden="true" style="display: none;">

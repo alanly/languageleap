@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateScriptTable extends Migration {
+class CreateDefinitionTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,13 @@ class CreateScriptTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('scripts', function($table){
+		Schema::create('definitions', function($table)
+		{
 			$table->increments('id');
-			$table->text('text');
-			$table->integer('video_id')->unsigned();
+			$table->string('word');
+			$table->string('definition');
+			$table->string('full_definition');
+			$table->string('pronunciation')->nullable();
 		});
 	}
 
@@ -26,7 +29,7 @@ class CreateScriptTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('scripts');
+		Schema::dropIfExists('definitions');
 	}
 
 }

@@ -23,7 +23,7 @@
 	    		$data = "<dt></dt>";
 	    		$data .= "<dd>";
 	    		$data .= "<div class='word'>" . $value["word"] . "</div>";
-	    		$data .= "<div class='pronounciation'>" . $value["pronouciation"] . "</div>"; // Fix to pronounciation when Thom fixes DB.
+	    		$data .= "<div class='pronunciation'>" . $value["pronunciation"] . "</div>"; 
 	    		$data .= "<div class='definition'>" . $value["full_definition"] . "</div>";
 	    		$data .= "</dd>";
 

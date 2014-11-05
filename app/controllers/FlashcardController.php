@@ -1,6 +1,6 @@
 <?php
 
-use LangLeap\Words\Word;
+use LangLeap\Words\Definition;
 
 class FlashcardController extends BaseController {
 
@@ -11,7 +11,7 @@ class FlashcardController extends BaseController {
 
 		foreach($words as $wordKey => $wordId)
 		{
-			$word = Word::find($wordId);
+			$word = Definition::find($wordId);
 			array_push($wordArray, $word->toArray());
 		}
 

@@ -1,12 +1,13 @@
-<?php 
+<?php
 
 use LangLeap\TestCase;
-use LangLeap\Words\Word;
+use LangLeap\Words\Definition;
 
 
 /**
 *
 *	@author Dror Ozgaon <Dror.Ozgaon@gmail.com>
+*	@author Thomas Rahn <thomas@rahn.ca>
 *
 */
 class FlashcardTest extends TestCase {
@@ -20,7 +21,7 @@ class FlashcardTest extends TestCase {
 	{
 		$this->seed();
 
-		$word = Word::find(1);
+		$word = Definition::find(1);
 
 		$response = $this->action('POST', 'FlashcardController@postIndex', [], array("word1" => 1));
 		$this->assertResponseOk();
@@ -28,7 +29,6 @@ class FlashcardTest extends TestCase {
 		$view = $response->original;
 
 		$this->assertEquals($word['word'], $view['words'][0]['word']);
-		//$this->assertEquals($word['pronounciation'], $view['pronounciation']); Uncomment this when it's fixed in the DB
 		$this->assertEquals($word['definition'], $view['words'][0]['definition']);
 		$this->assertEquals($word['full_definition'], $view['words'][0]['full_definition']);
 	}
