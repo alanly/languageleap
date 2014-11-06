@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <html lang='en'>
 	<head>
@@ -16,3 +17,6 @@
 		@yield('content')
 	</body>
 </html>
+=======
+@extends('layouts.base')
+>>>>>>> f29216d8f8990611836d975c974ce0c22e3f2d51

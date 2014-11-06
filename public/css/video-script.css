@@ -1,0 +1,38 @@
+#wrapper {
+	margin: 0 auto;
+	padding-top: 50px;
+	width: 1200px;
+}
+
+#player-container {
+	float: left;
+	width: 600px;
+}
+
+#script {
+	float: right;
+	line-height: 45px;
+	letter-spacing: 3px;
+	padding-left: 30px;
+	width: 600px;
+}
+
+[data-type=actor] {
+	background-color: #4C4C4C;
+	color: #fff;
+	padding: 10px;
+}
+
+[data-type=word] {
+	padding: 10px;
+	background-color: #E4E4E4;
+}
+
+.word-hover {
+	background-color: #BEBEBE;
+	cursor: pointer;
+}
+
+.word-selected {
+	background-color: #DD8D8D;
+}
