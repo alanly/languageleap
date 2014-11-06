@@ -6,7 +6,6 @@ class FlashcardController extends \BaseController {
 
 	public function postIndex()
 	{
-
 		$words = Input::get("definitions");
 		$wordArray = array();
 		foreach($words as $wordKey => $wordId)
@@ -17,4 +16,5 @@ class FlashcardController extends \BaseController {
 
 		return View::make('flashcard')->with('words', $wordArray);
 	}
+
 }

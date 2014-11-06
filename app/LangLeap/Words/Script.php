@@ -3,7 +3,7 @@
 use Eloquent;
 
 class Script extends Eloquent {
-	
+
 	public    $timestamps = false;
 	protected $fillable   = ['text', 'video_id'];
 	protected $table      = 'scripts';

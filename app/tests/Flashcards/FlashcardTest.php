@@ -5,18 +5,11 @@ use LangLeap\Words\Definition;
 
 
 /**
-*
-*	@author Dror Ozgaon <Dror.Ozgaon@gmail.com>
-*	@author Thomas Rahn <thomas@rahn.ca>
-*
-*/
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
+ * @author Thomas Rahn <thomas@rahn.ca>
+ */
 class FlashcardTest extends TestCase {
 
-	/**
-	 * Test geting all movies.
-	 *
-	 * @return void
-	 */
 	public function testIndex()
 	{
 		$this->seed();
@@ -31,4 +24,5 @@ class FlashcardTest extends TestCase {
 		$this->assertEquals($word['definition'], $view['words'][0]['definition']);
 		$this->assertEquals($word['full_definition'], $view['words'][0]['full_definition']);
 	}
+
 }
