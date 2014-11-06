@@ -93,6 +93,8 @@ Route::group(array('prefix' => 'content'), function()
 	// Handle requests for video clips.
 	Route::get('videos/{id}', 'VideoContentController@getVideo');
 
+	// Handle requests for scripts.
+	Route::get('scripts/{id}', 'ScriptContentController@getScript');
 });
 
 
