@@ -10,6 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
 // Accordion
 Route::get('/', function()
 {
@@ -104,3 +105,10 @@ Route::get('/video/play/{id}', function($id)
 
 // Flashcard
 Route::controller('flashcard', 'FlashcardController');
+
+
+// Quiz View
+Route::get('quiz', function()
+{
+	return View::make('quiz');
+});
