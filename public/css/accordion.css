@@ -4,3 +4,12 @@ div .media-title
 	height: 100%;
 	font-size: 12px;
 }
+/**
+ * @author Dror Ozgaon
+ */
+.evoslider.default dt,
+.evoslider.default dt.disabled,
+.evoslider.default dt.active
+{
+	background-repeat: repeat;
+}

@@ -65,12 +65,12 @@ class VideoContentController extends \BaseController {
 
 		if (! $server) return [];
 
-		$parentDirName = dirname($file->getRealPath()).'/';
+		$parentDirName = basename(dirname($file->getRealPath())).'/';
 
 		$headers = [
 			'apache'   => ['X-Sendfile'           => $file->getRealPath()],
 			'lighttpd' => ['X-LIGHTTPD-send-file' => $file->getRealPath()],
-			'nginx'    => ['X-Accel-Redirect'     => Config::get('media.paths.xsendfile.videos').$parentDirName.$file->getFilename()],
+			'nginx'    => ['X-Accel-Redirect'     => Config::get('media.paths.xsendfile.videos').'/'.$parentDirName.$file->getFilename()],
 		];
 
 		return $headers[$server];

@@ -14,8 +14,8 @@ class ScriptTableSeeder extends Seeder {
 	{
 		DB::table('scripts')->delete();
 
-		$scriptText = '<span data-type="actor" data-meta="0:00">Mike</span> This is a <span data-type="word" data-id="1">hello</span> script.
-		<span data-type="actor" data-meta="0:10">Jim</span> Here is another test <span data-type="word" data-id="2">definition</span>.';
+		$scriptText = '<span data-type="actor" data-timestamp="0:00">Mike</span> This is a <span data-type="word" data-id="1">hello</span> script.
+		<span data-type="actor" data-timestamp="0:10">Jim</span> Here is another test <span data-type="word" data-id="2">definition</span>.';
 
 		$videos = Video::all();
 
