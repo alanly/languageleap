@@ -17,7 +17,7 @@ class CreateQuestionTable extends Migration {
 			$table->integer('quiz_id')->unsigned();
 			$table->integer('definition_id')->unsigned();
 			$table->string('question');
-			$table->string('answer')->nullable();			
+			$table->integer('selected_id')->nullable();			
 		});
 	}
 

@@ -19,7 +19,7 @@ class QuestionTest extends TestCase {
 		$question = $this->getQuestionInstance();
 		$quiz = $this->getQuizInstance();
 		$question->question = '';
-		$question->answer = '';
+		$question->selected_id = 1;
 		$question->quiz_id = $quiz->id;
 		$question->definition_id = 1;
 		$question->save();
@@ -33,7 +33,7 @@ class QuestionTest extends TestCase {
 		$definition = $this->getDefinitionInstance();
 
 		$question->question = 'question';
-		$question->answer = 'answer';
+		$question->selected_id = 1;
 		$question->quiz_id = 1; //un-needed id;
 		$question->definition_id = $definition->id;
 		$question->save();
