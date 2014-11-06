@@ -41,6 +41,7 @@
 				url : '/content/scripts/{{ $video_id }}',
 				success : function(data){
 					$('#script').html(data.data[0].text);
+					$('#script br').remove();
 					$('#script span[data-type=actor]:not(:first)').before('<br>');
 				},
 				error : function(data){
