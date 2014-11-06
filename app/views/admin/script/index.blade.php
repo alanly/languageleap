@@ -9,7 +9,7 @@
 	<div id="edit-container">
 		<div id="save-success" class="alert alert-success" role="alert">Script saved successfully</div>
 		<div id="script" contenteditable=true></div>
-		<button type="button" class="btn btn-success" onclick="saveDefinitions(1);">Save</button>
+		<button id="perma-save" type="button" class="btn btn-success">Save</button>
 	</div>
 	<div id="edit-modal" class="modal fade" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog">
@@ -29,17 +29,17 @@
 							<label>Tag text as</label>
 							<div class="radio">
 								<label>
-									<input type="radio" name="tag-radio" id="no-tag-radio" value="none" onclick="noTagButtonClick();" checked> None
+									<input type="radio" name="tag-radio" id="no-tag-radio" value="none" checked> None
 								</label>
 							</div>
 							<div class="radio word-button">
 								<label>
-									<input type="radio" name="tag-radio" id="word-radio" value="word" onclick="wordButtonClick();"> Word(s)
+									<input type="radio" name="tag-radio" id="word-radio" value="word"> Word(s)
 								</label>
 							</div>
 							<div class="radio actor-button">
 								<label>
-									<input type="radio" name="tag-radio" id="actor-radio" value="actor" onclick="actorButtonClick();"> Actor
+									<input type="radio" name="tag-radio" id="actor-radio" value="actor"> Actor
 								</label>
 							</div>
 						</div>
@@ -66,8 +66,8 @@
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary">Save</button>
-						<button id="remove-button" type="button" class="btn btn-danger" data-dismiss="modal" onclick="removeButtonClick();">Remove</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancelButtonClick();">Cancel</button>
+						<button id="remove-button" type="button" class="btn btn-danger" data-dismiss="modal">Remove</button>
+						<button id="cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					</div>
 				</form>
 			</div><!-- /.modal-content -->

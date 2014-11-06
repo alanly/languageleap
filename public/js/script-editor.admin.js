@@ -325,7 +325,7 @@ $(function() {
 
 	// A fix for browsers that insert <div> for linebreaks. Instead they will
 	// insert <br> tags that can easily be stripped later on
-	$("#script").on("keyup mouseup", function(){
+	$("#script").on("keyup", function(){
 		if (!this.lastChild || this.lastChild.nodeName.toLowerCase() != "br") {
 			this.appendChild(document.createElement("br"));
 		}
@@ -385,6 +385,13 @@ $(function() {
 		saveButtonClick();
 		return false;
 	});
+
+	$('#perma-save').on('click', function() { saveDefinitions(1); });
+	$('#no-tag-radio').on('click', noTagButtonClick);
+	$('#word-radio').on('click', wordButtonClick);
+	$('#actor-radio').on('click', actorButtonClick);
+	$('#remove-button').on('click', removeButtonClick);
+	$('#cancel-button').on('click', cancelButtonClick);
 });
 
 //////////////////////////////////////////////////////////////
