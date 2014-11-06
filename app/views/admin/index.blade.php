@@ -3,6 +3,19 @@
 @stop
 @section('content')
 <div class="container-fluid">
+
+	
+	<div id="new-slidedown" class="clearfix" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+	      <div class="modal-header">
+        	<h2 class="slide-title">Script Upload</h2>
+				</div>
+				<div class="modal-body" style="display: block;">
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="new" class="pull-right">
 		<button type="button" class="btn btn-success center-block">Add Media</button>
 	</div>
@@ -88,6 +101,14 @@
 </div>
 
 <script type="text/javascript">
+$("#new").click(function()
+{
+  $("#new-slidedown").slideToggle("slow", function()
+	{
+
+  });
+});
+
 $("#select-movies").click(function()
 {
 	$.getJSON("/api/metadata/movies/", function(data)
