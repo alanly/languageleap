@@ -21,8 +21,8 @@ class Question extends Eloquent
         	return $this->belongsTo('LangLeap\Quizzes\Quiz');
     	}
 
-	public function script_word()
+	public function definition()
 	{
-		return $this->belongsTo('LangLeap\Words\ScriptWord');
+		return $this->belongsTo('LangLeap\Words\Definition');
 	}
 }

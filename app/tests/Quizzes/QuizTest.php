@@ -43,7 +43,7 @@ class QuizTest extends TestCase {
 		$question =  App::make('LangLeap\Quizzes\Question');
 		$question->question = '';
 		$question->answer = '';
-		$question->script_word_id = 1;
+		$question->definition_id = 1;
 		return $question;
 	}
 	protected function getVideoInstance()
