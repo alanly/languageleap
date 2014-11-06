@@ -60,74 +60,12 @@ function undoSelectedText($element) {
 /**
 * Sets the 'data-type' attribute to the given type.
 *
+* @param {jQuery Object} $context A jQuery object representing a context(ie. the span that we want to edit)
 * @param {String} type The type of content (ie. word, actor)
 */
-function setTagType(type) {
-	$('#script').data('modal-context').attr('data-type', type);	
-	$('#script').data('modal-context').data('type', type);	
-}
-
-function saveButtonClick() {
-	var $context = $('#script').data('modal-context');
-
-	$context.text($('#selected-text').val());
-
-	if ($('#selected-text').val().trim() != '') {
-		if ($context.data('type') == 'word') {
-			$context.data('meta', $('#word-definition textarea').val());
-		} else if ($context.data('type') == 'actor') {
-			$context.data('meta', $('#time-stamp input').val());
-		} else {
-			undoSelectedText($context);
-		}
-	} else {
-		// If the user emptied the selected text text-box, then unwrap the element
-		undoSelectedText($context);
-	}
-}
-
-function removeButtonClick() {
-	undoSelectedText($('#script').data('modal-context'));
-}
-
-function cancelButtonClick() {
-	var $context = $('#script').data('modal-context');
-
-	if ($('#remove-button').is(':hidden'))
-		undoSelectedText($('#script').data('modal-context'));
-
-	setTagType($context.data('old-type'));
-	$context.data('meta', $context.data('old-meta'));
-}
-
-function noTagButtonClick() {
-	$('#word-definition').hide();
-	$('#time-stamp input').prop('required', false);
-	$('#word-definition textarea').prop('required', false);
-	$('#time-stamp').hide();
-
-	setTagType('');
-}
-
-function wordButtonClick() {
-	$('#word-definition').show();
-	$('#time-stamp input').prop('required', false);
-	$('#word-definition textarea').prop('required', true);
-	$('#time-stamp').hide();
-
-	// Meta in the tag is not need for definitions. Only timestamps need the data-meta attribute
-	$('#script').data('modal-context').removeAttr('data-meta');
-
-	setTagType('word');
-}
-
-function actorButtonClick() {
-	$('#time-stamp').show();
-	$('#word-definition').hide();
-	$('#word-definition textarea').prop('required', false);
-	$('#time-stamp input').prop('required', true);
-
-	setTagType('actor');
+function setTagType($context, type) {
+	$context.attr('data-type', type);	
+	$context.data('type', type);	
 }
 
 /**
@@ -140,40 +78,164 @@ function showModalForm($context) {
 	$('#selected-text').val($context.text());
 
 	// Keep the original data before the user starts modifying stuff (just in case he wants to click cancel)
-	$context.data('old-type', $context.data('type'));
-	$context.data('old-meta', $context.data('meta'));
+	backupContextData($context);
 
-	$('#word-definition textarea').val('');
-	$('#time-stamp input').val('');
+	clearWordForm();
+	clearActorForm();
 
 	if ($context.data('type') == 'word') {
-		$('#remove-button').show();
-		$('#word-definition').show();
-		$('#time-stamp').hide();
-		$('#word-radio').prop('checked', true);
-		$('#word-definition textarea').val($context.data('meta'));
-		$('#word-definition textarea').prop('required', true);
-		$('#time-stamp input').prop('required', false);
+		showWordForm();
+		fillWordForm($context);
+		hideActorForm();
 	} else if ($context.data('type') == 'actor') {
-		$('#remove-button').show();
-		$('#time-stamp').show();
-		$('#word-definition').hide();
-		$('#word-definition textarea').prop('required', false);
-		$('#time-stamp input').prop('required', true);
-		$('#actor-radio').prop('checked', true);
-		$('#time-stamp input').val($context.data('meta'));
+		showActorForm();
+		fillActorForm($context);
+		hideWordForm();
 	} else {
-		$('#no-tag-radio').prop('checked', true);
-		$('#word-definition').hide();
-		$('#word-definition textarea').prop('required', false);
-		$('#time-stamp input').prop('required', false);
-		$('#time-stamp').hide();
-		$('#remove-button').hide();
+		showNoTagForm();
+		hideWordForm();
+		hideActorForm();
 	}
 
+	// Make the modal pop up
 	$('#edit-modal').modal();
 }
 
+/**
+* Shows the form associated with words.
+*/
+function showWordForm() {
+	$('#word-form').show();
+	$('#word-radio').prop('checked', true);
+	$('#definition textarea').prop('required', true);
+}
+
+/**
+* Fills the form associated with a word using the data from the context.
+*
+* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
+*/
+function fillWordForm($context) {
+	$('#definition textarea').val($context.data('definition'));
+	$('#full-definition textarea').val($context.data('full-definition'));
+	$('#pronunciation input').val($context.data('pronunciation'));	
+}
+
+/**
+* Hides the form associated with words.
+*/
+function hideWordForm() {
+	$('#word-form').hide();
+	$('#definition textarea').prop('required', false);
+}
+
+/**
+* Clears the form associated with words.
+*/
+function clearWordForm() {
+	$('#definition textarea').val('');
+	$('#full-definition textarea').val('');
+	$('#pronunciation input').val('');
+}
+
+/**
+* Shows the form associated with actors.
+*/
+function showActorForm() {
+	$('#actor-form').show();
+	$('#actor-radio').prop('checked', true);
+	$('#timestamp input').prop('required', true);
+}
+
+/**
+* Fills the form associated with an actor using the data from the context.
+*
+* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
+*/
+function fillActorForm($context) {
+	$('#timestamp input').val($context.data('timestamp'));
+}
+
+/**
+* Hides the form associated with actors.
+*/
+function hideActorForm() {
+	$('#actor-form').hide();
+	$('#timestamp input').prop('required', false);
+}
+
+/**
+* Clears the form associated with actors.
+*/
+function clearActorForm() {
+	$('#timestamp input').val('');
+}
+
+/**
+* Shows the form associated with no tags.
+*/
+function showNoTagForm() {
+	$('#no-tag-radio').prop('checked', true);
+}
+
+/**
+* Saves the form values for the given context as data belonging to the context
+*
+* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
+*/
+function saveContextData($context) {
+	$context.text($('#selected-text').val());
+
+	if ($('#selected-text').val().trim() == '' || $context.data('type') == '') {
+		undoSelectedText($context);
+	} else if ($context.data('type') == 'word') {
+		$context.data('definition', $('#definition textarea').val());
+		$context.data('full-definition', $('#full-definition textarea').val());
+		$context.data('pronunciation', $('#pronunciation input').val());
+	} else if ($context.data('type') == 'actor') {
+		$context.attr('data-timestamp', $('#timestamp input').val());
+	}
+}
+
+/**
+* Backs-up the data stored on the given context so that it can later be restored if the user cancels the edit.
+*
+* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
+*/
+function backupContextData($context) {
+	$context.data('old-type', $context.data('type'));
+
+	if ($context.data('type') == 'word') {
+		$context.data('old-definition', $context.data('definition'));
+		$context.data('old-full-definition', $context.data('full-definition'));
+		$context.data('old-pronunciation', $context.data('pronunciation'));
+	} else if ($context.data('type') == 'actor') {
+		$context.data('old-timestamp', $context.data('timestamp'));
+	}
+}
+
+/**
+* Restores the given context to the data values that were backed-up.
+*
+* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
+*/
+function restoreContextData($context) {
+	setTagType($context, $context.data('old-type'));
+
+	if ($context.data('old-type') == 'word') {
+		$context.data('definition', $context.data('old-definition'));
+		$context.data('full-definition', $context.data('old-full-definition'));
+		$context.data('pronunciation', $context.data('old-pronunciation'));
+	} else if ($context.data('old-type') == 'actor') {
+		$context.attr('data-timestamp', $context.data('old-timestamp'));
+	} else {
+		undoSelectedText($context);
+	}
+}
+
+/**
+* Adds tooltips to the current spans.
+*/
 function refreshTooltips() {
 	$('#script span').tooltip({
 		'container': '#script',
@@ -209,19 +271,52 @@ function textSelected() {
 function prepareSpans() {
 	// Remove useless data
 	$('#script span').removeAttr('data-original-title').removeAttr('title');
-
-	// Add timestamps as data attributes so they are stored with the script in the database
-	$('#script span').each(function () {
-		$(this).attr('data-meta', $(this).data('meta'));
-	});
 }
 
+//////////////////////////////////////////////////////////////
+// Button handlers                                          //
+//////////////////////////////////////////////////////////////
+function saveButtonClick() {
+	saveContextData($('#script').data('modal-context'));
+}
+
+function removeButtonClick() {
+	undoSelectedText($('#script').data('modal-context'));
+}
+
+function cancelButtonClick() {
+	restoreContextData($('#script').data('modal-context'));
+}
+
+function noTagButtonClick() {
+	showNoTagForm();
+	hideWordForm();
+	hideActorForm();
+	setTagType($('#script').data('modal-context'), '');
+}
+
+function wordButtonClick() {
+	showWordForm();
+	hideActorForm();
+
+	// data-timestamp in the tag is not needed for definitions. Only timestamps need the data-timestamp attribute
+	$('#script').data('modal-context').removeAttr('data-timestamp');
+
+	setTagType($('#script').data('modal-context'), 'word');
+}
+
+function actorButtonClick() {
+	showActorForm();
+	hideWordForm();
+	setTagType($('#script').data('modal-context'), 'actor');
+}
+
+//////////////////////////////////////////////////////////////
+// JQuery's OnDocumentReady                                 //
+//////////////////////////////////////////////////////////////
 $(function() {
 	// Load the script into the contenteditable div
 	loadScript(1);
-
-	// Make sure that tooltips are added to existing spans
-	refreshTooltips();
 
 	// Prevent pasting into the script contenteditable field
 	$('#script').on('paste', function(e){ 
@@ -264,8 +359,6 @@ $(function() {
 		window.getSelection().removeAllRanges();
 		
 		$('#script').data('modal-context', $(this));
-
-		$('#edit-modal').modal();
 		showModalForm($(this));
 	});
 
@@ -275,9 +368,7 @@ $(function() {
 		saveButtonClick();
 		return false;
 	});
-
-	$('f')
-})
+});
 
 //////////////////////////////////////////////////////////////
 // AJAX stuff                                               //
@@ -287,6 +378,9 @@ function loadScript(scriptId) {
 		if (data.status == 'success') {
 			var scriptText = data.data.text;
 			$('#script').html(scriptText);
+
+			// Make sure that tooltips are added to existing spans
+			refreshTooltips();
 
 			loadDefinitions();
 		} else {
@@ -326,7 +420,9 @@ function loadDefinitions() {
 
 		$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
 			if (data.status == 'success') {
-				$this.data('meta', data.data.definition);
+				$this.data('definition', data.data.definition);
+				$this.data('full-definition', data.data.full_definition);
+				$this.data('pronunciation', data.data.pronunciation);
 			} else {
 				// Handle failure
 			}
@@ -342,13 +438,18 @@ function saveDefinitions(scriptId) {
 
 	$wordSpans.each(function() {
 		var $this = $(this);
+		var json = {
+			'word': $this.text(),
+			'definition': $this.data('definition'),
+			'full_definition': $this.data('full-definition'),
+			'pronunciation': $this.data('pronunciation')
+		};
+
 		if ($this.data('id')) {
 			$.ajax({
 				type: 'PUT',
 				url: '/api/metadata/definitions/' + $this.data('id'),
-				data: JSON.stringify({ 
-					'definition': $this.data('meta')
-				}),
+				data: JSON.stringify(json),
 				contentType: "application/json; charset=utf-8",
 				dataType: "json",
 				success: function(data) {
@@ -368,9 +469,7 @@ function saveDefinitions(scriptId) {
 			$.ajax({
 				type: 'POST',
 				url: '/api/metadata/definitions/',
-				data: JSON.stringify({ 
-					'definition': $this.data('meta')
-				}),
+				data: JSON.stringify(json),
 				contentType: "application/json; charset=utf-8",
 				dataType: "json",
 				success: function(data) {
