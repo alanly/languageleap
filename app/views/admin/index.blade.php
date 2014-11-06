@@ -3,6 +3,9 @@
 @stop
 @section('content')
 <div class="container-fluid">
+	<div id="new" class="pull-right">
+		<button type="button" class="btn btn-success center-block">Add Media</button>
+	</div>
 	<div id="search" class="container">
 		<input class="rounded" style="margin-right: 5px;" /><i class="fa fa-search fa-lg"></i>
 	</div>
