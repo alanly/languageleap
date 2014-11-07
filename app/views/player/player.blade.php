@@ -7,10 +7,10 @@
 @stop
 
 @section('css')
-	<link rel="Stylesheet" type="text/css" href="/libraries/scroller/css/reset.css" />
-	<link rel="Stylesheet" type="text/css" href="/libraries/scroller/css/evoslider.css" />
-	<link rel="Stylesheet" type="text/css" href="/libraries/scroller/css/default.css" />
-	<link rel="Stylesheet" type="text/css" href="/css/flashcard.css" />      
+	<link rel="stylesheet" href="/libraries/scroller/css/reset.css" />
+	<link rel="stylesheet" href="/libraries/scroller/css/evoslider.css" />
+	<link rel="stylesheet" href="/libraries/scroller/css/default.css" />
+	<link rel="stylesheet" href="/css/flashcard.css" />      
 	<link rel="stylesheet" href="/css/video-script.css">
 @stop
 
@@ -19,6 +19,7 @@
 	<div id="wrapper">
 		<div class="error-message alert alert-danger" style="display:none; margin-top:25px;">
 		</div>
+
 		<!-- Player here -->
 		<div id="player-container">
 			<video width="100%" controls id="video-player" preload='none'>
@@ -26,14 +27,20 @@
 				<p>Your browser does not support HTML5 video.</p>
 			</video>
 		</div>
+
 		<div id="script">
 		</div>
 	</div>
+
 	<div class="clear" style="clear:both;"></div>
+	
 	<div id="flashcard"></div>
+	
 	<a class="define btn btn-primary">Define</a>
+	
 	<script>
 		var definitions = [];
+		
 		function loadScript()
 		{
 			$.ajax({
@@ -51,7 +58,8 @@
 			});
 		}
 
-		function loadVideo() {
+		function loadVideo()
+		{
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -69,7 +77,8 @@
 			});
 		}
 
-		function loadDefinitions() {
+		function loadDefinitions()
+		{
 			definitions = [];
 			$('#script span[data-type=word]').each(function(index) {
 				var def_id = $(this).data("id");
@@ -81,7 +90,8 @@
 			});
 		}
 
-		function loadFlashcards(){
+		function loadFlashcards()
+		{
 			loadDefinitions();
 			if(definitions.length > 0){
 				$("#flashcard").load('/flashcard', { definitions : definitions }, function(data){
@@ -94,19 +104,27 @@
 			}
 		}
 
-		$(function() {
+		$(function()
+		{
 			loadVideo();
-			$(".define").click(function(){
+
+			$(".define").click(function()
+			{
 				loadFlashcards();
 			});
-			$('#script').on('mouseenter', 'span[data-type=word]', function() {
-				$(this).addClass('word-hover');
-			})
-			.on('mouseleave', 'span[data-type=word]', function() {
-				$(this).removeClass('word-hover');
-			});
 
-			$('#script').on('click', 'span[data-type=word]', function() {
+			$('#script')
+				.on('mouseenter', 'span[data-type=word]', function()
+				{
+					$(this).addClass('word-hover');
+				})
+				.on('mouseleave', 'span[data-type=word]', function()
+				{
+					$(this).removeClass('word-hover');
+				});
+
+			$('#script').on('click', 'span[data-type=word]', function()
+			{
 				$(this).toggleClass('word-selected');
 			});
 		});
