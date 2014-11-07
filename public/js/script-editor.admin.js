@@ -323,10 +323,27 @@ $(function() {
 		e.preventDefault();
 	});
 
-	// Prevent using the Enter key in the script contenteditable field
-	$('#script').keydown(function(e) {
-		if (e.keyCode === 13) {
-			return false;
+	// A fix for browsers that insert <div> for linebreaks. Instead they will
+	// insert <br> tags that can easily be stripped later on
+	$("#script").on("keyup mouseup", function(){
+		if (!this.lastChild || this.lastChild.nodeName.toLowerCase() != "br") {
+			this.appendChild(document.createElement("br"));
+		}
+	}).on("keypress", function(e){
+		if (e.which == 13) {
+			if (window.getSelection) {
+				var selection = window.getSelection(),
+				range = selection.getRangeAt(0),
+				br = document.createElement("br");
+				range.deleteContents();
+				range.insertNode(br);
+				range.setStartAfter(br);
+				range.setEndAfter(br);
+				range.collapse(false);
+				selection.removeAllRanges();
+				selection.addRange(range);
+				return false;
+			}
 		}
 	});
 
