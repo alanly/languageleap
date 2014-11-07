@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('WordTableSeeder');
 		$this->call('VideoTableSeeder');
 		$this->call('ScriptTableSeeder');
+		$this->call('DefinitionTableSeeder');
 	}
 
 }
