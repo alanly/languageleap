@@ -66,15 +66,13 @@
 			</div>
 
 			<div class="modal-body script clearfix" aria-hidden="true" style="display: none;">
-				<?php
-					// change route and function to whatever you need
-					echo Form::open(array('url' => 'foo/bar', 'class'=>'form-script'));
-					//echo Form::model($script, array('route' => array('script.create', $script->id)));
-					echo Form::label('text', 'Script');
-					echo Form::textarea('text');
-					echo Form::submit('Submit');
-					echo Form::close();
-				?>
+				{{-- change route and function to whatever you need --}}
+				{{ Form::open(array('url' => 'foo/bar', 'class'=>'form-script')) }}
+				{{-- Form::model($script, array('route' => array('script.create', $script->id))) --}}
+				{{ Form::label('text', 'Script') }}
+				{{ Form::textarea('text') }}
+				{{ FOrm::submit('Submit') }}
+				{{ Form::close() }}
 			</div>
 
 			<div class="modal-body flash" aria-hidden="true" style="display: none;">
