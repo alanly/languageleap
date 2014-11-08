@@ -1,6 +1,5 @@
 <?php
 
-
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Question;
 use LangLeap\Words\Definition;
@@ -12,12 +11,15 @@ class ApiQuizController extends \BaseController {
 
 
 	/**
-	 * Display a listing of the resource.
+	 * This function will generate a json response that will contain, the quiz (new or old depending if there has been a quiz for this video and user), a question and its ID
+	 * as well as all the possible answers for the question.
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
+
+		//Make sure video id is real.
 		$video_id = Input::get("video_id");
 
 		if (! $video_id)
@@ -31,7 +33,7 @@ class ApiQuizController extends \BaseController {
 
 		//Check if there is a quiz associated to this video and user id
 		//TODO: NEED TO CHECK USER ID (before authentication was done)
-		$quiz = Quiz::where("video_id",$video_id);
+		$quiz = Quiz::where("video_id",$video_id)->first();
 
 		if(! $quiz){
 			//Create quiz instance
@@ -48,7 +50,8 @@ class ApiQuizController extends \BaseController {
 		//All the words in the script
 		$all_words = Input::get("all_words");
 
-		if(! $all_words && ! $selected_words)
+		//if all words is empty or null return 404 
+		if(! $all_words)
 		{
 			return $this->apiResponse(
 				'error',
@@ -57,51 +60,57 @@ class ApiQuizController extends \BaseController {
 			);
 		}
 		
+		//create the array of deinitions to be used for the quiz
 		$definitions = array();
 
-		foreach ($all_words as $definition_id) 
-		{
-			$definition = Definition::find($definition_id);
-			//if Definition does not exist return 404 error
 
+		foreach ($all_words as $definitionId) 
+		{
+			$definition = Definition::find($definitionId);
+
+			//if Definition does not exist return 404 error
 			if(! $definition){
 				return $this->apiResponse(
 					'error',
-					"Definition {$definition_id} does not exists",
+					"Definition {$definitionId} does not exists",
 					404
 				);
 			}
-
+			//Add the definition to the list.
 			$definitions[$definition->id] = $definition;
 		}		
 
 		$questions = array();
 
-		foreach ($selected_words as $definition_id) 
-		{
-			//Get the definition
-			$definition = $definitions[$definition_id];
+		if( $selected_words){
+			foreach ($selected_words as $definitionId) 
+			{
+				//if the definition is not in list created from all words return 404
+				//This should never happen unless some tamporing has been done.
+				if(! in_array($definitionId, $all_words)){
+					return $this->apiResponse(
+						'error',
+						"Selected Definition {$definitionId} does not exists",
+						404
+					);
+				}
 
-			if(! $definition){
-				return $this->apiResponse(
-					'error',
-					"Selected Definition {$definition_id} does not exists",
-					404
-				);
+				$definition = $definitions[$definitionId];
+
+				//Create the question
+				$question = new Question;
+				$question->quiz_id = $quiz->id;
+				$question->definition_id = $definitionId;
+				$question->question = "What is the definition for " . $definition->word;
+				$question->save();
+				array_push($questions, $question);
 			}
+		}		
 
-
-			//Create the question
-			$question = new Question;
-			$question->quiz_id = $quiz->id;
-			$question->definition_id = $definition_id;
-			$question->question = "What is the definition for " . $definition->word;
-			$question->save();
-			array_push($questions, $question);
-		}
+		if(count($questions) < 4)
+			generateRandomQuestions($questions,$definitions);
 
 		//TODO: if there is not enough questions make some from the all_words array
-
 		$jsonResponse = $this->generateJsonResponse($quiz, $questions[0], $definitions);
 
 		return $this->apiResponse(
@@ -145,6 +154,9 @@ class ApiQuizController extends \BaseController {
 		{
 			//Increase the score because they selected the correct definition
 			$quiz->increment("score");
+		}else
+		{
+			//TODO: Add to user progress when we do authentication 
 		}
 		
 		$newQuestion = $quiz->questions()->where("selected_id", null)->first();
@@ -174,20 +186,55 @@ class ApiQuizController extends \BaseController {
 			"quiz" => $quiz->id,
 			"question" => $question->question,
 			"question_id" => $question->id,
-			"definitions" => $this->definitionResponse($definitions),
+			"definitions" => $this->definitionResponse($definitions, $question->definition_id),
 		);
 	}
 
 	/**
 	*	This function will return an array of all the "definition" attributes of all the defintions.
+	*
+	*	This is the function that will generate the possible answers for the question, it will also shuffle them so the answer isn't always on top.
 	*/
-	protected function definitionResponse($definitions){
+	protected function definitionResponse($definitions, $answerId){
 		$jsonDefinition = array();
 
-		foreach($definitions as $def)
-			array_push($jsonDefinition, $def->definition);
+		//add the answer
+		array_push($jsonDefinition, $definitions[$answerId]->definition);
 
+		if(count($definitions)<= 4)
+		{
+			foreach($definitions as $def)
+			{
+				array_push($jsonDefinition, $def->definition);
+			}
+		}else{
+			$definitionKeys = array_keys($definitions);
+
+			while(count($jsonDefinition) < 4){
+				//generate random number from 0 to number of definitions.
+				$ran = rand(0,count($definitions)-1);
+
+				$defId = $definitionKeys[$ran];
+
+				//if it is not in the list add it, otherwise the loop with execute again.
+				if(!in_array($definitions[$defId]->definition, $jsonDefinition)){
+					array_push(	$jsonDefinition, $definitions[$defId]->definition);
+				}
+			}
+		}
+
+		//shuffle the array to change the position of the answer
+		shuffle($jsonDefinition);
 		return $jsonDefinition;
+	}
+
+	/**
+	* 	This function will randomly generate questiosn that will be used for the quiz if there weren't enough word selected.
+	*
+	*/
+	protected function generateRandomQuestions($questions, $defintions)
+	{
+
 	}
 }
 
