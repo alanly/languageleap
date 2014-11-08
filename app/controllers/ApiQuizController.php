@@ -106,10 +106,7 @@ class ApiQuizController extends \BaseController {
 				array_push($questions, $question);
 			}
 		}		
-
-		if(count($questions) < 4)
-			generateRandomQuestions($questions,$definitions);
-
+		
 		//TODO: if there is not enough questions make some from the all_words array
 		$jsonResponse = $this->generateJsonResponse($quiz, $questions[0], $definitions);
 
@@ -119,7 +116,10 @@ class ApiQuizController extends \BaseController {
 		);
 	}
 
-
+	/**
+	*	This function will be used to answer a question. It will increase the users quiz score if he selected the proper answer.
+	*
+	*/
 	public function update($id)
 	{
 		$question = Question::find($id);
@@ -226,15 +226,6 @@ class ApiQuizController extends \BaseController {
 		//shuffle the array to change the position of the answer
 		shuffle($jsonDefinition);
 		return $jsonDefinition;
-	}
-
-	/**
-	* 	This function will randomly generate questiosn that will be used for the quiz if there weren't enough word selected.
-	*
-	*/
-	protected function generateRandomQuestions($questions, $defintions)
-	{
-
 	}
 }
 
