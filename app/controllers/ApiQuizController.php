@@ -3,6 +3,7 @@
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Question;
 use LangLeap\Words\Definition;
+use LangLeap\QuizUtilities\QuizGeneration;
 
 /**
 *	@author Thomas Rahn <thomas@rahn.ca>
@@ -31,19 +32,6 @@ class ApiQuizController extends \BaseController {
 			);
 		}
 
-		//Check if there is a quiz associated to this video and user id
-		//TODO: NEED TO CHECK USER ID (before authentication was done)
-		$quiz = Quiz::where("video_id",$video_id)->first();
-
-		if(! $quiz){
-			//Create quiz instance
-			$quiz = new Quiz;
-			$quiz->user_id = 1;
-			$quiz->video_id = $video_id;
-			$quiz->save();
-		}
-
-
 		//All the selected words. This list can be empty.
 		$selected_words = Input::get("selected_words");
 
@@ -63,7 +51,7 @@ class ApiQuizController extends \BaseController {
 		//create the array of deinitions to be used for the quiz
 		$definitions = array();
 
-
+		//verification of Input Arrays.
 		foreach ($all_words as $definitionId) 
 		{
 			$definition = Definition::find($definitionId);
@@ -80,8 +68,6 @@ class ApiQuizController extends \BaseController {
 			$definitions[$definition->id] = $definition;
 		}		
 
-		$questions = array();
-
 		if( $selected_words){
 			foreach ($selected_words as $definitionId) 
 			{
@@ -94,21 +80,18 @@ class ApiQuizController extends \BaseController {
 						404
 					);
 				}
-
-				$definition = $definitions[$definitionId];
-
-				//Create the question
-				$question = new Question;
-				$question->quiz_id = $quiz->id;
-				$question->definition_id = $definitionId;
-				$question->question = "What is the definition for " . $definition->word;
-				$question->save();
-				array_push($questions, $question);
 			}
 		}		
 		
-		//TODO: if there is not enough questions make some from the all_words array
-		$jsonResponse = $this->generateJsonResponse($quiz, $questions[0], $definitions);
+		$quiz = QuizGeneration::generateQuiz($definitions, $selected_words);
+
+		//Setting the video id
+		$quiz->video_id = $video_id;
+		$quiz->save();
+
+		$question = $quiz->questions()->where("selected_id", null)->first();
+
+		$jsonResponse = $this->generateJsonResponse($quiz, $question, $definitions);
 
 		return $this->apiResponse(
 			'success',
