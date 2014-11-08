@@ -15,7 +15,7 @@ class CreateQuizTable extends Migration {
 		Schema::create('quizzes', function($table){
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
-			$table->integer('video_id')->unsigned();
+			$table->integer('video_id')->unsigned()->nullable();
 			$table->float('score')->nullable();	
 		});
 	}
