@@ -111,7 +111,7 @@ class ApiQuizController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"question {$id} not found.",
+				"Question {$id} not found.",
 				404
 			);
 		}
@@ -127,6 +127,7 @@ class ApiQuizController extends \BaseController {
 			);
 		}
 
+		//Save the users answer in the question.
 		$question->selected_id = $selected_id;
 		$question->save();
 
@@ -137,7 +138,8 @@ class ApiQuizController extends \BaseController {
 		{
 			//Increase the score because they selected the correct definition
 			$quiz->increment("score");
-		}else
+		}
+		else
 		{
 			//TODO: Add to user progress when we do authentication 
 		}
@@ -152,6 +154,7 @@ class ApiQuizController extends \BaseController {
 				200
 			);	
 		}
+		
 		return $this->apiResponse(
 			'success',
 			$newQuestion->toArray(),
@@ -162,6 +165,12 @@ class ApiQuizController extends \BaseController {
 	/**
 	*	This function will generate the valid json response for a valid quiz
 	*
+	*	@param Quiz The quiz that was created
+	*	@param Question The question in the quiz
+	*	@param Definition[] All the definitions for this particular Quiz
+	*	
+	* 	@return Associative Array for the JSON response.
+	*
 	*/
 	protected function generateJsonResponse(Quiz $quiz, Question $question, $definitions)
 	{
@@ -169,46 +178,10 @@ class ApiQuizController extends \BaseController {
 			"quiz" => $quiz->id,
 			"question" => $question->question,
 			"question_id" => $question->id,
-			"definitions" => $this->definitionResponse($definitions, $question->definition_id),
+			"definitions" => QuizGeneration::generateQuestionDefinitions($definitions, $question->definition_id),
 		);
 	}
 
-	/**
-	*	This function will return an array of all the "definition" attributes of all the defintions.
-	*
-	*	This is the function that will generate the possible answers for the question, it will also shuffle them so the answer isn't always on top.
-	*/
-	protected function definitionResponse($definitions, $answerId){
-		$jsonDefinition = array();
 
-		//add the answer
-		array_push($jsonDefinition, $definitions[$answerId]->definition);
-
-		if(count($definitions)<= 4)
-		{
-			foreach($definitions as $def)
-			{
-				array_push($jsonDefinition, $def->definition);
-			}
-		}else{
-			$definitionKeys = array_keys($definitions);
-
-			while(count($jsonDefinition) < 4){
-				//generate random number from 0 to number of definitions.
-				$ran = rand(0,count($definitions)-1);
-
-				$defId = $definitionKeys[$ran];
-
-				//if it is not in the list add it, otherwise the loop with execute again.
-				if(!in_array($definitions[$defId]->definition, $jsonDefinition)){
-					array_push(	$jsonDefinition, $definitions[$defId]->definition);
-				}
-			}
-		}
-
-		//shuffle the array to change the position of the answer
-		shuffle($jsonDefinition);
-		return $jsonDefinition;
-	}
 }
 

@@ -6,13 +6,19 @@ use LangLeap\Words\Definition;
 
 class ApiQuizControllerTest extends TestCase {
 
+	public function setUp()
+	{
+		parent::setUp();
+
+		// Seed the database.
+		$this->seed();
+	}
 
 	/**
 	*	This method will test the index method of the ApiQuizController.
 	*
 	*/
 	public function testIndex(){
-		$this->seed();
 		$video = Video::first();
 
 		$definition = Definition::all();
@@ -45,7 +51,6 @@ class ApiQuizControllerTest extends TestCase {
 	*
 	*/
 	public function testIndexWithNoDefinitions(){
-		$this->seed();
 		$video = Video::first();
 
 		$definition = Definition::all();
@@ -67,7 +72,6 @@ class ApiQuizControllerTest extends TestCase {
 	*
 	*/
 	public function testIndexWithInvalidVideo(){
-		$this->seed();
 
 		$definition = Definition::all();
 		$all_words = array();
