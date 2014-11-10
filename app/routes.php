@@ -83,6 +83,27 @@ Route::group(['prefix' => 'api'], function()
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 
+	// Sample Quiz
+	Route::get('quiz', function()
+	{
+		return Response::json([
+			'status' => 'success',
+			'data' => [
+				'quiz_id' => 1,
+				'question' => [
+					'id' => 1,
+					'string' => 'What is the definition of "forest"?',
+					'definitions' => [
+						['id' => 0, 'description' => 'a large tract of land covered with trees and underbush'],
+						['id' => 1, 'description' => 'deserved reward of just desserts, usually unpleasant'],
+						['id' => 2, 'description' => 'needless repitition of an idea'],
+						['id' => 3, 'description' => 'the character or disposition of a community, group, person, etc.'],
+					],
+				],
+			],
+		]);
+	});
+
 });
 
 

@@ -19,12 +19,12 @@
 							<form role="form">
 								<div class="radio" ng-repeat="definition in question.definitions">
 									<label>
-										<input type="radio" name="definition" value="{% definition.id %}">
+										<input type="radio" name="definition" ng-model="selection.definition_id" value="{% definition.id %}">
 										{% definition.description %}
 									</label>
 								</div>
 
-								<button type="button" class="btn btn-primary" data-slide="next" data-target="#quiz-carousel">Next</button>
+								<button type="button" class="btn btn-primary" ng-click="submit(selection)">Next</button>
 							</form>
 						</div>
 					</div>

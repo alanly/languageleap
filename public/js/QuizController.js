@@ -27,8 +27,22 @@ quizApp.controller('QuizController', function($scope, $http)
 		$scope.questions.push(question);
 	};
 
+	// Function to handle submitting an answer for a question on the quiz.
+	$scope.submit = function(selection)
+	{
+		$http.post(
+			'/api/quiz',
+			{}
+		).success(function(response)
+		{
+			$scope.questions.push(response.data.question);
+			$('#quiz-carousel').carousel('next');
+		});
+	};
+
 	// Fetch the initial question at boot.
-	$http.get('/api/quiz').success(function(response) {
-		$scope.appendQuestion(response.data);
+	$http.get('/api/quiz').success(function(response)
+	{
+		$scope.appendQuestion(response.data.question);
 	});
 });
