@@ -19,7 +19,11 @@ App::before(function($request)
 
 App::after(function($request, $response)
 {
-	//
+	/**
+	 * Append the CSRF token to the response header so that code on the
+	 * client-side can access it out-of-band from the content body.
+	 */
+	$response->header('X-Csrf-Token', csrf_token());
 });
 
 /*
@@ -83,7 +87,10 @@ Route::filter('guest', function()
 
 Route::filter('csrf', function()
 {
-	if (Session::token() !== Input::get('_token'))
+	// Fetch token from input fields; if null, fetch token from request header.
+	$token = Input::get('_token', Request::header('X-Csrf-Token'));
+
+	if (Session::token() !== $token)
 	{
 		throw new Illuminate\Session\TokenMismatchException;
 	}

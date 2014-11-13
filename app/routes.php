@@ -106,3 +106,7 @@ Route::get('/video/play/{id}', function($id)
 
 // Flashcard
 Route::controller('flashcard', 'FlashcardController');
+
+
+// CSRF Test Route
+Route::any('test/csrf', ['before' => 'csrf', function() {}]);
