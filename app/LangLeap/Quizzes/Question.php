@@ -17,9 +17,9 @@ class Question extends Eloquent
 	*
 	*/
 	public function quiz()
-    	{
-        	return $this->belongsTo('LangLeap\Quizzes\Quiz');
-    	}
+	{
+		return $this->belongsTo('LangLeap\Quizzes\Quiz');
+	}
 
 	public function definition()
 	{

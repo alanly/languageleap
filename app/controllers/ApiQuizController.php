@@ -133,7 +133,7 @@ class ApiQuizController extends \BaseController {
 			return $this->apiResponse(
 				'error',
 				"Selected id: {$id} is invalid",
-				400
+				404
 			);
 		}
 
@@ -156,7 +156,7 @@ class ApiQuizController extends \BaseController {
 		
 		$newQuestion = $quiz->questions()->where("selected_id", null)->first();
 		$numberOfQuestions = $quiz->questions()->count();
-		
+
 		if(! $newQuestion)
 		{
 			//TODO: get next video here

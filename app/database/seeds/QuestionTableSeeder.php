@@ -18,5 +18,6 @@ class QuestionTableSeeder extends Seeder {
 		$quiz = Quiz::first();
 		$def = Definition::first();
 		$quiz->questions()->create(["definition_id" => $def->id, "question" => "What is the definition for" . $def->word]);
+		$quiz->questions()->create(["definition_id" => $def->id, "question" => "What is the definition for" . $def->word]);
 	}
 }

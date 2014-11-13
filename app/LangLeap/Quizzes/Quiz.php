@@ -19,7 +19,7 @@ class Quiz extends Eloquent
 	*/
 	public function user()
 	{
-    	return $this->belongsTo('LangLeap\Accounts\User');
+		return $this->belongsTo('LangLeap\Accounts\User');
 	}
 
 

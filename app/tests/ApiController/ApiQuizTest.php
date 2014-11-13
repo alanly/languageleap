@@ -3,7 +3,8 @@
 use LangLeap\TestCase;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
-
+use LangLeap\Quizzes\Quiz;
+use LangLeap\Quizzes\Question;
 class ApiQuizControllerTest extends TestCase {
 
 	public function setUp()
@@ -87,5 +88,50 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertResponseStatus(404);
 	}
 
-	
+	/**
+	*	This test will test that answering a question is successful
+	*
+	*/
+	public function testQuizUpdate(){
+		$quiz = Quiz::first();
+		$video = Video::find($quiz->video_id);
+		$question = $quiz->questions()->first();
+		$response = $this->action(
+			'put',
+			'ApiQuizController@update',
+			[$question->id],["video_id"=>$video->id, "selected_id" => $question->definition_id]
+		);
+
+		$this->assertResponseStatus(200);	
+	}
+
+	/**
+	*	This test verifies that an 404 error will be returned when trying to answer a question that does not exist.
+	*
+	*/
+	public function testQuizUpdateWithInvalidQuestion(){
+		$response = $this->action(
+			'put',
+			'ApiQuizController@update',
+			[-1],[]
+		);
+		
+		$this->assertResponseStatus(404);	
+	}
+	/**
+	*	This test will verify that a 404 error will be returned when trying to answer with no selected id.
+	*
+	*/
+	public function testQuizUpdateWithNoAnswer(){
+		$quiz = Quiz::first();
+		$video = Video::find($quiz->video_id);
+		$question = $quiz->questions()->first();
+		$response = $this->action(
+			'put',
+			'ApiQuizController@update',
+			[$question->id],["video_id"=>$video->id,]
+		);
+
+		$this->assertResponseStatus(404);	
+	}
 }
