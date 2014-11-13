@@ -81,22 +81,32 @@ class ApiQuizController extends \BaseController {
 					);
 				}
 			}
-		}		
-		
-		$quiz = QuizGeneration::generateQuiz($definitions, $selected_words);
+			$quiz = QuizGeneration::generateQuiz($definitions, $selected_words);
 
-		//Setting the video id
-		$quiz->video_id = $video_id;
-		$quiz->save();
+				//Setting the video id
+			$quiz->video_id = $video_id;
+			$quiz->save();
 
-		$question = $quiz->questions()->where("selected_id", null)->first();
+			$question = $quiz->questions()->where("selected_id", null)->first();
 
-		$jsonResponse = $this->generateJsonResponse($quiz, $question, $definitions);
+			$jsonResponse = $this->generateJsonResponse($quiz, $question, $definitions);
 
-		return $this->apiResponse(
-			'success',
-			$jsonResponse
-		);
+			return $this->apiResponse(
+				'success',
+				$jsonResponse
+			);
+		}
+		else
+		{
+			//Get URL to next video
+			//OR return to home page
+
+			return $this->apiResponse(
+				'success',
+				array("nextStep" => "http://www.google.ca"),
+				200
+			);
+		}	
 	}
 
 	/**
@@ -145,12 +155,14 @@ class ApiQuizController extends \BaseController {
 		}
 		
 		$newQuestion = $quiz->questions()->where("selected_id", null)->first();
-
-		if( $newQuestion)
+		$numberOfQuestions = $quiz->questions()->count();
+		
+		if(! $newQuestion)
 		{
+			//TODO: get next video here
 			return $this->apiResponse(
 				'success',
-				array("Score" => $quiz->score),
+				array("Score" => $quiz->score . " / " . $numberOfQuestions),
 				200
 			);	
 		}

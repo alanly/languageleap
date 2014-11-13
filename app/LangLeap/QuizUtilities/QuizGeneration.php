@@ -20,6 +20,7 @@ class QuizGeneration {
 	public static function generateQuiz($definitions, $selected_words)
 	{
 		$quiz = new Quiz;	
+		//get user here
 		$quiz->user_id = 1;
 		$quiz->save();
 
@@ -47,26 +48,6 @@ class QuizGeneration {
 			}
 		}		
 
-		if(count($questions) < 4) {
-
-			$keys = array_keys($definitions);
-			$index = 0;
-			while($index < 3 - count($questions) && count($definitions) >= 1)
-			{
-
-				$definition = $definitions[$keys[$index]];
-
-				$question = new Question;
-				$question->quiz_id = $quiz->id;
-				$question->definition_id = $keys[$index];
-				$question->question = "What is the definition for " . $definition->word;
-				$question->save();
-				array_push($questions, $question);
-				unset($definitions[$keys[$index]]);
-				$index++;
-			}
-		}
-
 		return $quiz;
 	}
 
@@ -83,14 +64,14 @@ class QuizGeneration {
 		$jsonDefinition = array();
 
 		//add the answer
-		array_push($jsonDefinition, $definitions[$answerId]->definition);
+		$jsonDefinition[$answerId] = $definitions[$answerId]->definition;
 		unset($definitions[$answerId]);
 
 		if(count($definitions)<= 4)
 		{
 			foreach($definitions as $def)
 			{
-				array_push($jsonDefinition, $def->definition);
+				$jsonDefinition[$def->id] =  $def->definition;
 			}
 		} 
 		else 
@@ -102,13 +83,12 @@ class QuizGeneration {
 				$ran = rand(0,count($definitions)-1);
 
 				$defId = $definitionKeys[$ran];
-				array_push(	$jsonDefinition, $definitions[$defId]->definition);
+				$jsonDefinition[$defId] = $definitions[$defId]->definition;
 				unset($definitions[$defId]);
 			}
 		}
 
-		//shuffle the array to change the position of the answer
-		shuffle($jsonDefinition);
+		//TODO: Create a function that returns json object of associative array and have it "shuffled"
 		return $jsonDefinition;
 	}
 }
