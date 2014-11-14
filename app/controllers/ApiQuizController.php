@@ -133,7 +133,7 @@ class ApiQuizController extends \BaseController {
 			return $this->apiResponse(
 				'error',
 				"Selected id: {$id} is invalid",
-				404
+				400
 			);
 		}
 
@@ -193,7 +193,5 @@ class ApiQuizController extends \BaseController {
 			"definitions" => QuizGeneration::generateQuestionDefinitions($definitions, $question->definition_id),
 		);
 	}
-
-
 }
 

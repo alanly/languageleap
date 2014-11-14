@@ -5,6 +5,7 @@ use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Question;
+
 class ApiQuizControllerTest extends TestCase {
 
 	public function setUp()
@@ -107,6 +108,7 @@ class ApiQuizControllerTest extends TestCase {
 
 	/**
 	*	This test verifies that an 404 error will be returned when trying to answer a question that does not exist.
+	*	404 == Not found
 	*
 	*/
 	public function testQuizUpdateWithInvalidQuestion(){
@@ -119,7 +121,8 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertResponseStatus(404);	
 	}
 	/**
-	*	This test will verify that a 404 error will be returned when trying to answer with no selected id.
+	*	This test will verify that a 400 error will be returned when trying to answer with no selected id.
+	*	400 == Bad Request
 	*
 	*/
 	public function testQuizUpdateWithNoAnswer(){
@@ -132,6 +135,6 @@ class ApiQuizControllerTest extends TestCase {
 			[$question->id],["video_id"=>$video->id,]
 		);
 
-		$this->assertResponseStatus(404);	
+		$this->assertResponseStatus(400);	
 	}
 }
