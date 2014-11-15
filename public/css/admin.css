@@ -9,6 +9,9 @@ h1,h2,h3,h4,h5,h6 {
 	font-family: "Bree Serif", serif;
 	font-weight: 400;
 }
+#new {
+	padding: 20px;
+}
 #search {
 	padding: 20px;
 	text-align: center;

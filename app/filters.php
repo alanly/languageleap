@@ -19,7 +19,13 @@ App::before(function($request)
 
 App::after(function($request, $response)
 {
-	//
+	/**
+	 * Store the current CSRF token in a cookie, that lasts "forever".
+	 */
+	if ($response instanceof Illuminate\Http\Response)
+	{
+		$response->withCookie(Cookie::forever('CSRF-TOKEN', csrf_token()));
+	}
 });
 
 /*
@@ -83,7 +89,10 @@ Route::filter('guest', function()
 
 Route::filter('csrf', function()
 {
-	if (Session::token() != Input::get('_token'))
+	// Fetch token from input fields; if null, fetch token from request header.
+	$token = Input::get('_token', Request::header('X-CSRF-TOKEN'));
+
+	if (Session::token() !== $token)
 	{
 		throw new Illuminate\Session\TokenMismatchException;
 	}

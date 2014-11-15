@@ -135,3 +135,6 @@ Route::get('quiz', function()
 {
 	return View::make('quiz.main');
 });
+
+// CSRF Test Route
+Route::any('test/csrf', ['before' => 'csrf', function() {}]);
