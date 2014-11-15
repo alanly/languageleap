@@ -22,8 +22,13 @@ App::after(function($request, $response)
 	/**
 	 * Append the CSRF token to the response header so that code on the
 	 * client-side can access it out-of-band from the content body.
+	 * Also, only modify an Http\Response. Prior issues when modifying a
+	 * BinaryFileResponse.
 	 */
-	$response->header('X-Csrf-Token', csrf_token());
+	if ($response instanceof Illuminate\Http\Response)
+	{
+		$response->header('X-Csrf-Token', csrf_token());
+	}
 });
 
 /*
