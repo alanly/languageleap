@@ -13,19 +13,16 @@
 
 App::before(function($request)
 {
-	//
+	/**
+	 * Store the current CSRF token in a cookie.
+	 */
+	setcookie('CSRF-TOKEN', csrf_token());
 });
 
 
 App::after(function($request, $response)
 {
-	/**
-	 * Store the current CSRF token in a cookie, that lasts "forever".
-	 */
-	if ($response instanceof Illuminate\Http\Response)
-	{
-		$response->withCookie(Cookie::forever('CSRF-TOKEN', csrf_token()));
-	}
+	//
 });
 
 /*
