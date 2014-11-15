@@ -92,7 +92,7 @@ Route::group(['prefix' => 'api'], function()
 				'quiz_id' => 1,
 				'question' => [
 					'id' => 1,
-					'string' => 'What is the definition of "forest"?',
+					'description' => 'What is the definition of "forest"?',
 					'definitions' => [
 						['id' => 0, 'description' => 'a large tract of land covered with trees and underbush'],
 						['id' => 1, 'description' => 'deserved reward of just desserts, usually unpleasant'],
@@ -133,5 +133,5 @@ Route::controller('flashcard', 'FlashcardController');
 // Quiz View
 Route::get('quiz', function()
 {
-	return View::make('quiz');
+	return View::make('quiz.main');
 });
