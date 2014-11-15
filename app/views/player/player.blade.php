@@ -21,6 +21,8 @@
 
 		<div id="script">
 		</div>
+
+		<a class="define btn btn-primary">Define</a>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
@@ -33,9 +35,7 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-	
-	<a class="define btn btn-primary">Define</a>
-	
+		
 	<script>
 		var definitions = [];
 		
@@ -68,7 +68,7 @@
 					loadScript();
 				},
 				error : function(data){
-					//loadScript();
+					loadScript();
 
 					console.log(data.responseText);
 					var json = $.parseJSON(data.responseText);
