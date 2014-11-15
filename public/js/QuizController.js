@@ -4,6 +4,15 @@
 var quizApp = angular.module('quizApp', ['ui.bootstrap']);
 
 /**
+ * Setup our CSRF-handling values.
+ */
+quizApp.run(function($http)
+{
+	$http.defaults.xsrfCookieName = 'CSRF-TOKEN';
+	$http.defaults.xsrfHeaderName = 'X-CSRF-TOKEN';
+});
+
+/**
  * Define our QuizController.
  */
 quizApp.controller('QuizController', function($scope, $http)
@@ -17,6 +26,7 @@ quizApp.controller('QuizController', function($scope, $http)
 	// Hold the current quiz ID
 	var currentQuizID = $scope.currentQuizID = -1;
 
+	// Hold the current form selection.
 	var selection = $scope.selection = {};
 
 	// Function simply appends the specified question object to the collection.
@@ -74,6 +84,7 @@ quizApp.controller('QuizController', function($scope, $http)
 		{
 			$('#btn-submit-'+currentQuestion.id).removeClass('btn-warning').addClass('btn-error');
 			console.log('an error occured while submitting the selection.');
+			console.log(response);
 		});
 	};
 
