@@ -22,7 +22,8 @@
 		<div id="script">
 		</div>
 
-		<a class="define btn btn-primary">Define</a>
+		<a class="continue btn btn-success">Continue to Quiz</a>
+		<a class="define btn btn-primary">Define Selected</a>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
@@ -48,6 +49,8 @@
 					$('#script').html(data.data[0].text);
 					$('#script br').remove();
 					$('#script span[data-type=actor]:not(:first)').before('<br>');
+
+					loadScriptDefinitions();
 				},
 				error : function(data){
 					var json = $.parseJSON(data);
@@ -68,13 +71,37 @@
 					loadScript();
 				},
 				error : function(data){
-					loadScript();
-
-					console.log(data.responseText);
 					var json = $.parseJSON(data.responseText);
 					$('.error-message').html(json.data);
 					$('.error-message').show();
 				}
+			});
+		}
+
+		// Later on, this will be used for flashcards
+		function loadScriptDefinitions() {
+			$('#script span[data-type=word]').each(function() {
+				var $this = $(this);
+				var definitionId = $this.data('id');
+
+				if (definitionId == undefined)
+					return;
+
+				$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
+					if (data.status == 'success') {
+						$this.tooltip({
+							'container': '#script',
+							'placement': 'auto top',
+							'title': data.data.definition
+						});
+
+						$this.data('definition', data.data.definition);
+						$this.data('full-definition', data.data.full_definition);
+						$this.data('pronunciation', data.data.pronunciation);
+					} else {
+						// Handle failure
+					}
+				});
 			});
 		}
 
