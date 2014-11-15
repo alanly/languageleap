@@ -9,6 +9,7 @@
 <style>
 	.carousel-indicators, .carousel-control { display: none; }
 	.radio-group { padding: 1rem 3rem 2rem; text-align: left; }
+	.btn { transition-duration: 0.3s; }
 </style>
 @stop
 
