@@ -128,6 +128,19 @@
 			}
 		}
 
+		function loadQuiz() {
+			var $selectedWords = $('#script .word-selected');
+
+			if ($selectedWords.length > 0) {
+				// This data needs to be sent to the quiz page
+				var json = {
+					'video_id': {{ $video_id }},
+					'selected_words': $selectedWords.map(function() { return $(this).data('id'); }).get(),
+					'all_words': $('#script span[data-type=word]').map(function() { return $(this).data('id'); }).get()
+				};
+			}
+		}
+
 		$(function()
 		{
 			loadVideo();
@@ -136,6 +149,8 @@
 			{
 				loadFlashcards();
 			});
+
+			$('.continue').click(loadQuiz);
 
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
