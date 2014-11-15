@@ -20,10 +20,12 @@ App::before(function($request)
 App::after(function($request, $response)
 {
 	/**
-	 * Append the CSRF token to the response header so that code on the
-	 * client-side can access it out-of-band from the content body.
+	 * Store the current CSRF token in a cookie, that lasts "forever".
 	 */
-	$response->header('X-Csrf-Token', csrf_token());
+	if ($response instanceof Illuminate\Http\Response)
+	{
+		$response->withCookie(Cookie::forever('CSRF-TOKEN', csrf_token()));
+	}
 });
 
 /*
@@ -88,7 +90,7 @@ Route::filter('guest', function()
 Route::filter('csrf', function()
 {
 	// Fetch token from input fields; if null, fetch token from request header.
-	$token = Input::get('_token', Request::header('X-Csrf-Token'));
+	$token = Input::get('_token', Request::header('X-CSRF-TOKEN'));
 
 	if (Session::token() !== $token)
 	{
