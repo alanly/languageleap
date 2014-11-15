@@ -1,16 +1,7 @@
 @extends('master')
 
-@section('javascript')
-	<script type="text/javascript" src="/libraries/scroller/js/easing.js"></script>
-	<script type="text/javascript" src="/libraries/scroller/js/evoslider.js"></script>
-	<script type="text/javascript" src="/js/scroller.js"></script>      
-@stop
-
 @section('css')
-	<link rel="stylesheet" href="/libraries/scroller/css/reset.css" />
-	<link rel="stylesheet" href="/libraries/scroller/css/evoslider.css" />
-	<link rel="stylesheet" href="/libraries/scroller/css/default.css" />
-	<link rel="stylesheet" href="/css/flashcard.css" />      
+	<link rel="stylesheet" href="/css/flashcard.css">
 	<link rel="stylesheet" href="/css/video-script.css">
 @stop
 
@@ -34,7 +25,14 @@
 
 	<div class="clear" style="clear:both;"></div>
 	
-	<div id="flashcard"></div>
+	<div id="flashcard" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 	
 	<a class="define btn btn-primary">Define</a>
 	
@@ -70,6 +68,9 @@
 					loadScript();
 				},
 				error : function(data){
+					//loadScript();
+
+					console.log(data.responseText);
 					var json = $.parseJSON(data.responseText);
 					$('.error-message').html(json.data);
 					$('.error-message').show();
@@ -94,12 +95,8 @@
 		{
 			loadDefinitions();
 			if(definitions.length > 0){
-				$("#flashcard").load('/flashcard', { definitions : definitions }, function(data){
-					$("#flashcard").dialog({
-						height: 500,
-						width : 500,
-						dialogClass : 'test'
-					});
+				$("#flashcard .modal-body").load('/flashcard', { definitions : definitions }, function(data){
+					$('#flashcard').modal();
 				});
 			}
 		}
