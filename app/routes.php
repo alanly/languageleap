@@ -84,7 +84,7 @@ Route::group(['prefix' => 'api'], function()
 	Route::resource('scripts', 'ApiScriptController');
 
 	// Quiz
-	Route::resource('quiz', 'ApiQuizController');
+	Route::controller('quiz', 'ApiQuizController');
 
 });
 

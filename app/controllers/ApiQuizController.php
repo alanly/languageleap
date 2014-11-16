@@ -34,7 +34,7 @@ class ApiQuizController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function postIndex()
 	{
 		// Ensure the video exists.
 		$videoId = Input::get("video_id");
@@ -124,10 +124,10 @@ class ApiQuizController extends \BaseController {
 	 * 
 	 * @return Response
 	 */
-	public function update($id)
+	public function putIndex()
 	{
 		// Ensure that the Question exists, else return a 404.
-		$question = Question::find($id);
+		$question = Question::find(Input::get('question_id'));
 
 		if (! $question)
 		{
@@ -158,7 +158,7 @@ class ApiQuizController extends \BaseController {
 		$quiz = $question->quiz()->first();
 
 		// Update the score if the user answered correctly.
-		if ($selectedId == $question->definition_id)
+		if ($selectedId == $question->definition_id.'')
 		{
 			// Increment the score because they selected the right answer.
 			$quiz->increment("score");
@@ -226,7 +226,7 @@ class ApiQuizController extends \BaseController {
 			$response['previous'] = [
 				'selected' => $previousQuestion->selected_id,
 				'answer'   => $previousQuestion->definition_id,
-				'result'   => $previousQuestion->selected_id === $previousQuestion->definition_id,
+				'result'   => $previousQuestion->selected_id === $previousQuestion->definition_id.'',
 			];
 		}
 
