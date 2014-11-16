@@ -1,16 +1,7 @@
 @extends('master')
 
-@section('javascript')
-	<script type="text/javascript" src="/libraries/scroller/js/easing.js"></script>
-	<script type="text/javascript" src="/libraries/scroller/js/evoslider.js"></script>
-	<script type="text/javascript" src="/js/scroller.js"></script>      
-@stop
-
 @section('css')
-	<link rel="stylesheet" href="/libraries/scroller/css/reset.css" />
-	<link rel="stylesheet" href="/libraries/scroller/css/evoslider.css" />
-	<link rel="stylesheet" href="/libraries/scroller/css/default.css" />
-	<link rel="stylesheet" href="/css/flashcard.css" />      
+	<link rel="stylesheet" href="/css/flashcard.css">
 	<link rel="stylesheet" href="/css/video-script.css">
 @stop
 
@@ -30,12 +21,22 @@
 
 		<div id="script">
 		</div>
+
+		<a class="continue btn btn-success">Continue to Quiz</a>
+		<a class="define btn btn-primary">Define Selected</a>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
-	<div id="flashcard" class="modal-dialog" role="dialog"></div>
-	<a class="define btn btn-primary">Define</a>
 	
+	<div id="flashcard" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+		
 	<script>
 		var definitions = [];
 		
@@ -48,6 +49,8 @@
 					$('#script').html(data.data[0].text);
 					$('#script br').remove();
 					$('#script span[data-type=actor]:not(:first)').before('<br>');
+
+					loadScriptDefinitions();
 				},
 				error : function(data){
 					var json = $.parseJSON(data);
@@ -75,6 +78,33 @@
 			});
 		}
 
+		// Later on, this will be used for flashcards
+		function loadScriptDefinitions() {
+			$('#script span[data-type=word]').each(function() {
+				var $this = $(this);
+				var definitionId = $this.data('id');
+
+				if (definitionId == undefined)
+					return;
+
+				$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
+					if (data.status == 'success') {
+						$this.tooltip({
+							'container': '#script',
+							'placement': 'auto top',
+							'title': data.data.definition
+						});
+
+						$this.data('definition', data.data.definition);
+						$this.data('full-definition', data.data.full_definition);
+						$this.data('pronunciation', data.data.pronunciation);
+					} else {
+						// Handle failure
+					}
+				});
+			});
+		}
+
 		function loadDefinitions()
 		{
 			definitions = [];
@@ -92,9 +122,22 @@
 		{
 			loadDefinitions();
 			if(definitions.length > 0){
-				$("#flashcard").load('/flashcard', { definitions : definitions }, function(data){
-					$("#flashcard").modal("show");
+				$("#flashcard .modal-body").load('/flashcard', { definitions : definitions }, function(data){
+					$('#flashcard').modal();
 				});
+			}
+		}
+
+		function loadQuiz() {
+			var $selectedWords = $('#script .word-selected');
+
+			if ($selectedWords.length > 0) {
+				// This data needs to be sent to the quiz page
+				var json = {
+					'video_id': {{ $video_id }},
+					'selected_words': $selectedWords.map(function() { return $(this).data('id'); }).get(),
+					'all_words': $('#script span[data-type=word]').map(function() { return $(this).data('id'); }).get()
+				};
 			}
 		}
 
@@ -106,6 +149,8 @@
 			{
 				loadFlashcards();
 			});
+
+			$('.continue').click(loadQuiz);
 
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
