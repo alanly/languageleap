@@ -1,28 +1,28 @@
 <?php namespace LangLeap\Quizzes;
 
 use Eloquent;
-class Question extends Eloquent
-{
+
+class Question extends Eloquent {
+
+	public    $timestamps = false;
+	protected $fillable   = ['quiz_id', 'definition_id', 'question'];
 
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'questions';
-	public $timestamps = false;
-	/**
-	*	This function returns the quiz that contains this question
-	*
-	*/
 	public function quiz()
 	{
 		return $this->belongsTo('LangLeap\Quizzes\Quiz');
 	}
 
+
 	public function definition()
 	{
 		return $this->belongsTo('LangLeap\Words\Definition');
 	}
+
+
+	public function scopeUnanswered($query)
+	{
+		return $query->where('selected_id', null);
+	}
+
 }

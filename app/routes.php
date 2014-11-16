@@ -10,6 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
 // Accordion
 Route::get('/', function()
 {
@@ -83,7 +84,8 @@ Route::group(['prefix' => 'api'], function()
 	Route::resource('scripts', 'ApiScriptController');
 
 	// Quiz
-	Route::resource('quiz', 'ApiQuizController');
+	Route::controller('quiz', 'ApiQuizController');
+
 });
 
 
@@ -96,6 +98,7 @@ Route::group(array('prefix' => 'content'), function()
 
 	// Handle requests for scripts.
 	Route::get('scripts/{id}', 'ScriptContentController@getScript');
+
 });
 
 
@@ -109,6 +112,12 @@ Route::get('/video/play/{id}', function($id)
 // Flashcard
 Route::controller('flashcard', 'FlashcardController');
 
+
+// Quiz View
+Route::get('quiz', function()
+{
+	return View::make('quiz.main');
+});
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);

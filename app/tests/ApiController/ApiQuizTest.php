@@ -1,6 +1,7 @@
 <?php
 
 use LangLeap\TestCase;
+use LangLeap\Core\Collection;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 use LangLeap\Quizzes\Quiz;
@@ -33,8 +34,8 @@ class ApiQuizControllerTest extends TestCase {
 		array_push($selected_words, $all_words[0]);
 
 		$response = $this->action(
-			'get',
-			'ApiQuizController@index',
+			'post',
+			'ApiQuizController@postIndex',
 			[],["video_id"=>$video->id, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 
@@ -42,10 +43,14 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertResponseOk();
 
 		$data = $response->getData()->data;
-		$this->assertObjectHasAttribute('quiz', $data);
+		$this->assertObjectHasAttribute('quiz_id', $data);
 		$this->assertObjectHasAttribute('question', $data);
-		$this->assertObjectHasAttribute('question_id', $data);
-		$this->assertObjectHasAttribute('definitions', $data);
+
+		$question = $data->question;
+		$this->assertObjectHasAttribute('id', $question);
+		$this->assertObjectHasAttribute('description', $question);
+		$this->assertObjectHasAttribute('last', $question);
+		$this->assertObjectHasAttribute('definitions', $question);
 	}
 
 	/**
@@ -60,13 +65,16 @@ class ApiQuizControllerTest extends TestCase {
 		$selected_words = array();
 
 		$response = $this->action(
-			'get',
-			'ApiQuizController@index',
+			'post',
+			'ApiQuizController@postIndex',
 			[],["video_id"=>$video->id, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(404);
+		$this->assertResponseOk();
+
+		$this->assertObjectHasAttribute('result', json_decode($response->getContent())->data);
+		$this->assertObjectHasAttribute('redirect', json_decode($response->getContent())->data->result);
 	}
 
 	/**
@@ -80,8 +88,8 @@ class ApiQuizControllerTest extends TestCase {
 		$selected_words = array();
 
 		$response = $this->action(
-			'get',
-			'ApiQuizController@index',
+			'post',
+			'ApiQuizController@postIndex',
 			[],["video_id"=>-1, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 
@@ -93,17 +101,20 @@ class ApiQuizControllerTest extends TestCase {
 	*	This test will test that answering a question is successful
 	*
 	*/
-	public function testQuizUpdate(){
+	public function testQuizUpdate() {
 		$quiz = Quiz::first();
 		$video = Video::find($quiz->video_id);
 		$question = $quiz->questions()->first();
+
+		$this->session(['scriptDefinitions' => new Collection(Definition::all()->all())]);
+
 		$response = $this->action(
 			'put',
-			'ApiQuizController@update',
-			[$question->id],["video_id"=>$video->id, "selected_id" => $question->definition_id]
+			'ApiQuizController@putIndex',
+			[],["question_id"=>$question->id, "video_id"=>$video->id, "selected_id" => $question->definition_id]
 		);
 
-		$this->assertResponseStatus(200);	
+		$this->assertResponseStatus(200);
 	}
 
 	/**
@@ -114,8 +125,8 @@ class ApiQuizControllerTest extends TestCase {
 	public function testQuizUpdateWithInvalidQuestion(){
 		$response = $this->action(
 			'put',
-			'ApiQuizController@update',
-			[-1],[]
+			'ApiQuizController@putIndex',
+			[],['question_id' => 0]
 		);
 		
 		$this->assertResponseStatus(404);	
@@ -131,8 +142,8 @@ class ApiQuizControllerTest extends TestCase {
 		$question = $quiz->questions()->first();
 		$response = $this->action(
 			'put',
-			'ApiQuizController@update',
-			[$question->id],["video_id"=>$video->id,]
+			'ApiQuizController@putIndex',
+			[],['question_id' => $question->id, 'video_id' => $video->id]
 		);
 
 		$this->assertResponseStatus(400);	
