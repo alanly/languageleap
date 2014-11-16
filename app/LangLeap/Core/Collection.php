@@ -62,6 +62,8 @@ class Collection extends EloquentCollection {
 	
 		$items = is_array($keys) ? array_intersect_key($this->items, array_flip($keys)) : $this->items[$keys];
 
+		if (! is_array($keys)) $keys = [$keys];
+
 		foreach ($keys as $key)
 		{
 			unset($this->items[$key]);
