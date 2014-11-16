@@ -6,7 +6,7 @@
 					<slide ng-repeat="question in questions" active="question.active">
 						<h3>{{ question.description }}</h3>
 
-						<form class="question-form" role="form">
+						<form id="form-question-id-{{ question.id }}" class="question-form" role="form">
 							<div class="radio-group">
 								<div class="radio" id="radio-selection-id-{{ definition.id }}" ng-repeat="definition in question.definitions">
 									<label>
@@ -16,12 +16,28 @@
 								</div>
 							</div>
 
-							<button type="button" id="btn-submit-{{ question.id }}" class="btn btn-primary" ng-click="submit(selection)">Submit Answer</button>
-							<button type="button" id="btn-next-{{ question.id }}" class="btn" ng-click="nextQuestion()" disabled="disabled">Next Question</button>
+							<button type="button" id="btn-next-{{ question.id }}" class="btn btn-next" ng-click="nextQuestion()" disabled="disabled">{{ question.last === true ? 'Finish Quiz' : 'Next Question' }}</button>
 						</form>
 					</slide>
 				</carousel>
 			</div>
 		</div>
 	</div>
+
+	<script type="text/ng-template" id="scoreModalTemplate.html">
+		<div class="modal-header">
+			<h3 class="modal-title">Quiz completed!</h3>
+		</div>
+
+		<div id="score-modal-body" class="modal-body">
+			<h2>Quiz Results</h2>
+			<p class="lead">You correctly answered <strong>{{ correctQuestionsCount }}</strong> out of <strong>{{ questionsCount }}</strong> questions.</p>
+			<br>
+			<span id="final-score">{{ finalScore() }}%</span>
+		</div>
+
+		<div class="modal-footer">
+			<a href="{{ redirect }}" class="btn btn-primary">Continue</a>
+		</div>
+	</script>
 </div>

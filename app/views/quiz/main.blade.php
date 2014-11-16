@@ -9,7 +9,10 @@
 <style>
 	.carousel-indicators, .carousel-control { display: none; }
 	.radio-group { padding: 1rem 3rem 2rem; text-align: left; }
-	.btn { transition-duration: 0.3s; }
+	label, .btn { transition-duration: 0.3s; }
+	.has-success label { font-weight: 800; }
+	#score-modal-body { text-align: center; }
+	#final-score { font-size: 4rem; font-weight: 800; padding-bottom: 1rem; }
 </style>
 @stop
 
