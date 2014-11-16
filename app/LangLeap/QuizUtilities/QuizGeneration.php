@@ -30,6 +30,9 @@ class QuizGeneration {
 		// Ensure that $selectedDefinitions is not empty.
 		if (count($selectedDefinitions) < 1) return null;
 
+		// Make a copy of the definitions collection.
+		$scriptDefinitions = new Collection($scriptDefinitions->all());
+
 		// Create a new Quiz instance.
 		$quiz = new Quiz;	
 		$quiz->user_id = 1; // @TODO user authentication
@@ -80,7 +83,7 @@ class QuizGeneration {
 		// Pad out our selection of answers (up to 4) with random definitions.
 		while ($answers->count() < 4 && ! $scriptDefinitions->isEmpty())
 		{
-			$answers->push($scriptDefinitions->random());
+			$answers->push($scriptDefinitions->pullRandom());
 		}
 
 		// Shuffle/randomize the answers.
@@ -92,7 +95,7 @@ class QuizGeneration {
 			return self::formatDefinitionForResponse($item);
 		});
 
-		return $answers;
+		return $answers->all();
 	}
 
 
