@@ -33,9 +33,7 @@
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
-	
-	<div id="flashcard"></div>
-	
+	<div id="flashcard" class="modal-dialog" role="dialog"></div>
 	<a class="define btn btn-primary">Define</a>
 	
 	<script>
@@ -95,11 +93,7 @@
 			loadDefinitions();
 			if(definitions.length > 0){
 				$("#flashcard").load('/flashcard', { definitions : definitions }, function(data){
-					$("#flashcard").dialog({
-						height: 500,
-						width : 500,
-						dialogClass : 'test'
-					});
+					$("#flashcard").modal("show");
 				});
 			}
 		}

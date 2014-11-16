@@ -42,6 +42,6 @@
 	
 		controlNav: true,                   // Enables control navigation
 		controlNavAutoHide: false           // Shows control navigation on mouseover and hide it when mouseout 
-	});                            
+	});
 	
 </script>
