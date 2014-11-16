@@ -71,6 +71,7 @@ class QuizGeneration {
 	 */
 	public static function generateQuestionDefinitions($scriptDefinitions, $answerId)
 	{
+		$scriptDefinitions = new Collection($scriptDefinitions->all());
 		$answers = new Collection;
 
 		// Throw in the correct answer, since we already know it.
