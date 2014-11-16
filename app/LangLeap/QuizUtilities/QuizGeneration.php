@@ -1,95 +1,114 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use LangLeap\Core\Collection;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Question;
 use LangLeap\Words\Definition;
 
 /**
-*  @author Thomas Rahn <thomas@rahn.ca>
-*/
+ * @author Thomas Rahn <thomas@rahn.ca>
+ * @author Alan Ly <hello@alan.ly>
+ */
 class QuizGeneration {
 
 	/**
-	*		This function will generate a quiz based on the definitions sent in. This quiz will NOT be associated with a video.
-	*		
-	*		@param Definition[]  An Array of definiton that can be in the quiz
-	*		@param String[] an Array of definitions Ids that the user selected as dificult
-	*
-	*		@return Quiz The quiz that was generated.
+	* This function will generate a new Quiz instance based on the supplied
+	* collection of Definition instances associated with the script, and an array
+	* of Definition IDs that have been chosen by the user to be in the quiz.
+	* 
+	* Generated quizzes do not contain the association with a video.
+	* 
+	* @param  Collection  $scriptDefinitions
+	* @param  array       $selectedDefinitions
+	* @return Quiz
 	*/
-	public static function generateQuiz($definitions, $selected_words)
+	public static function generateQuiz(Collection $scriptDefinitions, $selectedDefinitions)
 	{
+		// Ensure that $scriptDefinitions is not empty.
+		if ($scriptDefinitions->isEmpty()) return null;
+
+		// Ensure that $selectedDefinitions is not empty.
+		if (count($selectedDefinitions) < 1) return null;
+
+		// Create a new Quiz instance.
 		$quiz = new Quiz;	
-		//get user here
-		$quiz->user_id = 1;
+		$quiz->user_id = 1; // @TODO user authentication
 		$quiz->save();
 
-		$questions = array();
-
-		//return null if there are no definitions
-		if(! $definitions)
+		// Generate the Question instances associated to this Quiz.
+		foreach ($selectedDefinitions as $definitionId)
 		{
-			return null;
+			// Pull the Definition instance from the collection.
+			$definition = $scriptDefinitions->pull($definitionId);
+
+			if (! $definition) return null;
+
+			// Create a new Question instance
+			$question = Question::create([
+				'quiz_id'       => $quiz->id,
+				'definition_id' => $definitionId,
+				'question'      => 'What is the definition for '.$definition->word,
+			]);
 		}
-
-		if( $selected_words){
-			foreach ($selected_words as $definitionId) 
-			{
-				$definition = $definitions[$definitionId];
-
-				//Create the question
-				$question = new Question;
-				$question->quiz_id = $quiz->id;
-				$question->definition_id = $definitionId;
-				$question->question = "What is the definition for " . $definition->word;
-				$question->save();
-				array_push($questions, $question);
-				unset($definitions[$definitionId]);
-			}
-		}		
 
 		return $quiz;
 	}
 
+
 	/**
-	*	This function will return an array of all the "definition" attributes of all the defintions.
-	*	This is the function that will generate the possible answers for the question, it will also shuffle them so the answer isn't always on top.
-	*
-	*	@param Definition[] An array of definitions from the script.
-	*	@param Int The definition Id of the answer.
-	*
-	*	@return An an array of deinitions
-	*/
-	public static function generateQuestionDefinitions($definitions, $answerId){
-		$jsonDefinition = array();
+	 * Generates an appropriately formatted array of possible answer-definitions
+	 * based upon the available script definition instances and the definition ID
+	 * of the answer.
+	 * 
+	 * Results are shuffled so they appear randomized.
+	 * 
+	 * @param  Collection  $scriptDefinitions
+	 * @param  int         $answerId
+	 * @return array
+	 */
+	public static function generateQuestionDefinitions($scriptDefinitions, $answerId)
+	{
+		$answers = new Collection;
 
-		//add the answer
-		$jsonDefinition[$answerId] = $definitions[$answerId]->definition;
-		unset($definitions[$answerId]);
+		// Throw in the correct answer, since we already know it.
+		$answer = $scriptDefinitions->pull($answerId);
 
-		if(count($definitions)<= 4)
+		if (! $answer) return null;
+		
+		$answers->push($answer);
+
+		// Pad out our selection of answers (up to 4) with random definitions.
+		while ($answers->count() < 4 && ! $scriptDefinitions->isEmpty())
 		{
-			foreach($definitions as $def)
-			{
-				$jsonDefinition[$def->id] =  $def->definition;
-			}
-		} 
-		else 
-		{
-			while(count($jsonDefinition) < 4 && count($deinitions) >= 1) {
-				$definitionKeys = array_keys($definitions);
-
-				//generate random number from 0 to number of definitions.
-				$ran = rand(0,count($definitions)-1);
-
-				$defId = $definitionKeys[$ran];
-				$jsonDefinition[$defId] = $definitions[$defId]->definition;
-				unset($definitions[$defId]);
-			}
+			$answers->push($scriptDefinitions->random());
 		}
 
-		//TODO: Create a function that returns json object of associative array and have it "shuffled"
-		return $jsonDefinition;
+		// Shuffle/randomize the answers.
+		$answers->shuffle();
+
+		// Transform the answers into the appropriate format for the API.
+		$answers->transform(function($item) 
+		{
+			return self::formatDefinitionForResponse($item);
+		});
+
+		return $answers;
+	}
+
+
+	/**
+	 * Formats a given Definition instance into an appropriate array
+	 * representation for the JSON API.
+	 * 
+	 * @param  Definition  $definition
+	 * @return array
+	 */
+	protected static function formatDefinitionForResponse(Definition $definition)
+	{
+		return [
+			'id' => $definition->id,
+			'description' => $definition->full_definition,
+		];
 	}
 }
 
