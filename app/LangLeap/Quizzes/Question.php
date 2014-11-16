@@ -5,6 +5,7 @@ use Eloquent;
 class Question extends Eloquent {
 
 	public    $timestamps = false;
+	protected $fillable   = ['quiz_id', 'definition_id', 'question'];
 
 
 	public function quiz()
