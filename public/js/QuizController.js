@@ -34,15 +34,14 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 	// Hold the destination URL to redirect to after the quiz
 	var redirectUrl = $scope.redirectUrl = '';
 
+	// Get the video information from the local storage.
+	var videoInfo = $scope.videoInfo = JSON.parse(localStorage.getItem("quizPrerequisites"));
+
+	console.log(videoInfo);
+
 	// Function simply appends the specified question object to the collection.
 	$scope.appendQuestion = function(question)
 	{
-		if (question.last === true)
-		{
-			$('.btn-next').addClass('hide');
-			$('.btn-score-open').removeClass('hide');
-		}
-
 		questions.push(question);
 	};
 
@@ -84,15 +83,16 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			// Highlight the wrong answer
 			if (previous.result === false)
 			{
-				$('#radio-selection-id-'+previous.selected).addClass('has-error');	
+				$('#radio-selection-id-'+currentQuestion.id+'-'+previous.selected).addClass('has-error');	
 			}
 
 			// Highlight the correct answer
-			$('#radio-selection-id-'+previous.answer).addClass('has-success');
+			$('#radio-selection-id-'+currentQuestion.id+'-'+previous.answer).addClass('has-success');
 
 			if (previous.result === true)
 			{
-				correctQuestionsCount++;
+				console.log("Correct answer");
+				$scope.correctQuestionsCount = $scope.correctQuestionsCount + 1;
 			}
 
 			// Disable radio buttons
@@ -125,6 +125,9 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 
 		if (questionIndex >= questions.length) return;
 
+		// "Uncheck" selection
+		$('.radio input').prop('checked', false);
+
 		// Disable current question
 		currentQuestion.active = false;
 
@@ -154,9 +157,9 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 	$http.post(
 		'/api/quiz',
 		{
-			'video_id': 1,
-			'selected_words': [1],
-			'all_words': [1,2]
+			'video_id': videoInfo.video_id,
+			'selected_words': videoInfo.selected_words,
+			'all_words': videoInfo.all_words
 		}
 	).success(function(response)
 	{

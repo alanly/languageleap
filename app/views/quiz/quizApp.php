@@ -8,7 +8,7 @@
 
 						<form id="form-question-id-{{ question.id }}" class="question-form" role="form">
 							<div class="radio-group">
-								<div class="radio" id="radio-selection-id-{{ definition.id }}" ng-repeat="definition in question.definitions">
+								<div class="radio" id="radio-selection-id-{{ question.id }}-{{ definition.id }}" ng-repeat="definition in question.definitions">
 									<label>
 										<input type="radio" name="definition" ng-model="selection.definition_id" value="{{ definition.id }}" ng-click="submit(selection)">
 										{{ definition.description }}

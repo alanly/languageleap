@@ -138,7 +138,12 @@
 					'selected_words': $selectedWords.map(function() { return $(this).data('id'); }).get(),
 					'all_words': $('#script span[data-type=word]').map(function() { return $(this).data('id'); }).get()
 				};
+
+				// Store data in the HTML5 Storage schema
+				localStorage.setItem("quizPrerequisites", JSON.stringify(json));
 			}
+
+			window.location = '/quiz';
 		}
 
 		$(function()
@@ -150,7 +155,10 @@
 				loadFlashcards();
 			});
 
-			$('.continue').click(loadQuiz);
+			$('.continue').click(function()
+			{
+				loadQuiz();
+			});
 
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
