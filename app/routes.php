@@ -85,6 +85,7 @@ Route::group(['prefix' => 'api'], function()
 
 	// Quiz
 	Route::resource('quiz', 'ApiQuizController');
+
 });
 
 
@@ -97,6 +98,7 @@ Route::group(array('prefix' => 'content'), function()
 
 	// Handle requests for scripts.
 	Route::get('scripts/{id}', 'ScriptContentController@getScript');
+
 });
 
 
