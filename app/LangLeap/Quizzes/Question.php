@@ -17,12 +17,12 @@ class Question extends Eloquent
 	*
 	*/
 	public function quiz()
-    	{
-        	return $this->belongsTo('LangLeap\Quizzes\Quiz');
-    	}
-
-	public function script_word()
 	{
-		return $this->belongsTo('LangLeap\Words\ScriptWord');
+		return $this->belongsTo('LangLeap\Quizzes\Quiz');
+	}
+
+	public function definition()
+	{
+		return $this->belongsTo('LangLeap\Words\Definition');
 	}
 }
