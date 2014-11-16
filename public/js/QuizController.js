@@ -56,15 +56,16 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			return console.log('no selection was made');
 		}
 
-		$http.post(
+		$http.put(
 			'/api/quiz',
 			{
 				'quiz_id': currentQuizID,
 				'question_id': currentQuestion.id,
-				'selection_id': selection.definition_id
+				'selected_id': selection.definition_id
 			}
 		).success(function(response)
 		{
+			console.log(response);
 			var previous = response.data.previous;
 			var question = response.data.question;
 			var result   = response.data.result;
@@ -150,7 +151,14 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 	};
 
 	// Fetch the initial question at boot.
-	$http.get('/api/quiz').success(function(response)
+	$http.post(
+		'/api/quiz',
+		{
+			'video_id': 1,
+			'selected_words': [1],
+			'all_words': [1,2]
+		}
+	).success(function(response)
 	{
 		var question = response.data.question;
 
