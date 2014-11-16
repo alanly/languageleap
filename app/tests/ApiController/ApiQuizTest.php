@@ -34,8 +34,8 @@ class ApiQuizControllerTest extends TestCase {
 		array_push($selected_words, $all_words[0]);
 
 		$response = $this->action(
-			'get',
-			'ApiQuizController@index',
+			'post',
+			'ApiQuizController@postIndex',
 			[],["video_id"=>$video->id, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 
@@ -65,8 +65,8 @@ class ApiQuizControllerTest extends TestCase {
 		$selected_words = array();
 
 		$response = $this->action(
-			'get',
-			'ApiQuizController@index',
+			'post',
+			'ApiQuizController@postIndex',
 			[],["video_id"=>$video->id, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 
@@ -88,8 +88,8 @@ class ApiQuizControllerTest extends TestCase {
 		$selected_words = array();
 
 		$response = $this->action(
-			'get',
-			'ApiQuizController@index',
+			'post',
+			'ApiQuizController@postIndex',
 			[],["video_id"=>-1, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 
@@ -110,8 +110,8 @@ class ApiQuizControllerTest extends TestCase {
 
 		$response = $this->action(
 			'put',
-			'ApiQuizController@update',
-			[$question->id],["video_id"=>$video->id, "selected_id" => $question->definition_id]
+			'ApiQuizController@putIndex',
+			[],["question_id"=>$question->id, "video_id"=>$video->id, "selected_id" => $question->definition_id]
 		);
 
 		$this->assertResponseStatus(200);
@@ -125,8 +125,8 @@ class ApiQuizControllerTest extends TestCase {
 	public function testQuizUpdateWithInvalidQuestion(){
 		$response = $this->action(
 			'put',
-			'ApiQuizController@update',
-			[-1],[]
+			'ApiQuizController@putIndex',
+			[],['question_id' => 0]
 		);
 		
 		$this->assertResponseStatus(404);	
@@ -142,8 +142,8 @@ class ApiQuizControllerTest extends TestCase {
 		$question = $quiz->questions()->first();
 		$response = $this->action(
 			'put',
-			'ApiQuizController@update',
-			[$question->id],["video_id"=>$video->id,]
+			'ApiQuizController@putIndex',
+			[],['question_id' => $question->id, 'video_id' => $video->id]
 		);
 
 		$this->assertResponseStatus(400);	

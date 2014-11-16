@@ -127,13 +127,14 @@ class ApiQuizController extends \BaseController {
 	public function putIndex()
 	{
 		// Ensure that the Question exists, else return a 404.
-		$question = Question::find(Input::get('question_id'));
+		$questionId = Input::get('question_id');
+		$question = Question::find($questionId);
 
 		if (! $question)
 		{
 			return $this->apiResponse(
 				'error',
-				"Question {$id} not found.",
+				"Question {$questionId} not found.",
 				404
 			);
 		}
@@ -145,7 +146,7 @@ class ApiQuizController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"The selected definition {$id} is invalid",
+				"The selected definition {$selectedId} is invalid",
 				400
 			);
 		}
