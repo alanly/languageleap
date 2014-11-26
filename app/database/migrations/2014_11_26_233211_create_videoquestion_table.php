@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVideoquestionTable extends Migration {
+class CreateVideoQuestionTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateVideoquestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('videoquestions', function($table){
+		Schema::create('videoquestion', function($table){
 			$table->increments('id');
 			$table->integer('video_id')->unsigned();
 			$table->integer('question_id')->unsigned();
@@ -27,7 +27,7 @@ class CreateVideoquestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('videoquestions');
+		Schema::dropIfExists('videoquestion');
 	}
 
 }
