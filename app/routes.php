@@ -86,6 +86,9 @@ Route::group(['prefix' => 'api'], function()
 	// Quiz
 	Route::controller('quiz', 'ApiQuizController');
 
+	// Registration
+	Route::resource('users','ApiUserController');
+
 });
 
 
