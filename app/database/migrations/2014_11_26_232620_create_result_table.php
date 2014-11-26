@@ -17,7 +17,7 @@ class CreateResultTable extends Migration {
 			$table->integer('user_id')->unsigned();
 			$table->integer('videoquestion_id')->unsigned();
 			$table->boolean('is_correct');
-			$table->dateTime('timestamp');
+			$table->timestamp('timestamp');
 		});
 	}
 

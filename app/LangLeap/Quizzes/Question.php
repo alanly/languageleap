@@ -1,28 +1,21 @@
 <?php namespace LangLeap\Quizzes;
 
 use Eloquent;
-
+/**
+ * @author  Dror Ozgaon <Dror.Ozgaon@gmail.com>
+ */
 class Question extends Eloquent {
 
 	public    $timestamps = false;
-	protected $fillable   = ['quiz_id', 'definition_id', 'question'];
+	protected $fillable   = ['answer_id', 'question'];
+	protected $rules      = [
+		'answer_id'   => 'required|integer',
+		'question'    => 'required|string'
+		];
 
 
-	public function quiz()
+	public function answer()
 	{
-		return $this->belongsTo('LangLeap\Quizzes\Quiz');
+		return $this->belongsTo('LangLeap\Quizzes\Answer');
 	}
-
-
-	public function definition()
-	{
-		return $this->belongsTo('LangLeap\Words\Definition');
-	}
-
-
-	public function scopeUnanswered($query)
-	{
-		return $query->where('selected_id', null);
-	}
-
 }
