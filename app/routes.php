@@ -17,6 +17,18 @@ Route::get('/', function()
 	return View::make('index');
 });
 
+// Routes for authentication views.
+Route::group(array('prefix' => 'auth'), function() {
+	
+    // Login form
+    Route::get('login', array('before' => 'guest', 'uses' => 'AuthController@getLogin', 'as' => 'login'));
+    Route::post('login', array('before' => 'guest', 'uses' => 'AuthController@postLogin'));
+
+    // Logout action
+    Route::get('logout', array('uses' => 'AuthController@getLogout', 'as' => 'logout'));
+});
+
+
 
 // Route grouping for administration interface.
 Route::group(['prefix' => 'admin'], function()
