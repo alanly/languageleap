@@ -5,7 +5,7 @@ use App;
 
 
 /**
-*		@author Thomas Rahn <thomas@rahn.ca>
+*		@author Dror Ozgaon <Dror.Ozgaon@gmail.com>
 */
 class QuestionTest extends TestCase {
 
