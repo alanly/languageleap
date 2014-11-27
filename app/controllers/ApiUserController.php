@@ -132,13 +132,12 @@ class ApiUserController extends \BaseController {
 			);
 		}
 
-		$user->seasons()->delete();
 		$user->delete();
 
 		return $this->apiResponse(
 			'success',
 			'User {$userId} has been removed',
-			200
+			204
 		);
 	}
 }
