@@ -13,6 +13,7 @@ class CreateVideoQuestionTable extends Migration {
 	public function up()
 	{
 		Schema::create('videoquestion', function($table){
+			
 			$table->increments('id');
 			$table->integer('video_id')->unsigned();
 			$table->integer('question_id')->unsigned();
