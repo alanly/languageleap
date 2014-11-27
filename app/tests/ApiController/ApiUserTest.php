@@ -57,7 +57,7 @@ class ApiUserControllerTest extends TestCase {
 		// Update a couple of fields of user with id = 1
 		$response = $this->action(
 			'PATCH',
-			'ApiUserController@show',
+			'ApiUserController@update',
 			1,
 			['first_name' => 'Johnny',
 			'last_name' => 'Depp']
@@ -94,7 +94,7 @@ class ApiUserControllerTest extends TestCase {
 		// Delete user with id = 1
 		$response = $this->action(
 			'DELETE',
-			'ApiUserController@show',
+			'ApiUserController@destroy',
 			1
 		);
 
