@@ -44,7 +44,7 @@ class AuthController extends BaseController{
 		$success = ! Auth::check();
 
 		return $this->apiResponse(
-			$success,
+			($success) ? "success" : "error",
 			($success === false) ? "Logout has failed" : "Successfully logged out"
 		);
 

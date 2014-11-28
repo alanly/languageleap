@@ -97,4 +97,33 @@ class AuthenticationTest extends TestCase {
 		$this->assertRedirectedToRoute('login');
 	}
 
+	/**
+	 *	Test valid logout
+	 *
+	 */
+	public function testPostLogout()
+	{
+		//Logging in
+		$response = $this->action(
+			'POST',
+			'AuthController@postLogin',
+			[],
+			[
+				'username' => 'testUser123',
+				'password' => 'password123',
+				'_token' => csrf_token(),
+			]
+		);
+
+		$this->assertTrue(Auth::check());
+
+		//Logout
+		$response = $this->action(
+			'GET',
+			'AuthController@getLogout',
+			[],[]
+		);
+
+		$this->assertTrue(!Auth::check());
+	}
 }
