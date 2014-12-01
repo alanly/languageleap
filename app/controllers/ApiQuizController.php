@@ -1,28 +1,28 @@
 <?php
 
 use LangLeap\Core\Collection;
-use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Question;
+use LangLeap\Quizzes\Answer;
+use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\QuizUtilities\QuizGeneration;
-use LangLeap\Words\Definition;
 use LangLeap\Videos\Video;
+use LangLeap\Words\Definition;
 
 /**
  * @author Thomas Rahn <thomas@rahn.ca>
  * @author Alan Ly <hello@alan.ly>
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
 class ApiQuizController extends \BaseController {
 
-	protected $quizzes;
 	protected $questions;
-	protected $definitions;
+	protected $answers;
 	protected $videos;
 
-	public function __construct(Quiz $quiz, Question $question, Definition $definition, Video $video)
+	public function __construct(Question $question, Answer $answers, Video $video)
 	{
-		$this->quizzes = $quiz;
 		$this->questions = $question;
-		$this->definitions = $definition;
+		$this->answers = $answers;
 		$this->videos = $video;
 	}
 
@@ -72,7 +72,7 @@ class ApiQuizController extends \BaseController {
 		}
 
 		// Retrieve a collection of all definitions in the script.
-		$scriptDefinitions = $this->definitions->whereIn('id', $scriptWords)->get();
+		$scriptDefinitions = Definition::whereIn('id', $scriptWords)->get();
 
 		// Use the overriden Collection class.
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
@@ -104,17 +104,19 @@ class ApiQuizController extends \BaseController {
 			}
 		}
 
-		// Generate a quiz instance based on the words given.
-		$quiz = QuizGeneration::generateQuiz($scriptDefinitions, $selectedWords);
-		$quiz->video_id = $videoId;
-		$quiz->save();
+		// Generate all the questions.
+		$question = QuizGeneration::generateDefinitionQuiz($scriptDefinitions, $selectedWords);
+		$vq = VideoQuestion::create([
+				'question_id' 	=> $question->id,
+				'video_id'		=> $videoId,
+				'is_custom'		=> false
+			]);
+		$vq->save();
 
-		// Fetch the first unanswered question, and return it.
-		$question = $quiz->questions()->unanswered()->first();
 
 		return $this->apiResponse(
 			'success',
-			$this->generateJsonResponse($quiz, null, $question, $scriptDefinitions)
+			$this->generateJsonResponse($vq, null, $question, $scriptDefinitions)
 		);
 	}
 
@@ -216,30 +218,30 @@ class ApiQuizController extends \BaseController {
   	 * @param  Collection|null  $definitions
   	 * @return array
   	 */
-	protected function generateJsonResponse(Quiz $quiz, $previousQuestion, $currentQuestion, $definitions)
+	protected function generateJsonResponse(VideoQuestion $vq, $previousQuestion, $currentQuestion, $definitions)
 	{
 		$response = [];
 
-		$response['quiz_id'] = $quiz->id;
+		$response['videoquestion_id'] = $vq->id;
 
 		if ($previousQuestion !== null)
 		{
 			$response['previous'] = [
 				'selected' => $previousQuestion->selected_id,
-				'answer'   => $previousQuestion->definition_id,
-				'result'   => $previousQuestion->selected_id === $previousQuestion->definition_id.'',
+				'answer'   => $previousQuestion->answer_id,
+				'result'   => $previousQuestion->selected_id === $previousQuestion->answer_id.'',
 			];
 		}
 
 		if ($currentQuestion !== null)
 		{
-			$isLast = $quiz->questions()->unanswered()->count() == 1;
+			$isLast = $vq->count() == 1;
 
 			$response['question'] = [
 				'id' => $currentQuestion->id,
-				'description' => $currentQuestion->question,
-				'last' => $isLast,
-				'definitions' => QuizGeneration::generateQuestionDefinitions($definitions, $currentQuestion->definition_id),
+				'question' => $currentQuestion->question,
+				'answer_id' => $currentQuestion->answer_id, 
+				'answers' => QuizGeneration::generateQuestionDefinitions($definitions, $currentQuestion),
 			];
 		}
 

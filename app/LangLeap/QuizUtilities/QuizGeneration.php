@@ -54,6 +54,7 @@ class QuizGeneration {
 				'answer' 		=> $definition->full_definition,
 				'question_id'	=> $question->id,
 			]);
+			$answer->save();
 
 			$question->answer_id = $answer->id;
 		}
@@ -74,13 +75,23 @@ class QuizGeneration {
 	 * @param  int         $answerId
 	 * @return array
 	 */
-	public static function generateQuestionDefinitions($scriptDefinitions, $answerId)
+	public static function generateQuestionDefinitions($scriptDefinitions, $question)
 	{
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
 		$answers = new Collection;
 
 		// Throw in the correct answer, since we already know it.
-		$answer = $scriptDefinitions->pull($answerId);
+		$answer = Answer::find($question->answer_id)->first();
+		$scriptDefinitions->pull($question->answer_id);
+
+		if (! $answer)
+		{
+			return $this->apiResponse(
+				'error',
+				"No answer found for {$question->question}.",
+				400
+			);
+		}
 
 		if (! $answer) return null;
 		
@@ -89,7 +100,14 @@ class QuizGeneration {
 		// Pad out our selection of answers (up to 4) with random definitions.
 		while ($answers->count() < 4 && ! $scriptDefinitions->isEmpty())
 		{
-			$answers->push($scriptDefinitions->pullRandom());
+			$randomAnswer = $scriptDefinitions->pullRandom();
+			$a = Answer::create([
+				'answer' 		=> $randomAnswer->full_definition,
+				'question_id'	=> $question->id,
+			]);
+			$a->save();
+
+			$answers->push($a);
 		}
 
 		// Shuffle/randomize the answers.
@@ -112,11 +130,11 @@ class QuizGeneration {
 	 * @param  Definition  $definition
 	 * @return array
 	 */
-	protected static function formatDefinitionForResponse(Definition $definition)
+	protected static function formatDefinitionForResponse(Answer $answer)
 	{
 		return [
-			'id' => $definition->id,
-			'description' => $definition->full_definition,
+			'id' => $answer->id,
+			'answer' => $answer->answer,
 		];
 	}
 }
