@@ -9,7 +9,6 @@ class Question extends Eloquent {
 	public    $timestamps = false;
 	protected $fillable   = ['answer_id', 'question'];
 	protected $rules      = [
-		'answer_id'   => 'required|integer',
 		'question'    => 'required|string'
 		];
 

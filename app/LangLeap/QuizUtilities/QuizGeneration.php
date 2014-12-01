@@ -1,13 +1,15 @@
 <?php namespace LangLeap\QuizUtilities;
 
 use LangLeap\Core\Collection;
-use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Question;
-use LangLeap\Words\Definition;
+use LangLeap\Quizzes\Answer;
+use LangLeap\Quizzes\VideoQuestion;
+
 
 /**
  * @author Thomas Rahn <thomas@rahn.ca>
  * @author Alan Ly <hello@alan.ly>
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
 class QuizGeneration {
 
@@ -20,9 +22,9 @@ class QuizGeneration {
 	* 
 	* @param  Collection  $scriptDefinitions
 	* @param  array       $selectedDefinitions
-	* @return Quiz
+	* @return VideoQuestion array
 	*/
-	public static function generateQuiz(Collection $scriptDefinitions, $selectedDefinitions)
+	public static function generateDefinitionQuiz(Collection $scriptDefinitions, $selectedDefinitions)
 	{
 		// Ensure that $scriptDefinitions is not empty.
 		if ($scriptDefinitions->isEmpty()) return null;
@@ -32,13 +34,9 @@ class QuizGeneration {
 
 		// Make a copy of the definitions collection.
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
+		$question = new Question;
 
-		// Create a new Quiz instance.
-		$quiz = new Quiz;	
-		$quiz->user_id = 1; // @TODO user authentication
-		$quiz->save();
-
-		// Generate the Question instances associated to this Quiz.
+		// Generate the Question and Answer instances for each question.
 		foreach ($selectedDefinitions as $definitionId)
 		{
 			// Pull the Definition instance from the collection.
@@ -48,13 +46,20 @@ class QuizGeneration {
 
 			// Create a new Question instance
 			$question = Question::create([
-				'quiz_id'       => $quiz->id,
-				'definition_id' => $definitionId,
-				'question'      => 'What is the definition for '.$definition->word,
+				'answer_id' => -1, // Will be changed after the answer is generated
+				'question'	=> 'What is the definition of '.$definition->word.'?',
 			]);
+
+			$answer = Answer::create([
+				'answer' 		=> $definition->full_definition,
+				'question_id'	=> $question->id,
+			]);
+
+			$question->answer_id = $answer->id;
 		}
 
-		return $quiz;
+		$question->save();
+		return $question;
 	}
 
 
