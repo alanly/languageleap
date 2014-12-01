@@ -81,7 +81,7 @@ class ApiQuizControllerTest extends TestCase {
 	*	This test will test that a proper error code is recieved when trying to get a quiz with an invalid video
 	*
 	*/
-	public function atestIndexWithInvalidVideo(){
+	public function testIndexWithInvalidVideo(){
 
 		$definition = Definition::all();
 		$all_words = array();
