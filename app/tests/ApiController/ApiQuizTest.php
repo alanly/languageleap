@@ -57,7 +57,7 @@ class ApiQuizControllerTest extends TestCase {
 	*	This test will test if a proper error code is recieved when trying to get a quiz with no/invalid deinitions
 	*
 	*/
-	public function atestIndexWithNoDefinitions(){
+	public function testIndexWithNoDefinitions(){
 		$video = Video::first();
 
 		$definition = Definition::all();
