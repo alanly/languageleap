@@ -7,7 +7,7 @@ use Eloquent;
 class Result extends Eloquent {
 
 	public    $timestamps = false;
-	protected $fillable   = ['user_id', 'videoquestion_id', 'is_correct', 'timestamp'];
+	protected $fillable   = ['user_id', 'videoquestion_id', 'is_correct', 'timestamp', 'attempt'];
 	protected $rules      = [
 		'user_id'   			=> 'required|integer',
 		'videoquestion_id'    	=> 'required|integer',
@@ -24,4 +24,5 @@ class Result extends Eloquent {
 	{
 		return $this->belongsTo('LangLeap\Quizzes\VideoQuestion');
 	}
+
 }
