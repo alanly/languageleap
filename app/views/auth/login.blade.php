@@ -21,7 +21,7 @@
 	<div class="container login-form">
 		<h3 class="brand">LanguageLeap</h3>
 		@if(Session::has('action.failed') === true)
-			<div class="alert {{ Session::get('action.failed') === false ? 'alert-danger' : 'alert-info' }}">
+			<div class="alert {{ Session::get('action.failed') === false ? 'alert-info' : 'alert-danger' }}">
 				<p>{{ Session::get('action.message') }}</p>
 			</div>
 		@endif
