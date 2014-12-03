@@ -10,21 +10,17 @@ class ApiUserController extends \BaseController {
 
 	protected $users;
 
+	private $rules = [
+		'username' => 'required|alpha_dash|max:20|unique:users',
+		'email' => 'required|email|unique:users',
+		'password' => 'required|min:6|max:20',
+		'first_name' => 'required|max:40',
+		'last_name' => 'required|max:40'
+	];
+
 	public function __construct(User $users)
 	{
 		$this->users = $users;
-	}
-
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$users = User::all();
-	
-		return $this->apiResponse("success", $users->toArray());
 	}
 
 	/**
@@ -34,6 +30,25 @@ class ApiUserController extends \BaseController {
 	 */
 	public function store()
 	{
+		if (Auth::check())
+		{
+			return $this->apiResponse(
+				'error',
+				"User is already logged in",
+				401
+			);
+		}
+
+		$validator = Validator::make(Input::get(), $this->rules);
+		if ($validator->fails())
+		{
+			return $this->apiResponse(
+				'error',
+				$validator->messages(),
+				400
+			);
+		}
+
 		$user = new User;
 
 		$user->fill(Input::get());
@@ -62,9 +77,20 @@ class ApiUserController extends \BaseController {
 	 */
 	public function show($userId)
 	{
-		$users = User::find($userId);
+		if (! ($userId == Auth::user()->id))
+		{
+			return $this->apiResponse(
+				'error',
+				"User {Auth::id()} attempted to access user {$userId}.",
+				401
+			);
+		}
+
+		$user = User::find($userId);
 		
-		if (!$users)
+		// This should ideally never happen because it would mean that
+		// the currently authenticated user doesn't exist in the database anymore.
+		if (! $user)
 		{
 			return $this->apiResponse(
 				'error',
@@ -73,7 +99,11 @@ class ApiUserController extends \BaseController {
 			);
 		}
 		
-		return $this->apiResponse("success", $users->toArray());
+		return $this->apiResponse(
+			'success',
+			$user->toArray(),
+			200
+		);
 	}
 
 	/**
@@ -84,6 +114,30 @@ class ApiUserController extends \BaseController {
 	 */
 	public function update($userId)
 	{
+		if (! ($userId == Auth::user()->id))
+		{
+			return $this->apiResponse(
+				'error',
+				"User {Auth::id()} attempted to modify user {$userId}.",
+				401
+			);
+		}
+
+		$updateRules = $this->rules;
+		$updateRules['username'] .= ",$userId";
+		$updateRules['email'] .= ",$userId";
+
+		$validator = Validator::make(Input::get(), $updateRules);
+		if ($validator->fails())
+		{
+			echo var_dump($validator->messages());
+			return $this->apiResponse(
+				'error',
+				$validator->messages(),
+				400
+			);
+		}
+
 		$user = User::find($userId);
 
 		if (! $user)
@@ -121,6 +175,15 @@ class ApiUserController extends \BaseController {
 	 */
 	public function destroy($userId)
 	{
+		if (! ($userId == Auth::user()->id))
+		{
+			return $this->apiResponse(
+				'error',
+				"User {Auth::id()} attempted to delete user {$userId}.",
+				401
+			);
+		}
+
 		$user = User::find($userId);
 
 		if (! $user)
