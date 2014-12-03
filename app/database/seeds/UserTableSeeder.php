@@ -17,6 +17,13 @@ class UserTableSeeder extends Seeder {
 							'email'=>'test@tester.com',
 							'first_name' => 'John',
 							'last_name'=>'Doe',
+							'is_admin' => false,
 							'password' => Hash::make('password123')));
+		$user->create(array('username' => 'admin@local.ca',
+							'email'=>'admin@langleap.ca',
+							'first_name' => 'John',
+							'last_name'=>'Doe',
+							'is_admin' => true,
+							'password' => Hash::make('Admin123')));
 	}
 }
