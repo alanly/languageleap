@@ -27,7 +27,7 @@ class QuestionTest extends TestCase {
 	
 	protected function getAnswerInstance()
 	{
-		$question = App::make('LangLeap\Quizzes\Answer');
+		$answer = App::make('LangLeap\Quizzes\Answer');
 		$answer->question_id = 1; // un-needed id
 		$answer->answer = ''; //un-needed id
 		$answer->save();

@@ -22,9 +22,12 @@ class QuizGenerationTest extends TestCase {
 		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array(Definition::first());
 
-		$question = QuizGeneration::generateDefinitionQuiz($all_words, $selected_words);
+		$questions = QuizGeneration::generateDefinitionQuiz($all_words, $selected_words);
 
-		$this->assertInstanceOf('LangLeap\Quizzes\Question', $question);
+		foreach($questions as $q)
+		{
+			$this->assertInstanceOf('LangLeap\Quizzes\Question', $q);
+		}
 	}
 	
 	public function testNullReturnedWhenWordsAreNotSelected()
