@@ -5,6 +5,7 @@ use LangLeap\Core\Collection;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 use LangLeap\Quizzes\Question;
+use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\Result;
 use LangLeap\Accounts\User;
@@ -114,17 +115,17 @@ class ApiQuizControllerTest extends TestCase {
 	*	This test will test that answering a question is successful
 	*
 	*/
-	public function atestQuizUpdate() {
-		$quiz = Quiz::first();
-		$video = Video::find($quiz->video_id);
-		$question = $quiz->questions()->first();
+	public function testQuizUpdate() {
+		$result = Result::first();
+		$videoquestion = VideoQuestion::find($result->videoquestion_id);
+		$question = $videoquestion->question->first();
 
 		$this->session(['scriptDefinitions' => new Collection(Definition::all()->all())]);
 
 		$response = $this->action(
 			'put',
 			'ApiQuizController@putIndex',
-			[],["question_id"=>$question->id, "video_id"=>$video->id, "selected_id" => $question->definition_id]
+			[],["question_id"=>$question->id, "result_id"=>$result->id, "selected_id" => $question->answer_id]
 		);
 
 		$this->assertResponseStatus(200);
@@ -135,7 +136,7 @@ class ApiQuizControllerTest extends TestCase {
 	*	404 == Not found
 	*
 	*/
-	public function atestQuizUpdateWithInvalidQuestion(){
+	public function testQuizUpdateWithInvalidQuestion(){
 		$response = $this->action(
 			'put',
 			'ApiQuizController@putIndex',
@@ -149,14 +150,14 @@ class ApiQuizControllerTest extends TestCase {
 	*	400 == Bad Request
 	*
 	*/
-	public function atestQuizUpdateWithNoAnswer(){
-		$quiz = Quiz::first();
-		$video = Video::find($quiz->video_id);
-		$question = $quiz->questions()->first();
+	public function testQuizUpdateWithNoAnswer(){
+		$result = Result::first();
+		$videoquestion = VideoQuestion::find($result->videoquestion_id);
+		$question = $videoquestion->question->first();
 		$response = $this->action(
 			'put',
 			'ApiQuizController@putIndex',
-			[],['question_id' => $question->id, 'video_id' => $video->id]
+			[],['question_id' => $question->id, 'result_id' => $result->id]
 		);
 
 		$this->assertResponseStatus(400);	

@@ -168,20 +168,21 @@ class ApiQuizController extends \BaseController {
 			);
 		}
 
-		$videoQuestionId = Input::get('videoquestion_id');
+		$resultId = Input::get('result_id');
+		$result = Result::find($resultId);
 
-		if (! $videoQuestionId)
+		if (! $result)
 		{
 			return $this->apiResponse(
 				'error',
-				"The VideoQuestion id {$videoQuestionId} is invalid",
+				"The Result id {$resultId} is invalid",
 				400
 			);
 		}
 
-		$videoQuestion = VideoQuestion::find($videoQuestionId);
+		$videoQuestion = VideoQuestion::find($result->videoquestion_id);
 
-		if (! $videoQuestionId)
+		if (! $videoQuestion)
 		{
 			return $this->apiResponse(
 				'error',
@@ -190,42 +191,31 @@ class ApiQuizController extends \BaseController {
 			);
 		}
 
-		$result = Result::where('videoquestion_id', $videoQuestionId)->get()->first();
-
-		if (! $result)
-		{
-			return $this->apiResponse(
-				'error',
-				"The Result object is invalid",
-				400
-			);
-		}
-
-
 		$isCorrectAnswer = $question->answer_id.'' === $selectedId;
 
 		// Update the score if the user answered correctly.
 		if ($isCorrectAnswer)
 		{
 			// Increment the score because they selected the right answer.
-			$result->increment('attempts');
 			$result->is_correct = $isCorrectAnswer;
-			$result->save();
 			// @TODO: Adjust user progress
 		}
+		$result->increment('attempt');
+		$result->save();
 		
 		// Get an unanswered question.
-		$newQuestion = getUnansweredQuestion($videoQuestion->video_id);
+		$newQuestionResult = $this->getUnansweredQuestionResult($videoQuestion->video_id);
+		$newQuestion = $this->getUnansweredQuestion($newQuestionResult);
 
 		// If there are no more questions left, return the result.
 		if (! $newQuestion)
 		{
 			// Get the counts.
-			$numberOfTotalQuestions = getNumberOfQuestions($videoQuestion->video_id);
-			$numberOfCorrectAnswers = $quiz->score;
+			$numberOfTotalQuestions = 1; //@TODO
+			$numberOfCorrectAnswers = 1; //@TODO
 
 			// Generate the response.
-			$response = $this->generateJsonResponse($quiz, $question, null, null);
+			$response = $this->generateJsonResponse($result, $question, null, null);
 			$response['result'] = [
 				'score'    => ((float)$numberOfCorrectAnswers / $numberOfTotalQuestions) * 100,
 				'redirect' => 'https://www.google.ca/', // @TODO: Determine the next video.
@@ -247,10 +237,10 @@ class ApiQuizController extends \BaseController {
 				500
 			);
 		}
-		
+
 		return $this->apiResponse(
 			'success',
-			$this->generateJsonResponse($quiz, $question, $newQuestion, Session::get('scriptDefinitions'))
+			$this->generateJsonResponse($newQuestionResult, $question, $newQuestion, Session::get('scriptDefinitions'))
 		);
 	}
 
@@ -263,7 +253,7 @@ class ApiQuizController extends \BaseController {
   	 * @param  Collection|null  $definitions
   	 * @return array
   	 */
-	protected function generateJsonResponse(Result $result, $previousQuestion, $currentQuestion, $definitions)
+	protected function generateJsonResponse($result, $previousQuestion, $currentQuestion, $definitions)
 	{
 		$response = [];
 
@@ -280,7 +270,7 @@ class ApiQuizController extends \BaseController {
 
 		if ($currentQuestion !== null)
 		{
-			$isLast = $this->isLastQuestion($result->videoquestion->video_id);
+			$isLast = $this->isLastQuestion($result);
 
 			$response['question'] = [
 				'id' 		=> $currentQuestion->id,
@@ -310,14 +300,13 @@ class ApiQuizController extends \BaseController {
 		return $this->getUnansweredQuestionsResults($videoId)->first();
 	}
 
-	protected function getUnansweredQuestion($resultId)
+	protected function getUnansweredQuestion($result)
 	{
-		return DB::table('questions')
-		->join('videoquestion', 'results.videoquestion_id', '=', 'videoquestion.id')
-		->join('results', 'videoquestion')
-		->select('question.id', 'question.question', 'question.answer_id')
-		->where('user_id', Auth::user()->id.'')
-		->where('attempt', '0');
+		$videoquestionId = $result->videoquestion_id;
+		$videoquestion = VideoQuestion::find($videoquestionId);
+		$question = Question::find($videoquestion->question_id);
+
+		return $question;
 	}
 
 	protected function getNumberOfQuestions($videoId)
@@ -326,13 +315,14 @@ class ApiQuizController extends \BaseController {
 		->join('videoquestion', 'results.videoquestion_id', '=', 'videoquestion.id')
 		->select('results.id', 'results.videoquestion_id', 'results.user_id', 'results.id', 'results.attempt')
 		->where('user_id', Auth::user()->id.'')
-		->where('attempt', '0')
 		->count();
 	}
 
-	protected function isLastQuestion($videoId)
+	protected function isLastQuestion($result)
 	{
-		return ($this->getUnansweredQuestionsResults($videoId)->count() === 1);
+		$videoquestionId = $result->videoquestion_id;
+		$videoquestion = VideoQuestion::find($videoquestionId);
+		return ($this->getUnansweredQuestionsResults($videoquestion->video_id)->count() === 1);
 	}
 
 }

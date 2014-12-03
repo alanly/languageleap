@@ -96,8 +96,6 @@ class QuizGeneration {
 				400
 			);
 		}
-
-		if (! $answer) return null;
 		
 		$answers->push($answer);
 

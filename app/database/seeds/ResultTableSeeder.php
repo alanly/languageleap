@@ -15,12 +15,12 @@ class ResultTableSeeder extends Seeder {
 	public function run()
 	{
 		Eloquent::unguard();
-		DB::table('answers')->delete();
+		DB::table('results')->delete();
 		$result = App::make('LangLeap\Quizzes\Result');
 
 		$result->create(["videoquestion_id" => 1, "is_correct" => false, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
-		$result->create(["videoquestion_id" => 1, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
-		$result->create(["videoquestion_id" => 1, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
+		$result->create(["videoquestion_id" => 2, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
+		$result->create(["videoquestion_id" => 3, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
 		$result->create(["videoquestion_id" => 4, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
 		$result->create(["videoquestion_id" => 5, "is_correct" => false, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
 	}
