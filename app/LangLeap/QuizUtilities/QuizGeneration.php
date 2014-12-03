@@ -34,7 +34,8 @@ class QuizGeneration {
 
 		// Make a copy of the definitions collection.
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
-		$question = new Question;
+
+		$questions = array();
 
 		// Generate the Question and Answer instances for each question.
 		foreach ($selectedDefinitions as $definitionId)
@@ -50,17 +51,20 @@ class QuizGeneration {
 				'question'	=> 'What is the definition of '.$definition->word.'?',
 			]);
 
-			$answer = Answer::create([
-				'answer' 		=> $definition->full_definition,
-				'question_id'	=> $question->id,
-			]);
-			$answer->save();
+			$correctAnswer = Answer::create([
+				'question_id' 	=> $question->id,
+				'answer'		=> $definition->full_definition
+				]);
+			$correctAnswer->save();
 
-			$question->answer_id = $answer->id;
+			$question->answer_id = $correctAnswer->id;
+			$question->save();
+
+			array_push($questions, $question);
 		}
 
-		$question->save();
-		return $question;
+		
+		return $questions;
 	}
 
 
@@ -75,7 +79,7 @@ class QuizGeneration {
 	 * @param  int         $answerId
 	 * @return array
 	 */
-	public static function generateQuestionDefinitions($scriptDefinitions, $question)
+	public static function generateAnswers($scriptDefinitions, $question)
 	{
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
 		$answers = new Collection;

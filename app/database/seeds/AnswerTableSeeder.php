@@ -17,10 +17,13 @@ class AnswerTableSeeder extends Seeder {
 		DB::table('answers')->delete();
 		$answer = App::make('LangLeap\Quizzes\Answer');
 		
-		$answer->create(["answer" => "ABC", "question_id" => 1]);
+		$answer->create(["answer" => "whatsup1", "question_id" => 1]);
+		$answer->create(["answer" => "whatsup2", "question_id" => 2]);
+		$answer->create(["answer" => "whatsup3", "question_id" => 3]);
 		$answer->create(["answer" => "DEF", "question_id" => 1]);
-		$answer->create(["answer" => "GHI", "question_id" => 1]);
-		$answer->create(["answer" => "DEF", "question_id" => 2]);
-		$answer->create(["answer" => "GHI", "question_id" => 3]);
+		$answer->create(["answer" => "GHI", "question_id" => 2]);
+		$answer->create(["answer" => "DEF", "question_id" => 1]);
+		$answer->create(["answer" => "GHI", "question_id" => 2]);
+
 	}
 }

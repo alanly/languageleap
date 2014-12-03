@@ -19,8 +19,8 @@ class ResultTableSeeder extends Seeder {
 		$result = App::make('LangLeap\Quizzes\Result');
 
 		$result->create(["videoquestion_id" => 1, "is_correct" => false, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
-		$result->create(["videoquestion_id" => 2, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
-		$result->create(["videoquestion_id" => 3, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
+		$result->create(["videoquestion_id" => 1, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
+		$result->create(["videoquestion_id" => 1, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
 		$result->create(["videoquestion_id" => 4, "is_correct" => true, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
 		$result->create(["videoquestion_id" => 5, "is_correct" => false, "user_id" => 1, "timestamp" => date_default_timezone_get()]);
 	}

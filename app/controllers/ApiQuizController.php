@@ -4,6 +4,7 @@ use LangLeap\Core\Collection;
 use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\VideoQuestion;
+use LangLeap\Quizzes\Result;
 use LangLeap\QuizUtilities\QuizGeneration;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
@@ -105,18 +106,32 @@ class ApiQuizController extends \BaseController {
 		}
 
 		// Generate all the questions.
-		$question = QuizGeneration::generateDefinitionQuiz($scriptDefinitions, $selectedWords);
-		$vq = VideoQuestion::create([
-				'question_id' 	=> $question->id,
+		$questions = QuizGeneration::generateDefinitionQuiz($scriptDefinitions, $selectedWords);
+		$results = new Collection;
+
+		foreach ($questions as $q)
+		{
+			$vq = VideoQuestion::create([
+				'question_id' 	=> $q->id,
 				'video_id'		=> $videoId,
 				'is_custom'		=> false
 			]);
-		$vq->save();
+			$vq->save();
 
+			$result = new Result;
+			$result->videoquestion_id = $vq->id;
+			$result->is_correct = false;
+			$result->user_id = Auth::user()->id;
+			$result->timestamp = date_default_timezone_get();
+			$result->attempt = 0;
+			$result->save();
+
+			$results->add($result);
+		}
 
 		return $this->apiResponse(
 			'success',
-			$this->generateJsonResponse($vq, null, $question, $scriptDefinitions)
+			$this->generateJsonResponse($results[0], null, $questions[0], $scriptDefinitions)
 		);
 	}
 
@@ -153,30 +168,60 @@ class ApiQuizController extends \BaseController {
 			);
 		}
 
-		// Save the users answer in the question.
-		$question->selected_id = $selectedId;
-		$question->save();
+		$videoQuestionId = Input::get('videoquestion_id');
 
-		// Retrieve the associated Quiz instance.
-		$quiz = $question->quiz()->first();
+		if (! $videoQuestionId)
+		{
+			return $this->apiResponse(
+				'error',
+				"The VideoQuestion id {$videoQuestionId} is invalid",
+				400
+			);
+		}
+
+		$videoQuestion = VideoQuestion::find($videoQuestionId);
+
+		if (! $videoQuestionId)
+		{
+			return $this->apiResponse(
+				'error',
+				"The VideoQuestion object with id {$videoQuestionId} is invalid",
+				400
+			);
+		}
+
+		$result = Result::where('videoquestion_id', $videoQuestionId)->get()->first();
+
+		if (! $result)
+		{
+			return $this->apiResponse(
+				'error',
+				"The Result object is invalid",
+				400
+			);
+		}
+
+
+		$isCorrectAnswer = $question->answer_id.'' === $selectedId;
 
 		// Update the score if the user answered correctly.
-		if ($selectedId == $question->definition_id.'')
+		if ($isCorrectAnswer)
 		{
 			// Increment the score because they selected the right answer.
-			$quiz->increment("score");
-
+			$result->increment('attempts');
+			$result->is_correct = $isCorrectAnswer;
+			$result->save();
 			// @TODO: Adjust user progress
 		}
 		
 		// Get an unanswered question.
-		$newQuestion = $quiz->questions()->unanswered()->first();
+		$newQuestion = getUnansweredQuestion($videoQuestion->video_id);
 
 		// If there are no more questions left, return the result.
 		if (! $newQuestion)
 		{
 			// Get the counts.
-			$numberOfTotalQuestions = $quiz->questions()->count();
+			$numberOfTotalQuestions = getNumberOfQuestions($videoQuestion->video_id);
 			$numberOfCorrectAnswers = $quiz->score;
 
 			// Generate the response.
@@ -218,11 +263,11 @@ class ApiQuizController extends \BaseController {
   	 * @param  Collection|null  $definitions
   	 * @return array
   	 */
-	protected function generateJsonResponse(VideoQuestion $vq, $previousQuestion, $currentQuestion, $definitions)
+	protected function generateJsonResponse(Result $result, $previousQuestion, $currentQuestion, $definitions)
 	{
 		$response = [];
 
-		$response['videoquestion_id'] = $vq->id;
+		$response['result_id'] = $result->id;
 
 		if ($previousQuestion !== null)
 		{
@@ -235,17 +280,59 @@ class ApiQuizController extends \BaseController {
 
 		if ($currentQuestion !== null)
 		{
-			$isLast = $vq->count() == 1;
+			$isLast = $this->isLastQuestion($result->videoquestion->video_id);
 
 			$response['question'] = [
-				'id' => $currentQuestion->id,
-				'question' => $currentQuestion->question,
+				'id' 		=> $currentQuestion->id,
+				'question' 	=> $currentQuestion->question,
 				'answer_id' => $currentQuestion->answer_id, 
-				'answers' => QuizGeneration::generateQuestionDefinitions($definitions, $currentQuestion),
+				'answers' 	=> QuizGeneration::generateAnswers($definitions, $currentQuestion),
+				'last'		=> $isLast
 			];
 		}
 
 		return $response;
+	}
+
+	protected function getUnansweredQuestionsResults($videoId)
+	{
+		//Get all results of the user that have no attempts (he never tried to answer)
+		//Then get all the VideoQuestion instances that are related to the video he is currently\
+		return DB::table('results')
+		->join('videoquestion', 'results.videoquestion_id', '=', 'videoquestion.id')
+		->select('results.id', 'results.videoquestion_id', 'results.user_id', 'results.id', 'results.attempt')
+		->where('user_id', Auth::user()->id.'')
+		->where('attempt', '0');
+	}
+
+	protected function getUnansweredQuestionResult($videoId)
+	{
+		return $this->getUnansweredQuestionsResults($videoId)->first();
+	}
+
+	protected function getUnansweredQuestion($resultId)
+	{
+		return DB::table('questions')
+		->join('videoquestion', 'results.videoquestion_id', '=', 'videoquestion.id')
+		->join('results', 'videoquestion')
+		->select('question.id', 'question.question', 'question.answer_id')
+		->where('user_id', Auth::user()->id.'')
+		->where('attempt', '0');
+	}
+
+	protected function getNumberOfQuestions($videoId)
+	{
+		return DB::table('results')
+		->join('videoquestion', 'results.videoquestion_id', '=', 'videoquestion.id')
+		->select('results.id', 'results.videoquestion_id', 'results.user_id', 'results.id', 'results.attempt')
+		->where('user_id', Auth::user()->id.'')
+		->where('attempt', '0')
+		->count();
+	}
+
+	protected function isLastQuestion($videoId)
+	{
+		return ($this->getUnansweredQuestionsResults($videoId)->count() === 1);
 	}
 
 }

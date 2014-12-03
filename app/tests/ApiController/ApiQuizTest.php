@@ -7,6 +7,7 @@ use LangLeap\Words\Definition;
 use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\Result;
+use LangLeap\Accounts\User;
 
 class ApiQuizControllerTest extends TestCase {
 
@@ -16,6 +17,16 @@ class ApiQuizControllerTest extends TestCase {
 
 		// Seed the database.
 		$this->seed();
+
+		$this->call(
+			'POST',
+			'auth/login',
+			array(
+				'username' => 'testUser123',
+				'password' => 'password123',
+				'_token' => csrf_token(),
+				)
+			);
 	}
 
 	/**
@@ -37,20 +48,22 @@ class ApiQuizControllerTest extends TestCase {
 		$response = $this->action(
 			'post',
 			'ApiQuizController@postIndex',
-			[],["video_id"=>$video->id, "all_words" => $all_words, "selected_words" => $selected_words]
+			[],["video_id" => $video->id, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 
 		$data = $response->getData()->data;
-		$this->assertObjectHasAttribute('videoquestion_id', $data);
+		$this->assertObjectHasAttribute('result_id', $data);
 		$this->assertObjectHasAttribute('question', $data);
 
 		$question = $data->question;
 		$this->assertObjectHasAttribute('id', $question);
 		$this->assertObjectHasAttribute('question', $question);
 		$this->assertObjectHasAttribute('answer_id', $question);
+		$this->assertObjectHasAttribute('last', $question);
+		$this->assertObjectHasAttribute('answers', $question);
 	}
 
 	/**

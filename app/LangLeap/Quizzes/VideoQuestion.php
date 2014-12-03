@@ -25,4 +25,9 @@ class VideoQuestion extends Eloquent {
 	{
 		return $this->belongsTo('LangLeap\Quizzes\Question');
 	}
+
+	public function results()
+	{
+		return $this->belongsTo('LangLeap\Quizzes\Result');
+	}
 }
