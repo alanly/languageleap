@@ -119,5 +119,11 @@ Route::get('quiz', function()
 	return View::make('quiz.main');
 });
 
+// Admin Landing Page View
+Route::get('admin/landing', function()
+{
+	return View::make('admin.landing');
+});
+
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);

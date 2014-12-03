@@ -19,22 +19,17 @@
 	</div>
 
 	<div id="new" class="pull-right">
-		<button type="button" class="btn btn-success center-block">Add Media</button>
+		<button type="button" class="btn btn-success center-block">Upload Script</button>
 	</div>
 
-	<div id="search" class="container">
-		<input class="rounded" style="margin-right: 5px;" /><i class="fa fa-search fa-lg"></i>
+	<div id="new" class="pull-right">
+		<button type="button" class="btn btn-success center-block">Upload Video</button>
 	</div>
 
-	<div id="select" class="container">
-		<span id="select-movies">Movies</span> <span id="select-commercials">Commercials</span> <span id="select-commercials">TV Shows</span>
+	<div id="new" class="pull-right">
+		<button type="button" class="btn btn-success center-block">Insert Definition</button>
 	</div>
 
-	<div id="content" class="container">
-	</div>
-
-	<div id="add" class="container">
-	</div>
 </div>
 
 <div id="media-modal" class="modal fade" aria-hidden="true" style="display: none;">
