@@ -4,180 +4,107 @@
 @stop
 
 @section('content')
-<div class="container-fluid">
-	<div id="new-slidedown" class="clearfix" aria-hidden="true" style="display: none;">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2 class="slide-title">Script Upload</h2>
-				</div>
 
-				<div class="modal-body" style="display: block;">
-				</div>
-			</div>
-		</div>
-	</div>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content>
+		<meta name="author" content>
+		<link rel="icon" href="../../favicon.ico">
+		<title>LanguageLeap | Welcome, Admin!</title>
 
-	<div id="new" class="pull-right">
-		<button type="button" class="btn btn-success center-block">Upload Script</button>
-	</div>
+		<link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 
-	<div id="new" class="pull-right">
-		<button type="button" class="btn btn-success center-block">Upload Video</button>
-	</div>
+		<link href="jumbotron.css" rel="stylesheet">
 
-	<div id="new" class="pull-right">
-		<button type="button" class="btn btn-success center-block">Insert Definition</button>
-	</div>
+		<script src="../../assets/js/ie-emulation-modes-warning.js"></script>
 
-</div>
-
-<div id="media-modal" class="modal fade" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h2 class="modal-title"></h2>
-			</div>
-			
-			<div class="modal-body info" aria-hidden="false" style="display: block;">
-				<div class="row">
-						<div class="col-xs-4">
-							<img class="modal-image" src="" />
-						</div>
-
-						<div class="col-xs-8">
-							<div class="info-row">ID: <span class="modal-id"></span></div>
-							<div class="info-row">Name: <span class="modal-name"></span></div>
-							<div class="info-row">Description: <span class="modal-desc"></span></div>
-							<div class="info-row">Director: <span class="modal-director"></span></div>
-							<div class="info-row">Actor: <span class="modal-actor"></span></div>
-						</div>
-				</div>
-			</div>
-
-			<div class="modal-body media" aria-hidden="true" style="display: none;">
-				Media goes here
-			</div>
-
-			<div class="modal-body script clearfix" aria-hidden="true" style="display: none;">
-				{{-- change route and function to whatever you need --}}
-				{{ Form::open(array('url' => 'foo/bar', 'class'=>'form-script')) }}
-				{{-- Form::model($script, array('route' => array('script.create', $script->id))) --}}
-				{{ Form::label('text', 'Script') }}
-				{{ Form::textarea('text') }}
-				{{ FOrm::submit('Submit') }}
-				{{ Form::close() }}
-			</div>
-
-			<div class="modal-body flash" aria-hidden="true" style="display: none;">
-				Flashcards go here
-			</div>
-
-			<div class="modal-footer">
-				<div class="row-fluid">
-					<div id="footer-info" class="span2 text-center">
-						Info
-					</div>
-
-					<div id="footer-media" class="span2 text-center">
-						Media
-					</div>
-					
-					<div id="footer-script" class="span2 text-center">
-						Script
-					</div>
-					
-					<div id="footer-flash" class="span2 text-center">
-						Flashcards
-					</div>
-					
-					<div id="" class="span2 text-center">
-						Aaaaaa
-					</div>
-					
-					<div id="" class="span2 text-center">
-						Bbbbbb
-					</div>
-				</div>				
-			</div>
-		</div>
-	</div>
-</div>
-
-<script type="text/javascript">
-$("#new").click(function()
-{
-	$("#new-slidedown").slideToggle("slow", function()
-	{
-
-	});
-});
-
-$("#select-movies").click(function()
-{
-	$.getJSON("/api/metadata/movies/", function(data)
-	{
-			var s = "";
-			
-			$.each(data.data, function(key, val)
-			{
-				var id = val.id;
-				var name = val.name;
-				console.log(key + " " + id + " " + name);
-				s += '<span class="media" db-id="' + id + '">' + name + '</span>';
-			});
-			
-			$('#content').empty().append(s);
-			//s.detach();
-	});
-});
-
-$('#content').on('click', 'span.media', function(event)
-{
-	var id = $(this).attr('db-id');
-	var name;
-	var description;
-	var director;
-	var actor;
-	var thumb = "http://ia.media-imdb.com/images/M/MV5BMTY5NTAzNTc1NF5BMl5BanBnXkFtZTYwNDY4MDc3._V1_SX640_SY720_.jpg";
-	
-	$.getJSON("/api/metadata/movies/" + id, function(data)
-	{
-		name = data.data.name;
-		description = data.data.description;
-		director = data.data.director;
-		actor = data.data.actor;
+		<style type="text/css"></style>
 		
-		$('.modal-title').empty().append(name);
-		$('.modal-image').attr("src", thumb);
-		$('.modal-id').empty().append(id);
-		$('.modal-name').empty().append(name);
-		$('.modal-desc').empty().append(description);
-		$('.modal-director').empty().append(director);
-		$('.modal-actor').empty().append(actor);
-		
-		$('#media-modal').modal('show');
-	});
-});
-
-$('.modal-footer').on('click', '.span2', function(event)
-{
-	var id = $(this).attr('id');
-	$('.modal-body').attr("aria-hidden", true);
-	$('.modal-body').css("display", "none");
+		<style id="stylish-20" class="stylish" type="text/css">
+			@namespace url(http://www.w3.org/1999/xhtml);
+		</style>
 	
-	if (id == "footer-info")
-	{
-		$('.modal-body.info').attr("aria-hidden", false);
-		$('.modal-body.info').css("display", "block");
-	}
-	else if (id == "footer-script")
-	{
-		$('.modal-body.script').attr("aria-hidden", false);
-		$('.modal-body.script').css("display", "block");
-	}
+	</head>
 
-});
-</script>
+	<body>
+
+	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	      <div class="container">
+	        <div class="navbar-header">
+	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	          <a class="navbar-brand" href="#">Language Leap</a>
+	        </div>
+	        <div id="navbar" class="navbar-collapse collapse">
+	          <form class="navbar-form navbar-right" role="form">
+	            <div class="form-group">
+	              <input type="text" placeholder="Email" class="form-control" style="cursor: auto; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+	            </div>
+	            <div class="form-group">
+	              <input type="password" placeholder="Password" class="form-control" style="cursor: pointer; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+	            </div>
+	            <button type="submit" class="btn btn-success">Sign in</button>
+	          </form>
+	        </div><!--/.navbar-collapse -->
+	      </div>
+	    </nav>
+
+	    <!-- Main jumbotron for a primary marketing message or call to action -->
+	    <div class="jumbotron">
+	      <div class="container">
+	        <h1>Welcome to the Admin Panel!</h1>
+	        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+	        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
+	      </div>
+	    </div>
+
+	    <div class="container">
+	      <!-- Example row of columns -->
+	      <div class="row">
+	        <div class="col-md-4">
+	          <h2>Heading</h2>
+	          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+	          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+	        </div>
+	        <div class="col-md-4">
+	          <h2>Heading</h2>
+	          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+	          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+	       </div>
+	        <div class="col-md-4">
+	          <h2>Heading</h2>
+	          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+	          <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+	        </div>
+	      </div>
+
+	      <hr>
+
+	      <footer>
+	        <p>© Company 2014</p>
+	      </footer>
+	    </div> <!-- /container -->
+
+
+	    <!-- Bootstrap core JavaScript
+	    ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	    <script src="../../dist/js/bootstrap.min.js"></script>
+	    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+	  
+
+		<script id="hiddenlpsubmitdiv" style="display: none;"></script><script>try{for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){ var lastpass_f = document.forms[lastpass_iter]; if(typeof(lastpass_f.lpsubmitorig2)=="undefined"){ lastpass_f.lpsubmitorig2 = lastpass_f.submit; lastpass_f.submit = function(){ var form=this; var customEvent = document.createEvent("Event"); customEvent.initEvent("lpCustomEvent", true, true); var d = document.getElementById("hiddenlpsubmitdiv"); if (d) {for(var i = 0; i < document.forms.length; i++){ if(document.forms[i]==form){ d.innerText=i; } } d.dispatchEvent(customEvent); }form.lpsubmitorig2(); } } }}catch(e){}
+		</script>
+	</body>
+</html>
+
 @stop
