@@ -1,10 +1,5 @@
 @extends('admin.master')
 
-
-@section('css')
-.notMainNavBar { padding-top: 800px; }
-@stop
-
 @section('content')
 <!DOCTYPE html>
     
