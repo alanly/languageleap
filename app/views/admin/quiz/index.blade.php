@@ -13,11 +13,27 @@
 			</div>
 			<div class="panel-body">
 			<?php
-				{{ Form::open(array('url' => '#', 'method' => 'post')); }}
+				echo Form::open(array('url' => '#', 'method' => 'post'));
+				
+				echo '<div class="form-group"/>';
 				echo Form::label('question', 'Question', array('class' => 'control-label'));
 				echo Form::text('question', null, array('class' => 'form-control', 'placeholder' => 'Insert question here'));
+				echo '</div>';
+				
+				echo '<div class="form-group"/>';
+				echo Form::label('answer[]', 'Correct Answer', array('class' => 'control-label'));
+				echo Form::text('answer[]', null, array('class' => 'form-control', 'placeholder' => 'Insert answer here'));
+				echo '</div>';
+				
+				echo '<div class="form-group"/>';
+				echo Form::label('answer[]', 'Other Answers', array('class' => 'control-label'));
+				echo Form::text('answer[]', null, array('class' => 'form-control', 'placeholder' => 'Insert answer here'));
+				echo Form::text('answer[]', null, array('class' => 'form-control', 'placeholder' => 'Insert answer here'));
+				echo Form::text('answer[]', null, array('class' => 'form-control', 'placeholder' => 'Insert answer here'));
+				echo '</div>';
+				
 				echo Form::submit('Save', array('class' => 'btn btn-success pull-right'));
-				{{ Form::close(); }}
+				echo Form::close();
 			?>
 			</div>
 			</div>
