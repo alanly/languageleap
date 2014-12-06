@@ -23,23 +23,23 @@
 					username: {
 						required: true,
 						rangelength: [4, 15]
-					}
+					},
 					password: {
 						required: true,
 						rangelength: [8, 21]
-					}
+					},
 					confpassword: {
 						equalTo: "#password"
-					}
+					},
 					email: {
 						required: true,
 						email: true
-					}
-					gender: {
-						required: true,
-					}
-					agreement: {
+					},
+					/*gender: {
 						required: true
+					},*/
+					agreement: {
+						required: true,
 					}
 				}
 			});
@@ -56,12 +56,14 @@
 			{{Form::label('usernameLabel', 'Username', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-10">
 				{{Form::text('username', '', array('class' => 'form-control', 'placeholder' => 'example1234', 'id' => 'username'))}}
+				<p class="help-block">Minimum 4 to 15 characters.</p>
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('passwordLabel', 'Password', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-10">
 				{{Form::password('password', array('class' => 'form-control', 'placeholder' => 'Enter password', 'id' => 'password'))}}
+				<p class="help-block">Minimum 8 to 21 characters.</p>
 			</div>
 		</div>
 		<div class="form-group">
@@ -76,7 +78,7 @@
 				{{Form::text('email', '', array('class' => 'form-control', 'placeholder' => 'email@example.com', 'id' => 'email'))}}
 			</div>
 		</div>
-		<div class="form-group">
+		<!--<div class="form-group">
 			{{Form::label('gender', 'Gender', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-10">
 					{{Form::radio('gender', 'male', false, array('id' => 'male'))}}
@@ -84,12 +86,12 @@
 					{{Form::radio('gender', 'female', false, array('id' => 'female'))}}
 					{{Form::label('male', 'Female')}}
 			</div>
-		</div>
+		</div>-->
 		<div class="form-group">
 			{{Form::label('termsOfService', 'Terms of Service', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-10">
 				{{Form::checkbox('agreement', 'termsOfService', false, array('id' => 'agreement'))}}
-				{{Form::label('tos', 'I agree that this account belongs to me and me only. I understand that account sharing is prohibited.', array('class' => 'text'))}}
+				{{Form::label('agreement', 'I understand that account sharing is prohibited.')}}
 			</div>
 		</div>
 		<div class="form-group">
