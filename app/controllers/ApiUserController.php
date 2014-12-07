@@ -26,6 +26,7 @@ class ApiUserController extends \BaseController {
 		$this->beforeFilter('@filterModifyingAnotherUser', ['except' => 'store']);
 	}
 
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -57,6 +58,7 @@ class ApiUserController extends \BaseController {
 		return $this->apiResponse('success', $user->toArray(), 201);
 	}
 
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -74,6 +76,7 @@ class ApiUserController extends \BaseController {
 		
 		return $this->apiResponse('success', $user->toArray(), 200);
 	}
+
 
 	/**
 	 * Update the specified resource in storage.
@@ -106,6 +109,7 @@ class ApiUserController extends \BaseController {
 
 		return $this->apiResponse('success', $user->toArray(), 200);
 	}
+
 
 	/**
 	 * Remove the specified resource from storage.
