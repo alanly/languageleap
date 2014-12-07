@@ -27,6 +27,7 @@ class ApiUserControllerTest extends TestCase {
 
 		// 201 Created response.
 		$this->assertResponseStatus(201);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 
 		// Verify the created user's details.
 		$user = User::where('username', $userData['username'])->first();
@@ -65,26 +66,31 @@ class ApiUserControllerTest extends TestCase {
 		$this->assertResponseStatus(403);
 	}
 
-	public function testShow()
+	public function testShowTheAuthenticatedUser()
 	{
+		// Seed and get the user.
 		$this->seed();
-
 		$user = User::first();
-		
-		// Set the currently authenticated user
+
+		// Be authenticated
 		$this->be($user);
 
+		// Fetch the current user
 		$response = $this->action('GET', 'ApiUserController@show', $user->id);
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
-
-		// Try to get a user that isn't the currently authenticated user
-		$response = $this->action('GET', 'ApiUserController@show', $user->id + 1);
-
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(401);
+	}
 
+	public function testFailsWhenAttemptingToShowAnotherUser()
+	{
+		// Authenticate as a mock user
+		$this->be(new User);
+
+		// Fetch another user
+		$response = $this->action('GET', 'ApiUserController@show', 10);
+
+		$this->assertResponseStatus(401);
 	}
 
 	public function testUpdate()
