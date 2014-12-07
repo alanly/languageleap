@@ -10,12 +10,10 @@ class ApiUserController extends \BaseController {
 
 	protected $users;
 
-	private $rules = [
-		'username' => 'required|alpha_dash|unique:users',
-		'email' => 'required|email|unique:users',
-		'password' => 'required|min:6',
-		'first_name' => 'required',
-		'last_name' => 'required'
+	private $inputRules = [
+		'username' => 'alpha_dash',
+		'email'    => 'email',
+		'password' => 'min:6',
 	];
 
 	public function __construct(User $users)
@@ -32,14 +30,10 @@ class ApiUserController extends \BaseController {
 	{
 		if (Auth::check())
 		{
-			return $this->apiResponse(
-				'error',
-				"User is already logged in",
-				403
-			);
+			return $this->apiResponse('error', "User is already logged in", 403);
 		}
 
-		$validator = Validator::make(Input::get(), $this->rules);
+		$validator = Validator::make(Input::get(), $this->inputRules);
 
 		if ($validator->fails())
 		{
@@ -53,7 +47,7 @@ class ApiUserController extends \BaseController {
 
 		if (! $user->save())
 		{
-			return $this->apiResponse('error', $user->getErrors(), 500);
+			return $this->apiResponse('error', $user->getErrors(), 400);
 		}
 
 		return $this->apiResponse('success', $user->toArray(), 201);
