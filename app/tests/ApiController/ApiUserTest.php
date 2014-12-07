@@ -85,11 +85,24 @@ class ApiUserControllerTest extends TestCase {
 
 	public function testFailsWhenAttemptingToShowAnotherUser()
 	{
-		// Authenticate as a mock user
-		$this->be(new User);
+		// Seed and get the user.
+		$this->seed();
+		$user = User::first();
+
+		// Create another user
+		$secondUser = User::create([
+			'username' => 'seconduser',
+			'email' => 'second@user.local',
+			'password' => 'testpassword',
+			'first_name' => 'second',
+			'last_name' => 'user',
+		]);
+
+		// Be authenticated as second user
+		$this->be($secondUser);
 
 		// Fetch another user
-		$response = $this->action('GET', 'ApiUserController@show', 10);
+		$response = $this->action('GET', 'ApiUserController@show', $user->id);
 
 		$this->assertResponseStatus(401);
 	}
@@ -146,12 +159,21 @@ class ApiUserControllerTest extends TestCase {
 
 	public function testFailsWhenTryingToUpdateAnotherUser()
 	{
-		// Seed and fetch the user.
+		// Seed and fetch the first user.
 		$this->seed();
 		$user = User::first();
 
-		// Be authenticated as another user
-		$this->be(new User);
+		// Create another user
+		$secondUser = User::create([
+			'username' => 'seconduser',
+			'email' => 'second@user.local',
+			'password' => 'testpassword',
+			'first_name' => 'second',
+			'last_name' => 'user',
+		]);
+
+		// Be authenticated as second user
+		$this->be($secondUser);
 
 		// Make some changes
 		$userData = $user->toArray();
@@ -160,36 +182,58 @@ class ApiUserControllerTest extends TestCase {
 		$response = $this->action('PATCH', 'ApiUserController@update', $user->id, $userData);
 
 		$this->assertResponseStatus(401);
+
+		// Verify that there are no changes, from the database
+		$updatedUser = User::find($user->id);
+		$this->assertSame($user->username, $updatedUser->username);
+		$this->assertSame($user->email, $updatedUser->email);
+		$this->assertSame($user->first_name, $updatedUser->first_name);
+		$this->assertSame($user->last_name, $updatedUser->last_name);
+		$this->assertSame($user->password, $updatedUser->password);
 	}
 
-	public function testDestroy()
+	public function testDestroyTheAuthenticatedUser()
 	{
+		// Seed and fetch the user.
 		$this->seed();
-
 		$user = User::first();
-		
-		// Set the currently authenticated user
+
+		// Be authenticated
 		$this->be($user);
 
-		// Delete user
-		$response = $this->action(
-			'DELETE',
-			'ApiUserController@destroy',
-			$user->id
-		);
+		$response = $this->action('DELETE', 'ApiUserController@destroy', $user->id);
 
-		// Verify successful deletion
 		$this->assertResponseStatus(204);
 
-		// Get user with id = 1
-		$response = $this->action(
-			'GET',
-			'ApiUserController@show',
-			$user->id
-		);
+		// User should no longer exist in the database.
+		$this->assertNull(User::find($user->id));
+	}
 
-		// User should
-		$this->assertResponseStatus(404);
+	public function testFailsWhenAttemptingToDestroyAnotherUser()
+	{
+		// Seed and fetch the user.
+		$this->seed();
+		$user = User::first();
+
+		// Create another user
+		$secondUser = User::create([
+			'username' => 'seconduser',
+			'email' => 'second@user.local',
+			'password' => 'testpassword',
+			'first_name' => 'second',
+			'last_name' => 'user',
+		]);
+
+		// Be authenticated as second user
+		$this->be($secondUser);
+
+		// As the second user, attempt to delete the first user.
+		$response = $this->action('DELETE', 'ApiUserController@destroy', $user->id);
+
+		$this->assertResponseStatus(401);
+
+		// Should still exist.
+		$this->assertNotNull(User::find($user->id));
 	}
 	
 }
