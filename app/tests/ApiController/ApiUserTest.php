@@ -1,7 +1,6 @@
 <?php
 
 use LangLeap\TestCase;
-
 use LangLeap\Accounts\User;
 
 /**
@@ -9,53 +8,51 @@ use LangLeap\Accounts\User;
  */
 class ApiUserControllerTest extends TestCase {
 
-	public function testStore()
+	protected function createUserData()
 	{
-		$userData = [
-			'username' => 'testUser123',
-			'email'=>'test@tester.com',
+		return $userData = [
+			'username'   => 'testUser123',
+			'email'      =>'test@tester.com',
 			'first_name' => 'John',
-			'last_name'=>'Doe',
-			'password' => 'password123'
+			'last_name'  =>'Doe',
+			'password'   => 'password123'
 		];
+	}
 
-		// Create a new user
-		$response = $this->action(
-			'POST',
-			'ApiUserController@store',
-			[],
-			$userData
-		);
+	public function testCreatingANewUser()
+	{
+		$userData = $this->createUserData();
 
-		// Test for successful creation of user response
+		$response = $this->action('POST', 'ApiUserController@store', [], $userData);
+
+		// 201 Created response.
 		$this->assertResponseStatus(201);
+	}
 
-		// Attempt to create a new user that already exists
-		// Note: This should be sufficient to partially test the registration validation.
-		$response = $this->action(
-			'POST',
-			'ApiUserController@store',
-			[],
-			$userData
-		);
+	public function testFailsWhenCreatingADuplicateUser()
+	{
+		$userData = $this->createUserData();
 
-		// Test for the unsuccessful creation of a user
+		// Create the user first
+		$response = $this->action('POST', 'ApiUserController@store', [], $userData);
+
+		// Attempt to create the user again
+		$response = $this->action('POST', 'ApiUserController@store', [], $userData);
+
+		// Should return a client error code.
 		$this->assertResponseStatus(400);
+	}
 
-		$user = new User($userData);
+	public function testFailsWhenCreatingAUserWhileAuthenticated()
+	{
+		$userData = $this->createUserData();
 
-		// Set the currently authenticated user
-		$this->be($user);
+		// Authenticate as a user.
+		$this->be(new User());
 
-		// Attempt to create a new user while already being logged in
-		$response = $this->action(
-			'POST',
-			'ApiUserController@store',
-			[],
-			$userData
-		);
+		$response = $this->action('POST', 'ApiUserController@store', [], $userData);
 
-		// Test for the unsuccessful creation of a user
+		// @TODO: Should return a 403 Forbidden response.
 		$this->assertResponseStatus(401);
 	}
 
