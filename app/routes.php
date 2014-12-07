@@ -83,12 +83,6 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('definitions', 'ApiDefinitionController');
 	});
 
-	// Route to get the definitions of specific words
-	Route::post('words/definitions', 'ApiWordController@getMultipleWords');
-
-	// Words
-	Route::resource('words', 'ApiWordController');
-
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
 	

@@ -26,11 +26,20 @@ class AuthController extends BaseController{
 
 		if($success)
 		{
-			return Redirect::intended('/');
+			//Successful login, verification if user is an administrator
+			if(Auth::user()->is_admin)
+			{
+				//return Redirect::intended('/admin');
+			}
+			else 
+			{
+				return Redirect::intended('/');
+			}
 		}
 		else
 		{
-			return Redirect::route('login')->with("action.failed", false)->with("action.message", "Invalid username or password");
+			//Login was unsuccessful, return to login page with appropriate error messages.
+			return Redirect::route('login')->with("action.failed", true)->with("action.message", "Invalid username or password");
 		}
 	}
 
@@ -44,7 +53,7 @@ class AuthController extends BaseController{
 		$success = ! Auth::check();
 
 		return $this->apiResponse(
-			$success,
+			($success) ? "success" : "error",
 			($success === false) ? "Logout has failed" : "Successfully logged out"
 		);
 

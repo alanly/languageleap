@@ -2,7 +2,6 @@
 
 use LangLeap\Videos\Video;
 use LangLeap\Words\Script;
-use LangLeap\Words\Script_Word;
 use LangLeap\WordUtilities\ScriptFile;
 /**
 * @author Thomas Rahn <thomas@rahn.ca>

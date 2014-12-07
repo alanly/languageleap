@@ -1,13 +1,30 @@
 @extends('master')
 
+@section('css')
+<style type="text/css">
+	.login-form{
+		min-width: 300px;
+		padding: 15px 30px 15px 30px;
+		margin: 15% auto;
+		width: 30%;
+		border: solid 1px #d4d4d4;
+	}
+	.brand{
+		font-weight: 800 !important;
+		padding: 10px 10px 10px 10px;
+		text-align: center;
+	}
+</style>
+@stop
+
 @section('content')
-	<div class="container">
+	<div class="container login-form">
+		<h3 class="brand">LanguageLeap</h3>
 		@if(Session::has('action.failed') === true)
 			<div class="alert {{ Session::get('action.failed') === false ? 'alert-info' : 'alert-danger' }}">
 				<p>{{ Session::get('action.message') }}</p>
 			</div>
 		@endif
-
 		<div class="row">
 			{{ Form::open(array('url' => '/auth/login', 'class' => 'form-horizontal', 'placeholder' => 'form')) }}
 				<div class="form-group">
@@ -33,7 +50,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						{{ Form::submit('Sign in', array('class' => 'btn btn-default')) }}
+						{{ Form::submit('Sign in', array('class' => 'btn btn-primary')) }}
 					</div>
 				</div>
 			{{ Form::close() }}

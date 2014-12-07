@@ -29,7 +29,7 @@ class AuthenticationTest extends TestCase {
 	 */
 	public function testGetLoginForm()
 	{
-		$this->call('GET', 'auth/login');
+		$this->action('GET', 'AuthController@getLogin');
 
 		$this->assertResponseOk();
 	}
@@ -40,15 +40,17 @@ class AuthenticationTest extends TestCase {
 	 */
 	public function testPostLoginWithValidCredentials()
 	{
-		$response = $this->call(
+		$response = $this->action(
 			'POST',
-			'auth/login',
-			array(
+			'AuthController@postLogin',
+			[],
+			[
 				'username' => 'testUser123',
 				'password' => 'password123',
 				'_token' => csrf_token(),
-				)
-			);
+			]
+		);
+
 		$this->assertTrue(Auth::check());
 	}
 
@@ -59,15 +61,16 @@ class AuthenticationTest extends TestCase {
 	 */
 	public function testPostLoginWithInvalidEmail()
 	{
-		$response = $this->call(
+		$response = $this->action(
 			'POST',
-			'auth/login',
-			array(
+			'AuthController@postLogin',
+			[],
+			[
 				'username' => 'fakeuser',
-				'password' => 'admin',
+				'password' => 'password123',
 				'_token' => csrf_token(),
-				)
-			);
+			]
+		);
 		$this->assertFalse(Auth::check());
 		$this->assertRedirectedToRoute('login');
 	}
@@ -79,17 +82,48 @@ class AuthenticationTest extends TestCase {
 	 */
 	public function testPostLoginWithInvalidPassword()
 	{
-		$response = $this->call(
+		$response = $this->action(
 			'POST',
-			'auth/login',
-			array(
+			'AuthController@postLogin',
+			[],
+			[
 				'username' => 'testUser123',
-				'password' => 'abc123',
+				'password' => 'fakepassword',
 				'_token' => csrf_token(),
-				)
-			);
+			]
+		);
+
 		$this->assertFalse(Auth::check());
 		$this->assertRedirectedToRoute('login');
 	}
 
+	/**
+	 *	Test valid logout
+	 *
+	 */
+	public function testPostLogout()
+	{
+		//Logging in
+		$response = $this->action(
+			'POST',
+			'AuthController@postLogin',
+			[],
+			[
+				'username' => 'testUser123',
+				'password' => 'password123',
+				'_token' => csrf_token(),
+			]
+		);
+
+		$this->assertTrue(Auth::check());
+
+		//Logout
+		$response = $this->action(
+			'GET',
+			'AuthController@getLogout',
+			[],[]
+		);
+
+		$this->assertTrue(!Auth::check());
+	}
 }
