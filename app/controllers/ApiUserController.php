@@ -92,57 +92,37 @@ class ApiUserController extends \BaseController {
 	 */
 	public function update($userId)
 	{
-		if (! ($userId == Auth::user()->id))
+		if ($userId != Auth::user()->id)
 		{
 			return $this->apiResponse(
 				'error',
-				"User {Auth::id()} attempted to modify user {$userId}.",
+				"User ".Auth::user()->id." attempting to modify user {$userId}.",
 				401
 			);
 		}
 
-		$updateRules = $this->rules;
-		$updateRules['username'] .= ",$userId";
-		$updateRules['email'] .= ",$userId";
+		$validator = Validator::make(Input::get(), $this->inputRules);
 
-		$validator = Validator::make(Input::get(), $updateRules);
 		if ($validator->fails())
 		{
-			echo var_dump($validator->messages());
-			return $this->apiResponse(
-				'error',
-				$validator->messages(),
-				400
-			);
+			return $this->apiResponse('error', $validator->messages(), 400);
 		}
 
-		$user = User::find($userId);
+		$user = $this->users->find($userId);
 
 		if (! $user)
 		{
-			return $this->apiResponse(
-				'error',
-				"User {$userId} not found.",
-				404
-			);
+			return $this->apiResponse('error', "User {$userId} not found.", 404);
 		}
 
 		$user->fill(Input::get());
 
 		if (! $user->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$user->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $user->getErrors(), 400);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$user->toArray(),
-			200
-		);
+		return $this->apiResponse('success', $user->toArray(), 200);
 	}
 
 	/**

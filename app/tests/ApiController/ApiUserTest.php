@@ -5,6 +5,7 @@ use LangLeap\Accounts\User;
 
 /**
  * @author Michael Lavoie <lavoie6453@gmail.com>
+ * @author Alan Ly <hello@alan.ly>
  */
 class ApiUserControllerTest extends TestCase {
 
@@ -93,52 +94,72 @@ class ApiUserControllerTest extends TestCase {
 		$this->assertResponseStatus(401);
 	}
 
-	public function testUpdate()
+	public function testUpdateFieldsOnTheAuthenticatedUser()
 	{
+		// Seed and fetch the user.
 		$this->seed();
-
 		$user = User::first();
-		
-		// Set the currently authenticated user
+
+		// Be authenticated
 		$this->be($user);
-		$user->first_name = 'Johnny';
-		$user->last_name = 'Depp';
 
-		$userDataArray = $user->toArray();
-		$userDataArray["password"] = "testerpassword";
+		// Make some changes
+		$user->username = 'testuser';
 
-		//unset($userDataArray['id']);
+		$response = $this->action('PATCH', 'ApiUserController@update', $user->id, $user->toArray());
 
-		// Update a couple of fields of the user
-		$response = $this->action(
-			'PATCH',
-			'ApiUserController@update',
-			$user->id,
-			$userDataArray
-		);
-
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
-
-		$data = $response->getData()->data;
-
-		$this->assertEquals('Johnny', $data->first_name);
-		$this->assertEquals('Depp', $data->last_name);
-
-		// Get user
-		$response = $this->action(
-			'GET',
-			'ApiUserController@show',
-			$user->id
-		);
-
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+
+		// Verify the changes from the database
+		$updatedUser = User::find($user->id);
+		$this->assertSame($user->username, $updatedUser->username);
+		$this->assertSame($user->email, $updatedUser->email);
+		$this->assertSame($user->first_name, $updatedUser->first_name);
+		$this->assertSame($user->last_name, $updatedUser->last_name);
+		$this->assertSame($user->password, $updatedUser->password);
+	}
+
+	public function testUpdateNothingOnTheAuthenticatedUser()
+	{
+		// Seed and fetch the user.
+		$this->seed();
+		$user = User::first();
+
+		// Be authenticated
+		$this->be($user);
+
+		// Send an empty array
+		$response = $this->action('PATCH', 'ApiUserController@update', $user->id, []);
+
 		$this->assertResponseOk();
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 
-		$data = $response->getData()->data;
+		// Verify that there are no changes, from the database
+		$updatedUser = User::find($user->id);
+		$this->assertSame($user->username, $updatedUser->username);
+		$this->assertSame($user->email, $updatedUser->email);
+		$this->assertSame($user->first_name, $updatedUser->first_name);
+		$this->assertSame($user->last_name, $updatedUser->last_name);
+		$this->assertSame($user->password, $updatedUser->password);
+	}
 
-		$this->assertEquals('Johnny', $data->first_name);
-		$this->assertEquals('Depp', $data->last_name);
+	public function testFailsWhenTryingToUpdateAnotherUser()
+	{
+		// Seed and fetch the user.
+		$this->seed();
+		$user = User::first();
+
+		// Be authenticated as another user
+		$this->be(new User);
+
+		// Make some changes
+		$userData = $user->toArray();
+		$userData['username'] = 'updatetest';
+
+		$response = $this->action('PATCH', 'ApiUserController@update', $user->id, $userData);
+
+		$this->assertResponseStatus(401);
 	}
 
 	public function testDestroy()
