@@ -16,7 +16,10 @@ App::before(function($request)
 	/**
 	 * Store the current CSRF token in a cookie.
 	 */
-	setcookie('CSRF-TOKEN', csrf_token());
+	if (! App::runningUnitTests())
+	{
+		setcookie('CSRF-TOKEN', csrf_token());
+	}
 });
 
 

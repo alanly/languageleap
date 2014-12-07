@@ -17,6 +17,18 @@ Route::get('/', function()
 	return View::make('index');
 });
 
+// Routes for authentication views.
+Route::group(array('prefix' => 'auth'), function() {
+	
+    // Login form
+    Route::get('login', array('before' => 'guest', 'uses' => 'AuthController@getLogin', 'as' => 'login'));
+    Route::post('login', array('before' => 'guest', 'uses' => 'AuthController@postLogin'));
+
+    // Logout action
+    Route::get('logout', array('uses' => 'AuthController@getLogout', 'as' => 'logout'));
+});
+
+
 
 // Route grouping for administration interface.
 Route::group(['prefix' => 'admin'], function()
@@ -71,12 +83,6 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('definitions', 'ApiDefinitionController');
 	});
 
-	// Route to get the definitions of specific words
-	Route::post('words/definitions', 'ApiWordController@getMultipleWords');
-
-	// Words
-	Route::resource('words', 'ApiWordController');
-
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
 	
@@ -85,6 +91,9 @@ Route::group(['prefix' => 'api'], function()
 
 	// Quiz
 	Route::controller('quiz', 'ApiQuizController');
+
+	// Registration
+	Route::resource('users','ApiUserController');
 
 });
 
