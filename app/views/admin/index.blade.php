@@ -1,8 +1,5 @@
 @extends('admin.master')
 
-@section('head')
-@stop
-
 @section('content')
 
  	<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
@@ -33,7 +30,7 @@
 
 <div class="container-fluid" style="padding-top: 70px;">
 
-	<div class="col-md-2 padded">
+	<div class="col-xs-2 col-sm-2 col-md-2 padded">
 	    <ul class="nav nav-pills nav-stacked">
 	        <li class="active"><a href="#">Home</a></li>
 	        <li><a href="#">Upload Videos</a></li>
@@ -42,7 +39,8 @@
 	    </ul>
 	</div>
 
-	<div id="new-slidedown" class="clearfix col-md-10" aria-hidden="true" style="display: none;">
+<div class=" col-xs-10 col-sm-10 col-md-10">
+	<div id="new-slidedown" class="clearfix" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -54,21 +52,10 @@
 			</div>
 		</div>
 	</div>
-
-	<!--
-	<div id="new" class="pull-right">
-		<button type="button" class="btn btn-success center-block">Add Media</button>
-	</div>
-
-	
-	<div id="search" class="container">
-		<input class="rounded" style="margin-right: 5px;" /><i class="fa fa-search fa-lg"></i>
-	</div>
-	-->
-
-	<div id="select" class="container">
+	<div id="select" class="container col-xs-10 col-sm-10 col-md-10">
 		<span id="select-movies">Movies</span> <span id="select-commercials">Commercials</span> <span id="select-commercials">TV Shows</span>
 	</div>
+</div>
 
 	<div id="content" class="container">
 	</div>
