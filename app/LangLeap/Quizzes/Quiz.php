@@ -9,13 +9,13 @@ class Quiz extends Eloquent {
 
 	public function questions()
 	{
-		return $this->belongsToMany('Question');
+		return $this->belongsToMany('LangLeap\Quizzes\Question');
 	}
 
 
 	public function user()
 	{
-		return $this->belongsTo('User');
+		return $this->belongsTo('LangLeap\Accounts\User');
 	}
 	
 }
