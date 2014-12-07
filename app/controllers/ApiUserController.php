@@ -41,7 +41,11 @@ class ApiUserController extends \BaseController {
 		}
 
 		$input = Input::all();
-		$input['password'] = Hash::make($input['password']); // Hash the password value.
+
+		if (isset($input['password']))
+		{
+			$input['password'] = Hash::make($input['password']); // Hash the password value.
+		}
 
 		$user = $this->users->newInstance($input);
 
