@@ -28,7 +28,14 @@ class ApiUserControllerTest extends TestCase {
 		// 201 Created response.
 		$this->assertResponseStatus(201);
 
-		// Verify the user details in the response
+		// Verify the created user's details.
+		$user = User::where('username', $userData['username'])->first();
+
+		$this->assertNotNull($user);
+		$this->assertSame($userData['email'], $user->email);
+		$this->assertSame($userData['first_name'], $user->first_name);
+		$this->assertSame($userData['last_name'], $user->last_name);
+		$this->assertTrue(Hash::check($userData['password'], $user->password));
 	}
 
 	public function testFailsWhenCreatingADuplicateUser()

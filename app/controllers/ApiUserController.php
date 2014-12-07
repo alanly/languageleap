@@ -11,11 +11,11 @@ class ApiUserController extends \BaseController {
 	protected $users;
 
 	private $rules = [
-		'username' => 'required|alpha_dash|max:20|unique:users',
+		'username' => 'required|alpha_dash|unique:users',
 		'email' => 'required|email|unique:users',
-		'password' => 'required|min:6|max:20',
-		'first_name' => 'required|max:40',
-		'last_name' => 'required|max:40'
+		'password' => 'required|min:6',
+		'first_name' => 'required',
+		'last_name' => 'required'
 	];
 
 	public function __construct(User $users)
@@ -40,31 +40,23 @@ class ApiUserController extends \BaseController {
 		}
 
 		$validator = Validator::make(Input::get(), $this->rules);
+
 		if ($validator->fails())
 		{
-			return $this->apiResponse(
-				'error',
-				$validator->messages(),
-				400
-			);
+			return $this->apiResponse('error', $validator->messages(), 400);
 		}
 
-		$user = $this->users->newInstance(Input::get());
+		$input = Input::all();
+		$input['password'] = Hash::make($input['password']); // Hash the password value.
+
+		$user = $this->users->newInstance($input);
 
 		if (! $user->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$user->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $user->getErrors(), 500);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$user->toArray(),
-			201
-		);	
+		return $this->apiResponse('success', $user->toArray(), 201);
 	}
 
 	/**
