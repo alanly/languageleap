@@ -49,9 +49,7 @@ class ApiUserController extends \BaseController {
 			);
 		}
 
-		$user = new User;
-
-		$user->fill(Input::get());
+		$user = $this->users->newInstance(Input::get());
 
 		if (! $user->save())
 		{
