@@ -7,6 +7,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 use LangLeap\Core\ValidatedModel;
 
 /**
+ * @author Thomas Rahn <thomas@rahn.ca>
  * @author Alan Ly <hello@alan.ly>
  */
 class User extends ValidatedModel implements UserInterface, RemindableInterface
@@ -25,9 +26,16 @@ class User extends ValidatedModel implements UserInterface, RemindableInterface
 		'last_name'  => 'required',
 	];
 
+
 	public function invoices()
 	{
 		return $this->hasMany('LangLeap\Payments\Invoice');
+	}
+
+
+	public function quizzes()
+	{
+		return $this->hasMany('LangLeap\Quizzes\Quiz');
 	}
 
 }
