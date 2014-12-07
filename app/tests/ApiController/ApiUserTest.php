@@ -27,6 +27,8 @@ class ApiUserControllerTest extends TestCase {
 
 		// 201 Created response.
 		$this->assertResponseStatus(201);
+
+		// Verify the user details in the response
 	}
 
 	public function testFailsWhenCreatingADuplicateUser()
@@ -52,8 +54,8 @@ class ApiUserControllerTest extends TestCase {
 
 		$response = $this->action('POST', 'ApiUserController@store', [], $userData);
 
-		// @TODO: Should return a 403 Forbidden response.
-		$this->assertResponseStatus(401);
+		// Should return a 403 Forbidden response.
+		$this->assertResponseStatus(403);
 	}
 
 	public function testShow()

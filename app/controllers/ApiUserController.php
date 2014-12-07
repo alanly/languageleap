@@ -35,7 +35,7 @@ class ApiUserController extends \BaseController {
 			return $this->apiResponse(
 				'error',
 				"User is already logged in",
-				401
+				403
 			);
 		}
 
