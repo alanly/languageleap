@@ -4,9 +4,7 @@ use LangLeap\Accounts\User;
 use LangLeap\TestCase;
 
 /**
-*
-*	@author Thomas Rahn <Thomas@rahn.ca>
-*
+* @author Thomas Rahn <Thomas@rahn.ca>
 */
 class AuthenticationTest extends TestCase {
 

@@ -29,7 +29,7 @@ class AuthController extends BaseController{
 			//Successful login, verification if user is an administrator
 			if(Auth::user()->is_admin)
 			{
-				//return Redirect::intended('/admin');
+				return Redirect::intended('/admin');
 			}
 			else 
 			{
