@@ -67,19 +67,17 @@ class ApiUserController extends \BaseController {
 	 */
 	public function show($userId)
 	{
-		if (! ($userId == Auth::user()->id))
+		if ($userId != Auth::user()->id)
 		{
 			return $this->apiResponse(
 				'error',
-				"User {Auth::id()} attempted to access user {$userId}.",
+				"User ".Auth::user()->id." attempted to access user {$userId}.",
 				401
 			);
 		}
 
-		$user = User::find($userId);
+		$user = $this->users->find($userId);
 		
-		// This should ideally never happen because it would mean that
-		// the currently authenticated user doesn't exist in the database anymore.
 		if (! $user)
 		{
 			return $this->apiResponse(
@@ -89,11 +87,7 @@ class ApiUserController extends \BaseController {
 			);
 		}
 		
-		return $this->apiResponse(
-			'success',
-			$user->toArray(),
-			200
-		);
+		return $this->apiResponse('success', $user->toArray(), 200);
 	}
 
 	/**
