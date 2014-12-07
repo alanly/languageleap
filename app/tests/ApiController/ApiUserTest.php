@@ -20,6 +20,13 @@ class ApiUserControllerTest extends TestCase {
 		];
 	}
 
+	public function setUp()
+	{
+		parent::setUp();
+
+		Route::enableFilters();
+	}
+
 	public function testCreatingANewUser()
 	{
 		$userData = $this->createUserData();

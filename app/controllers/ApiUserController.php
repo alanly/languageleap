@@ -18,7 +18,12 @@ class ApiUserController extends \BaseController {
 
 	public function __construct(User $users)
 	{
+		// Define the User dependency.
 		$this->users = $users;
+
+		// Define the before filters.
+		$this->beforeFilter('@filterAuthenticatedUser', ['only' => 'store']);
+		$this->beforeFilter('@filterModifyingAnotherUser', ['except' => 'store']);
 	}
 
 	/**
@@ -28,11 +33,6 @@ class ApiUserController extends \BaseController {
 	 */
 	public function store()
 	{
-		if (Auth::check())
-		{
-			return $this->apiResponse('error', "User is already logged in", 403);
-		}
-
 		$validator = Validator::make(Input::get(), $this->inputRules);
 
 		if ($validator->fails())
@@ -61,24 +61,11 @@ class ApiUserController extends \BaseController {
 	 */
 	public function show($userId)
 	{
-		if ($userId != Auth::user()->id)
-		{
-			return $this->apiResponse(
-				'error',
-				"User ".Auth::user()->id." attempted to access user {$userId}.",
-				401
-			);
-		}
-
 		$user = $this->users->find($userId);
 		
 		if (! $user)
 		{
-			return $this->apiResponse(
-				'error',
-				"User {$userId} not found.",
-				404
-			);
+			return $this->apiResponse('error', "User {$userId} not found.", 404);
 		}
 		
 		return $this->apiResponse('success', $user->toArray(), 200);
@@ -92,15 +79,6 @@ class ApiUserController extends \BaseController {
 	 */
 	public function update($userId)
 	{
-		if ($userId != Auth::user()->id)
-		{
-			return $this->apiResponse(
-				'error',
-				"User ".Auth::user()->id." attempting to modify user {$userId}.",
-				401
-			);
-		}
-
 		$validator = Validator::make(Input::get(), $this->inputRules);
 
 		if ($validator->fails())
@@ -133,32 +111,50 @@ class ApiUserController extends \BaseController {
 	 */
 	public function destroy($userId)
 	{
-		if (! ($userId == Auth::user()->id))
-		{
-			return $this->apiResponse(
-				'error',
-				"User {Auth::id()} attempted to delete user {$userId}.",
-				401
-			);
-		}
-
-		$user = User::find($userId);
+		$user = $this->users->find($userId);
 
 		if (! $user)
 		{
-			return $this->apiResponse(
-				'error',
-				"User {$userId} not found.",
-				404
-			);
+			return $this->apiResponse('error', "User {$userId} not found.", 404);
 		}
 
-		$user->delete();
+		if (! $user->delete())
+		{
+			return $this->apiResponse('error', "Unable to delete user {$userId}.", 500);
+		}
 
-		return $this->apiResponse(
-			'success',
-			'User {$userId} has been removed',
-			204
-		);
+		return $this->apiResponse('success', 'User has been removed.', 204);
 	}
+
+
+	/**
+	 * Filters requests coming from authenticated users.
+	 */
+	public function filterAuthenticatedUser($route, $request)
+	{
+		if (Auth::check())
+		{
+			return $this->apiResponse('error', "User is authenticated.", 403);
+		}
+	}
+
+
+	/**
+	 * Filters requests for modifying another user.
+	 */
+	public function filterModifyingAnotherUser($route, $request)
+	{
+		// Get the ID parameter from the route.
+		$id = $route->getParameter('users');
+
+		if ($id != Auth::user()->id)
+		{
+			return $this->apiResponse(
+				'error',
+				"User ".Auth::user()->id." attempting to modify user {$id}.",
+				401
+			);
+		}
+	}
+
 }
