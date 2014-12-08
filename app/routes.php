@@ -17,17 +17,9 @@ Route::get('/', function()
 	return View::make('index');
 });
 
+
 // Routes for authentication views.
-Route::group(array('prefix' => 'auth'), function() {
-	
-    // Login form
-    Route::get('login', array('before' => 'guest', 'uses' => 'AuthController@getLogin', 'as' => 'login'));
-    Route::post('login', array('before' => 'guest', 'uses' => 'AuthController@postLogin'));
-
-    // Logout action
-    Route::get('logout', array('uses' => 'AuthController@getLogout', 'as' => 'logout'));
-});
-
+Route::controller('auth', 'AuthController');
 
 
 // Route grouping for administration interface.
@@ -111,10 +103,10 @@ Route::group(array('prefix' => 'content'), function()
 });
 
 
-//video player
+// Video Player
 Route::get('/video/play/{id}', function($id)
 {
-    return View::make('player.player')->with("video_id",$id);
+	return View::make('player.player')->with('video_id', $id);
 });
 
 
@@ -127,6 +119,7 @@ Route::get('quiz', function()
 {
 	return View::make('quiz.main');
 });
+
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
