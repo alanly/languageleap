@@ -13,13 +13,19 @@
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			jQuery.validator.setDefaults({
+			/*jQuery.validator.setDefaults({
 				debug: true,
 				success: "valid"
-			});
+			});*/
 			
 			$("#registrationForm").validate({
 				rules: {
+					first_name: {
+						required: true
+					},
+					last_name: {
+						required: true
+					},
 					username: {
 						required: true,
 						rangelength: [4, 15]
@@ -48,9 +54,21 @@
 @stop
 
 @section('content')
-	<form id="registrationForm" name="regForm" class="form-horizontal" role="form" method="POST">
+	<form id="registrationForm" name="regForm" class="form-horizontal" role="form" method="POST" action="/api/users">
 		<div class="form-group">
 			<h2 id="forms-horizontal" class="col-sm-3	control-label">Account Creation</h2>
+		</div>
+		<div class="form-group">
+			{{Form::label('firstnameLabel', 'FirstName', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-10">
+				{{Form::text('first_name', '', array('class' => 'form-control', 'placeholder' => 'John', 'id' => 'first_name'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('lastnameLabel', 'LastName', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-10">
+				{{Form::text('last_name', '', array('class' => 'form-control', 'placeholder' => 'Smith', 'id' => 'last_name'))}}
+			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('usernameLabel', 'Username', array('class' => 'col-sm-2 control-label'))}}
