@@ -1,15 +1,11 @@
 <?php namespace LangLeap\Quizzes;
 
 use LangLeap\TestCase;
+use LangLeap\Accounts\User;
 use App;
 
 class QuizTest extends TestCase {
 
-	/**
-	 * Testing getting all seasons for a particular show.
-	 *
-	 * @return void
-	 */
 	public function testQuestionsRelation()
 	{
 		$user = $this->getUserInstance();
@@ -23,21 +19,18 @@ class QuizTest extends TestCase {
 		$question->save();
 		$this->assertCount(1, $quiz->questions()->get());			
 	}
+
 	protected function getQuizInstance()
 	{
 		return App::make('LangLeap\Quizzes\Quiz');
 	}	
+
 	protected function getUserInstance()
 	{
-		$user = App::make('LangLeap\Accounts\User');
-		$user->username = '';
-		$user->email = '';
-		$user->first_name = '';
-		$user->last_name = '';
-		$user->password = '';
-		$user->save();
-		return $user;
+		$this->seed();
+		return User::first();
 	}
+
 	protected function getQuestionInstance()
 	{
 		$question =  App::make('LangLeap\Quizzes\Question');
@@ -46,6 +39,7 @@ class QuizTest extends TestCase {
 		$question->definition_id = 1; //un-need id
 		return $question;
 	}
+
 	protected function getVideoInstance()
 	{
 		$video = App::make('LangLeap\Videos\Video');
@@ -58,6 +52,5 @@ class QuizTest extends TestCase {
 		$video->save();
 		return $video;
 	}
-	
 
 }

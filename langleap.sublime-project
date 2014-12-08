@@ -7,8 +7,4 @@
 			"folder_exclude_patterns": ["vendor", "app/storage/cache"]
 		}
 	]
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 1cc4a420cc433753cd45228e9bd8def777b117b8
