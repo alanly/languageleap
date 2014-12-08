@@ -1,11 +1,11 @@
 <?php 
 
-use LangLeap\Accounts\User;
 use LangLeap\TestCase;
 
 /**
-* @author Thomas Rahn <Thomas@rahn.ca>
-*/
+ * @author Thomas Rahn <Thomas@rahn.ca>
+ * @author Alan Ly <hello@alan.ly>
+ */
 class AuthenticationTest extends TestCase {
 
 	/**
@@ -17,111 +17,132 @@ class AuthenticationTest extends TestCase {
 	public function setUp()
 	{
 		parent::setUp();
-		Session::start();
-		$this->seed('UserTableSeeder');
 	}
 
-	/**
-	 * Test retrieving the login form.
-	 *
-	 */
-	public function testGetLoginForm()
-	{
-		$this->action('GET', 'AuthController@getLogin');
 
+	public function testFetchingTheLoginViewAsGuest()
+	{
+		Route::enableFilters();
+
+		$this->action('GET', 'AuthController@getLogin');
 		$this->assertResponseOk();
 	}
 
-	/**
-	 * Test valid authentication attempt.
-	 *
-	 */
-	public function testPostLoginWithValidCredentials()
+
+	public function testFetchingTheLoginViewAsAuthenticatedUser()
 	{
+		Route::enableFilters();
+
+		$this->be($this->createUser());
+		$this->action('GET', 'AuthController@getLogin');
+		$this->assertRedirectedTo('/');
+	}
+
+
+	public function testSuccessWhenAuthenticatingAsAUser()
+	{
+		$this->createUser();
+
 		$response = $this->action(
 			'POST',
 			'AuthController@postLogin',
 			[],
 			[
-				'username' => 'testUser123',
-				'password' => 'password123',
-				'_token' => csrf_token(),
+				'username' => 'user',
+				'password' => 'password',
 			]
 		);
 
+		$this->assertRedirectedTo('/');
+		$this->assertSessionHas('action.failed', false);
 		$this->assertTrue(Auth::check());
 	}
 
-	/**
-	 * Test invalid authentication attempt where the user username does not
-	 * exist.
-	 *
-	 */
-	public function testPostLoginWithInvalidEmail()
+
+	public function testFailsWhenAuthenticatingWithWrongUsername()
 	{
+		$this->createUser();
+
 		$response = $this->action(
 			'POST',
 			'AuthController@postLogin',
 			[],
 			[
-				'username' => 'fakeuser',
-				'password' => 'password123',
-				'_token' => csrf_token(),
+				'username' => 'wronguser',
+				'password' => 'password',
 			]
 		);
+
+		$this->assertRedirectedToAction('AuthController@getLogin');
+		$this->assertSessionHas('action.failed', true);
 		$this->assertFalse(Auth::check());
-		$this->assertRedirectedToRoute('login');
 	}
 
-	/**
-	 * Test invalid authentication attempt where the user password does not
-	 * properly match, but the username is correct.
-	 *
-	 */
-	public function testPostLoginWithInvalidPassword()
+
+	public function testFailsWhenAuthenticatingWithWrongPassword()
 	{
+		$this->createUser();
+
 		$response = $this->action(
 			'POST',
 			'AuthController@postLogin',
 			[],
 			[
-				'username' => 'testUser123',
-				'password' => 'fakepassword',
-				'_token' => csrf_token(),
+				'username' => 'user',
+				'password' => 'badpassword',
 			]
 		);
 
+		$this->assertRedirectedToAction('AuthController@getLogin');
+		$this->assertSessionHas('action.failed', true);
 		$this->assertFalse(Auth::check());
-		$this->assertRedirectedToRoute('login');
 	}
 
-	/**
-	 *	Test valid logout
-	 *
-	 */
-	public function testPostLogout()
+
+	public function testSuccessWhenLoggingOutAsAnAuthenticatedUser()
 	{
-		//Logging in
-		$response = $this->action(
-			'POST',
-			'AuthController@postLogin',
-			[],
-			[
-				'username' => 'testUser123',
-				'password' => 'password123',
-				'_token' => csrf_token(),
-			]
-		);
+		$this->be($this->createUser());
 
-		$this->assertTrue(Auth::check());
+		$this->action('GET', 'AuthController@getLogout');
 
-		//Logout
-		$response = $this->action(
-			'GET',
-			'AuthController@getLogout',
-			[],[]
-		);
-
-		$this->assertTrue(!Auth::check());
+		$this->assertRedirectedToAction('AuthController@getLogin');
+		$this->assertSessionHas('action.failed', false);
+		$this->assertFalse(Auth::check());
 	}
+
+
+	public function testRedirectsWhenTryingToLogoutAsAGuest()
+	{
+		Route::enableFilters();
+
+		$this->action('GET', 'AuthController@getLogout');
+		$this->assertRedirectedToAction('AuthController@getLogin');
+	}
+
+
+	protected function makeUserInstance()
+	{
+		return App::make('LangLeap\Accounts\User');
+	}
+
+
+	protected function createUser(
+		$username = 'user',
+		$password = 'password',
+		$email    = 'admin@test.com',
+		$isAdmin  = false
+	)
+	{
+		$user = $this->makeUserInstance();
+
+		return $user->create([
+			'username'   => $username,
+			'password'   => Hash::make($password),
+			'email'      => $email,
+			'first_name' => 'John',
+			'last_name'  => 'Smith',
+			'is_admin'   => $isAdmin,
+		]);
+	}
+
 }
