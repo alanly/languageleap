@@ -48,6 +48,8 @@ class ApiUserController extends \BaseController {
 			$input['password'] = Hash::make($input['password']); // Hash the password value.
 		}
 
+		$input['confirmation_code'] = str_random(30);
+
 		$user = $this->users->newInstance($input);
 
 		if (! $user->save())
