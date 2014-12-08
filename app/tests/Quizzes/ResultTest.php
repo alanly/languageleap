@@ -53,15 +53,8 @@ class ResultTest extends TestCase {
 
 	protected function getUserInstance()
 	{
-		$user = App::make('LangLeap\Accounts\User');
-		$user->username = '';
-		$user->email = '';
-		$user->password = '';
-		$user->first_name = '';
-		$user->last_name = '';
-		$user->save();
-
-		return $user;
+		$this->seed('UserTableSeeder');
+		return \LangLeap\Accounts\User::first();
 	}
 
 	protected function getResultInstance()

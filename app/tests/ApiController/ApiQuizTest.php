@@ -16,18 +16,9 @@ class ApiQuizControllerTest extends TestCase {
 	{
 		parent::setUp();
 
-		// Seed the database.
+		// Seed the database and login
 		$this->seed();
-
-		$this->call(
-			'POST',
-			'auth/login',
-			array(
-				'username' => 'testUser123',
-				'password' => 'password123',
-				'_token' => csrf_token(),
-				)
-			);
+		$this->be(User::first());
 	}
 
 	/**
