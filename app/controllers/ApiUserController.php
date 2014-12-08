@@ -57,6 +57,12 @@ class ApiUserController extends \BaseController {
 			return $this->apiResponse('error', $user->getErrors(), 400);
 		}
 
+		// Send a verification email to the user
+		Mail::send('email.verify', $confirmation_code, function($message) {
+			$message->to(Input::get('email'), Input::get('username'))
+			->subject('Verify your email address');
+		});
+
 		return $this->apiResponse('success', $user->toArray(), 201);
 	}
 
