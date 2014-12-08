@@ -13,7 +13,7 @@ class ApiUserController extends \BaseController {
 	private $inputRules = [
 		'username' => 'alpha_dash',
 		'email'    => 'email',
-		'password' => 'min:6',
+		'password' => 'confirmed|min:6',
 	];
 
 	public function __construct(User $users)
