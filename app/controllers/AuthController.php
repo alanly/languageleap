@@ -8,6 +8,13 @@ use LangLeap\Accounts\User;
  */
 class AuthController extends BaseController {
 
+	public function __construct()
+	{
+		$this->beforeFilter('guest', ['except' => 'getLogout']);
+		$this->beforeFilter('auth', ['only' => 'getLogout']);
+	}
+
+
 	public function getLogin()
 	{
 		if (Auth::check()) return $this->authRedirect();
@@ -29,7 +36,7 @@ class AuthController extends BaseController {
 		if (! $success)
 		{
 			// Redirect to login page with appropriate error messages.
-			return Redirect::route('login')
+			return Redirect::action('AuthController@getLogin')
 				->with("action.failed", true)
 				->with("action.message", "Invalid username or password");
 		}
@@ -46,12 +53,12 @@ class AuthController extends BaseController {
 
 		if ($failed)
 		{
-			return Redirect::route('login')
+			return Redirect::back()
 				->with('action.failed', true)
 				->with('action.message', 'Unable to logout. Please contact an administrator.');
 		}
 
-		return Redirect::route('login')
+		return Redirect::action('AuthController@getLogin')
 			->with('action.failed', false)
 			->with('action.message', 'You have been logged out.');
 	}
