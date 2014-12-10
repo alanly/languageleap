@@ -1,6 +1,7 @@
 <?php namespace LangLeap;
 
 use Artisan;
+use Mail;
 
 class TestCase extends \Illuminate\Foundation\Testing\TestCase {
 
@@ -23,6 +24,8 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase {
 		parent::setUp();
 
 		Artisan::call('migrate');
+
+		Mail::pretend();
 	}
 
 }
