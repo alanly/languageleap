@@ -107,5 +107,26 @@ class RegistrationControllerTest extends TestCase {
 		// Check that the client is redirected to the registration page
 		$this->assertRedirectedToAction('RegistrationController@getIndex');
 	}
+
+	public function testFailsWhenCreatingAUserWithoutAPassword()
+	{
+		$userData = $this->createUserData();
+
+		$userData['password'] = '';
+		$userData['password_confirmation'] = '';
+
+		// Go to the registration page first because Redirect::back will
+		// cause errors if there is nothing to go back to
+		$response = $this->action('GET', 'RegistrationController@getIndex');
+
+		// Attempt to create a user without a password
+		$response = $this->action('POST', 'RegistrationController@postIndex', [], $userData);
+
+		// Check that the client is redirected to the registration page
+		$this->assertRedirectedToAction('RegistrationController@getIndex');
+		
+		// Should return errors
+		$this->assertSessionHasErrors();
+	}
 	
 }
