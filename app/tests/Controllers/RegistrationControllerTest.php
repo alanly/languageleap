@@ -32,7 +32,7 @@ class RegistrationControllerTest extends TestCase {
 	{
 		$userData = $this->createUserData();
 
-		$response = $this->action('POST', 'RegistrationController@store', [], $userData);
+		$response = $this->action('POST', 'RegistrationController@postIndex', [], $userData);
 
 		// Verify the created user's details.
 		$user = User::where('username', $userData['username'])->first();
@@ -43,7 +43,10 @@ class RegistrationControllerTest extends TestCase {
 		$this->assertSame($userData['last_name'], $user->last_name);
 		$this->assertTrue(Hash::check($userData['password'], $user->password));
 		$this->assertSame($user->is_confirmed, '0');
-		$this->assertRedirectedTo('register/success');
+		$this->assertContains(
+			'You have successfully registered! A confirmation email has been sent.',
+			$response->getContent()
+		);
 	}
 
 	public function testFailsWhenCreatingADuplicateUser()
@@ -51,13 +54,13 @@ class RegistrationControllerTest extends TestCase {
 		$userData = $this->createUserData();
 
 		// Create the user first
-		$response = $this->action('POST', 'RegistrationController@store', [], $userData);
+		$response = $this->action('POST', 'RegistrationController@postIndex', [], $userData);
 
 		// Attempt to create the user again
-		$response = $this->action('POST', 'RegistrationController@store', [], $userData);
+		$response = $this->action('POST', 'RegistrationController@postIndex', [], $userData);
 
 		// Should return errors
-		$this->assertRedirectedTo('register');
+		$this->assertRedirectedToAction('RegistrationController@getIndex');
 		$this->assertSessionHasErrors();
 	}
 
@@ -68,38 +71,41 @@ class RegistrationControllerTest extends TestCase {
 		// Authenticate as a user.
 		$this->be(new User());
 
-		$response = $this->action('POST', 'RegistrationController@store', [], $userData);
+		$response = $this->action('POST', 'RegistrationController@postIndex', [], $userData);
 
-		$this->assertRedirectedTo('register');
-		$this->assertSessionHasErrors();
+		$this->assertRedirectedTo('/');
+		$this->assertSessionHas('action.failed', true);
 	}
 
 	public function testConfirmingANewUser()
 	{
 		$userData = $this->createUserData();
 
-		$response = $this->action('POST', 'RegistrationController@store', [], $userData);
+		$response = $this->action('POST', 'RegistrationController@postIndex', [], $userData);
 
 		// Verify the created user's details.
 		$user = User::where('username', $userData['username'])->first();
 
-		$response = $this->call('GET', 'register/verify/' . $user->confirmation_code);
+		$response = $this->action('GET', 'RegistrationController@getVerify', [$user->confirmation_code]);
 
 		// Retrieve the confirmed user's details
 		$user = User::where('username', $userData['username'])->first();
 
 		$this->assertSame($user->is_confirmed, '1');
-		$this->assertRedirectedTo('register/verified');
+		$this->assertContains(
+			'You have successfully verified your account! Please login.',
+			$response->getContent()
+		);
 	}
 
 	public function testFailsConfirmingANonExistingUser()
 	{
 		$userData = $this->createUserData();
 
-		$response = $this->call('GET', 'register/verify/nonexisting');
+		$response = $this->action('GET', 'RegistrationController@getVerify', ['0000']);
 
 		// Check that the client is redirected to the registration page
-		$this->assertRedirectedTo('register');
+		$this->assertRedirectedToAction('RegistrationController@getIndex');
 	}
 	
 }
