@@ -121,5 +121,9 @@ Route::get('quiz', function()
 });
 
 
+// Account Registration
+Route::controller('register', 'RegistrationController');
+
+
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
