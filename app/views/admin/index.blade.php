@@ -1,10 +1,45 @@
 @extends('admin.master')
 
-@section('head')
-@stop
-
 @section('content')
-<div class="container-fluid">
+
+ 	<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+      	<div class="container-fluid">
+        	<div class="navbar-header">
+          		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            		<span class="sr-only">Toggle navigation</span>
+            		<span class="icon-bar"></span>
+            		<span class="icon-bar"></span>
+            		<span class="icon-bar"></span>
+          		</button>
+          	<a class="navbar-brand" href="#">Language Leap</a>
+        	</div>
+
+        	<div id="navbar" class="navbar-collapse collapse">
+          		<ul class="nav navbar-nav navbar-right">
+            		<li><a href="#">Dashboard</a></li>
+            		<li><a href="#">Settings</a></li>
+            		<li><a href="#">Profile</a></li>
+            		<li><a href="#">Help</a></li>
+          		</ul>
+         		<form class="navbar-form navbar-right">
+            		<input type="text" class="form-control" placeholder="Search...">
+          		</form>
+        	</div>
+      	</div>
+    </nav>
+
+<div class="container-fluid" style="padding-top: 70px;">
+
+	<div class="col-xs-2 col-sm-2 col-md-2 padded">
+	    <ul class="nav nav-pills nav-stacked">
+	        <li class="active"><a href="#">Home</a></li>
+	        <li><a href="#">Upload Videos</a></li>
+	        <li class="upload-script"><a href="#">Upload Scripts</a></li>
+	        <li><a href="#">Insert Definitions</a></li>
+	    </ul>
+	</div>
+
+<div class=" col-xs-10 col-sm-10 col-md-10">
 	<div id="new-slidedown" class="clearfix" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -17,18 +52,10 @@
 			</div>
 		</div>
 	</div>
-
-	<div id="new" class="pull-right">
-		<button type="button" class="btn btn-success center-block">Add Media</button>
-	</div>
-
-	<div id="search" class="container">
-		<input class="rounded" style="margin-right: 5px;" /><i class="fa fa-search fa-lg"></i>
-	</div>
-
-	<div id="select" class="container">
+	<div id="select" class="container col-xs-10 col-sm-10 col-md-10">
 		<span id="select-movies">Movies</span> <span id="select-commercials">Commercials</span> <span id="select-commercials">TV Shows</span>
 	</div>
+</div>
 
 	<div id="content" class="container">
 	</div>
@@ -111,7 +138,7 @@
 </div>
 
 <script type="text/javascript">
-$("#new").click(function()
+$(".upload-script").click(function()
 {
 	$("#new-slidedown").slideToggle("slow", function()
 	{
