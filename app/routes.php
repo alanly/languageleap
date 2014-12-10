@@ -120,31 +120,10 @@ Route::get('quiz', function()
 	return View::make('quiz.main');
 });
 
+
 // Account Registration
-Route::group(array('prefix' => 'register'), function()
-{
-	Route::get('/', function()
-	{
-		return View::make('account.registration.index');
-	});
+Route::controller('register', 'RegistrationController');
 
-	Route::post('/', 'RegistrationController@store');
-
-	Route::get('success', function()
-	{
-		return View::make('account.registration.success');
-	});
-
-	Route::get('verified', function()
-	{
-		return View::make('account.registration.verified');
-	});
-
-	Route::get('verify/{confirmationCode}', [
-		'as' => 'confirmation_path',
-		'uses' => 'RegistrationController@confirm'
-	]);
-});
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);

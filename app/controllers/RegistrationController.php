@@ -5,15 +5,14 @@ use LangLeap\Accounts\User;
 /**
  * @author Thomas Rahn <thomas@rahn.ca>
  * @author Michael Lavoie <lavoie6453@gmail.com>
+ * @author Alan Ly <hello@alan.ly>
  */
 class RegistrationController extends \BaseController {
 
 	protected $users;
 
 	private $inputRules = [
-		'username' => 'alpha_dash',
-		'email'    => 'email',
-		'password' => 'required|confirmed|min:6',
+		'password' => 'confirmed|min:6',
 	];
 
 	public function __construct(User $users)
@@ -26,12 +25,38 @@ class RegistrationController extends \BaseController {
 	}
 
 
+	public function getIndex()
+	{
+		return View::make('account.registration.index');
+	}
+
+
+	public function getVerify($confirmationCode)
+	{
+		if(! $confirmationCode)
+		{
+			return Redirect::action('RegistrationController@getIndex');
+		}
+
+		$user = $this->users->whereConfirmationCode($confirmationCode)->first();
+
+		if (! $user)
+		{
+			return Redirect::action('RegistrationController@getIndex');
+		}
+
+		$user->is_confirmed = 1;
+		$user->confirmation_code = null;
+		$user->save();
+
+		return View::make('account.registration.verified');
+	}
+
+
 	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
+	 * Handles the `post` request from the registration form.
 	 */
-	public function store()
+	public function postIndex()
 	{
 		$validator = Validator::make(Input::get(), $this->inputRules);
 
@@ -39,7 +64,8 @@ class RegistrationController extends \BaseController {
 
 		if (isset($input['password']))
 		{
-			$input['password'] = Hash::make($input['password']); // Hash the password value.
+			// Hash the password value.
+			$input['password'] = Hash::make($input['password']);
 		}
 
 		$input['confirmation_code'] = str_random(30);
@@ -50,18 +76,24 @@ class RegistrationController extends \BaseController {
 		{
 			$errors = $user->getErrors();
 			$errors->merge($validator->errors());
-			return Redirect::to('register')->withErrors($errors)->withInput();
+
+			return Redirect::back()->withErrors($errors)->withInput();
 		}
 
 		$user->save();
 
 		// Send a verification email to the user
-		Mail::send('emails.verify', ['confirmation_code' => $input['confirmation_code']], function($message) {
-			$message->to(Input::get('email'), Input::get('username'))
-			->subject('Verify your email address');
-		});
+		Mail::send(
+			'emails.verify',
+			['confirmation_code' => $input['confirmation_code']],
+			function($message) {
+				$message
+					->to(Input::get('email'), Input::get('username'))
+					->subject('Verify your email address');
+			}
+		);
 
-		return Redirect::to('register/success');
+		return View::make('account.registration.success');
 	}
 
 
@@ -72,33 +104,12 @@ class RegistrationController extends \BaseController {
 	{
 		if (Auth::check())
 		{
-			return Redirect::to('register')->withErrors('You are already logged in.');
+			return Redirect::to('/')
+				->with('action.failed', true)
+				->with('action.message', 'You are already logged in. To create a new '.
+					'account, please sign out first.'
+				);
 		}
-	}
-
-
-	/**
-	* Attempt to confirm the user with the provided confirmation code.
-	*/
-	public function confirm($confirmation_code)
-	{
-		if(! $confirmation_code)
-		{
-			return Redirect::to('register');
-		}
-
-		$user = User::whereConfirmationCode($confirmation_code)->first();
-
-		if (! $user)
-		{
-			return Redirect::to('register');
-		}
-
-		$user->is_confirmed = 1;
-		$user->confirmation_code = null;
-		$user->save();
-
-		return Redirect::to('register/verified');
 	}
 
 }

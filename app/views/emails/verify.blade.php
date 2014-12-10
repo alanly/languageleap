@@ -6,9 +6,10 @@
 	<body>
 		<h2>Verify Your Email Address</h2>
 		<div>
-		Thank you for registering to LanguageLeap!
-		Please follow the link below to verify your email address
-		{{ URL::to('register/verify/' . $confirmation_code) }}.<br/>
+			<p>Thank you for registering for <strong>LanguageLeap</strong>!</p>
+			<p>In order to activate your account, we will need to confirm your email
+			address. To do so, just follow {{ link_to_action('RegistrationController@getVerify', 'this link', [$confirmation_code]) }}.</p>
+			<p>&mdash; The LanguageLeap Team</p>
 		</div>
 	</body>
 </html>
