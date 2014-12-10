@@ -2,11 +2,9 @@
 
 use LangLeap\TestCase;
 use LangLeap\Core\Collection;
-use LangLeap\Quizzes\Question;
-use LangLeap\Quizzes\Answer;
-use LangLeap\Quizzes\Quiz;
 use LangLeap\Words\Definition;
 use LangLeap\QuizUtilities\QuizFactory;
+use LangLeap\Videos\Video;
 
 class QuizFactoryTest extends TestCase {
 
@@ -22,12 +20,17 @@ class QuizFactoryTest extends TestCase {
 	{
 		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array(Definition::first());
+		$video_id = Video::first()->id;
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($video_id, $all_words, $selected_words);
 
-		foreach($quiz->videoQuestions() as $q)
+		foreach($quiz->videoQuestions() as $vq)
 		{
-			$this->assertInstanceOf('LangLeap\Quizzes\VideoQuestion', $q);
+			$this->assertInstanceOf('LangLeap\Quizzes\VideoQuestion', $vq);
+			foreach($vq->questions as $q)
+			{
+				$this->assertGreaterThan(1, $q->answers()->count());
+			}
 		}
 	}
 	
@@ -35,8 +38,9 @@ class QuizFactoryTest extends TestCase {
 	{
 		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array();
+		$video_id = Video::first()->id;
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($video_id, $all_words, $selected_words);
 
 		$this->assertNull($quiz);
 	}
@@ -45,8 +49,9 @@ class QuizFactoryTest extends TestCase {
 	{
 		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array(-1);
+		$video_id = Video::first()->id;
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($video_id, $all_words, $selected_words);
 
 		$this->assertNull($quiz);
 	}
@@ -55,9 +60,20 @@ class QuizFactoryTest extends TestCase {
 	{
 		$all_words = new Collection;
 		$selected_words = array(Definition::first()->id);
+		$video_id = Video::first()->id;
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($video_id, $all_words, $selected_words);
 
+		$this->assertNull($quiz);
+	}
+	
+	public function testNullWhenVideoDoesNotExist()
+	{
+		$all_words = new Collection(Definition::all()->all());
+		$selected_words = array(Definition::first());
+		
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(-1, $all_words, $selected_words);
+		
 		$this->assertNull($quiz);
 	}
 }

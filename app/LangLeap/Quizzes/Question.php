@@ -13,12 +13,12 @@ class Question extends Eloquent {
 		];
 
 
-	public function answer()
+	public function answers()
 	{
 		return $this->hasMany('LangLeap\Quizzes\Answer');
 	}
 	
-	public function videoQuestion()
+	public function videoQuestions()
 	{
 		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
 	}

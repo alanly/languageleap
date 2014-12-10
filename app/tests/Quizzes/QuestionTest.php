@@ -22,7 +22,7 @@ class QuestionTest extends TestCase {
 		$question->answer_id = $answer->id;
 		$question->save();
 	
-		$this->assertCount(1, $question->answer()->get());	
+		$this->assertCount(1, $question->answers()->get());	
 	}
 	
 	protected function getAnswerInstance()
