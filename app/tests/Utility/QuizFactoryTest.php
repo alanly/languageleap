@@ -25,9 +25,9 @@ class QuizFactoryTest extends TestCase {
 
 		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($all_words, $selected_words);
 
-		foreach($quiz->questions() as $q)
+		foreach($quiz->videoQuestions() as $q)
 		{
-			$this->assertInstanceOf('LangLeap\Quizzes\Question', $q);
+			$this->assertInstanceOf('LangLeap\Quizzes\VideoQuestion', $q);
 		}
 	}
 	

@@ -5,6 +5,7 @@ use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Quizzes\Result;
+use LangLeap\Quizzes\Quiz;
 use LangLeap\QuizUtilities\QuizGeneration;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
@@ -108,13 +109,16 @@ class ApiQuizController extends \BaseController {
 		// Generate all the questions.
 		$questions = QuizGeneration::generateDefinitionQuiz($scriptDefinitions, $selectedWords);
 		$results = new Collection;
-
+		$quiz = Quiz::create([]);
+		$quiz->save();
+		
 		foreach ($questions as $q)
 		{
 			$vq = VideoQuestion::create([
 				'question_id' 	=> $q->id,
 				'video_id'		=> $videoId,
-				'is_custom'		=> false
+				'quiz_id'			=> $quiz->id,
+				'is_custom'	=> false
 			]);
 			$vq->save();
 

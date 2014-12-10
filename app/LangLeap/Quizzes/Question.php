@@ -15,6 +15,11 @@ class Question extends Eloquent {
 
 	public function answer()
 	{
-		return $this->belongsTo('LangLeap\Quizzes\Answer');
+		return $this->hasMany('LangLeap\Quizzes\Answer');
+	}
+	
+	public function videoQuestion()
+	{
+		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
 	}
 }

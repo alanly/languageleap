@@ -17,6 +17,7 @@ class CreateVideoQuestionTable extends Migration {
 			$table->increments('id');
 			$table->integer('video_id')->unsigned();
 			$table->integer('question_id')->unsigned();
+			$table->integer('quiz_id')->unsigned();
 			$table->boolean('is_custom');
 		});
 	}

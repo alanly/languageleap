@@ -17,6 +17,6 @@ class QuizTableSeeder extends Seeder {
 
 		$vid = Video::first();
 		$q = App::make('LangLeap\Quizzes\Quiz');
-		$q->create(["video_id" => $vid->id, "user_id" => 1]);
+		$q->create([]);
 	}
 }

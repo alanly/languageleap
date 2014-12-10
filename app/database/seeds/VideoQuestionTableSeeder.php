@@ -2,8 +2,9 @@
 
 use LangLeap\Quizzes\Question;
 use LangLeap\Videos\Video;
-use LangLeap\Quizzes\VideoQuestion;
+use LangLeap\Quizzes\VideoQuestion;	
 use LangLeap\Words\Definition;
+use LangLeap\Quizzes\Quiz;
 
 class VideoQuestionTableSeeder extends Seeder {
 
@@ -17,9 +18,11 @@ class VideoQuestionTableSeeder extends Seeder {
 		Eloquent::unguard();
 		DB::table('videoquestion')->delete();
 		$videoquestion = App::make('LangLeap\Quizzes\VideoQuestion');
-
-		$videoquestion->create(["video_id" => 1, "question_id" => 1, "is_custom" => false]);
-		$videoquestion->create(["video_id" => 1, "question_id" => 2, "is_custom" => false]);
-		$videoquestion->create(["video_id" => 1, "question_id" => 2, "is_custom" => false]);
+		
+		$vid = Video::first()->id;
+		$quiz = Quiz::first()->id;
+		$videoquestion->create(["video_id" => $vid, "question_id" => 1, "quiz_id" => $quiz, "is_custom" => false]);
+		$videoquestion->create(["video_id" => $vid, "question_id" => 2, "quiz_id" => $quiz, "is_custom" => false]);
+		$videoquestion->create(["video_id" => $vid, "question_id" => 3, "quiz_id" => $quiz, "is_custom" => false]);
 	}
 }

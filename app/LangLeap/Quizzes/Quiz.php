@@ -7,15 +7,9 @@ use Eloquent;
  */
 class Quiz extends Eloquent {
 
-	public function questions()
+	public function videoQuestions()
 	{
-		return $this->belongsToMany('LangLeap\Quizzes\Question');
-	}
-
-
-	public function user()
-	{
-		return $this->belongsTo('LangLeap\Accounts\User');
+		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
 	}
 	
 }
