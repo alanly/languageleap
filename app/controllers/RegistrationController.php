@@ -62,7 +62,7 @@ class RegistrationController extends \BaseController {
 
 		$input = Input::except('password_confirmation');
 
-		if (isset($input['password']))
+		if (Input::has('password'))
 		{
 			// Hash the password value.
 			$input['password'] = Hash::make($input['password']);
