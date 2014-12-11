@@ -86,6 +86,7 @@ class VideoQuestionTest extends TestCase {
 	protected function getQuizInstance()
 	{
 		$quiz = App::make('LangLeap\Quizzes\Quiz');
+		$quiz->user_id = 1;
 		$quiz->save();
 
 		return $quiz;

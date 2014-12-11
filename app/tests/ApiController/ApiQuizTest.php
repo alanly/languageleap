@@ -103,26 +103,6 @@ class ApiQuizControllerTest extends TestCase {
 	}
 
 	/**
-	*	This test will test that answering a question is successful
-	*
-	*/
-	public function testQuizUpdate() {
-		$result = Result::first();
-		$videoquestion = VideoQuestion::find($result->videoquestion_id);
-		$question = $videoquestion->question->first();
-
-		$this->session(['scriptDefinitions' => new Collection(Definition::all()->all())]);
-
-		$response = $this->action(
-			'put',
-			'ApiQuizController@putIndex',
-			[],["question_id"=>$question->id, "result_id"=>$result->id, "selected_id" => $question->answer_id]
-		);
-
-		$this->assertResponseStatus(200);
-	}
-
-	/**
 	*	This test verifies that an 404 error will be returned when trying to answer a question that does not exist.
 	*	404 == Not found
 	*
@@ -136,6 +116,7 @@ class ApiQuizControllerTest extends TestCase {
 		
 		$this->assertResponseStatus(404);	
 	}
+	
 	/**
 	*	This test will verify that a 400 error will be returned when trying to answer with no selected id.
 	*	400 == Bad Request

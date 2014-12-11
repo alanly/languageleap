@@ -14,11 +14,9 @@ class CreateResultTable extends Migration {
 	{
 		Schema::create('results', function($table){
 			$table->increments('id');
-			$table->integer('user_id')->unsigned();
 			$table->integer('videoquestion_id')->unsigned();
 			$table->boolean('is_correct');
 			$table->timestamp('timestamp');
-			$table->integer('attempt')->default(0);
 		});
 	}
 

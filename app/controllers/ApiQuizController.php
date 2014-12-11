@@ -109,7 +109,9 @@ class ApiQuizController extends \BaseController {
 		// Generate all the questions.
 		$questions = QuizGeneration::generateDefinitionQuiz($scriptDefinitions, $selectedWords);
 		$results = new Collection;
-		$quiz = Quiz::create([]);
+		$quiz = Quiz::create([
+			'user_id'	=> Auth::user()->id
+		]);
 		$quiz->save();
 		
 		foreach ($questions as $q)
@@ -125,9 +127,7 @@ class ApiQuizController extends \BaseController {
 			$result = new Result;
 			$result->videoquestion_id = $vq->id;
 			$result->is_correct = false;
-			$result->user_id = Auth::user()->id;
 			$result->timestamp = date_default_timezone_get();
-			$result->attempt = 0;
 			$result->save();
 
 			$results->add($result);
@@ -198,14 +198,14 @@ class ApiQuizController extends \BaseController {
 		$isCorrectAnswer = $question->answer_id.'' === $selectedId;
 
 		// Update the score if the user answered correctly.
-		if ($isCorrectAnswer)
+		/*if ($isCorrectAnswer)
 		{
 			// Increment the score because they selected the right answer.
 			$result->is_correct = $isCorrectAnswer;
 			// @TODO: Adjust user progress
 		}
 		$result->increment('attempt');
-		$result->save();
+		$result->save();*/
 		
 		// Get an unanswered question.
 		$newQuestionResult = $this->getUnansweredQuestionResult($videoQuestion->video_id);
@@ -292,11 +292,23 @@ class ApiQuizController extends \BaseController {
 	{
 		//Get all results of the user that have no attempts (he never tried to answer)
 		//Then get all the VideoQuestion instances that are related to the video he is currently\
-		return DB::table('results')
-		->join('videoquestion', 'results.videoquestion_id', '=', 'videoquestion.id')
-		->select('results.id', 'results.videoquestion_id', 'results.user_id', 'results.id', 'results.attempt')
-		->where('user_id', Auth::user()->id.'')
-		->where('attempt', '0');
+		$results = new Collection;
+		foreach(Quiz::where('user_id', '=', Auth::user()->id) as $quiz)
+		{
+			$videoQuestions =  $quiz->videoQuestions();
+			foreach($videoQuestions as $vq)
+			{
+				if($vq->video_id == $videoId)
+				{
+					foreach($vq->results as $result)
+					{
+						$results->add($result);
+					}
+				}
+			}
+		}
+		
+		return $results;
 	}
 
 	protected function getUnansweredQuestionResult($videoId)

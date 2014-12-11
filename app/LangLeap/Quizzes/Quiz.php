@@ -12,4 +12,8 @@ class Quiz extends Eloquent {
 		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
 	}
 	
+	public function user()
+	{
+		return $this->belongsTo('LangLeap\Account\User');
+	}
 }

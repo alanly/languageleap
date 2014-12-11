@@ -4,9 +4,11 @@ use LangLeap\Core\Collection;
 use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\Quiz;
+use LangLeap\Quizzes\Result;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
+use LangLeap\Accounts\User;
 
 /**
  * Factory that creates quizzes based on selected words in a script
@@ -31,14 +33,13 @@ use LangLeap\Words\Definition;
 	* collection of Definition instances associated with the script, and an array
 	* of Definition IDs that have been chosen by the user to be in the quiz.
 	* 
-	* Generated quizzes do not contain the association with a video.
-	* 
+	* @param int $user_id
 	* @param  int  $video_id
 	* @param  Collection  $scriptDefinitions
-	* @param  array       $selectedDefinitions
-	* @return VideoQuestion array
+	* @param  array $selectedDefinitions
+	* @return Quiz
 	*/
-	public function getDefinitionQuiz($video_id, Collection $scriptDefinitions, $selectedDefinitions)
+	public function getDefinitionQuiz($user_id, $video_id, Collection $scriptDefinitions, $selectedDefinitions)
 	{
 		// Ensure that $scriptDefinitions is not empty.
 		if ($scriptDefinitions->isEmpty()) return null;
@@ -49,56 +50,55 @@ use LangLeap\Words\Definition;
 		// Ensure the video exists
 		if(Video::find($video_id) == null) return null;
 		
-		$quiz = Quiz::create([]);
-		$quiz->save();
+		// Ensure the user exists
+		if(User::find($user_id) == null) return null;
+		
+		$quiz = Quiz::where('user_id', '=', $user_id)->get()->first();
+		if($quiz == null)
+		{
+			$quiz = Quiz::create([
+				'user_id' => $user_id
+			]);
+			$quiz->save();
+		}
 	
 		// Make a copy of the definitions collection.
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
+		$questionPrepend = 'What is the definition of ';
+		
 		foreach ($selectedDefinitions as $definitionId)
 		{
 			// Pull the Definition instance from the collection.
 			$definition = $scriptDefinitions->pull($definitionId);
 			if (! $definition) return null;
-			
-			// Create a new Question instance
-			$question = Question::create([
-				'answer_id' => -1, // Will be changed after the answer is generated
-				'question'	=> 'What is the definition of '.$definition->word.'?',
-			]);
-			
-			$correctAnswer = Answer::create([
-				'question_id' 	=> $question->id,
-				'answer'		=> $definition->full_definition
-			]);
-			$correctAnswer->save();
-
-			$question->answer_id = $correctAnswer->id;
-			$question->save();
-			
-			// Take some close definitions to put as answers
-			$other_defs = Definition::where('id', '<', $definitionId)->orderBy('desc')->take(5)->get();
-			$other_defs->merge(Definition::where('id', '>', $definitionId)->orderBy('asc')->take(5)->get());
-			$other_defs = new Collection($other_defs->all());
-			
-			// Give the question four answers
-			while($question->answers->count() < 4)
-			{
-				$answer = Answer::create([
-					'question_id' 	=> $question->id,
-					'answer'			=> $other_defs->pullRandom()->full_definition
-				]);
 				
-				$answer->save();
-				$question->answers->add($answer);
+			$videoQuestion = null;
+			foreach($quiz->videoQuestions() as $vq) // See if a question for this word already exists
+			{
+				$indexOfWord = stripos($vq->question()->question, $definition->word);
+				if($indexOfWord !== false && $indexOfWord > strlen($questionPrepend) - 1) // Check index in case word appears in question (e.g.: "what")
+				{
+					$videoQuestion = $vq;
+				}
+			}
+			if(!$videoQuestion) // Create a video question
+			{
+				$question = $this->createQuestion($questionPrepend, $definition, 4);
+				$videoQuestion = VideoQuestion::create([
+					'video_id' 		=> $video_id,
+					'question_id' 	=> $question->id,
+					'quiz_id'			=> $quiz->id,
+					'is_custom'	=> false
+				]);
+				$videoQuestion->save();
 			}
 			
-			$videoQuestion = VideoQuestion::create([
-				'video_id' 		=> $video_id,
-				'question_id' 	=> $question->id,
-				'quiz_id'			=> $quiz->id,
-				'is_custom'	=> false
+			$result = Result::create([
+				'videoquestion_id' 	=> $videoQuestion->id,
+				'is_correct'				=> false,
+				'timestamp'			=> date_default_timezone_get(),
 			]);
-			$videoQuestion->save();
+			$result->save();
 		}
 		
 		return $quiz;
@@ -110,59 +110,48 @@ use LangLeap\Words\Definition;
 	}
 	
 	/**
-	 * Generates an appropriately formatted array of possible answer-definitions
-	 * based upon the available script definition instances and the definition ID
-	 * of the answer.
-	 * 
-	 * Results are shuffled so they appear randomized.
-	 * 
-	 * @param  Collection  $scriptDefinitions
-	 * @param  int         $answerId
-	 * @return array
-	 */
-	public static function generateAnswers($scriptDefinitions, $question)
+	* Creates a new question with a set amount of answers
+	*
+	* @param string $questionPrepend
+	* @param Definition $definition
+	* @param int $numAnswers
+	* @return Question
+	*/
+	protected function createQuestion($questionPrepend, $definition, $numAnswers)
 	{
-		$scriptDefinitions = new Collection($scriptDefinitions->all());
-		$answers = new Collection;
+		// Create a new Question instance
+		$question = Question::create([
+			'answer_id' => -1, // Will be changed after the answer is generated
+			'question'	=> $questionPrepend.$definition->word.'?',
+		]);
+		
+		$correctAnswer = Answer::create([
+			'question_id' 	=> $question->id,
+			'answer'		=> $definition->full_definition
+		]);
+		$correctAnswer->save();
 
-		// Throw in the correct answer, since we already know it.
-		$answer = Answer::find($question->answer_id)->first();
-		$scriptDefinitions->pull($question->answer_id);
-
-		if (! $answer)
+		$question->answer_id = $correctAnswer->id;
+		$question->save();
+		
+		// Take some close definitions to put as answers
+		$other_defs = Definition::where('id', '<', $definition->id)->orderBy('desc')->take(5)->get();
+		$other_defs = $other_defs->merge(Definition::where('id', '>', $definition->id)->orderBy('asc')->take(5)->get());
+		$other_defs = new Collection($other_defs->all());
+		
+		// Give the question four answers
+		while($question->answers->count() < $numAnswers)
 		{
-			return $this->apiResponse(
-				'error',
-				"No answer found for {$question->question}.",
-				400
-			);
+			$answer = Answer::create([
+				'question_id' 	=> $question->id,
+				'answer'			=> $other_defs->pullRandom()->full_definition
+			]);
+			
+			$answer->save();
+			$question->answers->add($answer);
 		}
 		
-		$answers->push($answer);
-
-		// Pad out our selection of answers (up to 4) with random definitions.
-		while ($answers->count() < 4 && ! $scriptDefinitions->isEmpty())
-		{
-			$randomAnswer = $scriptDefinitions->pullRandom();
-			$a = Answer::create([
-				'answer' 		=> $randomAnswer->full_definition,
-				'question_id'	=> $question->id,
-			]);
-			$a->save();
-
-			$answers->push($a);
-		}
-
-		// Shuffle/randomize the answers.
-		$answers->shuffle();
-
-		// Transform the answers into the appropriate format for the API.
-		$answers->transform(function($item) 
-		{
-			return self::formatDefinitionForResponse($item);
-		});
-
-		return $answers->all();
+		return $question;
 	}
 
 

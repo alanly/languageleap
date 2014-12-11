@@ -9,30 +9,11 @@ use App;
 */
 class ResultTest extends TestCase {
 
-	/**
-	 * Testing getting all seasons for a particular show.
-	 *
-	 * @return void
-	 */
-	public function testUserRelation()
-	{
-		$result = $this->getResultInstance();
-		$user = $this->getUserInstance();
-		$result->videoquestion_id = 1;
-		$result->user_id = $user->id;
-		$result->is_correct = true;
-		$result->timestamp = time();
-		$result->save();
-	
-		$this->assertCount(1, $result->user()->get());		
-	}
-
 	public function testVideoQuestionRelation()
 	{
 		$result = $this->getResultInstance();
 		$videoQuestion = $this->getVideoQuestionInstance();
 		$result->videoquestion_id = $videoQuestion->id;
-		$result->user_id = 1;
 		$result->is_correct = true;
 		$result->timestamp = time();
 		$result->save();
