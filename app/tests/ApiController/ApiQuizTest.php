@@ -22,8 +22,27 @@ class ApiQuizControllerTest extends TestCase {
 	}
 
 	/**
-	*	This method will test the index method of the ApiQuizController.
+	*	This method will test the postIndex method of the ApiQuizController.
 	*
+	*	The response should be a JSON string in the format:
+	* {"status":"success",
+	* "data":
+	*	{"id":2,
+	* 	"video_questions":
+	*		[
+	* 			{"id":"4",
+	* 			"question":"What is the definition of Hello?",
+	*			"answers":
+	*				[
+	* 					{"id":"8",	"answer":"used as a greeting or to begin a telephone conversation."},
+	* 					{"id":"9",	"answer":"a system that converts acoustic vibrations to electrical signals in order to transmit sound, typically voices, over a distance using wire or radio."},
+	* 					{"id":"10",	"answer":"a description a word"},
+	* 					{"id":"11",	"answer":"made, done, happening, or chosen without method or conscious decision."}
+	* 				]
+	* 			}
+	*		]
+	*	 }
+	* } 
 	*/
 	public function testIndex(){
 		$video = Video::first();
@@ -45,17 +64,20 @@ class ApiQuizControllerTest extends TestCase {
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
-
+		
 		$data = $response->getData()->data;
-		$this->assertObjectHasAttribute('result_id', $data);
-		$this->assertObjectHasAttribute('question', $data);
+		$this->assertObjectHasAttribute('id', $data);
+		$this->assertObjectHasAttribute('video_questions', $data);
 
-		$question = $data->question;
-		$this->assertObjectHasAttribute('id', $question);
-		$this->assertObjectHasAttribute('question', $question);
-		$this->assertObjectHasAttribute('answer_id', $question);
-		$this->assertObjectHasAttribute('last', $question);
-		$this->assertObjectHasAttribute('answers', $question);
+		$videoQuestions = $data->video_questions;
+		$this->assertGreaterThan(0, count($videoQuestions));
+		foreach($data->video_questions as $vq)
+		{
+			$this->assertObjectHasAttribute('id', $vq);
+			$this->assertObjectHasAttribute('question', $vq);
+			$this->assertObjectHasAttribute('answers', $vq);
+			$this->assertGreaterThan(1, count($vq->answers));
+		}
 	}
 
 	/**

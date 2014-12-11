@@ -16,4 +16,23 @@ class Quiz extends Eloquent {
 	{
 		return $this->belongsTo('LangLeap\Account\User');
 	}
+	
+	public function video()
+	{
+		return $this->belongsTo('LangLeap\Videos\Video');
+	}
+	
+	public function toResponseArray()
+	{
+		$response =  [
+			'id'	=> $this->id,
+			'video_questions'	=> []
+		];
+		
+		foreach($this->videoQuestions as $vq)
+		{
+			array_push($response['video_questions'], $vq->toResponseArray());
+		}
+		return $response;
+	}
 }

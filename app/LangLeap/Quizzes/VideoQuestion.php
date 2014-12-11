@@ -8,19 +8,12 @@ class VideoQuestion extends Eloquent {
 
 	public    $timestamps = false;
 	protected $table = 'videoquestion';
-	protected $fillable   = ['video_id', 'question_id', 'quiz_id', 'is_custom'];
-	protected $rules      = [
-		'video_id'   			=> 'required|integer',
+	protected $fillable   = ['question_id', 'quiz_id', 'is_custom'];
+	protected $rules     = [
 		'question_id'    		=> 'required|integer',
 		'quiz_id'				=> 'required|integer',
 		'is_custom'				=> 'required|boolean'
 		];
-
-
-	public function video()
-	{
-		return $this->belongsTo('LangLeap\Videos\Video');
-	}
 
 	public function question()
 	{
@@ -35,5 +28,21 @@ class VideoQuestion extends Eloquent {
 	public function quiz()
 	{
 		return $this->belongsTo('LangLeap\Quizzes\Quiz');
+	}
+	
+	public function toResponseArray()
+	{
+		$response = [
+			'id'	=> $this->id,
+			'question'	=> $this->question->question,
+			'answers'	=> []
+		];
+		
+		foreach($this->question->answers as $a)
+		{
+			array_push($response['answers'], ['id' => $a->id, 'answer' => $a->answer]);
+		}
+		
+		return $response;
 	}
 }

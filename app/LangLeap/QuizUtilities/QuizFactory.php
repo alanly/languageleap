@@ -53,11 +53,12 @@ use LangLeap\Accounts\User;
 		// Ensure the user exists
 		if(User::find($user_id) == null) return null;
 		
-		$quiz = Quiz::where('user_id', '=', $user_id)->get()->first();
+		$quiz = Quiz::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->get()->first();
 		if($quiz == null)
 		{
 			$quiz = Quiz::create([
-				'user_id' => $user_id
+				'user_id'	=> $user_id,
+				'video_id'	=> $video_id
 			]);
 			$quiz->save();
 		}
@@ -66,6 +67,26 @@ use LangLeap\Accounts\User;
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
 		$questionPrepend = 'What is the definition of ';
 		
+		// Remove questions for words that have not been selected
+		foreach($quiz->videoQuestions() as $vq)
+		{
+			$foundDefinition = false;
+			$full_definition = Answer::find($vq->question()->answer_id)->answer;
+			foreach($scriptDefinitions as $definition)
+			{
+				if($definition->full_definition == $full_definition)
+				{
+					$foundDefinition = true;
+				}
+			}
+			
+			if(!$foundDefinition)
+			{
+				$quiz->videoQuestions()->forget($vq->id);
+			}
+		}
+		
+		// Check for questions for each selected definition
 		foreach ($selectedDefinitions as $definitionId)
 		{
 			// Pull the Definition instance from the collection.
@@ -81,11 +102,10 @@ use LangLeap\Accounts\User;
 					$videoQuestion = $vq;
 				}
 			}
-			if(!$videoQuestion) // Create a video question
+			if(!$videoQuestion) // Create a video question if none exists
 			{
 				$question = $this->createQuestion($questionPrepend, $definition, 4);
 				$videoQuestion = VideoQuestion::create([
-					'video_id' 		=> $video_id,
 					'question_id' 	=> $question->id,
 					'quiz_id'			=> $quiz->id,
 					'is_custom'	=> false
@@ -93,6 +113,7 @@ use LangLeap\Accounts\User;
 				$videoQuestion->save();
 			}
 			
+			// Create a new result
 			$result = Result::create([
 				'videoquestion_id' 	=> $videoQuestion->id,
 				'is_correct'				=> false,
@@ -101,6 +122,7 @@ use LangLeap\Accounts\User;
 			$result->save();
 		}
 		
+		$quiz->save();
 		return $quiz;
 	}
 	

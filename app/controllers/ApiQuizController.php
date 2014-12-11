@@ -6,7 +6,7 @@ use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Quizzes\Result;
 use LangLeap\Quizzes\Quiz;
-use LangLeap\QuizUtilities\QuizGeneration;
+use LangLeap\QuizUtilities\QuizFactory;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 
@@ -107,35 +107,10 @@ class ApiQuizController extends \BaseController {
 		}
 
 		// Generate all the questions.
-		$questions = QuizGeneration::generateDefinitionQuiz($scriptDefinitions, $selectedWords);
-		$results = new Collection;
-		$quiz = Quiz::create([
-			'user_id'	=> Auth::user()->id
-		]);
-		$quiz->save();
-		
-		foreach ($questions as $q)
-		{
-			$vq = VideoQuestion::create([
-				'question_id' 	=> $q->id,
-				'video_id'		=> $videoId,
-				'quiz_id'			=> $quiz->id,
-				'is_custom'	=> false
-			]);
-			$vq->save();
-
-			$result = new Result;
-			$result->videoquestion_id = $vq->id;
-			$result->is_correct = false;
-			$result->timestamp = date_default_timezone_get();
-			$result->save();
-
-			$results->add($result);
-		}
-
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $videoId, $scriptDefinitions, $selectedWords);
 		return $this->apiResponse(
 			'success',
-			$this->generateJsonResponse($results[0], null, $questions[0], $scriptDefinitions)
+			$quiz->toResponseArray()
 		);
 	}
 
