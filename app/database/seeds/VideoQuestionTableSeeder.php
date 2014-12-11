@@ -16,7 +16,7 @@ class VideoQuestionTableSeeder extends Seeder {
 	public function run()
 	{
 		Eloquent::unguard();
-		DB::table('videoquestion')->delete();
+		DB::table('videoquestions')->delete();
 		$videoquestion = App::make('LangLeap\Quizzes\VideoQuestion');
 		
 		$quiz = Quiz::first()->id;

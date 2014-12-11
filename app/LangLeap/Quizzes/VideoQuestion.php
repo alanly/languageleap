@@ -7,7 +7,7 @@ use Eloquent;
 class VideoQuestion extends Eloquent {
 
 	public    $timestamps = false;
-	protected $table = 'videoquestion';
+	protected $table = 'videoquestions';
 	protected $fillable   = ['question_id', 'quiz_id', 'is_custom'];
 	protected $rules     = [
 		'question_id'    		=> 'required|integer',
