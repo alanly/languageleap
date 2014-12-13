@@ -160,6 +160,12 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertResponseStatus(400);	
 	}
 	
+	/**
+	*	This method will test the putIndex method of the ApiQuizController.
+	*
+	*	The response should be a JSON string in the format:
+	*	{"status":"success", "data":{"is_correct":"true"} } 
+	*/
 	public function testQuizUpdate()
 	{
 		$videoquestion = VideoQuestion::first();
