@@ -212,20 +212,4 @@ use LangLeap\Accounts\User;
 		
 		return $question;
 	}
-
-
-	/**
-	 * Formats a given Definition instance into an appropriate array
-	 * representation for the JSON API.
-	 * 
-	 * @param  Definition  $definition
-	 * @return array
-	 */
-	protected static function formatDefinitionForResponse(Answer $answer)
-	{
-		return [
-			'id' => $answer->id,
-			'answer' => $answer->answer,
-		];
-	}
  }

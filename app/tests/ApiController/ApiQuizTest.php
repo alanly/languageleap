@@ -44,7 +44,8 @@ class ApiQuizControllerTest extends TestCase {
 	*	 }
 	* } 
 	*/
-	public function testIndex(){
+	public function testIndex()
+	{
 		$video = Video::first();
 
 		$definition = Definition::all();
@@ -84,7 +85,8 @@ class ApiQuizControllerTest extends TestCase {
 	*	This test will test if a proper error code is recieved when trying to get a quiz with no/invalid deinitions
 	*
 	*/
-	public function testIndexWithNoDefinitions(){
+	public function testIndexWithNoDefinitions()
+	{
 		$video = Video::first();
 
 		$definition = Definition::all();
@@ -108,7 +110,8 @@ class ApiQuizControllerTest extends TestCase {
 	*	This test will test that a proper error code is recieved when trying to get a quiz with an invalid video
 	*
 	*/
-	public function testIndexWithInvalidVideo(){
+	public function testIndexWithInvalidVideo()
+	{
 
 		$definition = Definition::all();
 		$all_words = array();
@@ -129,11 +132,12 @@ class ApiQuizControllerTest extends TestCase {
 	*	404 == Not found
 	*
 	*/
-	public function testQuizUpdateWithInvalidQuestion(){
+	public function testQuizUpdateWithInvalidQuestion()
+	{
 		$response = $this->action(
 			'put',
 			'ApiQuizController@putIndex',
-			[],['question_id' => 0]
+			[],['question_id' => -1]
 		);
 		
 		$this->assertResponseStatus(404);	
@@ -144,16 +148,28 @@ class ApiQuizControllerTest extends TestCase {
 	*	400 == Bad Request
 	*
 	*/
-	public function testQuizUpdateWithNoAnswer(){
-		$result = Result::first();
-		$videoquestion = VideoQuestion::find($result->videoquestion_id);
-		$question = $videoquestion->question->first();
+	public function testQuizUpdateWithNoAnswer()
+	{
+		$videoquestion = VideoQuestion::first();
 		$response = $this->action(
 			'put',
 			'ApiQuizController@putIndex',
-			[],['question_id' => $question->id, 'result_id' => $result->id]
+			[],['videoquestion_id' => $videoquestion->id]
 		);
 
 		$this->assertResponseStatus(400);	
+	}
+	
+	public function testQuizUpdate()
+	{
+		$videoquestion = VideoQuestion::first();
+		$selected_id = $videoquestion->question->answers->first()->id;
+		$response = $this->action(
+			'put',
+			'ApiQuizController@putIndex',
+			[],['videoquestion_id' => $videoquestion->id, 'selected_id' => $selected_id]
+		);
+		
+		$this->assertResponseOk();
 	}
 }
