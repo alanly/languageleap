@@ -57,7 +57,6 @@ class VideoQuestionTest extends TestCase {
 	{
 		$quiz = App::make('LangLeap\Quizzes\Quiz');
 		$quiz->video_id = 1;
-		$quiz->user_id = 1;
 		$quiz->save();
 
 		return $quiz;

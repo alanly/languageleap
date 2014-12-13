@@ -53,11 +53,14 @@ use LangLeap\Accounts\User;
 		// Ensure the user exists
 		if(User::find($user_id) == null) return null;
 		
-		$quiz = Quiz::where('user_id', '=', $user_id)->where('video_id', '=', $video_id)->get()->first();
+		// Find the user's quiz for the video
+		$quiz = Quiz::join('videoquestions', 'videoquestions.quiz_id', '=', 'quizzes.id')
+			->join('results', 'results.videoquestion_id', '=', 'videoquestions.id')
+			->where('results.user_id', '=', $user_id)
+			->where('quizzes.video_id', '=', $video_id)->first();
 		if($quiz == null)
 		{
 			$quiz = Quiz::create([
-				'user_id'	=> $user_id,
 				'video_id'	=> $video_id
 			]);
 			$quiz->save();
@@ -77,6 +80,7 @@ use LangLeap\Accounts\User;
 				if($definition->full_definition == $full_definition)
 				{
 					$foundDefinition = true;
+					break;
 				}
 			}
 			
@@ -116,8 +120,9 @@ use LangLeap\Accounts\User;
 			// Create a new result
 			$result = Result::create([
 				'videoquestion_id' 	=> $videoQuestion->id,
+				'user_id'				=> $user_id,
 				'is_correct'				=> false,
-				'timestamp'			=> date_default_timezone_get(),
+				'timestamp'			=> date_default_timezone_get()
 			]);
 			$result->save();
 		}
@@ -126,9 +131,41 @@ use LangLeap\Accounts\User;
 		return $quiz;
 	}
 	
-	public function getCustomQuiz()
+	/*
+	* This function generates a quiz that contains all of the custom questions
+	* defined for a specific video
+	*
+	* @param int $user_id
+	* @param int $video_id
+	* @return Quiz
+	*/
+	public function getCustomQuiz($user_id, $video_id)
 	{
-		throw new \Exception("Not implemented");
+		// Ensure the video exists
+		if(Video::find($video_id) == null) return null;
+		
+		// Find the video's custom quiz
+		$quiz = Quiz::join('videoquestions', 'videoquestions.quiz_id', '=', 'quizzes.id')
+			->join('results', 'results.videoquestion_id', '=', 'videoquestions.id')
+			->where('videoquestions.is_custom', '=', true)
+			->where('quizzes.video_id', '=', $video_id)->first();
+		
+		// If there is no custom quiz, return null
+		if($quiz == null) return null;
+		
+		foreach($quiz->videoQuestions as $vq)
+		{
+			// Create a new result
+			$result = Result::create([
+				'videoquestion_id' 	=> $vq->id,
+				'user_id'				=> $user_id,
+				'is_correct'				=> false,
+				'timestamp'			=> date_default_timezone_get()
+			]);
+			$result->save();
+		}
+		
+		return $quiz;
 	}
 	
 	/**

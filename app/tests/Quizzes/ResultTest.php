@@ -21,6 +21,19 @@ class ResultTest extends TestCase {
 		$this->assertCount(1, $result->videoquestion()->get());
 	}
 	
+	public function testUserRelation()
+	{
+		$result = $this->getResultInstance();
+		$user = $this->getUserInstance();
+		$result->user_id = $user->id;
+		$result->videoquestion_id = 1;
+		$result->is_correct = true;
+		$result->timestamp = time();
+		$result->save();
+		
+		$this->assertCount(1, $result->user()->get());
+	}
+	
 	protected function getVideoQuestionInstance()
 	{
 		$videoQuestion = App::make('LangLeap\Quizzes\VideoQuestion');
