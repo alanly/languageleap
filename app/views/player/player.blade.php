@@ -161,18 +161,14 @@
 
 		function addTags(words)
 		{
-			var regex = new RegExp('\\b' + word + '\\b', 'ig');
+			var scriptHtml = $("#script").html();
 
 			for(var i = 0; i < words.length; i++)
 			{
-				addTag(words[i], regex);
+				var regex = new RegExp('\\b' + words[i] + '\\b', 'ig');
+				scriptHtml = scriptHtml.replace(regex, "<span data-type='nonDefinedWord'>" + words[i] + "</span>");
 			}
-		}
 
-		function addTag(word, re)
-		{
-			var scriptHtml = $("#script").html();
-			scriptHtml = scriptHtml.replace(re, "<span data-type='nonDefinedWord'>" + word + "</span>");
 			$("#script").html(scriptHtml);
 		}
 
