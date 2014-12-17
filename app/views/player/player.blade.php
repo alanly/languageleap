@@ -5,7 +5,6 @@
 	<link rel="stylesheet" href="/css/video-script.css">
 @stop
 
-
 @section('content')
 	<div id="wrapper">
 		<div class="error-message alert alert-danger" style="display:none; margin-top:25px;">
@@ -114,7 +113,7 @@
 				$this.tooltip({
 						'container': '#script',
 						'placement': 'auto top',
-						'title': 'Loading...'
+						'title': 'Loading definition...'
 				});
 			});
 		}
