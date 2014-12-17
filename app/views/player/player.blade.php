@@ -153,7 +153,27 @@
 		function addNonDefinedTags()
 		{
 			var wordsToDefine = formatNonDefinedWords();
-			alert(wordsToDefine);
+			var wordsArray = wordsToDefine.split(' ');
+			var uniqueWords = removeDuplicateWords(wordsArray);
+			alert(uniqueWords);
+			addTags();
+			
+		}
+
+		function addTags(words)
+		{
+			for(var i = 0; i < words.length; i++)
+			{
+				addTag(words[i]);
+			}
+		}
+
+		function addTag(word)
+		{
+			var scriptHtml = $("#script").html();
+			alert(scriptHtml);
+			scriptHtml.replace(word, "<span data-type=nonDefinedWord>" + word + "</span>");
+			$("#script").html(scriptHtml);
 		}
 
 		function formatNonDefinedWords()
@@ -161,8 +181,26 @@
 			var nonDefinedWords = getTextBetweenSpans(); //Get all the text between the span tags of defined words
 			var noPunctuation = removePunctuation(nonDefinedWords); //Remove all ',' and '.' in the string
 			var noDoubleSpaces = removeDoubleSpaces(noPunctuation); //Replace any number of spaces greater than 1, with 1 space
+			var trimmedText = noDoubleSpaces.trim();
 
-			return noDoubleSpaces;
+			return trimmedText;
+		}
+
+		function removeDuplicateWords(words)
+		{
+			var b = {}; //Create a dictionary and add all the words as keys. Keys are unique so no duplicates
+			for (var i = 0; i < words.length; i++) 
+			{ 
+				b[words[i].toUpperCase()]=words[i].toLowerCase(); 
+			}
+
+			var c = []; //Push the keys into an array
+			for (var key in b) 
+			{ 
+				c.push(b[key]); 
+			}
+
+			return c;
 		}
 
 		function getTextBetweenSpans()
