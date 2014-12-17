@@ -166,7 +166,6 @@
 			{
 				//Regex test: https://www.regex101.com/r/mG8jG5/6
 				var regex = new RegExp('(\\b(' + words[i] + ')\\b)(?![^<]*>|[^<>]*<\\s*\\/)', 'ig');
-				alert(regex);
 				scriptHtml = scriptHtml.replace(regex, "<span data-type='nonDefinedWord'>" + words[i] + "</span>");
 			}
 
