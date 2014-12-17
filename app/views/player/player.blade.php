@@ -155,24 +155,24 @@
 			var wordsToDefine = formatNonDefinedWords();
 			var wordsArray = wordsToDefine.split(' ');
 			var uniqueWords = removeDuplicateWords(wordsArray);
-			alert(uniqueWords);
-			addTags();
+			addTags(uniqueWords);
 			
 		}
 
 		function addTags(words)
 		{
+			var regex = new RegExp('\\b' + word + '\\b', 'ig');
+
 			for(var i = 0; i < words.length; i++)
 			{
-				addTag(words[i]);
+				addTag(words[i], regex);
 			}
 		}
 
-		function addTag(word)
+		function addTag(word, re)
 		{
 			var scriptHtml = $("#script").html();
-			alert(scriptHtml);
-			scriptHtml.replace(word, "<span data-type=nonDefinedWord>" + word + "</span>");
+			scriptHtml = scriptHtml.replace(re, "<span data-type='nonDefinedWord'>" + word + "</span>");
 			$("#script").html(scriptHtml);
 		}
 
@@ -191,7 +191,7 @@
 			var b = {}; //Create a dictionary and add all the words as keys. Keys are unique so no duplicates
 			for (var i = 0; i < words.length; i++) 
 			{ 
-				b[words[i].toUpperCase()]=words[i].toLowerCase(); 
+				b[words[i].toUpperCase()]=words[i];
 			}
 
 			var c = []; //Push the keys into an array
