@@ -184,7 +184,7 @@
 
 		function removeDoubleSpaces(text)
 		{
-			return text.replace(/\n/, " ").replace(/\ {2,}/, " ");
+			return text.replace(/\n/, "").replace(/\ {2,}/, " ");
 		}
 
 		$(function()
