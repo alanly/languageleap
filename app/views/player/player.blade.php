@@ -237,21 +237,21 @@
 
 				if (data.status == 'success')
 				{
-					data.data.definition;
+					defintion = data.data.definition;
 				}
 
-				$this.tooltip({
+				$word.tooltip({
 						'container': '#script',
 						'placement': 'auto top',
 						'title': definition;
 					});
-			});
+				});
 			
-			$word.tooltip({
+				$word.tooltip({
 						'container': '#script',
 						'placement': 'auto top',
-						'title': data.data.definition
-					});*/
+						'title': defintion
+				});*/
 			}, 3000);
 
 		}
