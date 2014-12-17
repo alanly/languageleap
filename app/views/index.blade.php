@@ -29,25 +29,25 @@
 @section('content')
 <div id="accordion" class="evoslider default">
     <dl>
-	    <dt id="firstTab">Select Media</dt>
+	    <dt id="firstTab">{{trans('index.accordion.items.default')}}</dt>
 	    <dd>
 	    	<div class="main" role="main">
 			    <div class="demo content">
 						<ul>
 						    <li>
-							    <strong>Movies</strong>
+							    <strong>{{trans('index.accordion.movies.name')}}</strong>
 						    	<a class="tooltiptext">
 						    		<img id="movies" src="" alt="Movies">
 						    	</a>
 							</li>
 						    <li>
-						    	<strong>TV Shows</strong>
+						    	<strong>{{trans('index.accordion.shows.name')}}</strong>
 						    	<a class="tooltiptext">
 							    	<img id="shows" src="" alt="TV Shows">
 							    </a>
 						    </li>
 						    <li>
-						    	<strong>Commercials</strong>
+						    	<strong>{{trans('index.accordion.commercials.name')}}</strong>
 						    	<a class="tooltiptext">
 							    	<img id="commercials" src="" alt="Commercials">
 							    </a>
@@ -130,9 +130,9 @@
 		disableAllTabs();
 		$.filtrify("container", "placeHolder");
 
-		displayMoreInfo("movies", "Movies","Learn through your favorite Movies!");
-		displayMoreInfo("commercials", "Commercials", "Learn through fun and interesting Commercials!");
-		displayMoreInfo("shows", "Television Shows", "Learn through your favorite Television Shows!");
+		displayMoreInfo("movies", "{{trans('index.accordion.movies.name')}}","{{trans('index.accordion.movies.desc')}}");
+		displayMoreInfo("commercials", "{{trans('index.accordion.commercials.name')}}","{{trans('index.accordion.commercials.desc')}}");
+		displayMoreInfo("shows", "{{trans('index.accordion.shows.name')}}","{{trans('index.accordion.shows.desc')}}");
 	});
 	
 	$("#commercials").click(function() {
