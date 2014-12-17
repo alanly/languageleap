@@ -61,9 +61,6 @@
 
 		function loadVideo()
 		{
-			//REMOVE
-			loadScript();
-			//REMOVE
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -108,9 +105,7 @@
 			});
 
 			$('#script span[data-type=nonDefinedWord]').each(function() {
-				var $this = $(this);
-
-				$this.tooltip({
+				$(this).tooltip({
 						'container': '#script',
 						'placement': 'auto top',
 						'title': 'Loading definition...'
