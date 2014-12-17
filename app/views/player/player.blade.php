@@ -221,6 +221,41 @@
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
 		}
 
+		function getDefinition(word)
+		{
+			word.tooltip({
+				'container': '#script',
+				'placement': 'auto top',
+				'title': 'ABC'
+				});
+
+			setTimeout(function()
+			{ 
+				alert("hi");
+				/*$.getJSON('/api/metadata/definitions/' + word, function(data) {
+				var defintion = "Defintion not found";
+
+				if (data.status == 'success')
+				{
+					data.data.definition;
+				}
+
+				$this.tooltip({
+						'container': '#script',
+						'placement': 'auto top',
+						'title': definition;
+					});
+			});
+			
+			$word.tooltip({
+						'container': '#script',
+						'placement': 'auto top',
+						'title': data.data.definition
+					});*/
+			}, 3000);
+
+		}
+
 		$(function()
 		{
 			loadVideo();
@@ -243,7 +278,16 @@
 				.on('mouseleave', 'span[data-type=word]', function()
 				{
 					$(this).removeClass('word-hover');
-				});
+				})
+				.on('mouseenter', 'span[data-type=nonDefinedWord]', function()
+				{
+					$(this).addClass('word-hover');
+					getDefinition($(this));
+				})
+				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
+				{
+					$(this).removeClass('word-hover');
+				});;
 
 			$('#script').on('click', 'span[data-type=word]', function()
 			{
