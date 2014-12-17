@@ -235,7 +235,9 @@
 		{
 			timer = setTimeout(function()
 			{ 
-				alert("hi");
+				//This section will be coded once the back end to get defintions for words is done.
+				//This section will execute after 3 seconds of hovering over a non defined word.
+
 				/*$.getJSON('/api/metadata/definitions/' + word, function(data) {
 				var defintion = "Defintion not found";
 
