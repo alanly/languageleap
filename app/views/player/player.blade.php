@@ -47,6 +47,7 @@
 				url : '/content/scripts/{{ $video_id }}',
 				success : function(data){
 					$('#script').html(data.data[0].text);
+					addNonDefinedTags();
 					$('#script br').remove();
 					$('#script span[data-type=actor]:not(:first)').before('<br>');
 
@@ -61,6 +62,9 @@
 
 		function loadVideo()
 		{
+			//REMOVE
+			loadScript();
+			//REMOVE
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -144,6 +148,43 @@
 			}
 
 			window.location = '/quiz';
+		}
+
+		function addNonDefinedTags()
+		{
+			var wordsToDefine = formatNonDefinedWords();
+			alert(wordsToDefine);
+		}
+
+		function formatNonDefinedWords()
+		{
+			var nonDefinedWords = getTextBetweenSpans(); //Get all the text between the span tags of defined words
+			var noPunctuation = removePunctuation(nonDefinedWords); //Remove all ',' and '.' in the string
+			var noDoubleSpaces = removeDoubleSpaces(noPunctuation); //Replace any number of spaces greater than 1, with 1 space
+
+			return noDoubleSpaces;
+		}
+
+		function getTextBetweenSpans()
+		{
+			var text = $('#script')
+									.clone()	//clone the element
+									.children()	//select all the children
+									.remove()	//remove all the children
+									.end()		//again go back to selected element
+									.text();
+
+			return text;
+		}
+
+		function removePunctuation(text)
+		{
+			return text.replace(/\./g, "").replace(/,/g, "");
+		}
+
+		function removeDoubleSpaces(text)
+		{
+			return text.replace(/\n/, " ").replace(/\ {2,}/, " ");
 		}
 
 		$(function()
