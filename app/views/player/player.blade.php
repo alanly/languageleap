@@ -39,7 +39,8 @@
 		
 	<script>
 		var definitions = [];
-		
+		var timer;
+
 		function loadScript()
 		{
 			$.ajax({
@@ -104,6 +105,16 @@
 					} else {
 						// Handle failure
 					}
+				});
+			});
+
+			$('#script span[data-type=nonDefinedWord]').each(function() {
+				var $this = $(this);
+
+				$this.tooltip({
+						'container': '#script',
+						'placement': 'auto top',
+						'title': 'Loading...'
 				});
 			});
 		}
@@ -223,13 +234,7 @@
 
 		function getDefinition(word)
 		{
-			word.tooltip({
-				'container': '#script',
-				'placement': 'auto top',
-				'title': 'ABC'
-				});
-
-			setTimeout(function()
+			timer = setTimeout(function()
 			{ 
 				alert("hi");
 				/*$.getJSON('/api/metadata/definitions/' + word, function(data) {
@@ -287,7 +292,8 @@
 				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
 				{
 					$(this).removeClass('word-hover');
-				});;
+					clearTimeout(timer);
+				});
 
 			$('#script').on('click', 'span[data-type=word]', function()
 			{
