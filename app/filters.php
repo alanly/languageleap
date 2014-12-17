@@ -20,6 +20,8 @@ App::before(function($request)
 	{
 		setcookie('CSRF-TOKEN', csrf_token());
 	}
+
+	App::setlocale(Session::get('lang','en'));
 });
 
 

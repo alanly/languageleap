@@ -17,6 +17,8 @@ Route::get('/', function()
 	return View::make('index');
 });
 
+//Route for the langauge
+Route::get('/language/{lang}', 'LanguageController@setLanguage');
 
 // Routes for authentication views.
 Route::controller('auth', 'AuthController');

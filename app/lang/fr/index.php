@@ -34,7 +34,7 @@ return array(
 			'select' => 'Select Video',
 		),
 		'items' => array(
-			'default' => 'Select Media',
+			'default' => 'Select Media fr',
 		),
 	),
 );
