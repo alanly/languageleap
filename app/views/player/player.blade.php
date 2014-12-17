@@ -50,7 +50,6 @@
 					addNonDefinedTags();
 					$('#script br').remove();
 					$('#script span[data-type=actor]:not(:first)').before('<br>');
-
 					loadScriptDefinitions();
 				},
 				error : function(data){
@@ -155,8 +154,8 @@
 			var wordsToDefine = formatNonDefinedWords();
 			var wordsArray = wordsToDefine.split(' ');
 			var uniqueWords = removeDuplicateWords(wordsArray);
+
 			addTags(uniqueWords);
-			
 		}
 
 		function addTags(words)
@@ -165,7 +164,9 @@
 
 			for(var i = 0; i < words.length; i++)
 			{
-				var regex = new RegExp('\\b' + words[i] + '\\b', 'ig');
+				//Regex test: https://www.regex101.com/r/mG8jG5/6
+				var regex = new RegExp('(\\b(' + words[i] + ')\\b)(?![^<]*>|[^<>]*<\\s*\\/)', 'ig');
+				alert(regex);
 				scriptHtml = scriptHtml.replace(regex, "<span data-type='nonDefinedWord'>" + words[i] + "</span>");
 			}
 
