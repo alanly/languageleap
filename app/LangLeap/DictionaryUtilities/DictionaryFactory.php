@@ -24,7 +24,7 @@ class DictionaryFactory
 	public function getDefinition($word, $language)
 	{
 		$dictionary = $this->getDictionary($language);
-		$definition = $dictionary->$getDefinition($word);
+		$definition = $dictionary->getDefinition($word);
 
 		return $definition;
 	}
@@ -32,14 +32,14 @@ class DictionaryFactory
 	public function getPronunciation($word, $language)
 	{
 		$dictionary = $this->getDictionary($language);
-		$pronunciation = $dictionary->$getPronunciation($word);
+		$pronunciation = $dictionary->getPronunciation($word);
 
 		return $pronunciation;
 	}
 
 	private function getDictionary($language)
 	{
-		if(is_null(static::$dictionaries[strtoupper($language)]))
+		if(!array_key_exists(strtoupper($language), static::$dictionaries))
 		{
 			static::$dictionaries[strtoupper($language)] = $this->getDictionaryInstance($language);
 		}
