@@ -8,10 +8,10 @@ use LangLeap\DictionaryUtilities\FrenchDictionary;
  */
 class DictionaryFactory 
 {
-	private $instance;
-	private $dictionaries = {};
+	private $instance = null;
+	private $dictionaries = [];
 
-	public static getInstance()
+	public static function getInstance()
 	{
 		if($instance == null)
 		{
@@ -41,7 +41,7 @@ class DictionaryFactory
 	{
 		if($dictionaries[strtoupper($language)] == null)
 		{
-			$dictionaries[strtoupper($language)] = $this->getDictionaryInstance($language); 
+			$dictionaries[strtoupper($language)] = $this->getDictionaryInstance($language);
 		}
 
 		return $dictionaries[strtoupper($language)];
@@ -56,7 +56,7 @@ class DictionaryFactory
 			case "ENGLISH":
 				$dictionary = new EnglishDictionary;
 				break;
-			case "FRENCH"
+			case "FRENCH":
 				$dictionary = new FrenchDictionary;
 				break;
 			default:
