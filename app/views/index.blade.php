@@ -147,6 +147,12 @@
 		showsClick();
 	});
 
+	var dictionary = {
+		"selectMovies" : 			"{{trnas('index.accordion.movies.select')}}",		
+		"selectCommercials" : 		"{{trnas('index.accordion.commercials.select')}}",		
+		"selectShows" : 			"{{trnas('index.accordion.shows.select')}}",		
+		"selectVides" : 			"{{trnas('index.accordion.videos.select')}}",	
+	};
 </script>
 @stop
 
