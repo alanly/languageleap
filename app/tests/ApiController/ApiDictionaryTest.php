@@ -4,7 +4,8 @@ use LangLeap\TestCase;
 use LangLeap\Words\Definition;
 
 
-class ApiDictionaryTest extends TestCase {
+class ApiDictionaryTest extends TestCase 
+{
 
 	public function testDefinition()
 	{

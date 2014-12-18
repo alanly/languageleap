@@ -3,7 +3,8 @@
 use LangLeap\DictionaryUtilities\DictionaryFactory;
 use LangLeap\Words\Definition;
 
-class ApiDictionaryController extends \BaseController {
+class ApiDictionaryController extends \BaseController 
+{
 	
 	/**
 	 * Display the specified resource.
@@ -13,7 +14,7 @@ class ApiDictionaryController extends \BaseController {
 	 */
 	public function show($word)
 	{
-		$def = DictionaryFactory::getDefinition($word);
+		$def = DictionaryFactory->getInstance()->getDefinition($word);
 
 		if (!$def)
 		{
