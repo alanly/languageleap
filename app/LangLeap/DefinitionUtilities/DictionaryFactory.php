@@ -49,14 +49,19 @@ public static class DictionaryFactory
 
 	private function getDictionaryInstance($language)
 	{
-		if($language == "ENGLISH")
-		{
-			return new EnglishDictionary;
-		}
+		$dictionary = null;
 
-		if($language == "FRENCH")
+		switch($language)
 		{
-			return new FrenchDictionary;
+			case "ENGLISH":
+				$dictionary = new EnglishDictionary;
+				break;
+			case "FRENCH"
+				$dictionary = new FrenchDictionary;
+				break;
+			default:
+				$dictionary = null;
+				break;
 		}
 	}
 
