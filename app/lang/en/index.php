@@ -29,6 +29,14 @@ return array(
 			'desc' => 'Learn through your favorite Television Shows!',
 			'select' => 'Select Tv Show',
 		),
+		'seasons' => array(
+			'name' => 'Seasons',
+			'select' => 'Select Season',
+		),
+		'episodes' => array(
+			'name' => 'Episoides',
+			'select' => 'Select Episoide',
+		),
 		'videos' => array(
 			'name' => 'Videos',
 			'select' => 'Select Video',

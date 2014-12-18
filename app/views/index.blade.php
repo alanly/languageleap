@@ -148,10 +148,15 @@
 	});
 
 	var dictionary = {
-		"selectMovies" : 			"{{trnas('index.accordion.movies.select')}}",		
-		"selectCommercials" : 		"{{trnas('index.accordion.commercials.select')}}",		
-		"selectShows" : 			"{{trnas('index.accordion.shows.select')}}",		
-		"selectVides" : 			"{{trnas('index.accordion.videos.select')}}",	
+		"selectMovies" : 			"{{trans('index.accordion.movies.select')}}",		
+		"movies" : 					"{{trans('index.accordion.movies.name')}}",	
+		"selectCommercials" : 		"{{trans('index.accordion.commercials.select')}}",		
+		"commercials" : 			"{{trans('index.accordion.commercials.name')}}",	
+		"selectShows" : 			"{{trans('index.accordion.shows.select')}}",		
+		"shows" : 					"{{trans('index.accordion.shows.name')}}",		
+		"selectSeason" : 			"{{trans('index.accordion.seasons.select')}}",	
+		"selectEpisode" : 			"{{trans('index.accordion.episodes.select')}}",	
+		"selectVideos" : 			"{{trans('index.accordion.videos.select')}}",	
 	};
 </script>
 @stop
