@@ -30,6 +30,7 @@ class UserTableSeeder extends Seeder {
 			'email'         => 'user@test.com',
 			'first_name'    => 'Jane',
 			'last_name'     => 'Smith',
+			'language' 		=> 'fr',
 			'is_admin'      => false,
 			'is_confirmed'	=> true
 		]);

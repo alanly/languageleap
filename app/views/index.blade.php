@@ -28,102 +28,102 @@
 
 @section('content')
 <div id="accordion" class="evoslider default">
-    <dl>
-	    <dt id="firstTab">{{trans('index.accordion.items.default')}}</dt>
-	    <dd>
-	    	<div class="main" role="main">
-			    <div class="demo content">
+	<dl>
+		<dt id="firstTab">{{trans('index.accordion.items.default')}}</dt>
+		<dd>
+			<div class="main" role="main">
+				<div class="demo content">
 						<ul>
-						    <li>
-							    <strong>{{trans('index.accordion.movies.name')}}</strong>
-						    	<a class="tooltiptext">
-						    		<img id="movies" src="" alt="Movies">
-						    	</a>
+							<li>
+								<strong>{{trans('index.accordion.movies.name')}}</strong>
+								<a class="tooltiptext">
+									<img id="movies" src="" alt="Movies">
+								</a>
 							</li>
-						    <li>
-						    	<strong>{{trans('index.accordion.shows.name')}}</strong>
-						    	<a class="tooltiptext">
-							    	<img id="shows" src="" alt="TV Shows">
-							    </a>
-						    </li>
-						    <li>
-						    	<strong>{{trans('index.accordion.commercials.name')}}</strong>
-						    	<a class="tooltiptext">
-							    	<img id="commercials" src="" alt="Commercials">
-							    </a>
-						    </li>
+							<li>
+								<strong>{{trans('index.accordion.shows.name')}}</strong>
+								<a class="tooltiptext">
+									<img id="shows" src="" alt="TV Shows">
+								</a>
+							</li>
+							<li>
+								<strong>{{trans('index.accordion.commercials.name')}}</strong>
+								<a class="tooltiptext">
+									<img id="commercials" src="" alt="Commercials">
+								</a>
+							</li>
 						</ul>
 				</div>
 			</div>
-	    </dd>
+		</dd>
 
-	    <dt id="secondTab"></dt>
-	    <dd>
-	    	<div class="main" role="main">
-			    <div class="demo content">
-			    	<div id="placeHolder"></div>
+		<dt id="secondTab"></dt>
+		<dd>
+			<div class="main" role="main">
+				<div class="demo content">
+					<div id="placeHolder"></div>
 					<ul id="container">
 					</ul>
 				</div>
 			</div>
-	    </dd>
+		</dd>
 	
-	    <dt id="thirdTab"></dt>
-	    <dd>
-	    	<div class="main" role="main">
-		    	<div class="demo content">
+		<dt id="thirdTab"></dt>
+		<dd>
+			<div class="main" role="main">
+				<div class="demo content">
 					<ul id="seasonContainer">	
 					</ul>
 				</div>
 			</div>        
-	    </dd>
+		</dd>
 	
-	    <dt id="fourthTab"></dt>
-	    <dd> 
-	    	<div class="main" role="main">
-		    	<div class="demo content">
+		<dt id="fourthTab"></dt>
+		<dd> 
+			<div class="main" role="main">
+				<div class="demo content">
 					<ul id="episodeContainer">	
 					</ul>
 				</div>
 			</div>       
-	    </dd>
+		</dd>
 
-	    <dt id="fifthTab"></dt>
-	    <dd> 
-	    	<div class="main" role="main">
-		    	<div class="demo content">
+		<dt id="fifthTab"></dt>
+		<dd> 
+			<div class="main" role="main">
+				<div class="demo content">
 					<ul id="videoContainer">	
 					</ul>
 				</div>
 			</div>       
-	    </dd>  	  	
-    </dl>
+		</dd>  	  	
+	</dl>
 </div>
 
 <script type="text/javascript">
-    var accordion = $("#accordion").evoSlider({
-        mode: "accordion",                  // Sets slider mode ("accordion", "slider", or "scroller")
-        width: screen.width - 50,           // The width of slider
-        height: screen.height - 150,        // The height of slider
-        slideSpace: 5,                      // The space between slides
+	var accordion = $("#accordion").evoSlider({
+		mode: "accordion",                  // Sets slider mode ("accordion", "slider", or "scroller")
+		width: screen.width - 50,           // The width of slider
+		height: screen.height - 150,        // The height of slider
+		slideSpace: 5,                      // The space between slides
 
-        mouse: false,                       // Enables mousewheel scroll navigation
-        keyboard: false,                    // Enables keyboard navigation (left and right arrows)
-        speed: 500,                         // Slide transition speed in ms. (1s = 1000ms)
-        easing: "swing",                    // Defines the easing effect mode (easeOutBounce, linear)
-        loop: false,                         // Rotate slideshow
+		mouse: false,                       // Enables mousewheel scroll navigation
+		keyboard: false,                    // Enables keyboard navigation (left and right arrows)
+		speed: 500,                         // Slide transition speed in ms. (1s = 1000ms)
+		easing: "swing",                    // Defines the easing effect mode (easeOutBounce, linear)
+		loop: false,                         // Rotate slideshow
 
-        autoplay: false,                    // Sets EvoSlider to play slideshow when initialized
-        interval: 5000,                     // Slideshow interval time in ms
-        pauseOnHover: false,                 // Pause slideshow if mouse over the slide
-        pauseOnClick: false,                 // Stop slideshow if playing
+		autoplay: false,                    // Sets EvoSlider to play slideshow when initialized
+		interval: 5000,                     // Slideshow interval time in ms
+		pauseOnHover: false,                 // Pause slideshow if mouse over the slide
+		pauseOnClick: false,                 // Stop slideshow if playing
 
-        directionNav: true,                 // Shows directional navigation when initialized
-        directionNavAutoHide: false,        // Shows directional navigation on hover and hide it when mouseout
+		directionNav: true,                 // Shows directional navigation when initialized
+		directionNavAutoHide: false,        // Shows directional navigation on hover and hide it when mouseout
 
-        controlNav: true,                   // Enables control navigation
-        controlNavAutoHide: false           // Shows control navigation on mouseover and hide it when mouseout
-    });
+		controlNav: true,                   // Enables control navigation
+		controlNavAutoHide: false           // Shows control navigation on mouseover and hide it when mouseout
+	});
 
 
 	$(document).ready(function() {

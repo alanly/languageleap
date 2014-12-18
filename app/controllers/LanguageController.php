@@ -5,6 +5,9 @@
  */
 class LanguageController extends BaseController {
 
+	/*
+	 *	This function will set the language.
+	 */
 	public function setLanguage($lang)
 	{
 		Session::put('lang', $lang);

@@ -41,6 +41,9 @@ class AuthController extends BaseController {
 				->with("action.message", "Invalid username or password");
 		}
 
+		// Set the language.
+		Session::put('lang', Auth::user()->language);
+
 		return $this->authRedirect();
 	}
 
