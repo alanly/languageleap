@@ -8,17 +8,17 @@ use LangLeap\DictionaryUtilities\FrenchDictionary;
  */
 class DictionaryFactory 
 {
-	private $instance = null;
-	private $dictionaries = [];
+	private static $instance;
+	private static $dictionaries = [];
 
 	public static function getInstance()
 	{
-		if($instance == null)
+		if (!isset(static::$instance)) 
 		{
-			$instance = $this;
+			static::$instance = new static;
 		}
 
-		return $instance;
+		return static::$instance;
 	}
 
 	public function getDefinition($word, $language)
@@ -39,12 +39,12 @@ class DictionaryFactory
 
 	private function getDictionary($language)
 	{
-		if($dictionaries[strtoupper($language)] == null)
+		if(is_null(static::$dictionaries[strtoupper($language)]))
 		{
-			$dictionaries[strtoupper($language)] = $this->getDictionaryInstance($language);
+			static::$dictionaries[strtoupper($language)] = $this->getDictionaryInstance($language);
 		}
 
-		return $dictionaries[strtoupper($language)];
+		return static::$dictionaries[strtoupper($language)];
 	}
 
 	private function getDictionaryInstance($language)
@@ -63,6 +63,8 @@ class DictionaryFactory
 				$dictionary = null;
 				break;
 		}
+
+		return $dictionary;
 	}
 
 

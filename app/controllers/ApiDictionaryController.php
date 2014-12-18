@@ -14,7 +14,7 @@ class ApiDictionaryController extends \BaseController
 	 */
 	public function show($word)
 	{
-		$def = DictionaryFactory::getInstance()->getDefinition($word);
+		$def = DictionaryFactory::getInstance()->getDefinition($word, "ENGLISH");
 
 		if (!$def)
 		{
