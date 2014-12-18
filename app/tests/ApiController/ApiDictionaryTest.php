@@ -10,7 +10,7 @@ class ApiDictionaryTest extends TestCase
 	public function testDefinition()
 	{
 		$this->seed();
-		$response = $this->action('GET', 'ApiDefinitionController@show', ['Dog']);
+		$response = $this->action('GET', 'ApiDictionaryController@show', ['Dog']);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
@@ -23,7 +23,7 @@ class ApiDictionaryTest extends TestCase
 	public function testDefinitionInvalidWord()
 	{
 		$this->seed();
-		$response = $this->action('GET', 'ApiDefinitionController@show', ['}']);
+		$response = $this->action('GET', 'ApiDictionaryController@show', ['}']);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(404);
