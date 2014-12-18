@@ -21,11 +21,27 @@ public static class DictionaryFactory
 		return $instance;
 	}
 
+	public function getDefinition($word, $language)
+	{
+		$dictionary = $this->getDictionary($language);
+		$definition = $dictionary->$getDefinition($word);
+
+		return $definition;
+	}
+
+	public function getPronunciation($word, $language)
+	{
+		$dictionary = $this->getDictionary($language);
+		$pronunciation = $dictionary->$getPronunciation($word);
+
+		return $pronunciation;
+	}
+
 	private function getDictionary($language)
 	{
 		if($dictionaries[strtoupper($language)] == null)
 		{
-			$dictionaries[strtoupper($language)] = getDictionaryInstance($language); 
+			$dictionaries[strtoupper($language)] = $this->getDictionaryInstance($language); 
 		}
 
 		return $dictionaries[strtoupper($language)];
