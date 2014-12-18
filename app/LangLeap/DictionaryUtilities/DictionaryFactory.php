@@ -6,10 +6,10 @@ use LangLeap\DictionaryUtilities\FrenchDictionary;
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
-public static class DictionaryFactory 
+class DictionaryFactory 
 {
-	private DictionaryFactory $instance;
-	private Dictionaries $dictionaries = {};
+	private $instance;
+	private $dictionaries = {};
 
 	public static getInstance()
 	{
