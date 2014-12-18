@@ -15,26 +15,34 @@ return array(
 	'accordion' => array(
 
 		'movies' => array(
-			'name' => 'Movies',
-			'desc' => 'Learn through your favorite Movies!',
-			'select' => 'Select Movie',
+			'name' => 'Film',
+			'desc' => 'Apprendre à travers vos films préférés!',
+			'select' => 'Choisir un Film',
 		),
 		'commercials' => array(
-			'name' => 'Commercials',
-			'desc' => 'Learn through fun and interesting Commercials!',
-			'select' => 'Select Commercial',
+			'name' => 'Publicité',
+			'desc' => 'Apprendre à travers vos films préférés!',
+			'select' => 'Choisir un Publicité',
 		),
 		'shows' => array(
-			'name' => 'TV Shows',
-			'desc' => 'Learn through your favorite Television Shows!',
-			'select' => 'Select Tv Show',
+			'name' => 'émission de télévision',
+			'desc' => 'Apprendre à travers vos émission de télévision préférés!',
+			'select' => 'Choisir un émission de télévision',
+		),
+		'seasons' => array(
+			'name' => 'Saison',
+			'select' => 'Choisir un Saison',
+		),
+		'episodes' => array(
+			'name' => 'Emission',
+			'select' => 'Choisir un Emission',
 		),
 		'videos' => array(
-			'name' => 'Videos',
-			'select' => 'Select Video',
+			'name' => 'Vidéos',
+			'select' => 'Choisir un Vidéo',
 		),
 		'items' => array(
-			'default' => 'Select Media fr',
+			'default' => 'Choisir un Media',
 		),
 	),
 );
