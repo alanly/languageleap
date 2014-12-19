@@ -21,23 +21,14 @@ class DictionaryFactory
 		return static::$instance;
 	}
 
-	public function getDefinition($word, $language)
+	public function getDictionary($language)
 	{
-		$dictionary = $this->getDictionary($language);
-		$definition = $dictionary->getDefinition($word);
+		$dictionary = $this->getAndSetDictionary($language);
 
-		return $definition;
+		return $dictionary;
 	}
 
-	public function getPronunciation($word, $language)
-	{
-		$dictionary = $this->getDictionary($language);
-		$pronunciation = $dictionary->getPronunciation($word);
-
-		return $pronunciation;
-	}
-
-	private function getDictionary($language)
+	private function getAndSetDictionary($language)
 	{
 		if(!array_key_exists(strtoupper($language), static::$dictionaries))
 		{

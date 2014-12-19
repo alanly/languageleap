@@ -14,10 +14,37 @@ class ApiDictionaryController extends \BaseController
 	 * @param  string  $word
 	 * @return Response
 	 */
-	public function show($word, $videoId)
+	public function show()
 	{
-		$videoLanguage = $this->getVideoLanguage($videoId);
+		// Ensure the word exists.
+		$word = Input::get("word");
 
+		if (!$word)
+		{
+			return $this->apiResponse(
+				'error',
+				"Word {$word} does not exists",
+				404
+			);
+		}
+
+		// Ensure the video exists.
+		$videoId = Input::get("video_id");
+
+		if (!$videoId)
+		{
+			return $this->apiResponse(
+				'error',
+				"Video {$videoId} does not exists",
+				404
+			);
+		}
+
+		$videoLanguage = $this->getVideoLanguage($videoId);
+		if($videoLanguage)
+		{
+			dd("SUP");
+		}
 		if (!$videoLanguage)
 		{
 			return $this->apiResponse(
@@ -27,9 +54,20 @@ class ApiDictionaryController extends \BaseController
 			);
 		}
 
-		$def = DictionaryFactory::getInstance()->getDefinition($word, $language);
+		$dictionary = DictionaryFactory::getInstance()->getDictionary($videoLanguage);
 
-		if (!$def)
+		if (!$dictionary)
+		{
+			return $this->apiResponse(
+				'error',
+				"{$videoLanguage} dictionary not found.",
+				404
+			);
+		}
+
+		$definition = $dictionary->getDefinition($word);
+
+		if (!$definition)
 		{
 			return $this->apiResponse(
 				'error',
@@ -38,11 +76,14 @@ class ApiDictionaryController extends \BaseController
 			);
 		}
 
-		return $this->apiResponse("success", $def->toResponseArray());
+		return $this->apiResponse("success", $definition->toResponseArray());
 	}
 
-	private function getVideoLanguage($id);
+	private function getVideoLanguage($id)
 	{
+		//@TODO Remove this return when LANGLEAP-53 is done.
+		return "ENGLISH";
+
 		$video = Video::find($id);
 
 		if (!$video)
