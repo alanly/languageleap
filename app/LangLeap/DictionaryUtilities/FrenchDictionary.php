@@ -25,18 +25,12 @@ class FrenchDictionary implements IDictionary
 
 	public function getPronunciation($word)
 	{
-		//Make request here
-		$dictionaryDefinition = "CHIEN";
+		//@TODO
+	}
 
-		if(!$dictionaryDefinition)
-		{
-			return null;
-		}
+	public function instantiateConnection()
+	{
 		
-		$def = new Definition;
-		$def->definition = $dictionaryDefinition;
-		
-		return $def;
 	}
 }
 
