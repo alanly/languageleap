@@ -174,7 +174,7 @@
 			{
 				//Regex test: https://www.regex101.com/r/mG8jG5/6
 				var regex = new RegExp('(\\b(' + words[i] + ')\\b)(?![^<]*>|[^<>]*<\\s*\\/)', 'ig');
-				scriptHtml = scriptHtml.replace(regex, "<span data-type='nonDefinedWord'>" + words[i] + "</span>");
+				scriptHtml = scriptHtml.replace(regex, "<span data-type='nonDefinedWord' name='" + words[i].toLowerCase() + "Word'>" + words[i] + "</span>");
 			}
 
 			$("#script").html(scriptHtml);
@@ -237,11 +237,17 @@
 				$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
     				function(data)
     				{
-						word.attr('data-original-title', data.data.definition)
-						.tooltip('fixTitle')
-						.tooltip('show');
+						$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+							word.attr('data-original-title', data.data.definition)
+							.tooltip('fixTitle')
+							.tooltip('show');
+
+							word.attr('data-type', 'definedWord');
+						});
 					}
 				);
+
+
 			}, 500);
 
 		}
@@ -278,6 +284,13 @@
 				{
 					$(this).removeClass('word-hover');
 					clearTimeout(timer);
+				}).on('mouseenter', 'span[data-type=definedWord]', function()
+				{
+					$(this).addClass('word-hover');
+				})
+				.on('mouseleave', 'span[data-type=definedWord]', function()
+				{
+					$(this).removeClass('word-hover');
 				});
 
 			$('#script').on('click', 'span[data-type=word]', function()
