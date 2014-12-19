@@ -235,15 +235,16 @@
 			{
 				var url = '/api/metadata/dictionaryDefinitions/';
 				$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
-    				function(data)
-    				{
+					function(data)
+					{
 						$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
-							word.attr('data-original-title', data.data.definition)
-							.tooltip('fixTitle')
-							.tooltip('show');
+							$(this).attr('data-original-title', data.data.definition)
+							.tooltip('fixTitle');
 
-							word.attr('data-type', 'definedWord');
+							$(this).attr('data-type', 'definedWord');
 						});
+
+						word.tooltip('show');
 					}
 				);
 
