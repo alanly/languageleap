@@ -29,25 +29,25 @@
 @section('content')
 <div id="accordion" class="evoslider default">
 	<dl>
-		<dt id="firstTab">{{trans('index.accordion.items.default')}}</dt>
+		<dt id="firstTab">@lang('index.accordion.items.default')</dt>
 		<dd>
 			<div class="main" role="main">
 				<div class="demo content">
 						<ul>
 							<li>
-								<strong>{{trans('index.accordion.movies.name')}}</strong>
+								<strong>@lang('index.accordion.movies.name')</strong>
 								<a class="tooltiptext">
 									<img id="movies" src="" alt="Movies">
 								</a>
 							</li>
 							<li>
-								<strong>{{trans('index.accordion.shows.name')}}</strong>
+								<strong>@lang('index.accordion.shows.name')</strong>
 								<a class="tooltiptext">
 									<img id="shows" src="" alt="TV Shows">
 								</a>
 							</li>
 							<li>
-								<strong>{{trans('index.accordion.commercials.name')}}</strong>
+								<strong>@lang('index.accordion.commercials.name')</strong>
 								<a class="tooltiptext">
 									<img id="commercials" src="" alt="Commercials">
 								</a>
@@ -130,9 +130,9 @@
 		disableAllTabs();
 		$.filtrify("container", "placeHolder");
 
-		displayMoreInfo("movies", "{{trans('index.accordion.movies.name')}}","{{trans('index.accordion.movies.desc')}}");
-		displayMoreInfo("commercials", "{{trans('index.accordion.commercials.name')}}","{{trans('index.accordion.commercials.desc')}}");
-		displayMoreInfo("shows", "{{trans('index.accordion.shows.name')}}","{{trans('index.accordion.shows.desc')}}");
+		displayMoreInfo("movies", "@lang('index.accordion.movies.name')","@lang('index.accordion.movies.desc')");
+		displayMoreInfo("commercials", "@lang('index.accordion.commercials.name')","@lang('index.accordion.commercials.desc')");
+		displayMoreInfo("shows", "@lang('index.accordion.shows.name')","@lang('index.accordion.shows.desc')");
 	});
 	
 	$("#commercials").click(function() {
@@ -148,15 +148,15 @@
 	});
 
 	var dictionary = {
-		"selectMovies" : 			"{{trans('index.accordion.movies.select')}}",		
-		"movies" : 					"{{trans('index.accordion.movies.name')}}",	
-		"selectCommercials" : 		"{{trans('index.accordion.commercials.select')}}",		
-		"commercials" : 			"{{trans('index.accordion.commercials.name')}}",	
-		"selectShows" : 			"{{trans('index.accordion.shows.select')}}",		
-		"shows" : 					"{{trans('index.accordion.shows.name')}}",		
-		"selectSeason" : 			"{{trans('index.accordion.seasons.select')}}",	
-		"selectEpisode" : 			"{{trans('index.accordion.episodes.select')}}",	
-		"selectVideos" : 			"{{trans('index.accordion.videos.select')}}",	
+		"selectMovies" : 			"@lang('index.accordion.movies.select')",		
+		"movies" : 					"@lang('index.accordion.movies.name')",	
+		"selectCommercials" : 		"@lang('index.accordion.commercials.select')",		
+		"commercials" : 			"@lang('index.accordion.commercials.name')",	
+		"selectShows" : 			"@lang('index.accordion.shows.select')",		
+		"shows" : 					"@lang('index.accordion.shows.name')",		
+		"selectSeason" : 			"@lang('index.accordion.seasons.select')",	
+		"selectEpisode" : 			"@lang('index.accordion.episodes.select')",	
+		"selectVideos" : 			"@lang('index.accordion.videos.select')",	
 	};
 </script>
 @stop

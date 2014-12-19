@@ -15,15 +15,15 @@
 		<div id="player-container">
 			<video width="100%" controls id="video-player" preload='none'>
 				<source class="source" type="video/mp4">
-				<p>{{ trans('player.player.error') }}</p>
+				<p>@lang('player.player.error')</p>
 			</video>
 		</div>
 
 		<div id="script">
 		</div>
 
-		<a class="continue btn btn-success">{{ trans('player.script.quiz') }}</a>
-		<a class="define btn btn-primary">{{ trans('player.script.flashcard') }}</a>
+		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
+		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
