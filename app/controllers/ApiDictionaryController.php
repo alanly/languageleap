@@ -41,10 +41,6 @@ class ApiDictionaryController extends \BaseController
 		}
 
 		$videoLanguage = $this->getVideoLanguage($videoId);
-		if($videoLanguage)
-		{
-			dd("SUP");
-		}
 		if (!$videoLanguage)
 		{
 			return $this->apiResponse(
