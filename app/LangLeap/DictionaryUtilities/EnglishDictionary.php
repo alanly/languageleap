@@ -2,7 +2,7 @@
 
 use LangLeap\Core\Collection;
 use LangLeap\Words\Definition;
-require_once __DIR__ . '/../Dictionary/English/Swagger.php';
+use LangLeap\Dictionary\English\Swagger;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
@@ -57,7 +57,7 @@ class EnglishDictionary implements IDictionary
 
 	private function instantiateConnection()
 	{
-		$client = new APIClient($this->$APIKey, $this->$API_URL);
+		$client = new Swagger($this->$APIKey, $this->$API_URL);
 
 		return $client;
 	}
