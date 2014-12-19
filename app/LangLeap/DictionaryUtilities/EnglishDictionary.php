@@ -11,6 +11,7 @@ class EnglishDictionary implements IDictionary
 {
 	private $API_KEY = '0d275e6214609368a960d06d0d40810e58033359378726f83';
 	private $API_URL = 'http://api.wordnik.com/v4';
+	private $DICTIONARY_SOURCE = 'wiktionary';
 
 	/**
 	 * Returns a definition of a word
@@ -49,10 +50,11 @@ class EnglishDictionary implements IDictionary
 	{
 		$client = $this->instantiateConnection();
 		$wordApi = new WordApi($client);
-		$definition = $wordApi->getDefinitions($word, null, null, 1);
+		//Returns an array of definitions, only take the first one.
+		$definitions = $wordApi->getDefinitions($word, $partOfSpeech=null, $sourceDictionaries=$DICTIONARY_SOURCE, $limit=1);
 		$this->closeConnection($client);
 
-		return $definition[0];
+		return $definitions[0];
 	}
 
 	private function instantiateConnection()
