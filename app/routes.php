@@ -75,7 +75,7 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('definitions', 'ApiDefinitionController');
 
 		// Query the definition API for a definition
-		Route::resource('dictionaryDefinitions', 'ApiDictionaryController');
+		Route::resource('dictionaryDefinitions', 'ApiDictionaryController@show');
 	});
 
 	// Videos

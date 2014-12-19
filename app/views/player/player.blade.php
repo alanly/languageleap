@@ -61,6 +61,9 @@
 
 		function loadVideo()
 		{
+			//REMOVE
+			loadScript();
+			//REMOVE
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -229,31 +232,17 @@
 		function getDefinition(word)
 		{
 			timer = setTimeout(function()
-			{ 
-				//This section will be coded once the back end to get defintions for words is done.
-				//This section will execute after 3 seconds of hovering over a non defined word.
-
-				/*$.getJSON('/api/metadata/definitions/' + word, function(data) {
-				var defintion = "Defintion not found";
-
-				if (data.status == 'success')
-				{
-					defintion = data.data.definition;
-				}
-
-				$word.tooltip({
-						'container': '#script',
-						'placement': 'auto top',
-						'title': definition;
-					});
-				});
-			
-				$word.tooltip({
-						'container': '#script',
-						'placement': 'auto top',
-						'title': defintion
-				});*/
-			}, 3000);
+			{
+				var url = '/api/metadata/dictionaryDefinitions/';
+				$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
+    				function(data)
+    				{
+						word.attr('data-original-title', data.data.definition)
+						.tooltip('fixTitle')
+						.tooltip('show');
+					}
+				);
+			}, 500);
 
 		}
 
