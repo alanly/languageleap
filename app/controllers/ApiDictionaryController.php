@@ -50,14 +50,14 @@ class ApiDictionaryController extends \BaseController
 			return null;
 		}
 
-		$language = Language::find($video->$language_id);
+		$language = Language::find($video->language_id);
 
 		if(!$language)
 		{
 			return null;
 		}
 
-		return $language->description;
+		return strtoupper($language->description);
 
 	}
 	

@@ -51,7 +51,7 @@ class EnglishDictionary implements IDictionary
 		$client = $this->instantiateConnection();
 		$wordApi = new WordApi($client);
 		//Returns an array of Definition Objects, only take the text of the first one.
-		$definitions = $wordApi->getDefinitions($word, $partOfSpeech=null, $sourceDictionaries=$this->$DICTIONARY_SOURCE, $limit=1);
+		$definitions = $wordApi->getDefinitions($word, $partOfSpeech=null, $sourceDictionaries=$this->DICTIONARY_SOURCE, $limit=1);
 
 		if(!$definitions)
 		{
@@ -61,12 +61,12 @@ class EnglishDictionary implements IDictionary
 
 		$this->closeConnection($client);
 
-		return $definitions[0]->$text;
+		return $definitions[0]->text;
 	}
 
 	private function instantiateConnection()
 	{
-		$client = new APIClient($this->$APIKey, $this->$API_URL);
+		$client = new APIClient($this->APIKey, $this->API_URL);
 
 		return $client;
 	}
