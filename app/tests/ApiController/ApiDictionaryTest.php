@@ -7,7 +7,7 @@ use LangLeap\Words\Definition;
 class ApiDictionaryTest extends TestCase 
 {
 
-	public function testDefinition()
+	public function testWordDefinition()
 	{
 		$this->seed();
 		$response = $this->action('GET', 'ApiDictionaryController@show', ['Dog']);
@@ -20,7 +20,7 @@ class ApiDictionaryTest extends TestCase
 		$this->assertObjectHasAttribute('definition', $data);
 	}
 
-	public function testDefinitionInvalidWord()
+	public function testWordDefinitionInvalid()
 	{
 		$this->seed();
 		$response = $this->action('GET', 'ApiDictionaryController@show', ['}']);
