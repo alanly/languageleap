@@ -2,6 +2,8 @@
 
 use LangLeap\DictionaryUtilities\DictionaryFactory;
 use LangLeap\Words\Definition;
+use LangLeap\Videos\Video;
+use LangLeap\Core\Language;
 
 class ApiDictionaryController extends \BaseController 
 {
@@ -12,9 +14,20 @@ class ApiDictionaryController extends \BaseController
 	 * @param  string  $word
 	 * @return Response
 	 */
-	public function show($word)
+	public function show($word, $videoId)
 	{
-		$def = DictionaryFactory::getInstance()->getDefinition($word, "ENGLISH");
+		$videoLanguage = $this->getVideoLanguage($videoId);
+
+		if (!$videoLanguage)
+		{
+			return $this->apiResponse(
+				'error',
+				"Language for {$videoId} not found.",
+				404
+			);
+		}
+
+		$def = DictionaryFactory::getInstance()->getDefinition($word, $language);
 
 		if (!$def)
 		{
@@ -26,6 +39,26 @@ class ApiDictionaryController extends \BaseController
 		}
 
 		return $this->apiResponse("success", $def->toResponseArray());
+	}
+
+	private function getVideoLanguage($id);
+	{
+		$video = Video::find($id);
+
+		if (!$video)
+		{
+			return null;
+		}
+
+		$language = Language::find($video->$language_id);
+
+		if(!$language)
+		{
+			return null;
+		}
+
+		return $language->description;
+
 	}
 	
 }

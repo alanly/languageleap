@@ -10,7 +10,7 @@ class ApiDictionaryTest extends TestCase
 	public function testWordDefinition()
 	{
 		$this->seed();
-		$response = $this->action('GET', 'ApiDictionaryController@show', ['Dog']);
+		$response = $this->action('GET', 'ApiDictionaryController@show', ['Dog', 1]);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
@@ -23,7 +23,16 @@ class ApiDictionaryTest extends TestCase
 	public function testWordDefinitionInvalid()
 	{
 		$this->seed();
-		$response = $this->action('GET', 'ApiDictionaryController@show', ['}']);
+		$response = $this->action('GET', 'ApiDictionaryController@show', ['}', 1]);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(404);
+	}
+
+	public function testVideoIdInvalid()
+	{
+		$this->seed();
+		$response = $this->action('GET', 'ApiDictionaryController@show', ['Dog', -1]);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(404);
