@@ -325,16 +325,16 @@ $(function() {
 
 	// A fix for browsers that insert <div> for linebreaks. Instead they will
 	// insert <br> tags that can easily be stripped later on
-	$("#script").on("keyup", function(){
-		if (!this.lastChild || this.lastChild.nodeName.toLowerCase() != "br") {
-			this.appendChild(document.createElement("br"));
+	$('#script').on('keyup', function(){
+		if (!this.lastChild || this.lastChild.nodeName.toLowerCase() != 'br') {
+			this.appendChild(document.createElement('br'));
 		}
-	}).on("keypress", function(e){
+	}).on('keypress', function(e){
 		if (e.which == 13) {
 			if (window.getSelection) {
 				var selection = window.getSelection(),
 				range = selection.getRangeAt(0),
-				br = document.createElement("br");
+				br = document.createElement('br');
 				range.deleteContents();
 				range.insertNode(br);
 				range.setStartAfter(br);
@@ -347,19 +347,27 @@ $(function() {
 		}
 	});
 
+	// This is a fix for placing the cursor at the end of the contenteditable div
+	// if a span is the last element.
+	$('#script').on('click keyup', function() {
+		if (this.lastChild.nodeName.toLowerCase() == 'br') {
+			$(this.lastChild).before(' ');
+		}
+	});
+
 	// Determine if the user is selecting text within the script contenteditable field by dragging
 	var isDragging = false;
 	$('#script').mousedown(function(e) {
 		if (e.target == this) {
 			$(window).mousemove(function() {
 				isDragging = true;
-				$(window).unbind("mousemove");
+				$(window).unbind('mousemove');
 			});
 		}
 	}).mouseup(function(e) {
 		var wasDragging = isDragging;
 		isDragging = false;
-		$(window).unbind("mousemove");
+		$(window).unbind('mousemove');
 
 		if (wasDragging) {
 			textSelected();
