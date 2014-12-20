@@ -325,7 +325,7 @@ $(function() {
 
 	// A fix for browsers that insert <div> for linebreaks. Instead they will
 	// insert <br> tags that can easily be stripped later on
-	$("#script").on("keyup mouseup", function(){
+	$("#script").on("keyup", function(){
 		if (!this.lastChild || this.lastChild.nodeName.toLowerCase() != "br") {
 			this.appendChild(document.createElement("br"));
 		}
@@ -356,7 +356,7 @@ $(function() {
 				$(window).unbind("mousemove");
 			});
 		}
-	}).mouseup(function() {
+	}).mouseup(function(e) {
 		var wasDragging = isDragging;
 		isDragging = false;
 		$(window).unbind("mousemove");
