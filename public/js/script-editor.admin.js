@@ -186,7 +186,7 @@ function showNoTagForm() {
 function saveContextData($context) {
 	$context.text($('#selected-text').val());
 
-	if ($('#selected-text').val().trim() == '' || $context.data('type') == '') {
+	if ($('#selected-text').val().trim() == '' || $context.data('type') == '' || typeof $context.data('type') == 'undefined') {
 		undoSelectedText($context);
 	} else if ($context.data('type') == 'word') {
 		$context.data('definition', $('#definition textarea').val());
