@@ -4,11 +4,11 @@ return array(
 	
 	/*
 	|------------------------------------------------------------------
-	| Player Language Lines.
+	| Admin Language Lines.
 	|------------------------------------------------------------------
 	|
 	| The following language lines will be used for the english 
-	| version of the player page.
+	| version of the admin page.
 	|
 	*/
 
@@ -29,5 +29,9 @@ return array(
 			'table' => array(
 			),
 		),
+		'add' => 'Add Media',
+	),
+	'script' => array(
+		'upload' => 'Script Upload',
 	),
 );

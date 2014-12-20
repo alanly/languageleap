@@ -4,30 +4,34 @@ return array(
 	
 	/*
 	|------------------------------------------------------------------
-	| Player Language Lines.
+	| Admin Language Lines.
 	|------------------------------------------------------------------
 	|
 	| The following language lines will be used for the english 
-	| version of the player page.
+	| version of the admin page.
 	|
 	*/
 
 	'media' => array(
 		'movie' => array(
-			'name' => 'Movies',
+			'name' => 'Films',
 			'table' => array(
 				'id' => 'Id',
  			),
 		),
 		'commercial' => array(
-			'name' => 'Commercials',
+			'name' => 'Publicité',
 			'table' => array(
 			),
 		),
 		'show' => array(
-			'name' => 'Tv Shows',
+			'name' => 'Émission de Télévision',
 			'table' => array(
 			),
 		),
+		'add' => 'Ajouter Media',
+	),
+	'script' => array(
+		'upload' => 'Télécharger Scénario',
 	),
 );
