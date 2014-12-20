@@ -311,6 +311,47 @@ function actorButtonClick() {
 	setTagType($('#script').data('modal-context'), 'actor');
 }
 
+/**
+* Inserts the given text at the current caret position.
+*
+* @param {String} text The text that will be inserted at the caret position
+*/
+function insertTextAtCursor(text) {
+	var selection, range;
+	if (window.getSelection) {
+		selection = window.getSelection();
+		if (selection.getRangeAt && selection.rangeCount) {
+			range = selection.getRangeAt(0);
+			range.deleteContents();
+			var textNode = document.createTextNode(text);
+			range.insertNode(textNode);
+			range.setStartAfter(textNode);
+
+			if (!isIE()) {
+				selection.removeAllRanges();
+				selection.addRange(range);
+			}
+		}
+	} else if (document.selection && document.selection.createRange) {
+		document.selection.createRange().text = text;
+	}
+}
+
+/**
+* Checks if the user's browser is Internet Explorer
+*/
+function isIE() {
+	var ua = window.navigator.userAgent;
+	var msie = ua.indexOf("MSIE ");
+
+	// If Internet Explorer, return true
+	if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 //////////////////////////////////////////////////////////////
 // JQuery's OnDocumentReady                                 //
 //////////////////////////////////////////////////////////////
