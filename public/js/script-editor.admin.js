@@ -367,8 +367,8 @@ $(function() {
 	// A fix for browsers that insert <div> for linebreaks. Instead they will
 	// insert <br> tags that can easily be stripped later on
 	$('#script').on('keyup', function(){
-		if (!this.lastChild || this.lastChild.nodeName.toLowerCase() != 'br') {
-			this.appendChild(document.createElement('br'));
+		if (!isIE() && ($(this).children().length == 0 || $(this).children().last()[0].nodeName.toLowerCase() != 'br')) {
+			$(this).append(document.createElement('br'));
 		}
 	}).on('keypress', function(e){
 		if (e.which == 13) {
@@ -378,8 +378,15 @@ $(function() {
 				br = document.createElement('br');
 				range.deleteContents();
 				range.insertNode(br);
-				range.setStartAfter(br);
-				range.setEndAfter(br);
+
+				if (isIE()) {
+					range.setStart(br, 1);
+					range.setEnd(br, 1);
+				} else {
+					range.setStartAfter(br);
+					range.setEndAfter(br);
+				}		
+
 				range.collapse(false);
 				selection.removeAllRanges();
 				selection.addRange(range);
@@ -388,12 +395,29 @@ $(function() {
 		}
 	});
 
+	// A fix for IE. When deleting all of the content in the contenteditable div,
+	// spans will sometimes remain.
+	$('#script').on('keyup', function(){
+		if ($(this).text().trim().length == 0) {
+			$(this).html('');
+		}
+	})
+
 	// This is a fix for placing the cursor at the end of the contenteditable div
 	// if a span is the last element.
-	$('#script').on('click keyup', function() {
-		if (this.lastChild.nodeName.toLowerCase() == 'br') {
-			$(this.lastChild).before(' ');
+	$('#script').on('mousedown', function() {
+		if (!this.lastChild || this.lastChild.nodeName.toLowerCase() == 'br') {
+			if ($(this).text().slice(-1) != ' ') {
+				$(this.lastChild).before(' ');
+			}
 		}
+	});
+
+	// All inputted text goes through here to prevent weird inconsistent behavior
+	// across web browsers.
+	$('#script').on('keypress', function(e) {
+		e.preventDefault();
+		insertTextAtCursor(String.fromCharCode(e.which));
 	});
 
 	// Determine if the user is selecting text within the script contenteditable field by dragging
