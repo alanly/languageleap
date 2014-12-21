@@ -14,15 +14,15 @@
 		<div id="player-container">
 			<video width="100%" controls id="video-player" preload='none'>
 				<source class="source" type="video/mp4">
-				<p>Your browser does not support HTML5 video.</p>
+				<p>@lang('player.player.error')</p>
 			</video>
 		</div>
 
 		<div id="script">
 		</div>
 
-		<a class="continue btn btn-success">Continue to Quiz</a>
-		<a class="define btn btn-primary">Define Selected</a>
+		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
+		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>

@@ -2,21 +2,24 @@
 
 use LangLeap\TestCase;
 use LangLeap\Accounts\User;
+use LangLeap\Core\Language;
 
 /**
  * @author Michael Lavoie <lavoie6453@gmail.com>
  * @author Alan Ly <hello@alan.ly>
+ * @author Thomas Rahn <thomas@rahn.ca>
  */
 class RegistrationControllerTest extends TestCase {
 
 	protected function createUserData()
 	{
 		return $userData = [
-			'username'   => 'testUser123',
-			'email'      =>'test@tester.com',
-			'first_name' => 'John',
-			'last_name'  =>'Doe',
-			'password'   => 'password123',
+			'username'  			=> 'testUser123',
+			'email'      			=>'test@tester.com',
+			'first_name' 			=> 'John',
+			'last_name'				=>'Doe',
+			'language_id'			=> Language::first()->id,
+			'password'   			=> 'password123',
 			'password_confirmation' => 'password123'
 		];
 	}
@@ -26,6 +29,8 @@ class RegistrationControllerTest extends TestCase {
 		parent::setUp();
 
 		Route::enableFilters();
+
+		$this->seed();
 	}
 
 	public function testCreatingANewUser()

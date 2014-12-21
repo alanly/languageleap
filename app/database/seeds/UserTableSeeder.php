@@ -1,5 +1,7 @@
 <?php
 
+use LangLeap\Core\Language;
+
 class UserTableSeeder extends Seeder {
 
 	/**
@@ -13,6 +15,7 @@ class UserTableSeeder extends Seeder {
 		DB::table('users')->delete();
 
 		$user = App::make('LangLeap\Accounts\User');
+		$lang = Language::first();
 
 		$user->create([
 			'username'      => 'administrator',
@@ -20,6 +23,7 @@ class UserTableSeeder extends Seeder {
 			'email'         => 'admin@test.com',
 			'first_name'    => 'John',
 			'last_name'     => 'Smith',
+			'language_id'   => $lang->id,
 			'is_admin'      => true,
 			'is_confirmed'	=> true
 		]);
@@ -30,6 +34,7 @@ class UserTableSeeder extends Seeder {
 			'email'         => 'user@test.com',
 			'first_name'    => 'Jane',
 			'last_name'     => 'Smith',
+			'language_id'   => $lang->id,
 			'is_admin'      => false,
 			'is_confirmed'	=> true
 		]);

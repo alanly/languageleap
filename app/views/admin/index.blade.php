@@ -1,15 +1,12 @@
 @extends('admin.master')
 
-@section('head')
-@stop
-
 @section('content')
 <div class="container-fluid">
 	<div id="new-slidedown" class="clearfix" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h2 class="slide-title">Script Upload</h2>
+					<h2 class="slide-title">@lang('admin.script.upload')</h2>
 				</div>
 
 				<div class="modal-body" style="display: block;">
@@ -19,7 +16,7 @@
 	</div>
 
 	<div id="new" class="pull-right">
-		<button type="button" class="btn btn-success center-block">Add Media</button>
+		<button type="button" class="btn btn-success center-block">@lang('admin.media.add')</button>
 	</div>
 
 	<div id="search" class="container">
@@ -27,7 +24,7 @@
 	</div>
 
 	<div id="select" class="container">
-		<span id="select-movies">Movies</span> <span id="select-commercials">Commercials</span> <span id="select-commercials">TV Shows</span>
+		<span id="select-movies">@lang('admin.media.movie.name')</span> <span id="select-commercials">@lang('admin.media.commercial.name')</span> <span id="select-commercials">@lang('admin.media.show.name')</span>
 	</div>
 
 	<div id="content" class="container">
