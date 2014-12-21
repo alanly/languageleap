@@ -1,18 +1,19 @@
 /**
-* Surrounds the currently selected text with the given tag name and attributes.
-*
-* @param {String} tagName The tag name (ie. span, div)
-* @return {String} Returns The currently selected text without the tags
-*/
+ * Surrounds the currently selected text with the given tag name and
+ * attributes.
+ *
+ * @param  {String}  tagName  The tag name (ie. span, div)
+ * @return {String}  Returns the currently selected text without the tags
+ */
 function addTagToSelection(tagName) {
 	try {
 		var newElement = document.createElement(tagName);
 		var selectedRange = getSelection().getRangeAt(0);
-
 		var selectedText = selectedRange.toString();
 
-		if (selectedText.trim().length == 0)
+		if (selectedText.trim().length == 0) {
 			return '';
+		}
 
 		// Regular expressions to help trim whitespace from the selected ranges
 		var startSpaces = /^(\s+)/g;
@@ -21,18 +22,25 @@ function addTagToSelection(tagName) {
 		// Trim the beginning of the range
 		var matches = selectedText.match(startSpaces);
 		if (matches) {
-			selectedRange.setStart(selectedRange.startContainer, selectedRange.startOffset + matches[0].length);
+			selectedRange.setStart(
+				selectedRange.startContainer,
+				selectedRange.startOffset + matches[0].length
+			);
 		}
 
 		// Trim the end of the range
 		matches = selectedText.match(endSpaces);
 		if (matches) {
-			selectedRange.setEnd(selectedRange.endContainer, selectedRange.endOffset - matches[0].length);
+			selectedRange.setEnd(
+				selectedRange.endContainer,
+				selectedRange.endOffset - matches[0].length
+			);
 		}
 
 		// The start and end of the range are equal
-		if (selectedRange.collapsed)
+		if (selectedRange.collapsed) {
 			return '';
+		}
 
 		selectedRange.surroundContents(newElement);
 		
@@ -44,57 +52,65 @@ function addTagToSelection(tagName) {
 }
 
 /**
-* Removes the span from of the given selected element.
-*
-* @param {jQuery Object} $element A jQuery object representing the element to be unselected
-*/
+ * Removes the span from of the given selected element.
+ *
+ * @param {jQuery Object} $element A jQuery object representing the element to
+ * be unselected
+ */
 function undoSelectedText($element) {
 	$('#' + $element.attr('aria-describedby')).remove();
 	
-	if ($element.contents().length > 0)
+	if ($element.contents().length > 0) {
 		$element.contents().unwrap();
-	else
+	} else {
 		$element.remove();
+	}
 }
 
 /**
-* Sets the 'data-type' attribute to the given type.
-*
-* @param {jQuery Object} $context A jQuery object representing a context(ie. the span that we want to edit)
-* @param {String} type The type of content (ie. word, actor)
-*/
-function setTagType($context, type) {
-	$context.attr('data-type', type);	
-	$context.data('type', type);	
+ * Sets the 'data-type' attribute to the given type.
+ *
+ * @param {jQuery Object} context A jQuery object representing a context(ie. 
+ * the span that we want to edit)
+ * @param {String}        type    The type of content (ie. word, actor)
+ */
+function setTagType(context, type) {
+	context.attr('data-type', type);	
+	context.data('type', type);	
 }
 
 /**
-* Shows the modal form with the proper context because some form elements
-* should only be visible in certain contexts.
-*
-* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
-*/
-function showModalForm($context) {
-	$('#selected-text').val($context.text());
+ * Shows the modal form with the proper context because some form elements
+ * should only be visible in certain contexts.
+ *
+ * @param {jQuery Object} context A jQuery object representing the form 
+ * context (ie. the span that we want to edit)
+ */
+function showModalForm(context) {
+	$('#selected-text').val(context.text());
 
-	// Keep the original data before the user starts modifying stuff (just in case he wants to click cancel)
-	backupContextData($context);
+	// Keep the original data before the user starts modifying stuff (just in 
+	// case he wants to click cancel)
+	backupContextData(context);
 
 	clearWordForm();
 	clearActorForm();
 
-	if ($context.data('type') == 'word') {
-		showWordForm();
-		fillWordForm($context);
-		hideActorForm();
-	} else if ($context.data('type') == 'actor') {
-		showActorForm();
-		fillActorForm($context);
-		hideWordForm();
-	} else {
-		showNoTagForm();
-		hideWordForm();
-		hideActorForm();
+	switch(context.data('type')) {
+		case 'word':
+			showWordForm();
+			fillWordForm(context);
+			hideActorForm();
+			break;
+		case 'actor':
+			showActorForm();
+			fillActorForm(context);
+			hideWordForm();
+			break;
+		default:
+			showNoTagForm();
+			hideWordForm();
+			hideActorForm();
 	}
 
 	// Make the modal pop up
@@ -102,8 +118,8 @@ function showModalForm($context) {
 }
 
 /**
-* Shows the form associated with words.
-*/
+ * Shows the form associated with words.
+ */
 function showWordForm() {
 	$('#word-form').show();
 	$('#word-radio').prop('checked', true);
@@ -111,27 +127,28 @@ function showWordForm() {
 }
 
 /**
-* Fills the form associated with a word using the data from the context.
-*
-* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
-*/
-function fillWordForm($context) {
-	$('#definition textarea').val($context.data('definition'));
-	$('#full-definition textarea').val($context.data('full-definition'));
-	$('#pronunciation input').val($context.data('pronunciation'));	
+ * Fills the form associated with a word using the data from the context.
+ *
+ * @param {jQuery Object} context A jQuery object representing the form 
+ * context (ie. the span that we want to edit)
+ */
+function fillWordForm(context) {
+	$('#definition textarea').val(context.data('definition'));
+	$('#full-definition textarea').val(context.data('full-definition'));
+	$('#pronunciation input').val(context.data('pronunciation'));	
 }
 
 /**
-* Hides the form associated with words.
-*/
+ * Hides the form associated with words.
+ */
 function hideWordForm() {
 	$('#word-form').hide();
 	$('#definition textarea').prop('required', false);
 }
 
 /**
-* Clears the form associated with words.
-*/
+ * Clears the form associated with words.
+ */
 function clearWordForm() {
 	$('#definition textarea').val('');
 	$('#full-definition textarea').val('');
@@ -139,8 +156,8 @@ function clearWordForm() {
 }
 
 /**
-* Shows the form associated with actors.
-*/
+ * Shows the form associated with actors.
+ */
 function showActorForm() {
 	$('#actor-form').show();
 	$('#actor-radio').prop('checked', true);
@@ -148,126 +165,137 @@ function showActorForm() {
 }
 
 /**
-* Fills the form associated with an actor using the data from the context.
-*
-* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
-*/
-function fillActorForm($context) {
-	$('#timestamp input').val($context.data('timestamp'));
+ * Fills the form associated with an actor using the data from the context.
+ *
+ * @param {jQuery Object} context A jQuery object representing the form 
+ * context (ie. the span that we want to edit)
+ */
+function fillActorForm(context) {
+	$('#timestamp input').val(context.data('timestamp'));
 }
 
 /**
-* Hides the form associated with actors.
-*/
+ * Hides the form associated with actors.
+ */
 function hideActorForm() {
 	$('#actor-form').hide();
 	$('#timestamp input').prop('required', false);
 }
 
 /**
-* Clears the form associated with actors.
-*/
+ * Clears the form associated with actors.
+ */
 function clearActorForm() {
 	$('#timestamp input').val('');
 }
 
 /**
-* Shows the form associated with no tags.
-*/
+ * Shows the form associated with no tags.
+ */
 function showNoTagForm() {
 	$('#no-tag-radio').prop('checked', true);
 }
 
 /**
-* Saves the form values for the given context as data belonging to the context
-*
-* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
-*/
-function saveContextData($context) {
-	$context.text($('#selected-text').val());
+ * Saves the form values for the given context as data belonging to the 
+ * context.
+ *
+ * @param {jQuery Object} context A jQuery object representing the form 
+ * context (ie. the span that we want to edit)
+ */
+function saveContextData(context) {
+	context.text($('#selected-text').val());
 
-	if ($('#selected-text').val().trim() == '' || $context.data('type') == '' || typeof $context.data('type') == 'undefined') {
-		undoSelectedText($context);
-	} else if ($context.data('type') == 'word') {
-		$context.data('definition', $('#definition textarea').val());
-		$context.data('full-definition', $('#full-definition textarea').val());
-		$context.data('pronunciation', $('#pronunciation input').val());
-	} else if ($context.data('type') == 'actor') {
-		$context.attr('data-timestamp', $('#timestamp input').val());
+	if (
+		$('#selected-text').val().trim() == '' 
+		|| context.data('type') == '' 
+		|| typeof context.data('type') == 'undefined'
+	) {
+		undoSelectedText(context);
+	} else if (context.data('type') == 'word') {
+		context.data('definition', $('#definition textarea').val());
+		context.data('full-definition', $('#full-definition textarea').val());
+		context.data('pronunciation', $('#pronunciation input').val());
+	} else if (context.data('type') == 'actor') {
+		context.attr('data-timestamp', $('#timestamp input').val());
 	}
 }
 
 /**
-* Backs-up the data stored on the given context so that it can later be restored if the user cancels the edit.
-*
-* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
-*/
-function backupContextData($context) {
-	$context.data('old-type', $context.data('type'));
+ * Backs-up the data stored on the given context so that it can later be 
+ * restored if the user cancels the edit.
+ *
+ * @param {jQuery Object} context A jQuery object representing the form 
+ * context (ie. the span that we want to edit)
+ */
+function backupContextData(context) {
+	context.data('old-type', context.data('type'));
 
-	if ($context.data('type') == 'word') {
-		$context.data('old-definition', $context.data('definition'));
-		$context.data('old-full-definition', $context.data('full-definition'));
-		$context.data('old-pronunciation', $context.data('pronunciation'));
-	} else if ($context.data('type') == 'actor') {
-		$context.data('old-timestamp', $context.data('timestamp'));
+	if (context.data('type') == 'word') {
+		context.data('old-definition', context.data('definition'));
+		context.data('old-full-definition', context.data('full-definition'));
+		context.data('old-pronunciation', context.data('pronunciation'));
+	} else if (context.data('type') == 'actor') {
+		context.data('old-timestamp', context.data('timestamp'));
 	}
 }
 
 /**
-* Restores the given context to the data values that were backed-up.
-*
-* @param {jQuery Object} $context A jQuery object representing the form context (ie. the span that we want to edit)
-*/
-function restoreContextData($context) {
-	setTagType($context, $context.data('old-type'));
+ * Restores the given context to the data values that were backed-up.
+ *
+ * @param {jQuery Object} context A jQuery object representing the form 
+ * context (ie. the span that we want to edit)
+ */
+function restoreContextData(context) {
+	setTagType(context, context.data('old-type'));
 
-	if ($context.data('old-type') == 'word') {
-		$context.data('definition', $context.data('old-definition'));
-		$context.data('full-definition', $context.data('old-full-definition'));
-		$context.data('pronunciation', $context.data('old-pronunciation'));
-	} else if ($context.data('old-type') == 'actor') {
-		$context.attr('data-timestamp', $context.data('old-timestamp'));
+	if (context.data('old-type') == 'word') {
+		context.data('definition', context.data('old-definition'));
+		context.data('full-definition', context.data('old-full-definition'));
+		context.data('pronunciation', context.data('old-pronunciation'));
+	} else if (context.data('old-type') == 'actor') {
+		context.attr('data-timestamp', context.data('old-timestamp'));
 	} else {
-		undoSelectedText($context);
+		undoSelectedText(context);
 	}
 }
 
 /**
-* Adds tooltips to the current spans.
-*/
+ * Adds tooltips to the current spans.
+ */
 function refreshTooltips() {
 	$('#script span').tooltip({
 		'container': '#script',
 		'placement': 'auto top',
-		'title': 'Click to edit'
+		'title'    : 'Click to edit'
 	});
 }
 
 /**
-* This function is called when the user selects text in the script by double-clicking or dragging.
-*/
+ * This function is called when the user selects text in the script by double-
+ * clicking or dragging.
+ */
 function textSelected() {
 	var selectedText = addTagToSelection('span');
+	if (! selectedText) return;
+
 	$('#script').data('modal-context', $(selectedText));
 
 	window.getSelection().collapseToStart();
 
-	if (selectedText) {
-		// If there are nested elements, deselect the text that was just selected
-		if ($('#script').data('modal-context').children().length > 0) {
-			undoSelectedText($('#script').data('modal-context'));
-		} else {
-			window.getSelection().removeAllRanges();
-			showModalForm($('#script').data('modal-context'));
-			refreshTooltips();
-		}
+	// If there are nested elements, deselect the text that was just selected
+	if ($('#script').data('modal-context').children().length > 0) {
+		undoSelectedText($('#script').data('modal-context'));
+	} else {
+		window.getSelection().removeAllRanges();
+		showModalForm($('#script').data('modal-context'));
+		refreshTooltips();
 	}
 }
 
-/*
-* This function should be run before saving the script to the database.
-*/
+/**
+ * This function should be run before saving the script to the database.
+ */
 function prepareSpans() {
 	// Remove useless data
 	$('#script span').removeAttr('data-original-title').removeAttr('title');
@@ -299,7 +327,8 @@ function wordButtonClick() {
 	showWordForm();
 	hideActorForm();
 
-	// data-timestamp in the tag is not needed for definitions. Only timestamps need the data-timestamp attribute
+	// data-timestamp in the tag is not needed for definitions. Only timestamps 
+	// need the data-timestamp attribute
 	$('#script').data('modal-context').removeAttr('data-timestamp');
 
 	setTagType($('#script').data('modal-context'), 'word');
@@ -312,14 +341,16 @@ function actorButtonClick() {
 }
 
 /**
-* Inserts the given text at the current caret position.
-*
-* @param {String} text The text that will be inserted at the caret position
-*/
+ * Inserts the given text at the current caret position.
+ *
+ * @param {String} text The text that will be inserted at the caret position
+ */
 function insertTextAtCursor(text) {
 	var selection, range;
+
 	if (window.getSelection) {
 		selection = window.getSelection();
+
 		if (selection.getRangeAt && selection.rangeCount) {
 			range = selection.getRangeAt(0);
 			range.deleteContents();
@@ -327,7 +358,7 @@ function insertTextAtCursor(text) {
 			range.insertNode(textNode);
 			range.setStartAfter(textNode);
 
-			if (!isIE()) {
+			if (! isIE()) {
 				selection.removeAllRanges();
 				selection.addRange(range);
 			}
@@ -338,18 +369,16 @@ function insertTextAtCursor(text) {
 }
 
 /**
-* Checks if the user's browser is Internet Explorer
-*/
+ * Checks if the user's browser is Internet Explorer.
+ */
 function isIE() {
 	var ua = window.navigator.userAgent;
-	var msie = ua.indexOf("MSIE ");
 
-	// If Internet Explorer, return true
-	if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+	if (ua.indexOf("MSIE ") > 0 || ua.match(/Trident.*rv\:11\./)) {
 		return true;
-	} else {
-		return false;
 	}
+
+	return false;
 }
 
 //////////////////////////////////////////////////////////////
@@ -505,8 +534,7 @@ function loadDefinitions() {
 		var $this = $(this);
 		var definitionId = $this.data('id');
 
-		if (definitionId == undefined)
-			return;
+		if (definitionId == undefined) return;
 
 		$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
 			if (data.status == 'success') {
@@ -579,6 +607,5 @@ function saveDefinitions(scriptId) {
 		}
 	});
 
-	if (ajaxRequestsRemaining <= 0)
-		saveScript(scriptId);
+	if (ajaxRequestsRemaining < 1) saveScript(scriptId);
 }
