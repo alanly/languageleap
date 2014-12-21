@@ -10,8 +10,8 @@ class ApiDictionaryTest extends TestCase
 	public function testWordDefinition()
 	{
 		$this->seed();
-		$response = $this->action('GET', 'ApiDictionaryController@show', [], ['word' => 'Dog', 'video_id' => '1']);
-		
+		$response = $this->action('GET', 'ApiDictionaryController@index', [], ['word' => 'dog', 'video_id' => '1']);
+
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 
@@ -20,19 +20,24 @@ class ApiDictionaryTest extends TestCase
 		$this->assertObjectHasAttribute('definition', $data);
 	}
 
-	public function testWordDefinitionInvalid()
+	public function testWordDefinitionNotFound()
 	{
 		$this->seed();
-		$response = $this->action('GET', 'ApiDictionaryController@show', [], ['word' => '{', 'videoId' => '1']);
+		$response = $this->action('GET', 'ApiDictionaryController@index', [], ['word' => 'abc', 'video_id' => '1']);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(404);
+		$this->assertResponseOk();
+
+		$data = $response->getData()->data;
+
+		$this->assertObjectHasAttribute('definition', $data);
+		$this->assertSame('Definition not found.', $data->definition);
 	}
 
 	public function testVideoIdInvalid()
 	{
 		$this->seed();
-		$response = $this->action('GET', 'ApiDictionaryController@show', [], ['word' => 'Dog', 'videoId' => '-1']);
+		$response = $this->action('GET', 'ApiDictionaryController@index', [], ['word' => 'Dog', 'video_id' => '-1']);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(404);

@@ -50,11 +50,11 @@ class EnglishDictionary implements IDictionary
 
 		//Returns an array of Definition Objects, only take the text of the first one.
 		$definitions = $client->wordDefinitions($word)
-		                      ->sourceDictionaries($this->DICTIONARY_SOURCE)
-		                      ->limit(1)
-		                      ->includeRelated(false)
-		                      ->useCanonical(true)
-		                      ->get();
+							->sourceDictionaries($this->DICTIONARY_SOURCE)
+							->limit(1)
+							->includeRelated(false)
+							->useCanonical(true)
+							->get();
 
 		if(!$definitions)
 		{

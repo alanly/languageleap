@@ -14,7 +14,7 @@ class ApiDictionaryController extends \BaseController
 	 * @param  string  $word
 	 * @return Response
 	 */
-	public function show()
+	public function index()
 	{
 		// Ensure the word exists.
 		$word = Input::get("word");
@@ -61,11 +61,9 @@ class ApiDictionaryController extends \BaseController
 		$definition = $dictionary->getDefinition($word);
 		if (!$definition)
 		{
-			return $this->apiResponse(
-				'error',
-				"Definition for {$word} not found.",
-				404
-			);
+			$definition = new Definition;
+			$definition->definition = 'Definition not found.';
+			return $this->apiResponse("success", $definition->toResponseArray());
 		}
 
 		return $this->apiResponse("success", $definition->toResponseArray());
