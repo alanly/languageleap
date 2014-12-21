@@ -11,7 +11,7 @@ class ApiDictionaryTest extends TestCase
 	{
 		$this->seed();
 		$response = $this->action('GET', 'ApiDictionaryController@show', [], ['word' => 'Dog', 'video_id' => '1']);
-
+		
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 

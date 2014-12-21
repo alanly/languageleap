@@ -1,8 +1,6 @@
 <?php namespace LangLeap\DictionaryUtilities;
 
-use LangLeap\Core\Collection;
 use LangLeap\Words\Definition;
-use LangLeap\Dictionary\English\Swagger;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
@@ -49,15 +47,19 @@ class EnglishDictionary implements IDictionary
 	private function getWordDefinition($word)
 	{
 		$client = $this->instantiateConnection();
-		$wordApi = new WordApi($client);
+
 		//Returns an array of Definition Objects, only take the text of the first one.
-		$definitions = $wordApi->getDefinitions($word, $partOfSpeech=null, $sourceDictionaries=$this->DICTIONARY_SOURCE, $limit=1);
+		$definitions = $client->wordDefinitions($word)
+						->sourceDictionaries($this->DICTIONARY_SOURCE)
+						->limit(1)
+						->includeRelated(false)
+						->useCanonical(true)
+						->get();
 
 		if(!$definitions)
 		{
 			return null;
 		}
-
 
 		$this->closeConnection($client);
 
@@ -66,7 +68,8 @@ class EnglishDictionary implements IDictionary
 
 	private function instantiateConnection()
 	{
-		$client = new APIClient($this->APIKey, $this->API_URL);
+		$client = new \Picnik;
+		$client->setApiKey($this->API_KEY);
 
 		return $client;
 	}
