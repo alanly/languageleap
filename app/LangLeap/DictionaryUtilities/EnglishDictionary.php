@@ -1,6 +1,7 @@
 <?php namespace LangLeap\DictionaryUtilities;
 
 use LangLeap\Words\Definition;
+use Picnik;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
@@ -8,7 +9,6 @@ use LangLeap\Words\Definition;
 class EnglishDictionary implements IDictionary
 {
 	private $API_KEY = '0d275e6214609368a960d06d0d40810e58033359378726f83';
-	private $API_URL = 'http://api.wordnik.com/v4';
 	private $DICTIONARY_SOURCE = 'wiktionary';
 
 	/**
@@ -68,7 +68,7 @@ class EnglishDictionary implements IDictionary
 
 	private function instantiateConnection()
 	{
-		$client = new \Picnik;
+		$client = new Picnik;
 		$client->setApiKey($this->API_KEY);
 
 		return $client;
