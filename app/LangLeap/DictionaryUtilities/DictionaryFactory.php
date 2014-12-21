@@ -44,10 +44,10 @@ class DictionaryFactory
 
 		switch($language)
 		{
-			case "ENGLISH":
+			case "EN":
 				$dictionary = new EnglishDictionary;
 				break;
-			case "FRENCH":
+			case "FR":
 				$dictionary = new FrenchDictionary;
 				break;
 			default:

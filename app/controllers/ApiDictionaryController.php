@@ -71,9 +71,6 @@ class ApiDictionaryController extends \BaseController
 
 	private function getVideoLanguage($id)
 	{
-		//@TODO Remove this return when LANGLEAP-53 is done.
-		return "ENGLISH";
-
 		$video = Video::find($id);
 
 		if (!$video)
@@ -88,7 +85,7 @@ class ApiDictionaryController extends \BaseController
 			return null;
 		}
 
-		return strtoupper($language->description);
+		return strtoupper($language->code);
 
 	}
 }
