@@ -49,14 +49,14 @@ class EnglishDictionary implements IDictionary
 		$client = $this->instantiateConnection();
 
 		//Returns an array of Definition Objects, only take the text of the first one.
-		$definitions = $client->wordDefinitions($word)
+		$definitions = $client->wordDefinitions(strtolower($word))
 		                      ->sourceDictionaries($this->DICTIONARY_SOURCE)
 		                      ->limit(1)
 		                      ->includeRelated(false)
 		                      ->useCanonical(true)
 		                      ->get();
 
-		if(! $definitions)
+		if(!$definitions)
 		{
 			return null;
 		}

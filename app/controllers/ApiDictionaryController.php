@@ -18,7 +18,6 @@ class ApiDictionaryController extends \BaseController
 	{
 		// Ensure the word exists.
 		$word = Input::get("word");
-
 		if (!$word)
 		{
 			return $this->apiResponse(
@@ -30,7 +29,6 @@ class ApiDictionaryController extends \BaseController
 
 		// Ensure the video exists.
 		$videoId = Input::get("video_id");
-
 		if (!$videoId)
 		{
 			return $this->apiResponse(
@@ -51,7 +49,6 @@ class ApiDictionaryController extends \BaseController
 		}
 
 		$dictionary = DictionaryFactory::getInstance()->getDictionary($videoLanguage);
-
 		if (!$dictionary)
 		{
 			return $this->apiResponse(
@@ -62,7 +59,6 @@ class ApiDictionaryController extends \BaseController
 		}
 
 		$definition = $dictionary->getDefinition($word);
-
 		if (!$definition)
 		{
 			return $this->apiResponse(
