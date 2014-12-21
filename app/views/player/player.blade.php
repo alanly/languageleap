@@ -61,9 +61,6 @@
 
 		function loadVideo()
 		{
-			//REMOVE
-			loadScript();
-			//REMOVE
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
