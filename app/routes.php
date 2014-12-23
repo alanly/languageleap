@@ -123,3 +123,8 @@ Route::get('quiz', function()
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
+
+Route::get('player/player2', function()
+{
+	return View::make('player.player2');
+});
