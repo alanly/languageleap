@@ -60,7 +60,7 @@
 		}
 
 		function loadVideo()
-		{
+		{loadScript();
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -230,7 +230,7 @@
 		{
 			timer = setTimeout(function()
 			{
-				var url = '/api/metadata/dictionaryDefinitions/';
+				var url = '/api/dictionaryDefinitions/';
 				$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
 					function(data)
 					{
