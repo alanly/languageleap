@@ -18,7 +18,8 @@ class Definition extends Eloquent {
 			'word' => $this->word,
 			'definition' => $this->definition,
 			'full_definition' => $this->full_definition,
-			'pronunciation' => $this->pronunciation
+			'pronunciation' => $this->pronunciation,
+			'audio_url' => $this->audio_url,
 		);
 	}
 
