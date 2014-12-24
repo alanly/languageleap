@@ -20,9 +20,13 @@
 
 		<div id="script">
 		</div>
+		<audio id="word-audio" autoplay>
+			<p>@lang('player.audio.error')</p>
+		</audio>
 
 		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
 		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
+		<button id="mute-audio" class="pronunciations-on" title="Audio hover"></button>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
@@ -239,9 +243,12 @@
 							.tooltip('fixTitle');
 
 							$(this).attr('data-type', 'definedWord');
+							$(this).data('audio_url', data.data.audio_url);
 						});
 
 						word.tooltip('show');
+
+						$('#word-audio').attr('src', data.data.audio_url);
 					}
 				);
 
@@ -309,6 +316,7 @@
 				}).on('mouseenter', 'span[data-type=definedWord]', function()
 				{
 					$(this).addClass('word-hover');
+					$('#word-audio').attr('src', $(this).data('audio_url'));
 				})
 				.on('mouseleave', 'span[data-type=definedWord]', function()
 				{
@@ -320,8 +328,16 @@
 				$(this).toggleClass('word-selected');
 			});
 
-
 			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
+
+			$('#mute-audio').on('click', function()
+			{
+				$(this).toggleClass('pronunciations-off');
+				$(this).toggleClass('pronunciations-on');
+				
+				var $audio = $('#word-audio');
+				$audio.prop('muted', !$audio.prop('muted'));
+			});
 		});
 	</script>
 @stop
