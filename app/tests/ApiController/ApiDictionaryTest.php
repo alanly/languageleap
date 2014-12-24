@@ -18,6 +18,7 @@ class ApiDictionaryTest extends TestCase
 		$data = $response->getData()->data;
 
 		$this->assertObjectHasAttribute('definition', $data);
+		$this->assertObjectHasAttribute('audio_url', $data);
 	}
 
 	public function testWordDefinitionNotFound()
