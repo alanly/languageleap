@@ -277,6 +277,29 @@
 			word.tooltip('show');
 		}
 
+		function updateCurrentSpeaker()
+		{
+			var currentTimeInSeconds = Math.floor(this.currentTime);
+
+			// How many minutes into the video we currently are
+			var minutes = Math.floor(currentTimeInSeconds / 60);
+
+			// How many seconds into the current minute we are
+			var seconds = currentTimeInSeconds - (minutes * 60);
+
+			if (seconds < 10) { seconds = '0' + seconds; }
+			
+			var time = minutes + ':' + seconds;
+
+			var $speakers = $('#script span[data-timestamp]');
+			var $currentSpeaker = $speakers.filter('span[data-timestamp="' + time + '"]');
+			
+			if ($currentSpeaker.length >= 1)
+			{
+				$speakers.removeClass('currently-speaking');
+				$currentSpeaker.addClass('currently-speaking');
+			}
+		}
 
 		$(function()
 		{
@@ -323,6 +346,8 @@
 			{
 				$(this).toggleClass('word-selected');
 			});
+
+			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
 		});
 	</script>
 @stop
