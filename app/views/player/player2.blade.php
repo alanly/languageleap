@@ -28,8 +28,12 @@
 
 		.play-pause
 		{
-			padding-right: 20px;
 			margin-left: 20px;
+		}
+
+		.play-pause, .speed
+		{
+			padding-right: 20px;
 			color: #999;
 		}
 
@@ -45,7 +49,7 @@
 <div class="jumbotron" style="padding: 0; margin-bottom: 0;">	
 	<div id="video-container">
 
-		<video width="100%" id="video-player" autoplay>
+		<video width="100%" id="video-player">
 			<source src="../videos/TestVideo.mp4" type="video/mp4"/>
 			Your browser does not support the video tag.
 		</video>
@@ -56,10 +60,14 @@
 				<span class="glyphicon glyphicon-play"></span>
 			</a>
 
+			<a href="#" class="speed">
+				<span class="glyphicon glyphicon-fast-forward"></span>
+			</a>
+
 			<div class="video-time">
 				<span class="current">0:00</span>/<span class="duration">0:00</span>
 			</div>
-			
+
 			<a href="#" class="full-screen">
 				<span class="glyphicon glyphicon-fullscreen"></span>
 			</a>
@@ -119,11 +127,27 @@
 			{
 				$( '.glyphicon-pause' ).attr( 'class', 'glyphicon glyphicon-play' );
 			}
-
-			console.log(Math.round(videoPlayer.get(0).currentTime) == Math.round(videoPlayer.get(0).duration));
 		});
 
-		$('.mute').click(function()
+		$( '.speed' ).click( function()
+		{
+			if(videoPlayer.get(0).playbackRate == 1)
+			{
+				videoPlayer.get(0).playbackRate += 0.5;
+
+				$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
+			}
+			else
+			{
+				videoPlayer.get(0).playbackRate -= 0.5;
+
+				$( '.glyphicon-step-forward' ).attr( 'class', 'glyphicon glyphicon-fast-forward' );
+			}
+
+			console.log(videoPlayer.get(0).playbackRate);
+		});
+
+		$( '.mute' ).click(function()
 		{
 			if( !videoPlayer.get(0).muted )
 			{
@@ -139,7 +163,7 @@
 			}
 		});
 
-		$('.full-screen').on( 'click', function()
+		$( '.full-screen' ).on( 'click', function()
 		{
 			videoPlayer.get(0).webkitEnterFullscreen();
 			videoPlayer.get(0).mozRequestFullScreen();
