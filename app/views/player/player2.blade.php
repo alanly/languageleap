@@ -31,6 +31,12 @@
 			margin-left: 20px;
 		}
 
+		.progress
+		{
+			margin-left: 50px;
+			margin-right: 50px;
+		}
+
 		.play-pause, .speed
 		{
 			padding-right: 20px;
@@ -77,6 +83,11 @@
 			</a>
 		</div>
 
+	</div>
+
+	<div class="progress">
+		<div class="progress-bar" style="width: 0%;">
+		</div>
 	</div>
 </div>
 
@@ -129,6 +140,16 @@
 			}
 		});
 
+		videoPlayer.on('timeupdate', function()
+		{
+			var progressBar = $( '.progress-bar' );
+
+			var completionPercent = Math.floor(($( '.progress' ).width() / videoPlayer.get(0).duration) * videoPlayer.get(0).currentTime);
+
+			progressBar.width(completionPercent);
+			console.log(progressBar[0].style.width);
+		});
+
 		$( '.speed' ).click( function()
 		{
 			if(videoPlayer.get(0).playbackRate == 1)
@@ -143,8 +164,6 @@
 
 				$( '.glyphicon-step-forward' ).attr( 'class', 'glyphicon glyphicon-fast-forward' );
 			}
-
-			console.log(videoPlayer.get(0).playbackRate);
 		});
 
 		$( '.mute' ).click(function()
