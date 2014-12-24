@@ -59,16 +59,7 @@
 			<div class="video-time">
 				<span class="current">0:00</span>/<span class="duration">0:00</span>
 			</div>
-<!--
-			<div class="col-lg-6 col-sm-6">
-	            <div id="v-slider" style="height:200px;" class="ui-slider ui-slider-vertical ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
-	            	<div class="ui-slider-range ui-widget-header ui-corner-all ui-slider-range-min" style="height: 69%;">
-	            	</div>
-	            	<a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="bottom: 69%;">	
-	            	</a>
-	            </div>
-	        </div>
--->
+			
 			<a href="#" class="full-screen">
 				<span class="glyphicon glyphicon-fullscreen"></span>
 			</a>
@@ -120,6 +111,16 @@
 			var time = parseInt(seconds / 60, 10) + ":" + ((parseInt(seconds % 60, 10) < 10) ? "0" : "") + parseInt(seconds % 60, 10);
 
 			$('.duration').text(time);
+		});
+
+		videoPlayer.on('timeupdate', function()
+		{		
+			if(Math.round(videoPlayer.get(0).currentTime) == Math.round(videoPlayer.get(0).duration))
+			{
+				$( '.glyphicon-pause' ).attr( 'class', 'glyphicon glyphicon-play' );
+			}
+
+			console.log(Math.round(videoPlayer.get(0).currentTime) == Math.round(videoPlayer.get(0).duration));
 		});
 
 		$('.mute').click(function()
