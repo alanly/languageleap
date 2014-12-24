@@ -231,7 +231,7 @@
 			timer = setTimeout(function()
 			{
 				var url = '/api/dictionaryDefinitions/';
-				$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
+				/*$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
 					function(data)
 					{
 						$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
@@ -243,12 +243,40 @@
 
 						word.tooltip('show');
 					}
-				);
+				);*/
+
+
+				$.ajax({
+				type : 'GET',
+				url : url,
+				data: {word: word.text().trim(), video_id : "{{ $video_id }}"},
+				success : function(data)
+				{
+					setTooltipDefinition(word, data.data.definition);
+				},
+				error : function(data)
+				{
+					setTooltipDefinition(word, "Definition not found.");
+				}
+			});
 
 
 			}, 500);
 
 		}
+
+		function setTooltipDefinition(word, definition)
+		{
+			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+				$(this).attr('data-original-title', definition)
+				.tooltip('fixTitle');
+
+				$(this).attr('data-type', 'definedWord');
+			});
+
+			word.tooltip('show');
+		}
+
 
 		$(function()
 		{

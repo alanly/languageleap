@@ -61,9 +61,11 @@ class ApiDictionaryController extends \BaseController
 		$definition = $dictionary->getDefinition($word);
 		if (!$definition)
 		{
-			$definition = new Definition;
-			$definition->definition = 'Definition not found.';
-			return $this->apiResponse("success", $definition->toResponseArray());
+			return $this->apiResponse(
+				'error',
+				"Definition not found.",
+				404
+			);
 		}
 
 		return $this->apiResponse("success", $definition->toResponseArray());
