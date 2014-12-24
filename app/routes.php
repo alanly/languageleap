@@ -17,6 +17,8 @@ Route::get('/', function()
 	return View::make('index');
 });
 
+//Route for the langauge
+Route::get('/language/{lang}', 'LanguageController@setLanguage');
 
 // Routes for authentication views.
 Route::controller('auth', 'AuthController');
@@ -73,7 +75,11 @@ Route::group(['prefix' => 'api'], function()
 		
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');
+
 	});
+
+	// Query the definition API for a definition
+	Route::resource('dictionaryDefinitions', 'ApiDictionaryController');
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');

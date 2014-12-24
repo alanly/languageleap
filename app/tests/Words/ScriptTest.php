@@ -13,12 +13,15 @@ class ScriptTest extends TestCase {
 	public function testVideoRelation()
 	{
 		$script = $this->getScriptInstance();
-		$script->text='';
+		$script->text = '';
+
 		$video = $this->getVideoInstance();
-		$video->path='/path/to/somewhere';
+		$video->path = '/path/to/somewhere';
 		$video->viewable_id = 1;
 		$video->viewable_type = 'LangLeap\Videos\Commercial';
+		$video->language_id = $this->getLanguageInstance()->id;
 		$video->save();
+
 		$script->video_id = $video->id;
 		$script->save();
 		$this->assertCount(1, $script->video()->get());
@@ -33,5 +36,14 @@ class ScriptTest extends TestCase {
 		return App::make('LangLeap\Words\Script');
 	}
 	
+	protected function getLanguageInstance()
+	{
+		$lang = App::make('LangLeap\Core\Language');
+		$lang->code = 'en';
+		$lang->description = 'English';
+		$lang->save();
+
+		return $lang;
+	}
 
 }

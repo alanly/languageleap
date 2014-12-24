@@ -28,111 +28,111 @@
 
 @section('content')
 <div id="accordion" class="evoslider default">
-    <dl>
-	    <dt id="firstTab">Select Media</dt>
-	    <dd>
-	    	<div class="main" role="main">
-			    <div class="demo content">
+	<dl>
+		<dt id="firstTab">@lang('index.accordion.items.default')</dt>
+		<dd>
+			<div class="main" role="main">
+				<div class="demo content">
 						<ul>
-						    <li>
-							    <strong>Movies</strong>
-						    	<a class="tooltiptext">
-						    		<img id="movies" src="" alt="Movies">
-						    	</a>
+							<li>
+								<strong>@lang('index.accordion.movies.name')</strong>
+								<a class="tooltiptext">
+									<img id="movies" src="" alt="Movies">
+								</a>
 							</li>
-						    <li>
-						    	<strong>TV Shows</strong>
-						    	<a class="tooltiptext">
-							    	<img id="shows" src="" alt="TV Shows">
-							    </a>
-						    </li>
-						    <li>
-						    	<strong>Commercials</strong>
-						    	<a class="tooltiptext">
-							    	<img id="commercials" src="" alt="Commercials">
-							    </a>
-						    </li>
+							<li>
+								<strong>@lang('index.accordion.shows.name')</strong>
+								<a class="tooltiptext">
+									<img id="shows" src="" alt="TV Shows">
+								</a>
+							</li>
+							<li>
+								<strong>@lang('index.accordion.commercials.name')</strong>
+								<a class="tooltiptext">
+									<img id="commercials" src="" alt="Commercials">
+								</a>
+							</li>
 						</ul>
 				</div>
 			</div>
-	    </dd>
+		</dd>
 
-	    <dt id="secondTab"></dt>
-	    <dd>
-	    	<div class="main" role="main">
-			    <div class="demo content">
-			    	<div id="placeHolder"></div>
+		<dt id="secondTab"></dt>
+		<dd>
+			<div class="main" role="main">
+				<div class="demo content">
+					<div id="placeHolder"></div>
 					<ul id="container">
 					</ul>
 				</div>
 			</div>
-	    </dd>
+		</dd>
 	
-	    <dt id="thirdTab"></dt>
-	    <dd>
-	    	<div class="main" role="main">
-		    	<div class="demo content">
+		<dt id="thirdTab"></dt>
+		<dd>
+			<div class="main" role="main">
+				<div class="demo content">
 					<ul id="seasonContainer">	
 					</ul>
 				</div>
 			</div>        
-	    </dd>
+		</dd>
 	
-	    <dt id="fourthTab"></dt>
-	    <dd> 
-	    	<div class="main" role="main">
-		    	<div class="demo content">
+		<dt id="fourthTab"></dt>
+		<dd> 
+			<div class="main" role="main">
+				<div class="demo content">
 					<ul id="episodeContainer">	
 					</ul>
 				</div>
 			</div>       
-	    </dd>
+		</dd>
 
-	    <dt id="fifthTab"></dt>
-	    <dd> 
-	    	<div class="main" role="main">
-		    	<div class="demo content">
+		<dt id="fifthTab"></dt>
+		<dd> 
+			<div class="main" role="main">
+				<div class="demo content">
 					<ul id="videoContainer">	
 					</ul>
 				</div>
 			</div>       
-	    </dd>  	  	
-    </dl>
+		</dd>  	  	
+	</dl>
 </div>
 
 <script type="text/javascript">
-    var accordion = $("#accordion").evoSlider({
-        mode: "accordion",                  // Sets slider mode ("accordion", "slider", or "scroller")
-        width: screen.width - 50,           // The width of slider
-        height: screen.height - 150,        // The height of slider
-        slideSpace: 5,                      // The space between slides
+	var accordion = $("#accordion").evoSlider({
+		mode: "accordion",                  // Sets slider mode ("accordion", "slider", or "scroller")
+		width: screen.width - 50,           // The width of slider
+		height: screen.height - 150,        // The height of slider
+		slideSpace: 5,                      // The space between slides
 
-        mouse: false,                       // Enables mousewheel scroll navigation
-        keyboard: false,                    // Enables keyboard navigation (left and right arrows)
-        speed: 500,                         // Slide transition speed in ms. (1s = 1000ms)
-        easing: "swing",                    // Defines the easing effect mode (easeOutBounce, linear)
-        loop: false,                         // Rotate slideshow
+		mouse: false,                       // Enables mousewheel scroll navigation
+		keyboard: false,                    // Enables keyboard navigation (left and right arrows)
+		speed: 500,                         // Slide transition speed in ms. (1s = 1000ms)
+		easing: "swing",                    // Defines the easing effect mode (easeOutBounce, linear)
+		loop: false,                         // Rotate slideshow
 
-        autoplay: false,                    // Sets EvoSlider to play slideshow when initialized
-        interval: 5000,                     // Slideshow interval time in ms
-        pauseOnHover: false,                 // Pause slideshow if mouse over the slide
-        pauseOnClick: false,                 // Stop slideshow if playing
+		autoplay: false,                    // Sets EvoSlider to play slideshow when initialized
+		interval: 5000,                     // Slideshow interval time in ms
+		pauseOnHover: false,                 // Pause slideshow if mouse over the slide
+		pauseOnClick: false,                 // Stop slideshow if playing
 
-        directionNav: true,                 // Shows directional navigation when initialized
-        directionNavAutoHide: false,        // Shows directional navigation on hover and hide it when mouseout
+		directionNav: true,                 // Shows directional navigation when initialized
+		directionNavAutoHide: false,        // Shows directional navigation on hover and hide it when mouseout
 
-        controlNav: true,                   // Enables control navigation
-        controlNavAutoHide: false           // Shows control navigation on mouseover and hide it when mouseout
-    });
+		controlNav: true,                   // Enables control navigation
+		controlNavAutoHide: false           // Shows control navigation on mouseover and hide it when mouseout
+	});
 
 
 	$(document).ready(function() {
 		disableAllTabs();
 		$.filtrify("container", "placeHolder");
 
-		displayMoreInfo("movies", "Movies","Learn through your favorite Movies!");
-		displayMoreInfo("commercials", "Commercials", "Learn through fun and interesting Commercials!");
-		displayMoreInfo("shows", "Television Shows", "Learn through your favorite Television Shows!");
+		displayMoreInfo("movies", "@lang('index.accordion.movies.name')","@lang('index.accordion.movies.desc')");
+		displayMoreInfo("commercials", "@lang('index.accordion.commercials.name')","@lang('index.accordion.commercials.desc')");
+		displayMoreInfo("shows", "@lang('index.accordion.shows.name')","@lang('index.accordion.shows.desc')");
 	});
 	
 	$("#commercials").click(function() {
@@ -147,6 +147,17 @@
 		showsClick();
 	});
 
+	var dictionary = {
+		"selectMovies" : 			"@lang('index.accordion.movies.select')",		
+		"movies" : 					"@lang('index.accordion.movies.name')",	
+		"selectCommercials" : 		"@lang('index.accordion.commercials.select')",		
+		"commercials" : 			"@lang('index.accordion.commercials.name')",	
+		"selectShows" : 			"@lang('index.accordion.shows.select')",		
+		"shows" : 					"@lang('index.accordion.shows.name')",		
+		"selectSeason" : 			"@lang('index.accordion.seasons.select')",	
+		"selectEpisode" : 			"@lang('index.accordion.episodes.select')",	
+		"selectVideos" : 			"@lang('index.accordion.videos.select')",	
+	};
 </script>
 @stop
 

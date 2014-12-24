@@ -14,15 +14,15 @@
 		<div id="player-container">
 			<video width="100%" controls id="video-player" preload='none'>
 				<source class="source" type="video/mp4">
-				<p>Your browser does not support HTML5 video.</p>
+				<p>@lang('player.player.error')</p>
 			</video>
 		</div>
 
 		<div id="script">
 		</div>
 
-		<a class="continue btn btn-success">Continue to Quiz</a>
-		<a class="define btn btn-primary">Define Selected</a>
+		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
+		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
@@ -60,7 +60,7 @@
 		}
 
 		function loadVideo()
-		{
+		{loadScript();
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -171,7 +171,7 @@
 			{
 				//Regex test: https://www.regex101.com/r/mG8jG5/6
 				var regex = new RegExp('(\\b(' + words[i] + ')\\b)(?![^<]*>|[^<>]*<\\s*\\/)', 'ig');
-				scriptHtml = scriptHtml.replace(regex, "<span data-type='nonDefinedWord'>" + words[i] + "</span>");
+				scriptHtml = scriptHtml.replace(regex, "<span data-type='nonDefinedWord' name='" + words[i].toLowerCase() + "Word'>" + words[i] + "</span>");
 			}
 
 			$("#script").html(scriptHtml);
@@ -229,32 +229,52 @@
 		function getDefinition(word)
 		{
 			timer = setTimeout(function()
-			{ 
-				//This section will be coded once the back end to get defintions for words is done.
-				//This section will execute after 3 seconds of hovering over a non defined word.
+			{
+				var url = '/api/dictionaryDefinitions/';
+				/*$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
+					function(data)
+					{
+						$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+							$(this).attr('data-original-title', data.data.definition)
+							.tooltip('fixTitle');
 
-				/*$.getJSON('/api/metadata/definitions/' + word, function(data) {
-				var defintion = "Defintion not found";
+							$(this).attr('data-type', 'definedWord');
+						});
 
-				if (data.status == 'success')
+						word.tooltip('show');
+					}
+				);*/
+
+
+				$.ajax({
+				type : 'GET',
+				url : url,
+				data: {word: word.text().trim(), video_id : "{{ $video_id }}"},
+				success : function(data)
 				{
-					defintion = data.data.definition;
+					setTooltipDefinition(word, data.data.definition);
+				},
+				error : function(data)
+				{
+					setTooltipDefinition(word, "Definition not found.");
 				}
+			});
 
-				$word.tooltip({
-						'container': '#script',
-						'placement': 'auto top',
-						'title': definition;
-					});
-				});
-			
-				$word.tooltip({
-						'container': '#script',
-						'placement': 'auto top',
-						'title': defintion
-				});*/
-			}, 3000);
 
+			}, 500);
+
+		}
+
+		function setTooltipDefinition(word, definition)
+		{
+			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+				$(this).attr('data-original-title', definition)
+				.tooltip('fixTitle');
+
+				$(this).attr('data-type', 'definedWord');
+			});
+
+			word.tooltip('show');
 		}
 
 		function updateCurrentSpeaker()
@@ -313,13 +333,19 @@
 				{
 					$(this).removeClass('word-hover');
 					clearTimeout(timer);
+				}).on('mouseenter', 'span[data-type=definedWord]', function()
+				{
+					$(this).addClass('word-hover');
+				})
+				.on('mouseleave', 'span[data-type=definedWord]', function()
+				{
+					$(this).removeClass('word-hover');
 				});
 
 			$('#script').on('click', 'span[data-type=word]', function()
 			{
 				$(this).toggleClass('word-selected');
 			});
-
 
 			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
 		});
