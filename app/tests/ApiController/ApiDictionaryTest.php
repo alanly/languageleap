@@ -27,12 +27,11 @@ class ApiDictionaryTest extends TestCase
 		$response = $this->action('GET', 'ApiDictionaryController@index', [], ['word' => 'abcdef', 'video_id' => '1']);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseOk();
+		$this->assertResponseStatus(404);
 
 		$data = $response->getData()->data;
 
-		$this->assertObjectHasAttribute('definition', $data);
-		$this->assertSame('Definition not found.', $data->definition);
+		$this->assertSame('Definition not found.', $data);
 	}
 
 	public function testVideoIdInvalid()

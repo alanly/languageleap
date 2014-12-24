@@ -64,7 +64,7 @@
 		}
 
 		function loadVideo()
-		{
+		{loadScript();
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -234,8 +234,8 @@
 		{
 			timer = setTimeout(function()
 			{
-				var url = '/api/metadata/dictionaryDefinitions/';
-				$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
+				var url = '/api/dictionaryDefinitions/';
+				/*$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
 					function(data)
 					{
 						$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
@@ -250,11 +250,38 @@
 
 						$('#word-audio').attr('src', data.data.audio_url);
 					}
-				);
+				);*/
+
+
+				$.ajax({
+				type : 'GET',
+				url : url,
+				data: {word: word.text().trim(), video_id : "{{ $video_id }}"},
+				success : function(data)
+				{
+					setTooltipDefinition(word, data.data.definition);
+				},
+				error : function(data)
+				{
+					setTooltipDefinition(word, "Definition not found.");
+				}
+			});
 
 
 			}, 500);
 
+		}
+
+		function setTooltipDefinition(word, definition)
+		{
+			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+				$(this).attr('data-original-title', definition)
+				.tooltip('fixTitle');
+
+				$(this).attr('data-type', 'definedWord');
+			});
+
+			word.tooltip('show');
 		}
 
 		function updateCurrentSpeaker()
