@@ -260,6 +260,8 @@
 				success : function(data)
 				{
 					setTooltipDefinition(word, data.data.definition);
+					setWordAudioUrl(word, data.data.audio_url);
+					setCurrentAudio(data.data.audio_url);
 				},
 				error : function(data)
 				{
@@ -282,6 +284,18 @@
 			});
 
 			word.tooltip('show');
+		}
+
+		function setWordAudioUrl(word, url)
+		{
+			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+				$(this).data('audio_url', url);
+			});
+		}
+
+		function setCurrentAudio(url)
+		{
+			$('#word-audio').attr('src', url);
 		}
 
 		function updateCurrentSpeaker()
@@ -343,7 +357,7 @@
 				}).on('mouseenter', 'span[data-type=definedWord]', function()
 				{
 					$(this).addClass('word-hover');
-					$('#word-audio').attr('src', $(this).data('audio_url'));
+					setCurrentAudio($(this).data('audio_url'));
 				})
 				.on('mouseleave', 'span[data-type=definedWord]', function()
 				{
