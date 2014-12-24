@@ -105,13 +105,21 @@
 		});
 
 		videoPlayer.on('timeupdate', function()
-		{
-			$('.current').text(Math.round(videoPlayer.get(0).currentTime));
+		{			
+			var seconds = Math.round(videoPlayer.get(0).currentTime);
+
+			var time = parseInt(seconds / 60, 10) + ":" + ((parseInt(seconds % 60, 10) < 10) ? "0" : "") + parseInt(seconds % 60, 10);
+
+			$('.current').text(time);
 		});
 
 		videoPlayer.on('loadedmetadata', function()
 		{
-			$('.duration').text(Math.round(videoPlayer.get(0).duration));
+			var seconds = Math.round(videoPlayer.get(0).duration);
+
+			var time = parseInt(seconds / 60, 10) + ":" + ((parseInt(seconds % 60, 10) < 10) ? "0" : "") + parseInt(seconds % 60, 10);
+
+			$('.duration').text(time);
 		});
 
 		$('.mute').click(function()
