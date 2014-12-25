@@ -19,8 +19,9 @@ class EnglishDictionary implements IDictionary
 	 */
 	public function getDefinition($word)
 	{
-		//Make request here
+		//Make requests here
 		$dictionaryDefinition = $this->getWordDefinition($word);
+		$audioUrl = $this->getPronunciation($word);
 
 		if(!$dictionaryDefinition)
 		{
@@ -29,6 +30,7 @@ class EnglishDictionary implements IDictionary
 
 		$def = new Definition;
 		$def->definition = $dictionaryDefinition;
+		$def->audio_url = $audioUrl;
 		
 		return $def;
 	}
@@ -41,7 +43,21 @@ class EnglishDictionary implements IDictionary
 	 */
 	public function getPronunciation($word)
 	{
-		//@TODO
+		$client = $this->instantiateConnection();
+
+		$pronounciations = $client->wordAudio($word)
+							->limit(1)
+							->useCanonical(true)
+							->get();
+
+		if(!$pronounciations)
+		{
+			return null;
+		}
+
+		$this->closeConnection($client);
+
+		return $pronounciations[0]->fileUrl;
 	}
 
 	private function getWordDefinition($word)
