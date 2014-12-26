@@ -130,6 +130,17 @@ Route::get('quiz', function()
 // Account Registration
 Route::controller('register', 'RegistrationController');
 
+// Tutorial Video
+Route::get('rank/tutorialvideo', function()
+{
+	return View::make('rank.tutorialvideo');
+});
+
+// Tutorial Quiz
+Route::get('rank/tutorialquiz', function()
+{
+	return View::make('rank.tutorialquiz');
+});
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
