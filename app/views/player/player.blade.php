@@ -298,25 +298,47 @@
 			$('#word-audio').attr('src', url);
 		}
 
+		function getMinutesFromTimestamp(timestamp)
+		{
+			return parseInt(timestamp.split(':')[0]);
+		}
+
+		function getSecondsFromTimestamp(timestamp)
+		{
+			return parseInt(timestamp.split(':')[1]);
+		}
+
+		function getTimeInSecondsFromTimestamp(timestamp)
+		{
+			return (getMinutesFromTimestamp(timestamp) * 60) + getSecondsFromTimestamp(timestamp);
+		}
+
 		function updateCurrentSpeaker()
 		{
 			var currentTimeInSeconds = Math.floor(this.currentTime);
-
-			// How many minutes into the video we currently are
-			var minutes = Math.floor(currentTimeInSeconds / 60);
-
-			// How many seconds into the current minute we are
-			var seconds = currentTimeInSeconds - (minutes * 60);
-
-			if (seconds < 10) { seconds = '0' + seconds; }
-			
-			var time = minutes + ':' + seconds;
-
 			var $speakers = $('#script span[data-timestamp]');
-			var $currentSpeaker = $speakers.filter('span[data-timestamp="' + time + '"]');
-			
-			if ($currentSpeaker.length >= 1)
+
+			if ($speakers.length > 0)
 			{
+				var $currentSpeaker = $speakers.eq(0);
+
+				var timestamp = $currentSpeaker.data('timestamp');
+				var smallestDifference = currentTimeInSeconds - getTimeInSecondsFromTimestamp(timestamp);
+
+				// Find the speaker that produces the smallest positive difference
+				$speakers.each(function()
+				{
+					timestamp = $(this).data('timestamp');
+					var tempDifference = currentTimeInSeconds - getTimeInSecondsFromTimestamp(timestamp);
+					
+					if (tempDifference < smallestDifference &&
+						tempDifference >= 0)
+					{
+						$currentSpeaker = $(this);
+						smallestDifference = tempDifference;
+					}
+				});
+
 				$speakers.removeClass('currently-speaking');
 				$currentSpeaker.addClass('currently-speaking');
 			}
