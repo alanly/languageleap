@@ -4,7 +4,7 @@ use LangLeap\TestCase;
 use LangLeap\DictionaryUtilities\EnglishDictionary;
 use LangLeap\Core\Language;
 
-class EnglishDictionaryTest extends TestCase
+class RankTest extends TestCase
 {
 	public function setUp()
 	{
