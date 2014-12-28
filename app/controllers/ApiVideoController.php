@@ -2,7 +2,9 @@
 
 use LangLeap\Videos\Video;
 use LangLeap\Words\Script;
+use LangLeap\Core\Language;
 use LangLeap\WordUtilities\ScriptFile;
+
 /**
 * @author Thomas Rahn <thomas@rahn.ca>
 */
@@ -41,8 +43,9 @@ class ApiVideoController extends \BaseController {
 		$script_file = Input::file('script');
 		$file = Input::file('video');
 		$type = Input::get('video_type');
+		$lang = Language::find(Input::get('language_id'))->first();
 
-		$video = $this->setVideo($file,$type,null);
+		$video = $this->setVideo($file,$type,null, $lang);
 		$this->setScript($script_file, $video->id);
 
 		return $this->apiResponse("success",$video->toResponseArray());
@@ -96,9 +99,9 @@ class ApiVideoController extends \BaseController {
 		$script_file = Input::file('script');
 		$file = Input::file('video');
 		$type = Input::get('video_type');
-
+		$lang = Language::find(Input::get('language_id'))->first();
 		
-		$video = $this->setVideo($file,$type, $video);
+		$video = $this->setVideo($file,$type, $video, $lang);
 		
 		$this->setScript($script_file, $video->id,$video->script()->first());
 
@@ -158,9 +161,10 @@ class ApiVideoController extends \BaseController {
 	*
 	*	@return Video
 	*/
-	private function setVideo($file, $type, Video $video = null)
+	private function setVideo($file, $type, Video $video = null, Language $lang)
 	{
 		$ext = $file->getClientOriginalExtension();
+
 		if($video == null)
 		{
 			$video = new Video;
@@ -187,6 +191,7 @@ class ApiVideoController extends \BaseController {
 			$path = Config::get('media.paths.videos.shows');
 		}
 
+		$video->language_id = $lang->id;
 		$video->path = '';
 		$video->save();
 		

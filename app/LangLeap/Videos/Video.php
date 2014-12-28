@@ -11,6 +11,7 @@ class Video extends ValidatedModel {
 		'path'          => 'required',
 		'viewable_id'   => 'required|integer',
 		'viewable_type' => 'required',
+		'language_id'	=> 'required',
 	];
 
 

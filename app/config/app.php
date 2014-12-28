@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'YourSecretKey!!!',
+	'key' => 'XAroW00AJ09Sm0fUK7fRSEZ7U3L5lOwd',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -174,6 +174,7 @@ return array(
 		'Mail'              => 'Illuminate\Support\Facades\Mail',
 		'Paginator'         => 'Illuminate\Support\Facades\Paginator',
 		'Password'          => 'Illuminate\Support\Facades\Password',
+		'Picnik'            => 'Picnik\Client',
 		'Queue'             => 'Illuminate\Support\Facades\Queue',
 		'Redirect'          => 'Illuminate\Support\Facades\Redirect',
 		'Redis'             => 'Illuminate\Support\Facades\Redis',

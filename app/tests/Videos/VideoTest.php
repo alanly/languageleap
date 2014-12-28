@@ -9,10 +9,12 @@ class VideoTest extends TestCase {
 		$commercial = $this->getCommercialInstance();
 		$script = $this->getScriptInstance();
 		$video = $this->getVideoInstance();
+		$lang = $this->getLanguageInstance();
 
 		$video->path = '/path/to/somewhere';
 		$video->viewable_id = 1;
 		$video->viewable_type = 'LangLeap\Videos\Commercial';
+		$video->language_id = $lang->id;
 		$video->save();
 		
 		$script->video_id = $video->id;
@@ -40,6 +42,16 @@ class VideoTest extends TestCase {
 		$comm->save();
 
 		return $comm;
+	}
+	
+	protected function getLanguageInstance()
+	{
+		$lang = App::make('LangLeap\Core\Language');
+		$lang->code = 'en';
+		$lang->description = 'English';
+		$lang->save();
+
+		return $lang;
 	}
 
 }

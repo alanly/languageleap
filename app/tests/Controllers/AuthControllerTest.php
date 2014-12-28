@@ -1,6 +1,7 @@
 <?php 
 
 use LangLeap\TestCase;
+use LangLeap\Core\Language;
 
 /**
  * @author Thomas Rahn <Thomas@rahn.ca>
@@ -17,6 +18,7 @@ class AuthenticationTest extends TestCase {
 	public function setUp()
 	{
 		parent::setUp();
+		$this->seed();
 	}
 
 
@@ -141,6 +143,7 @@ class AuthenticationTest extends TestCase {
 			'email'      => $email,
 			'first_name' => 'John',
 			'last_name'  => 'Smith',
+			'language_id'=> Language::first()->id,
 			'is_admin'   => $isAdmin,
 		]);
 	}

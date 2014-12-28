@@ -51,7 +51,6 @@
 	</style>
 @stop
 
-
 @section('content')
 	<div id="wrapper">
 		<div class="error-message alert alert-danger" style="display:none; margin-top:25px;">
@@ -61,9 +60,9 @@
 		<div class="jumbotron" style="padding: 0; margin-bottom: 0;">	
 			<div id="video-container">
 
-				<video width="100%" id="video-player" preload='none' width="100%">
-					<source class="source" src="../videos/TestVideo.mp4" type="video/mp4"/>
-					Your browser does not support the video tag.
+				<video width="100%" id="video-player" preload="none">
+					<source class="source" type="video/mp4">
+					<p>@lang('player.player.error')</p>
 				</video>
 
 				<!--Player controls-->
@@ -90,21 +89,24 @@
 					</a>
 				</div>
 
-			</div>
-
-			<div class="progress">
-				<div class="progress-bar" style="width: 0%;">
+				<div class="progress">
+					<div class="progress-bar">
+					</div>
 				</div>
+
 			</div>
+			
+		</div>
+		<audio id="word-audio" autoplay>
+			<p>@lang('player.audio.error')</p>
+		</audio>
+
+		<div id="script">
 		</div>
 
-		<div>
-			<div id="script">
-			</div>
-
-			<a class="continue btn btn-success">Continue to Quiz</a>
-			<a class="define btn btn-primary">Define Selected</a>
-		</div>
+		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
+		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
+		<button id="mute-audio" class="pronunciations-on" title="Audio hover"></button>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
@@ -120,7 +122,8 @@
 		
 	<script>
 		var definitions = [];
-		
+		var timer;
+
 		function loadScript()
 		{
 			$.ajax({
@@ -128,9 +131,9 @@
 				url : '/content/scripts/{{ $video_id }}',
 				success : function(data){
 					$('#script').html(data.data[0].text);
+					addNonDefinedTags();
 					$('#script br').remove();
 					$('#script span[data-type=actor]:not(:first)').before('<br>');
-
 					loadScriptDefinitions();
 				},
 				error : function(data){
@@ -141,7 +144,7 @@
 		}
 
 		function loadVideo()
-		{
+		{loadScript();
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -182,6 +185,14 @@
 					} else {
 						// Handle failure
 					}
+				});
+			});
+
+			$('#script span[data-type=nonDefinedWord]').each(function() {
+				$(this).tooltip({
+						'container': '#script',
+						'placement': 'auto top',
+						'title': 'Loading definition...'
 				});
 			});
 		}
@@ -227,6 +238,192 @@
 			window.location = '/quiz';
 		}
 
+		function addNonDefinedTags()
+		{
+			var wordsToDefine = formatNonDefinedWords();
+			var wordsArray = wordsToDefine.split(' ');
+			var uniqueWords = removeDuplicateWords(wordsArray);
+
+			addTags(uniqueWords);
+		}
+
+		function addTags(words)
+		{
+			var scriptHtml = $("#script").html();
+
+			for(var i = 0; i < words.length; i++)
+			{
+				//Regex test: https://www.regex101.com/r/mG8jG5/6
+				var regex = new RegExp('(\\b(' + words[i] + ')\\b)(?![^<]*>|[^<>]*<\\s*\\/)', 'ig');
+				scriptHtml = scriptHtml.replace(regex, "<span data-type='nonDefinedWord' name='" + words[i].toLowerCase() + "Word'>" + words[i] + "</span>");
+			}
+
+			$("#script").html(scriptHtml);
+		}
+
+		function formatNonDefinedWords()
+		{
+			var nonDefinedWords = getTextBetweenSpans(); //Get all the text between the span tags of defined words
+			var noPunctuation = removePunctuation(nonDefinedWords); //Remove all ',' and '.' in the string
+			var noDoubleSpaces = removeDoubleSpaces(noPunctuation); //Replace any number of spaces greater than 1, with 1 space
+			var trimmedText = noDoubleSpaces.trim();
+
+			return trimmedText;
+		}
+
+		function removeDuplicateWords(words)
+		{
+			var b = {}; //Create a dictionary and add all the words as keys. Keys are unique so no duplicates
+			for (var i = 0; i < words.length; i++) 
+			{ 
+				b[words[i].toUpperCase()]=words[i];
+			}
+
+			var c = []; //Push the keys into an array
+			for (var key in b) 
+			{ 
+				c.push(b[key]); 
+			}
+
+			return c;
+		}
+
+		function getTextBetweenSpans()
+		{
+			var text = $('#script')
+									.clone()	//clone the element
+									.children()	//select all the children
+									.remove()	//remove all the children
+									.end()		//again go back to selected element
+									.text();
+
+			return text;
+		}
+
+		function removePunctuation(text)
+		{
+			return text.replace(/\./g, "").replace(/,/g, "");
+		}
+
+		function removeDoubleSpaces(text)
+		{
+			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
+		}
+
+		function getDefinition(word)
+		{
+			timer = setTimeout(function()
+			{
+				var url = '/api/dictionaryDefinitions/';
+				/*$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
+					function(data)
+					{
+						$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+							$(this).attr('data-original-title', data.data.definition)
+							.tooltip('fixTitle');
+
+							$(this).attr('data-type', 'definedWord');
+							$(this).data('audio_url', data.data.audio_url);
+						});
+
+						word.tooltip('show');
+
+						$('#word-audio').attr('src', data.data.audio_url);
+					}
+				);*/
+
+
+				$.ajax({
+				type : 'GET',
+				url : url,
+				data: {word: word.text().trim(), video_id : "{{ $video_id }}"},
+				success : function(data)
+				{
+					setTooltipDefinition(word, data.data.definition);
+					setWordAudioUrl(word, data.data.audio_url);
+					setCurrentAudio(data.data.audio_url);
+				},
+				error : function(data)
+				{
+					setTooltipDefinition(word, "Definition not found.");
+				}
+			});
+
+
+			}, 500);
+
+		}
+
+		function setTooltipDefinition(word, definition)
+		{
+			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+				$(this).attr('data-original-title', definition)
+				.tooltip('fixTitle');
+
+				$(this).attr('data-type', 'definedWord');
+			});
+
+			word.tooltip('show');
+		}
+
+		function setWordAudioUrl(word, url)
+		{
+			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+				$(this).data('audio_url', url);
+			});
+		}
+
+		function setCurrentAudio(url)
+		{
+			$('#word-audio').attr('src', url);
+		}
+
+		function getMinutesFromTimestamp(timestamp)
+		{
+			return parseInt(timestamp.split(':')[0]);
+		}
+
+		function getSecondsFromTimestamp(timestamp)
+		{
+			return parseInt(timestamp.split(':')[1]);
+		}
+
+		function getTimeInSecondsFromTimestamp(timestamp)
+		{
+			return (getMinutesFromTimestamp(timestamp) * 60) + getSecondsFromTimestamp(timestamp);
+		}
+
+		function updateCurrentSpeaker()
+		{
+			var currentTimeInSeconds = Math.floor(this.currentTime);
+			var $speakers = $('#script span[data-timestamp]');
+
+			if ($speakers.length > 0)
+			{
+				var $currentSpeaker = $speakers.eq(0);
+
+				var timestamp = $currentSpeaker.data('timestamp');
+				var smallestDifference = currentTimeInSeconds - getTimeInSecondsFromTimestamp(timestamp);
+
+				// Find the speaker that produces the smallest positive difference
+				$speakers.each(function()
+				{
+					timestamp = $(this).data('timestamp');
+					var tempDifference = currentTimeInSeconds - getTimeInSecondsFromTimestamp(timestamp);
+					
+					if (tempDifference < smallestDifference &&
+						tempDifference >= 0)
+					{
+						$currentSpeaker = $(this);
+						smallestDifference = tempDifference;
+					}
+				});
+
+				$speakers.removeClass('currently-speaking');
+				$currentSpeaker.addClass('currently-speaking');
+			}
+		}
+
 		$(function()
 		{
 			loadVideo();
@@ -249,119 +446,148 @@
 				.on('mouseleave', 'span[data-type=word]', function()
 				{
 					$(this).removeClass('word-hover');
+				})
+				.on('mouseenter', 'span[data-type=nonDefinedWord]', function()
+				{
+					$(this).addClass('word-hover');
+					getDefinition($(this));
+				})
+				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
+				{
+					$(this).removeClass('word-hover');
+					clearTimeout(timer);
+				}).on('mouseenter', 'span[data-type=definedWord]', function()
+				{
+					$(this).addClass('word-hover');
+					setCurrentAudio($(this).data('audio_url'));
+				})
+				.on('mouseleave', 'span[data-type=definedWord]', function()
+				{
+					$(this).removeClass('word-hover');
 				});
 
 			$('#script').on('click', 'span[data-type=word]', function()
 			{
 				$(this).toggleClass('word-selected');
 			});
+
+			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
+
+			$('#mute-audio').on('click', function()
+			{
+				$(this).toggleClass('pronunciations-off');
+				$(this).toggleClass('pronunciations-on');
+				
+				var $audio = $('#word-audio');
+				$audio.prop('muted', !$audio.prop('muted'));
+			});
 		});
 
-	//Player Controls
-	$( document ).ready( function() 
-	{
-		var videoPlayer = $('#video-player');
-		
-		//Play/Pause video and toggle glyph icon 
-		$( '.play-pause' ).click( function()
+		//Player Controls
+		$( document ).ready( function() 
 		{
-			if(videoPlayer.get(0).paused)
+			var videoPlayer = $('#video-player');
+			
+			//Play/Pause video and toggle glyph icon 
+			$( '.play-pause' ).click( function()
 			{
-				videoPlayer.get(0).play();
+				if(videoPlayer.get(0).paused)
+				{
+					videoPlayer.get(0).play();
 
-				$( '.glyphicon-play' ).attr( 'class', 'glyphicon glyphicon-pause' );
-			}
-			else
+					$( '.glyphicon-play' ).attr( 'class', 'glyphicon glyphicon-pause' );
+				}
+				else
+				{
+					videoPlayer.get(0).pause();
+
+					$( '.glyphicon-pause' ).attr( 'class', 'glyphicon glyphicon-play' );
+				}
+
+				return false;
+			});
+
+			//Update current time of the video
+			videoPlayer.on('timeupdate', function()
+			{			
+				var seconds = Math.round(videoPlayer.get(0).currentTime);
+
+				var time = parseInt(seconds / 60, 10) + ":" + ((parseInt(seconds % 60, 10) < 10) ? "0" : "") + parseInt(seconds % 60, 10);
+
+				$('.current').text(time);
+			});
+
+			//Update total time of the video
+			videoPlayer.on('loadedmetadata', function()
 			{
-				videoPlayer.get(0).pause();
+				var seconds = Math.round(videoPlayer.get(0).duration);
 
-				$( '.glyphicon-pause' ).attr( 'class', 'glyphicon glyphicon-play' );
-			}
+				var time = parseInt(seconds / 60, 10) + ":" + ((parseInt(seconds % 60, 10) < 10) ? "0" : "") + parseInt(seconds % 60, 10);
 
-			return false;
-		});
+				$('.duration').text(time);
+			});
 
-		//Update current time of the video
-		videoPlayer.on('timeupdate', function()
-		{			
-			var seconds = Math.round(videoPlayer.get(0).currentTime);
+			//Update Play-Pause glyph icon when video ends
+			videoPlayer.on('timeupdate', function()
+			{		
+				if(Math.round(videoPlayer.get(0).currentTime) == Math.round(videoPlayer.get(0).duration))
+				{
+					$( '.glyphicon-pause' ).attr( 'class', 'glyphicon glyphicon-play' );
+				}
+			});
 
-			var time = parseInt(seconds / 60, 10) + ":" + ((parseInt(seconds % 60, 10) < 10) ? "0" : "") + parseInt(seconds % 60, 10);
-
-			$('.current').text(time);
-		});
-
-		//Update total time of the video
-		videoPlayer.on('loadedmetadata', function()
-		{
-			var seconds = Math.round(videoPlayer.get(0).duration);
-
-			var time = parseInt(seconds / 60, 10) + ":" + ((parseInt(seconds % 60, 10) < 10) ? "0" : "") + parseInt(seconds % 60, 10);
-
-			$('.duration').text(time);
-		});
-
-		//Update Play-Pause glyph icon when video ends
-		videoPlayer.on('timeupdate', function()
-		{		
-			if(Math.round(videoPlayer.get(0).currentTime) == Math.round(videoPlayer.get(0).duration))
+			//Update video progress bar
+			videoPlayer.on('timeupdate', function()
 			{
-				$( '.glyphicon-pause' ).attr( 'class', 'glyphicon glyphicon-play' );
-			}
-		});
+				var progressBar = $( '.progress-bar' );
 
-		//Update video progress bar
-		videoPlayer.on('timeupdate', function()
-		{
-			var progressBar = $( '.progress-bar' );
+				var completionPercent = Math.floor(($( '.progress' ).width() / videoPlayer.get(0).duration) * videoPlayer.get(0).currentTime);
 
-			var completionPercent = Math.floor(($( '.progress' ).width() / videoPlayer.get(0).duration) * videoPlayer.get(0).currentTime);
+				progressBar.width(completionPercent);
+				console.log(progressBar[0].style.width);
+			});
 
-			progressBar.width(completionPercent);
-			console.log(progressBar[0].style.width);
-		});
-
-		//Toggle video speed and associated glyph icon
-		$( '.speed' ).click( function()
-		{
-			if(videoPlayer.get(0).playbackRate == 1)
+			//Toggle video speed and associated glyph icon
+			$( '.speed' ).click( function()
 			{
-				videoPlayer.get(0).playbackRate += 0.5;
+				if(videoPlayer.get(0).playbackRate == 1)
+				{
+					videoPlayer.get(0).playbackRate += 0.5;
 
-				$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
-			}
-			else
+					$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
+				}
+				else
+				{
+					videoPlayer.get(0).playbackRate -= 0.5;
+
+					$( '.glyphicon-step-forward' ).attr( 'class', 'glyphicon glyphicon-fast-forward' );
+				}
+			});
+
+			//Toggle Mute and associated glyph icon (no volume slider yet)
+			$( '.mute' ).click(function()
 			{
-				videoPlayer.get(0).playbackRate -= 0.5;
+				if( !videoPlayer.get(0).muted )
+				{
+					videoPlayer.get(0).muted = true;
 
-				$( '.glyphicon-step-forward' ).attr( 'class', 'glyphicon glyphicon-fast-forward' );
-			}
-		});
+					$('.glyphicon-volume-up').attr( 'class' , 'glyphicon glyphicon-volume-off');
+				}
+				else
+				{
+					videoPlayer.get(0).muted = false;
 
-		//Toggle Mute and associated glyph icon (no volume slider yet)
-		$( '.mute' ).click(function()
-		{
-			if( !videoPlayer.get(0).muted )
+					$('.glyphicon-volume-off').attr( 'class' , 'glyphicon glyphicon-volume-up');
+				}
+			});
+
+			//Full screen mode
+			$( '.full-screen' ).on( 'click', function()
 			{
-				videoPlayer.get(0).muted = true;
-
-				$('.glyphicon-volume-up').attr( 'class' , 'glyphicon glyphicon-volume-off');
-			}
-			else
-			{
-				videoPlayer.get(0).muted = false;
-
-				$('.glyphicon-volume-off').attr( 'class' , 'glyphicon glyphicon-volume-up');
-			}
+				videoPlayer.get(0).webkitEnterFullscreen();
+				videoPlayer.get(0).mozRequestFullScreen();
+				return false;
+			});
 		});
-
-		//Full screen mode
-		$( '.full-screen' ).on( 'click', function()
-		{
-			videoPlayer.get(0).webkitEnterFullscreen();
-			videoPlayer.get(0).mozRequestFullScreen();
-			return false;
-		});
-	});
 	</script>
 @stop
