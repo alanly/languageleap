@@ -17,7 +17,7 @@ class EnglishDictionaryTest extends TestCase
 		$this->be($this->createUser(0));
 		$response = $this->action('GET', 'RankController@getIndex', [], []);
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseOk();
 	}
 
@@ -26,8 +26,8 @@ class EnglishDictionaryTest extends TestCase
 		$this->be($this->createUser(1));
 		$response = $this->action('GET', 'RankController@getIndex', [], []);
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseOk();
+		$this->assertInstanceOf('Illuminate\Http\RedirectResponse', $response);
+		$this->assertResponseStatus(302);
 		
 	}
 
@@ -35,7 +35,7 @@ class EnglishDictionaryTest extends TestCase
 	{
 		$response = $this->action('GET', 'RankController@getIndex', [], []);
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseStatus(404);
 	}
 

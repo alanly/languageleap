@@ -11,11 +11,7 @@ class RankController extends \BaseController
 		$user = $this->getUser();
 		if(!$user)
 		{
-			return $this->apiResponse(
-				'error',
-				"Must be logged in to access this page.",
-				404
-			);
+			return Response::make("Must be logged in to access this page.", 404);
 		}
 
 		if($user->level_id == 0)

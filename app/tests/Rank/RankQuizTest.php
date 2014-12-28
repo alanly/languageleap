@@ -2,6 +2,7 @@
 
 use LangLeap\TestCase;
 use LangLeap\DictionaryUtilities\EnglishDictionary;
+use LangLeap\Core\Language;
 
 class EnglishDictionaryTest extends TestCase
 {
@@ -16,7 +17,7 @@ class EnglishDictionaryTest extends TestCase
 		$this->be($this->createUser(0));
 		$response = $this->action('GET', 'RankController@getIndex', [], []);
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseOk();
 	}
 
@@ -25,25 +26,25 @@ class EnglishDictionaryTest extends TestCase
 		$this->be($this->createUser(1));
 		$response = $this->action('GET', 'RankController@getIndex', [], []);
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseOk();
+		$this->assertInstanceOf('Illuminate\Http\RedirectResponse', $response);
+		$this->assertResponseStatus(302);
 	}
 
 	public function testGetRankQuizUserInvalid()
 	{
 		$response = $this->action('GET', 'RankController@getIndex', [], []);
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseStatus(404);
 	}
 
 
 	public function testGetRankQuizResultValid()
 	{
-		$this->be($this->createUser(1));
+		$this->be($this->createUser(0));
 		$response = $this->action('GET', 'RankController@getIndex', [], []);
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseOk();
 
 		/*
@@ -57,10 +58,10 @@ class EnglishDictionaryTest extends TestCase
 
 	public function testGetRankQuizResultInvalid()
 	{
-		$this->be($this->createUser(1));
+		$this->be($this->createUser(0));
 		$response = $this->action('GET', 'RankController@getIndex', [], []);
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseOk();
 
 		/*
