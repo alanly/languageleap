@@ -262,6 +262,7 @@
 	{
 		var videoPlayer = $('#video-player');
 		
+		//Play/Pause video and toggle glyph icon 
 		$( '.play-pause' ).click( function()
 		{
 			if(videoPlayer.get(0).paused)
@@ -280,6 +281,7 @@
 			return false;
 		});
 
+		//Update current time of the video
 		videoPlayer.on('timeupdate', function()
 		{			
 			var seconds = Math.round(videoPlayer.get(0).currentTime);
@@ -289,6 +291,7 @@
 			$('.current').text(time);
 		});
 
+		//Update total time of the video
 		videoPlayer.on('loadedmetadata', function()
 		{
 			var seconds = Math.round(videoPlayer.get(0).duration);
@@ -298,6 +301,7 @@
 			$('.duration').text(time);
 		});
 
+		//Update Play-Pause glyph icon when video ends
 		videoPlayer.on('timeupdate', function()
 		{		
 			if(Math.round(videoPlayer.get(0).currentTime) == Math.round(videoPlayer.get(0).duration))
@@ -306,6 +310,7 @@
 			}
 		});
 
+		//Update video progress bar
 		videoPlayer.on('timeupdate', function()
 		{
 			var progressBar = $( '.progress-bar' );
@@ -316,6 +321,7 @@
 			console.log(progressBar[0].style.width);
 		});
 
+		//Toggle video speed and associated glyph icon
 		$( '.speed' ).click( function()
 		{
 			if(videoPlayer.get(0).playbackRate == 1)
@@ -332,6 +338,7 @@
 			}
 		});
 
+		//Toggle Mute and associated glyph icon (no volume slider yet)
 		$( '.mute' ).click(function()
 		{
 			if( !videoPlayer.get(0).muted )
@@ -348,6 +355,7 @@
 			}
 		});
 
+		//Full screen mode
 		$( '.full-screen' ).on( 'click', function()
 		{
 			videoPlayer.get(0).webkitEnterFullscreen();
