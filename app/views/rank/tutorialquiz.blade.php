@@ -20,7 +20,7 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-md-offset-3">
-				{{ Form::open(['url' => 'tutorialquiz', 'class' => 'form-horizontal reg-form', 'role' => 'form']) }}
+				{{ Form::open(['url' => 'tutorialquiz', 'class' => 'form-horizontal reg-form', 'role' => 'form', 'action' => 'RankQuizController@rankUser']) }}
 					<div class="form-group">
 						{{ Form::label('q1', '1. What does Language Leap teach?', ['class' => 'control-label']) }}
 						<div class="col-sm-8">
