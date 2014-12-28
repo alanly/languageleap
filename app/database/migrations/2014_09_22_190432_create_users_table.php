@@ -23,8 +23,7 @@ class CreateUsersTable extends Migration {
 			$table->boolean('is_admin')->default(0);
 			$table->boolean('is_confirmed')->default(0);
 			$table->string('confirmation_code')->nullable();
-			$table->integer('level_id');
-			$table->foreign('level_id')->references('id')->on('CreateLevelsTable');
+			$table->integer('level_id')->default(0);
 			$table->rememberToken();
 		});
 	}

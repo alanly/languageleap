@@ -16,6 +16,7 @@ class CreateLevelsTable extends Migration {
 			$table->increments('id');
 			$table->string('code');
 			$table->string('description');
+		});
 	}
 
 	/**

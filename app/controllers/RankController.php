@@ -18,7 +18,7 @@ class RankController extends \BaseController
 			);
 		}
 
-		if($user->level_id == null)
+		if($user->level_id == 0)
 		{
 			return View::make('rank.tutorialvideo');
 		}

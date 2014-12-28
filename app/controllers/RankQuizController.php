@@ -2,10 +2,10 @@
 
 use LangLeap\Accounts\User;
 use LangLeap\Levels\Level;
+use LangLeap\Core\Language;
 
 class RankQuizController extends \BaseController 
 {
-	
 	public function getIndex()
 	{
 		$user = $this->getUser();
@@ -18,7 +18,7 @@ class RankQuizController extends \BaseController
 			);
 		}
 
-		if($user->level_id == null)
+		if($user->level_id == 0)
 		{
 			return View::make('rank.tutorialquiz');
 		}
@@ -33,6 +33,7 @@ class RankQuizController extends \BaseController
 	public function rankUser()
 	{
 		//Get Answers here and rank the user based on score.
+		//Make sure all the questions are answered.
 	}
 
 	private function getUser()
