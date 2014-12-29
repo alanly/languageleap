@@ -94,7 +94,10 @@ class RegistrationController extends \BaseController {
 			}
 		);
 
-		return View::make('account.registration.success');
+		Session::flash('action.failed', false);
+		Session::flash('action.message', Lang::get('auth.register.success'));
+
+		return Redirect::action('AuthController@getLogin');
 	}
 
 

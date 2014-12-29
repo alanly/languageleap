@@ -20,6 +20,7 @@ return [
 		'form_errors'   => 'There is an error in your form, please fix it and try again.|There are errors in your form, please fix them and try again.',
 		'login_account' => 'Log in to my account',
 		'page_name'     => 'Create an account',
+		'success'       => 'Your account has been created, but before you can log in, you must confirm your email address by following the link that\'s been emailed to you.',
 		'fields' => [
 			'submit' => 'Create an account',
 			'placeholders' => [
