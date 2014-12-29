@@ -17,15 +17,15 @@ class QuizTest extends TestCase {
 		$this->seed();
 	}
 	
-	public function testVideoRelation()
+	public function testVideoQuestionRelation()
 	{
 		$quiz = $this->getQuizInstance();
-		$video = $this->getVideoInstance();
-		
-		$quiz->video_id = $video->id;
 		$quiz->save();
 		
-		$this->assertCount(1, $quiz->video()->get());
+		$vq = $this->getVideoQuestionInstance();
+		$quiz->videoQuestions()->attach($vq->id);
+		
+		$this->assertCount(1, $quiz->videoQuestions()->get());
 	}
 	
 	protected function getQuizInstance()
@@ -33,23 +33,14 @@ class QuizTest extends TestCase {
 		return App::make('LangLeap\Quizzes\Quiz');
 	}
 	
-	protected function getVideoInstance()
+	protected function getVideoQuestionInstance()
 	{
-		$video = App::make('LangLeap\Videos\Video');
-		$video->path = '/path/to/somewhere';
-		$video->language_id = $this->getLanguageInstance()->id;
-		$video->viewable_id = 1;
-		$video->viewable_type = 'LangLeap\Videos\Commercial';
-		$video->save();
-		return $video;
-	}
-	protected function getLanguageInstance()
-	{
-		$lang = App::make('LangLeap\Core\Language');
-		$lang->code = 'en';
-		$lang->description = 'English';
-		$lang->save();
+		$videoQuestion = App::make('LangLeap\Quizzes\VideoQuestion');
+		$videoQuestion->question_id = 1;
+		$videoQuestion->video_id = 1;
+		$videoQuestion->is_custom = true;
+		$videoQuestion->save();
 
-		return $lang;
+		return $videoQuestion;
 	}
 }

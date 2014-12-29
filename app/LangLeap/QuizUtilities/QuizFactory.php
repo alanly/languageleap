@@ -53,42 +53,12 @@ use LangLeap\Accounts\User;
 		// Ensure the user exists
 		if(User::find($user_id) == null) return null;
 		
-		// Find the user's quiz for the video
-		$quiz = Quiz::join('videoquestions', 'videoquestions.quiz_id', '=', 'quizzes.id')
-			->join('results', 'results.videoquestion_id', '=', 'videoquestions.id')
-			->where('results.user_id', '=', $user_id)
-			->where('quizzes.video_id', '=', $video_id)->first();
-		if($quiz == null)
-		{
-			$quiz = Quiz::create([
-				'video_id'	=> $video_id
-			]);
-			$quiz->save();
-		}
+		// Create a new quiz
+		$quiz = Quiz::create([]);
 	
 		// Make a copy of the definitions collection.
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
 		$questionPrepend = 'What is the definition of ';
-		
-		// Remove questions for words that have not been selected
-		foreach($quiz->videoQuestions() as $vq)
-		{
-			$foundDefinition = false;
-			$full_definition = Answer::find($vq->question()->answer_id)->answer;
-			foreach($scriptDefinitions as $definition)
-			{
-				if($definition->full_definition == $full_definition)
-				{
-					$foundDefinition = true;
-					break;
-				}
-			}
-			
-			if(!$foundDefinition)
-			{
-				$quiz->videoQuestions()->forget($vq->id);
-			}
-		}
 		
 		// Check for questions for each selected definition
 		foreach ($selectedDefinitions as $definitionId)
@@ -97,8 +67,11 @@ use LangLeap\Accounts\User;
 			$definition = $scriptDefinitions->pull($definitionId);
 			if (! $definition) return null;
 				
-			$videoQuestion = null;
-			foreach($quiz->videoQuestions() as $vq) // See if a question for this word already exists
+			$videoQuestion = null;	
+			$videoQuestions = VideoQuestion::join('questions', 'questions.id', '=', 'videoquestions.question_id') // Try to find the video question for that word for re-use
+				->where('questions.question', 'like', '%' . $definition->word . '%');
+			
+			foreach($videoQuestions as $vq)
 			{
 				$indexOfWord = stripos($vq->question()->question, $definition->word);
 				if($indexOfWord !== false && $indexOfWord > strlen($questionPrepend) - 1) // Check index in case word appears in question (e.g.: "what")
@@ -106,14 +79,16 @@ use LangLeap\Accounts\User;
 					$videoQuestion = $vq;
 				}
 			}
+			
 			if(!$videoQuestion) // Create a video question if none exists
 			{
 				$question = $this->createQuestion($questionPrepend, $definition, 4);
 				$videoQuestion = VideoQuestion::create([
 					'question_id' 	=> $question->id,
-					'quiz_id'			=> $quiz->id,
+					'video_id'		=> $video_id,
 					'is_custom'	=> false
 				]);
+				$quiz->videoQuestions()->attach($videoQuestion->id);
 				$videoQuestion->save();
 			}
 			
@@ -128,43 +103,6 @@ use LangLeap\Accounts\User;
 		}
 		
 		$quiz->save();
-		return $quiz;
-	}
-	
-	/*
-	* This function generates a quiz that contains all of the custom questions
-	* defined for a specific video
-	*
-	* @param int $user_id
-	* @param int $video_id
-	* @return Quiz
-	*/
-	public function getCustomQuiz($user_id, $video_id)
-	{
-		// Ensure the video exists
-		if(Video::find($video_id) == null) return null;
-		
-		// Find the video's custom quiz
-		$quiz = Quiz::join('videoquestions', 'videoquestions.quiz_id', '=', 'quizzes.id')
-			->join('results', 'results.videoquestion_id', '=', 'videoquestions.id')
-			->where('videoquestions.is_custom', '=', true)
-			->where('quizzes.video_id', '=', $video_id)->first();
-		
-		// If there is no custom quiz, return null
-		if($quiz == null) return null;
-		
-		foreach($quiz->videoQuestions as $vq)
-		{
-			// Create a new result
-			$result = Result::create([
-				'videoquestion_id' 	=> $vq->id,
-				'user_id'				=> $user_id,
-				'is_correct'				=> false,
-				'timestamp'			=> date_default_timezone_get()
-			]);
-			$result->save();
-		}
-		
 		return $quiz;
 	}
 	

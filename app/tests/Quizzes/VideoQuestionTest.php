@@ -23,8 +23,8 @@ class VideoQuestionTest extends TestCase {
 	{
 		$videoQuestion = $this->getVideoQuestionInstance();
 		$question = $this->getQuestionInstance();
+		$videoQuestion->video_id = 1;
 		$videoQuestion->question_id = $question->id;
-		$videoQuestion->quiz_id = 1;
 		$videoQuestion->is_custom = false;
 		$videoQuestion->save();
 	
@@ -36,9 +36,10 @@ class VideoQuestionTest extends TestCase {
 		$videoQuestion = $this->getVideoQuestionInstance();
 		$quiz = $this->getQuizInstance();
 		$videoQuestion->question_id = 1;
-		$videoQuestion->quiz_id = $quiz->id;
+		$videoQuestion->video_id = 1;
 		$videoQuestion->is_custom = false;
 		$videoQuestion->save();
+		$videoQuestion->quiz()->attach($quiz->id);
 	
 		$this->assertCount(1, $videoQuestion->quiz()->get());
 	}
@@ -56,7 +57,6 @@ class VideoQuestionTest extends TestCase {
 	protected function getQuizInstance()
 	{
 		$quiz = App::make('LangLeap\Quizzes\Quiz');
-		$quiz->video_id = 1;
 		$quiz->save();
 
 		return $quiz;

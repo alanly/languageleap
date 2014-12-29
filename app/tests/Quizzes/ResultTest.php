@@ -9,6 +9,14 @@ use App;
 */
 class ResultTest extends TestCase {
 
+	public function setUp()
+	{
+		parent::setUp();
+
+		// Seed the database.
+		$this->seed();
+	}
+	
 	public function testVideoQuestionRelation()
 	{
 		$result = $this->getResultInstance();
@@ -38,7 +46,7 @@ class ResultTest extends TestCase {
 	{
 		$videoQuestion = App::make('LangLeap\Quizzes\VideoQuestion');
 		$videoQuestion->question_id = 1;
-		$videoQuestion->quiz_id = 1;
+		$videoQuestion->video_id = 1;
 		$videoQuestion->is_custom = true;
 		$videoQuestion->save();
 
@@ -47,7 +55,6 @@ class ResultTest extends TestCase {
 
 	protected function getUserInstance()
 	{
-		$this->seed('UserTableSeeder');
 		return \LangLeap\Accounts\User::first();
 	}
 
