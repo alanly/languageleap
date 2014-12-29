@@ -7,10 +7,12 @@ return [
 		'create_account' => 'Create an account',
 		'page_name'      => 'Log in',
 		'fields' => [
-			'username' => 'Username',
-			'password' => 'Password',
+			'submit' => 'Log in',
 			'remember' => 'Remember me',
-			'login'    => 'Log in',
+			'placeholders' => [
+				'username' => 'Username',
+				'password' => 'Password',
+			]
 		],
 	],
 
@@ -19,6 +21,7 @@ return [
 		'login_account' => 'Log in to my account',
 		'page_name'     => 'Create an account',
 		'fields' => [
+			'submit' => 'Create an account',
 			'placeholders' => [
 				'username'              => 'Username',
 				'password'              => 'Password',
@@ -26,7 +29,6 @@ return [
 				'email'                 => 'Email',
 				'first_name'            => 'First name',
 				'last_name'             => 'Last name',
-				'create_account'        => 'Create an account',
 			],
 			'titles' => [
 				'username'              => 'Usernames can consist of alphanumerics as well as dashes and underscores.',
