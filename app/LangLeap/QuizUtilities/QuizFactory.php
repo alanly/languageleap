@@ -102,6 +102,20 @@ use LangLeap\Accounts\User;
 			$result->save();
 		}
 		
+		// Attach all of the custom questions to the quiz
+		$videoQuestions = VideoQuestion::where('video_id', '=', $video_id)->where('is_custom', '=', true)->get();
+		foreach($videoQuestions as $vq)
+		{
+			// Create a new result
+			$result = Result::create([
+				'videoquestion_id' 	=> $vq->id,
+				'user_id'				=> $user_id,
+				'is_correct'				=> false,
+				'timestamp'			=> date_default_timezone_get()
+			]);
+			$quiz->attach($vq);
+		}
+		
 		$quiz->save();
 		return $quiz;
 	}
