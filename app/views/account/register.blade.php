@@ -30,6 +30,12 @@
 			@unless ($errors->isEmpty())
 			<div class="alert-message alert alert-warning">
 				<p>@choice('auth.register.form_errors', $errors->count())</p>
+
+				<ul>
+				@foreach($errors->all('<li>:message</li>') as $e)
+					{{ $e }}
+				@endforeach
+				</ul>
 			</div>
 			@endunless
 
@@ -40,7 +46,7 @@
 						Input::old('username'),
 						[
 							'id'          => 'username-field',
-							'class'       => 'form-control input-lg',
+							'class'       => 'form-control input-lg'.($errors->has('username') ? ' has-error' : ''),
 							'placeholder' => Lang::get('auth.register.fields.placeholders.username'),
 							'required'    => 'required',
 							'pattern'     => '[\w\-]+',
@@ -53,7 +59,7 @@
 						'password',
 						[
 							'id'          => 'password-field',
-							'class'       => 'form-control input-lg',
+							'class'       => 'form-control input-lg'.($errors->has('password') ? ' has-error' : ''),
 							'placeholder' => Lang::get('auth.register.fields.placeholders.password'),
 							'required'    => 'required',
 							'pattern'     => '.{6,}',
@@ -66,7 +72,7 @@
 						'password_confirmation',
 						[
 							'id'          => 'password-confirmation-field',
-							'class'       => 'form-control input-lg',
+							'class'       => 'form-control input-lg'.($errors->has('password_confirmation') ? ' has-error' : ''),
 							'placeholder' => Lang::get('auth.register.fields.placeholders.password_confirmation'),
 							'required'    => 'required',
 							'pattern'     => '.{6,}',
@@ -82,7 +88,7 @@
 						Input::old('email'),
 						[
 							'id'          => 'email-field',
-							'class'       => 'form-control input-lg',
+							'class'       => 'form-control input-lg'.($errors->has('email') ? ' has-error' : ''),
 							'placeholder' => Lang::get('auth.register.fields.placeholders.email'),
 							'required'    => 'required',
 							'title'       => Lang::get('auth.register.fields.titles.email'),
@@ -95,7 +101,7 @@
 						Input::old('first_name'),
 						[
 							'id'          => 'first-name-field',
-							'class'       => 'form-control input-lg',
+							'class'       => 'form-control input-lg'.($errors->has('first_name') ? ' has-error' : ''),
 							'placeholder' => Lang::get('auth.register.fields.placeholders.first_name'),
 							'required'    => 'required',
 							'title'       => Lang::get('auth.register.fields.titles.first_name'),
@@ -108,7 +114,7 @@
 						Input::old('last_name'),
 						[
 							'id'          => 'last-name-field',
-							'class'       => 'form-control input-lg',
+							'class'       => 'form-control input-lg'.($errors->has('last_name') ? ' has-error' : ''),
 							'placeholder' => Lang::get('auth.register.fields.placeholders.last_name'),
 							'required'    => 'required',
 							'title'       => Lang::get('auth.register.fields.titles.last_name'),
