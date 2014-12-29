@@ -51,6 +51,9 @@ Route::group(['prefix' => 'admin'], function()
 	{
 		return View::make('admin.script.index');
 	});
+	
+	// new media upload
+	Route::any('add-new-form-submit', 'FileUploadController@saveMedia');
 
 });
 
