@@ -1,7 +1,7 @@
 #wrapper {
 	margin: 0 auto;
 	padding-top: 50px;
-	width: 1200px;
+	max-width: 1200px;
 }
 
 #player-container {
@@ -10,11 +10,14 @@
 }
 
 #script {
+	border: 1px solid #000;
 	float: right;
 	line-height: 45px;
 	letter-spacing: 3px;
-	padding-left: 30px;
-	width: 600px;
+	max-height: 290px;
+	overflow-y: auto;
+	padding: 15px;
+	width: 590px;
 }
 
 [data-type=actor] {
@@ -35,4 +38,36 @@
 
 .word-selected {
 	background-color: #DD8D8D;
+}
+
+.continue {
+	float: right;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+.define {
+	float: right;
+	margin-top: 10px;
+}
+
+.currently-speaking {
+	background-color: #5CB85C;
+}
+
+#mute-audio {
+	background-size: 32px;
+	border: 0;
+	float: right;
+	height: 32px;
+	margin: 10px 20px 0 0;
+	width: 32px;
+}
+
+.pronunciations-on {
+	background: url(http://cdn.flaticon.com/png/64/498.png) no-repeat center;
+}
+
+.pronunciations-off {
+	background: url(http://cdn.flaticon.com/png/64/60750.png) no-repeat center;
 }

@@ -1,15 +1,11 @@
 <?php namespace LangLeap\Payments;
 
 use LangLeap\TestCase;
+use LangLeap\Accounts\User;
 use App;
 
 class InvoiceTest extends TestCase {
 
-	/**
-	 * Testing getting all seasons for a particular show.
-	 *
-	 * @return void
-	 */
 	public function testUserRelation()
 	{
 		$user = $this->getUserInstance();
@@ -26,14 +22,16 @@ class InvoiceTest extends TestCase {
 		$invoice->save();
 		$this->assertCount(1, $invoice->user()->get());			
 	}
+
 	protected function getUserInstance()
 	{
-		return App::make('LangLeap\Accounts\User');
+		$this->seed();
+		return User::first();
 	}
+
 	protected function getInvoiceInstance()
 	{
 		return App::make('LangLeap\Payments\Invoice');
 	}
-	
 
 }

@@ -13,7 +13,15 @@
 
 App::before(function($request)
 {
-	//
+	/**
+	 * Store the current CSRF token in a cookie.
+	 */
+	if (! App::runningUnitTests())
+	{
+		setcookie('CSRF-TOKEN', csrf_token());
+	}
+
+	App::setlocale(Session::get('lang','en'));
 });
 
 
@@ -43,7 +51,7 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('login');
+			return Redirect::guest('/auth/login');
 		}
 	}
 });
@@ -83,7 +91,10 @@ Route::filter('guest', function()
 
 Route::filter('csrf', function()
 {
-	if (Session::token() != Input::get('_token'))
+	// Fetch token from input fields; if null, fetch token from request header.
+	$token = Input::get('_token', Request::header('X-CSRF-TOKEN'));
+
+	if (Session::token() !== $token)
 	{
 		throw new Illuminate\Session\TokenMismatchException;
 	}

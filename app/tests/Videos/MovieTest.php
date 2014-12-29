@@ -36,6 +36,7 @@ class MovieTest extends TestCase {
 	{
 		$video =  App::make('LangLeap\Videos\Video');
 		$video->path = '/path/to/somewhere';
+		$video->language_id = $this->getLanguageInstance()->id;
 		return $video;
 	}
 	
@@ -44,4 +45,13 @@ class MovieTest extends TestCase {
 		return App::make('LangLeap\Words\Script');
 	}	
 
+	protected function getLanguageInstance()
+	{
+		$lang = App::make('LangLeap\Core\Language');
+		$lang->code = 'en';
+		$lang->description = 'English';
+		$lang->save();
+
+		return $lang;
+	}
 }

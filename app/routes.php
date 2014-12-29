@@ -10,11 +10,18 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
 // Accordion
 Route::get('/', function()
 {
 	return View::make('index');
 });
+
+//Route for the langauge
+Route::get('/language/{lang}', 'LanguageController@setLanguage');
+
+// Routes for authentication views.
+Route::controller('auth', 'AuthController');
 
 
 // Route grouping for administration interface.
@@ -68,19 +75,23 @@ Route::group(['prefix' => 'api'], function()
 		
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');
+
 	});
 
-	// Route to get the definitions of specific words
-	Route::post('words/definitions', 'ApiWordController@getMultipleWords');
-
-	// Words
-	Route::resource('words', 'ApiWordController');
+	// Query the definition API for a definition
+	Route::resource('dictionaryDefinitions', 'ApiDictionaryController');
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
 	
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
+
+	// Quiz
+	Route::controller('quiz', 'ApiQuizController');
+
+	// Registration
+	Route::resource('users','ApiUserController');
 
 });
 
@@ -94,15 +105,31 @@ Route::group(array('prefix' => 'content'), function()
 
 	// Handle requests for scripts.
 	Route::get('scripts/{id}', 'ScriptContentController@getScript');
+
 });
 
 
-//video player
+// Video Player
 Route::get('/video/play/{id}', function($id)
 {
-    return View::make('player.player')->with("video_id",$id);
+	return View::make('player.player')->with('video_id', $id);
 });
 
 
 // Flashcard
 Route::controller('flashcard', 'FlashcardController');
+
+
+// Quiz View
+Route::get('quiz', function()
+{
+	return View::make('quiz.main');
+});
+
+
+// Account Registration
+Route::controller('register', 'RegistrationController');
+
+
+// CSRF Test Route
+Route::any('test/csrf', ['before' => 'csrf', function() {}]);

@@ -5,9 +5,9 @@ function commercialsClick()
 	disableExtraTabs();
 	clearTabs();
 	accordion.next();
-	setTabName("firstTab", "commercials");
-	setTabName("secondTab", "Select Commercial");
-	setTabName("thirdTab", "Select Video");
+	setTabName("firstTab", dictionary.commercials);
+	setTabName("secondTab", dictionary.selectCommercials);
+	setTabName("thirdTab", dictionary.selectVideos);
 
 	$("#secondTab").removeClass("disabled");
 	$("#thirdTab").removeClass("disabled");
@@ -23,9 +23,9 @@ function moviesClick()
 	disableExtraTabs();
 	clearTabs();
 	accordion.next();
-	setTabName("firstTab", "movies");
-	setTabName("secondTab", "Select Movie");
-	setTabName("thirdTab", "Select Video");
+	setTabName("firstTab", dictionary.movies);
+	setTabName("secondTab", dictionary.selectMovies);
+	setTabName("thirdTab", dictionary.selectVideos);
 
 	$("#secondTab").removeClass("disabled");
 	$("#thirdTab").removeClass("disabled");
@@ -41,11 +41,11 @@ function showsClick()
 	enableExtraTabs();
 	clearTabs();
 	accordion.next();
-	setTabName("firstTab", "shows");
-	setTabName("secondTab", "Select Shows");
-	setTabName("thirdTab", "Select Season");
-	setTabName("fourthTab", "Select Episode");
-	setTabName("fifthTab", "Select Video");
+	setTabName("firstTab", dictionary.shows);
+	setTabName("secondTab", dictionary.selectShows);
+	setTabName("thirdTab", dictionary.selectSeason);
+	setTabName("fourthTab", dictionary.selectEpisode);
+	setTabName("fifthTab", dictionary.selectVideos);
 
 	accordion.bindClicker(1);
 	$("#secondTab").removeClass("disabled");

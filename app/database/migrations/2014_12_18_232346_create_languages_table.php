@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserProgressTable extends Migration {
+class CreateLanguagesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,10 @@ class CreateUserProgressTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('user_progress', function($table){
+		Schema::create('languages', function($table){
 			$table->increments('id');
-			$table->integer('user_id')->unsigned();
-			$table->integer('word_id')->unsigned();
-
+			$table->string('code');
+			$table->string('description');
 		});
 	}
 
@@ -27,7 +26,7 @@ class CreateUserProgressTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('user_progress');
+		Schema::dropIfExists('languages');
 	}
 
 }

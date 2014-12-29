@@ -9,7 +9,6 @@ use Eloquent;
 class Definition extends Eloquent {
 
 	public    $timestamps = false;
-	protected $table      = 'definitions';
 	protected $fillable   = ['word', 'definition', 'full_definition', 'pronunciation'];
 	
 	public function toResponseArray()
@@ -19,7 +18,8 @@ class Definition extends Eloquent {
 			'word' => $this->word,
 			'definition' => $this->definition,
 			'full_definition' => $this->full_definition,
-			'pronunciation' => $this->pronunciation
+			'pronunciation' => $this->pronunciation,
+			'audio_url' => $this->audio_url,
 		);
 	}
 

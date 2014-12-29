@@ -20,7 +20,6 @@ class ApiCommercialController extends \BaseController {
 	{
 		$commercial = Commercial::all();
 		
-
 		return $this->apiResponse(
 			'success',
 			$commercial->toArray()
