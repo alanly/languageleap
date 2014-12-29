@@ -27,7 +27,7 @@ class RegistrationController extends \BaseController {
 
 	public function getIndex()
 	{
-		return View::make('account.registration.index');
+		return View::make('account.register');
 	}
 
 

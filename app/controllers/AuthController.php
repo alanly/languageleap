@@ -17,9 +17,9 @@ class AuthController extends BaseController {
 
 	public function getLogin()
 	{
-		if (Auth::check()) return $this->authRedirect();
+		if (Auth::check()) return $this->intendedRedirect();
 
-		return View::make('auth.login');
+		return View::make('account.login');
 	}
 
 
@@ -44,7 +44,7 @@ class AuthController extends BaseController {
 		// Set the language.
 		Session::put('lang', Auth::user()->language);
 
-		return $this->authRedirect();
+		return $this->intendedRedirect();
 	}
 
 
@@ -56,7 +56,7 @@ class AuthController extends BaseController {
 
 		if ($failed)
 		{
-			return Redirect::back()
+			return Redirect::action('AuthController@getLogin')
 				->with('action.failed', true)
 				->with('action.message', 'Unable to logout. Please contact an administrator.');
 		}
@@ -67,7 +67,7 @@ class AuthController extends BaseController {
 	}
 
 
-	protected function authRedirect()
+	protected function intendedRedirect()
 	{
 		return Redirect::intended((Auth::user()->is_admin) ? '/admin' : '/');
 	}
