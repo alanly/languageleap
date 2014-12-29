@@ -9,7 +9,7 @@ class Quiz extends Eloquent {
 
 	public function videoQuestions()
 	{
-		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
+		return $this->belongsToMany('LangLeap\Quizzes\VideoQuestion', 'videoquestion_quiz', 'quiz_id', 'videoquestion_id');
 	}
 	
 	public function user()
