@@ -1,5 +1,7 @@
 <?php
 
+use LangLeap\Core\Language;
+
 class UserTableSeeder extends Seeder {
 
 	/**
@@ -13,23 +15,28 @@ class UserTableSeeder extends Seeder {
 		DB::table('users')->delete();
 
 		$user = App::make('LangLeap\Accounts\User');
+		$lang = Language::first();
 
 		$user->create([
-			'username'   => 'administrator',
-			'password'   => Hash::make('password'),
-			'email'      => 'admin@test.com',
-			'first_name' => 'John',
-			'last_name'  => 'Smith',
-			'is_admin'   => true,
+			'username'      => 'administrator',
+			'password'      => Hash::make('password'),
+			'email'         => 'admin@test.com',
+			'first_name'    => 'John',
+			'last_name'     => 'Smith',
+			'language_id'   => $lang->id,
+			'is_admin'      => true,
+			'is_confirmed'	=> true
 		]);
 
 		$user->create([
-			'username'   => 'user',
-			'password'   => Hash::make('password'),
-			'email'      => 'user@test.com',
-			'first_name' => 'Jane',
-			'last_name'  => 'Smith',
-			'is_admin'   => false,
+			'username'      => 'user',
+			'password'      => Hash::make('password'),
+			'email'         => 'user@test.com',
+			'first_name'    => 'Jane',
+			'last_name'     => 'Smith',
+			'language_id'   => $lang->id,
+			'is_admin'      => false,
+			'is_confirmed'	=> true
 		]);
 	}
 

@@ -14,13 +14,15 @@ class UpdatVideoquestionTable extends Migration {
 	{
 		Schema::table('videoquestions', function($table)
 		{
-			$table->dropColumn(array('video_id'));
-			
+			if (Schema::hasColumn('videoquestions', 'video_id'))
+			{
+				$table->dropColumn(array('video_id'));
+			}
 		});
 		
 		Schema::table('videoquestions', function($table)
 		{
-			$table->integer('quiz_id')->unsigned()->default(-1);
+			$table->integer('quiz_id')->unsigned()->default(1);
 		});
 	}
 

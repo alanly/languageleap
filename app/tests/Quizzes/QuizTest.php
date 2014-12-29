@@ -37,9 +37,19 @@ class QuizTest extends TestCase {
 	{
 		$video = App::make('LangLeap\Videos\Video');
 		$video->path = '/path/to/somewhere';
+		$video->language_id = $this->getLanguageInstance()->id;
 		$video->viewable_id = 1;
 		$video->viewable_type = 'LangLeap\Videos\Commercial';
 		$video->save();
 		return $video;
+	}
+	protected function getLanguageInstance()
+	{
+		$lang = App::make('LangLeap\Core\Language');
+		$lang->code = 'en';
+		$lang->description = 'English';
+		$lang->save();
+
+		return $lang;
 	}
 }
