@@ -20,11 +20,13 @@
 			<div>
 				<h3 class="brand">Language Leap</h3>
 			</div>
-			@if (Session::get('action.failed') === true)
-			<div class="alert-message alert alert-danger">
-				<p>{{{ Session::get('action.message', Lang::get('auth.login.form_errors')) }}}</p>
+
+			@if (Session::has('action.message'))
+			<div class="alert-message alert {{ Session::get('action.failed') === true ? 'alert-danger' : 'alert-success' }}">
+				<p>{{{ Session::get('action.message') }}}</p>
 			</div>
 			@endif
+
 			<div class="form-group input-group">
 				{{
 					Form::text(

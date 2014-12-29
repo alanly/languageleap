@@ -41,4 +41,14 @@ return [
 		],
 	],
 
+	'verify' => [
+		'activated' => 'Your account has been activated! You can now proceed to log in to your account.',
+		'incorrect' => 'The confirmation link you followed was invalid.',
+	],
+
+	'logout' => [
+		'success' => 'You have logged out.',
+		'error'   => 'An error occured while attempting to log out. Please try again.',
+	],
+
 ];

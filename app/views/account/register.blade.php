@@ -20,11 +20,19 @@
 			<div class="form-group">
 				<h3 class="brand">Language Leap</h3>
 			</div>
+
+			@if (Session::has('action.message'))
+			<div class="alert-message alert {{ Session::get('action.failed') === true ? 'alert-danger' : 'alert-success' }}">
+				<p>{{{ Session::get('action.message') }}}</p>
+			</div>
+			@endif
+
 			@unless ($errors->isEmpty())
-			<div class="alert-message alert alert-danger">
+			<div class="alert-message alert alert-warning">
 				<p>@choice('auth.register.form_errors', $errors->count())</p>
 			</div>
 			@endunless
+
 			<div class="form-group input-group">
 				{{
 					Form::text(
@@ -113,6 +121,4 @@
 			</div>
 		{{ Form::close() }}
 	</div>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
 @stop
