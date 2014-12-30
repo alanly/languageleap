@@ -26,6 +26,7 @@ class FileUploadController extends \BaseController {
 		else if ($type == "show")
 		{
 			$response = App::make('ApiShowController', Input::all())->store();
+			$response = App::make('ApiSeasonController', array('number' => 1))->store();
 			
 		}
 		else if ($type == "movie")
