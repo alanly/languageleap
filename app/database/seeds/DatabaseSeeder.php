@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder {
 		Eloquent::unguard();
 
 		$this->call('LanguageTableSeeder');
+		$this->call('LevelTableSeeder');
 		$this->call('MovieTableSeeder');
 		$this->call('ShowTableSeeder');
 		$this->call('CommercialTableSeeder');

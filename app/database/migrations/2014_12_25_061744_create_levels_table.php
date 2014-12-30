@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateShowTable extends Migration {
+class CreateLevelsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,10 @@ class CreateShowTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('shows', function($table){
+		Schema::create('levels', function($table){
 			$table->increments('id');
-			$table->string('name');
+			$table->string('code');
 			$table->string('description');
-			$table->string('image_path')->nullable();
-			$table->string('director')->nullable();
-			$table->string('actor')->nullable();
-			$table->string('genre')->nullable();		
 		});
 	}
 
@@ -30,7 +26,7 @@ class CreateShowTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('shows');
+		Schema::dropIfExists('levels');
 	}
 
 }
