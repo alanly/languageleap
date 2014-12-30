@@ -39,7 +39,18 @@ class AuthController extends BaseController {
 			Session::flash('action.failed', true);
 			Session::flash('action.message', Lang::get('auth.login.form_errors'));
 
-			return Redirect::action('AuthController@getLogin');
+			return Redirect::action('AuthController@getLogin')->withInput();
+		}
+
+		// Make sure the user is verified.
+		if (! Auth::user()->is_confirmed)
+		{
+			Auth::logout();
+			
+			Session::flash('action.failed', true);
+			Session::flash('action.message', Lang::get('auth.login.unverified'));
+
+			return Redirect::action('AuthController@getLogin')->withInput();
 		}
 
 		// Set the language.
