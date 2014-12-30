@@ -18,7 +18,6 @@ class AuthenticationTest extends TestCase {
 	public function setUp()
 	{
 		parent::setUp();
-		//$this->seed();
 	}
 
 
