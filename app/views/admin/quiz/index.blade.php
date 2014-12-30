@@ -6,6 +6,9 @@
 @stop
 
 @section('content')
+	<?php
+		use LangLeap\Videos\Video;
+	?>
 	<div class="col-md-6 col-md-offset-3">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
@@ -14,6 +17,20 @@
 			<div class="panel-body">
 			<?php
 				echo Form::open(array('url' => '#', 'method' => 'post'));
+				
+				echo '<div class="form-group"/>';
+				echo Form::label('video', 'Video', array('class' => 'control-label'));
+				
+				$dropdowns = array();
+				$videos = Video::all()->all();
+				foreach($videos as $v)
+				{
+					$media = $v->viewable;
+					$dropdowns[$v->id] = $media->name;
+				}
+				
+				echo Form::select('video', $dropdowns, array('class' => 'form-control'));
+				echo '</div>';
 				
 				echo '<div class="form-group"/>';
 				echo Form::label('question', 'Question', array('class' => 'control-label'));
