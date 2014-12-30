@@ -15,6 +15,7 @@ class VideoTest extends TestCase {
 		$video->viewable_id = 1;
 		$video->viewable_type = 'LangLeap\Videos\Commercial';
 		$video->language_id = $lang->id;
+		$video->level_id = 1;
 		$video->save();
 		
 		$script->video_id = $video->id;
