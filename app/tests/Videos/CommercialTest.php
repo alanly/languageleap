@@ -13,7 +13,6 @@ class CommercialTest extends TestCase {
 	 */
 	public function testVideoRelation()
 	{
-
 		$comm = $this->getCommercialInstance();
 		$script = $this->getScriptInstance();
 

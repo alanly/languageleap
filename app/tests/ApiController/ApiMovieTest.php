@@ -54,7 +54,7 @@ class ApiMovieTest extends TestCase {
 			'POST',
 			'ApiMovieController@store',
 			[],
-			['name' => 'Test', 'level_id' => 1]
+			['name' => 'Test']
 		);
 
 		$this->assertResponseStatus(201);

@@ -6,8 +6,7 @@ abstract class Media extends ValidatedModel{
 
 	private $fields = ['name', 'description', 'level_id'];
 	private $fieldRules  = [
-						'name'			=> 'required',
-						'level_id'		=> 'required'
+						'name'	=> 'required'
 						];
 
 	public function getFillable()
@@ -18,6 +17,11 @@ abstract class Media extends ValidatedModel{
 	public function getRules()
 	{
 		return $this->fieldRules;
+	}
+
+	public function level()
+	{
+		return $this->belongsTo('LangLeap\Levels\Level');
 	}
 
 	abstract public function videos();

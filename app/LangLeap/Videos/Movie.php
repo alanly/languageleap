@@ -35,6 +35,7 @@ class Movie extends Media implements Billable {
 			'actor' => $movie->actor,
 			'genre' => $movie->genre,
 			'videos' => $videos_array,
+			'level' => parent::level()->get(["description"]),
 		);
 	}
 
