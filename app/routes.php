@@ -17,11 +17,22 @@ Route::get('/', function()
 	return View::make('index');
 });
 
-//Route for the langauge
+
+// Route for setting the language.
 Route::get('/language/{lang}', 'LanguageController@setLanguage');
 
-// Routes for authentication views.
-Route::controller('auth', 'AuthController');
+
+// Routes for login and logout.
+Route::group(['prefix' => 'login'], function()
+{
+	Route::get('/', 'AuthController@getLogin');
+	Route::post('/', 'AuthController@postLogin');
+});
+Route::get('logout', 'AuthController@getLogout');
+
+
+// Routes for registration and associated views.
+Route::controller('register', 'RegistrationController');
 
 
 // Route grouping for administration interface.
@@ -125,10 +136,6 @@ Route::get('quiz', function()
 {
 	return View::make('quiz.main');
 });
-
-
-// Account Registration
-Route::controller('register', 'RegistrationController');
 
 
 // CSRF Test Route

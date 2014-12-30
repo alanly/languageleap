@@ -17,9 +17,9 @@ class AuthController extends BaseController {
 
 	public function getLogin()
 	{
-		if (Auth::check()) return $this->authRedirect();
+		if (Auth::check()) return $this->intendedRedirect();
 
-		return View::make('auth.login');
+		return View::make('account.login');
 	}
 
 
@@ -36,15 +36,16 @@ class AuthController extends BaseController {
 		if (! $success)
 		{
 			// Redirect to login page with appropriate error messages.
-			return Redirect::action('AuthController@getLogin')
-				->with("action.failed", true)
-				->with("action.message", "Invalid username or password");
+			Session::flash('action.failed', true);
+			Session::flash('action.message', Lang::get('auth.login.form_errors'));
+
+			return Redirect::action('AuthController@getLogin');
 		}
 
 		// Set the language.
 		Session::put('lang', Auth::user()->language);
 
-		return $this->authRedirect();
+		return $this->intendedRedirect();
 	}
 
 
@@ -52,22 +53,22 @@ class AuthController extends BaseController {
 	{
 		Auth::logout();
 
-		$failed = Auth::check();
-
-		if ($failed)
+		if (Auth::check())
 		{
-			return Redirect::back()
-				->with('action.failed', true)
-				->with('action.message', 'Unable to logout. Please contact an administrator.');
+			Session::flash('action.failed', true);
+			Session::flash('action.message', Lang::get('auth.logout.error'));
+
+			return Redirect::to('/');
 		}
 
-		return Redirect::action('AuthController@getLogin')
-			->with('action.failed', false)
-			->with('action.message', 'You have been logged out.');
+		Session::flash('action.failed', false);
+		Session::flash('action.message', Lang::get('auth.logout.success'));
+
+		return Redirect::action('AuthController@getLogin');
 	}
 
 
-	protected function authRedirect()
+	protected function intendedRedirect()
 	{
 		return Redirect::intended((Auth::user()->is_admin) ? '/admin' : '/');
 	}

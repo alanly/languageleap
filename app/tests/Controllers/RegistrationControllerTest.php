@@ -48,10 +48,6 @@ class RegistrationControllerTest extends TestCase {
 		$this->assertSame($userData['last_name'], $user->last_name);
 		$this->assertTrue(Hash::check($userData['password'], $user->password));
 		$this->assertSame($user->is_confirmed, '0');
-		$this->assertContains(
-			'You have successfully registered! A confirmation email has been sent.',
-			$response->getContent()
-		);
 	}
 
 	public function testFailsWhenCreatingADuplicateUser()
@@ -97,10 +93,6 @@ class RegistrationControllerTest extends TestCase {
 		$user = User::where('username', $userData['username'])->first();
 
 		$this->assertSame($user->is_confirmed, '1');
-		$this->assertContains(
-			'You have successfully verified your account! Please login.',
-			$response->getContent()
-		);
 	}
 
 	public function testFailsConfirmingANonExistingUser()
