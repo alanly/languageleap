@@ -44,9 +44,9 @@
 							</div>
 							<div id="info-default-form-level" class="form-group">
 								<label>Level</label>
-								<select id="info-default-form-level-select" name="media-level" class="form-control">
+								<select id="info-default-form-level-select" name="level_id" class="form-control">
 									@foreach($levels as $level)
-	    								<option value=" {{ $level->id }}">{{ $level->description }}</option>
+	    								<option value="{{ $level->id }}">{{ $level->description }}</option>
 									@endforeach
 								</select>
 							</div>

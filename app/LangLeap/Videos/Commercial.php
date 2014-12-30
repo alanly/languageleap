@@ -34,15 +34,17 @@ class Commercial extends Media {
 		$comm = $this;
 		$videos = $comm->videos()->get();
 		$videos_array = array();
+
 		foreach($videos as $video){
 			$videos_array[] = $video->toResponseArray();
 		}
+
 		return array(
-			'id' => $comm->id,
-			'name' => $comm->name,
-			'description' => $comm->description,
-			'videos' => $videos_array,
-			'level' => parent::level()->get(["description"]),
+			'id' 			=> $comm->id,
+			'name' 			=> $comm->name,
+			'description' 	=> $comm->description,
+			'videos' 		=> $videos_array,
+			'level' 		=> parent::level()->get(["description"]),
 		);
 	}
 }

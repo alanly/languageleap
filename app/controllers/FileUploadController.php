@@ -1,5 +1,10 @@
 <?php
+use LangLeap\Levels\Level;
 
+/*
+ * @author David Siekut
+ * @author Thomas Rahn 
+ */
 class FileUploadController extends \BaseController {
 
 	public function __construct()
@@ -43,7 +48,7 @@ class FileUploadController extends \BaseController {
 		Input::file('file')->move(app_path() . $path, $id . '.' . Input::file('file')->getClientOriginalExtension());
 		
 		
-		return View::make('admin.index');
+		return View::make('admin.index')->with('levels',LeveL::all());
 	}
 
 }
