@@ -83,7 +83,7 @@ class ApiEpisodeController extends \BaseController {
 				'error', "Season {$seasonId} not found for show {$showId}.", 404
 			);
 		}
-
+		
 		$episode = $this->episodes->newInstance(Input::get());
 		
 		if (! $season->episodes()->save($episode))
@@ -296,12 +296,18 @@ class ApiEpisodeController extends \BaseController {
 
 		if ($episodes instanceof Episode)
 		{
-			$data['episode'] = $episodes;
+			$data['episode'] = $episodes->toResponseArray();
 			$data['videos'] = $episodes->videos;
 		}
 		else
 		{
-			$data['episodes'] = $episodes;
+			$episode_array = array();
+			foreach($episodes as $episode)
+			{
+				$episode_array[] = $episode->toResponseArray();
+			}
+
+			$data['episodes'] = $episode_array;
 		}
 
 		return $this->apiResponse('success', $data, $code);
