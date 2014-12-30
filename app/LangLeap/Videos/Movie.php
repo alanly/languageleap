@@ -2,12 +2,19 @@
 
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
+use LangLeap\Videos\Media;
 
-class Movie extends ValidatedModel implements Billable {
+class Movie extends Media implements Billable {
 
-	public    $timestamps = false;
-	protected $fillable   = ['name', 'description', 'director', 'actor', 'genre'];
-	protected $rules      = ['name' => 'required'];
+	public $timestamps = false;
+	protected $fillable;
+	protected $rules;
+
+	function __construct()
+	{
+		$this->fillable = array_merge(parent::getFillable(), ['director', 'actor', 'genre']);
+		$this->rules = array_merge(parent::getRules(), []);
+	}
 
 	public function videos()
 	{

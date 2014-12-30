@@ -29,6 +29,7 @@ class MovieTest extends TestCase {
 	{
 		$mov =  App::make('LangLeap\Videos\Movie');
 		$mov->name = 'Test Movie';
+		$mov->level_id = 1;
 		$mov->save();
 		return $mov;
 	}
