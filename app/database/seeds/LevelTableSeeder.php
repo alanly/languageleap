@@ -1,6 +1,6 @@
 <?php
 
-class LanguageTableSeeder extends Seeder {
+class LevelTableSeeder extends Seeder {
 
 	/**
 	 * Run the database seeds.

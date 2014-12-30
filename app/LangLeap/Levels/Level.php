@@ -1,6 +1,8 @@
 <?php namespace LangLeap\Levels;
 
-class Level extends ValidateModel
+use Eloquent;
+
+class Level extends Eloquent
 {
 	public $timestamps = false;
 	

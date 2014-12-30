@@ -63,7 +63,7 @@ class Video extends ValidatedModel {
 
 	public function level()
 	{
-		return $this->hasOne('LangLeap\Levels\Level');
+		return $this->belongsTo('LangLeap\Levels\Level');
 	}
 
 }
