@@ -42,7 +42,7 @@ class Commercial extends Media {
 			'name' => $comm->name,
 			'description' => $comm->description,
 			'videos' => $videos_array,
-			'level' => parent::level()->get(["description"]),
+			'level' => $comm->level->description,
 		);
 	}
 }
