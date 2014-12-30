@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWordTable extends Migration {
+class CreateAnswerTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,10 @@ class CreateWordTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('words', function($table){
+		Schema::create('answers', function($table){
 			$table->increments('id');
-			$table->string('word');
-			$table->string('pronouciation')->nullable();
-			$table->string('definition');
-			$table->string('full_definition');
+			$table->integer('question_id')->unsigned();
+			$table->string('answer');
 		});
 	}
 
@@ -28,7 +26,7 @@ class CreateWordTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('words');
+		Schema::dropIfExists('answers');
 	}
 
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateScriptWordsTable extends Migration {
+class CreateLanguagesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,10 @@ class CreateScriptWordsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('script_words', function($table){
+		Schema::create('languages', function($table){
 			$table->increments('id');
-			$table->integer('script_id')->unsigned();
-			$table->integer('word_id')->unsigned();
-			$table->integer('position');
+			$table->string('code');
+			$table->string('description');
 		});
 	}
 
@@ -27,7 +26,7 @@ class CreateScriptWordsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('script_words');
+		Schema::dropIfExists('languages');
 	}
 
 }

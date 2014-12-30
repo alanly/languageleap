@@ -28,6 +28,20 @@ class DefinitionTableSeeder extends Seeder {
 			'full_definition' => 'a description a word',
 			'pronunciation' => 'de-fi-ni-tion'
 		));
+		
+		$w->create(array(
+			'word' => 'Random',
+			'definition' => 'odd, unusual, or unexpected',
+			'full_definition' => 'made, done, happening, or chosen without method or conscious decision.',
+			'pronunciation' => 'randəm'
+		));
+		
+		$w->create(array(
+			'word' => 'Phone',
+			'definition' => 'a telephone.',
+			'full_definition' => 'a system that converts acoustic vibrations to electrical signals in order to transmit sound, typically voices, over a distance using wire or radio.',
+			'pronunciation' => 'fōn'
+		));
 	}
 
 }

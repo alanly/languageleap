@@ -1,13 +1,14 @@
 <?php namespace LangLeap\QuizUtilities;
 
 use LangLeap\Core\Collection;
-use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Question;
-use LangLeap\Words\Definition;
+use LangLeap\Quizzes\Answer;
+use LangLeap\Quizzes\VideoQuestion;
 
 /**
  * @author Thomas Rahn <thomas@rahn.ca>
  * @author Alan Ly <hello@alan.ly>
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
 class QuizGeneration {
 
@@ -20,9 +21,9 @@ class QuizGeneration {
 	* 
 	* @param  Collection  $scriptDefinitions
 	* @param  array       $selectedDefinitions
-	* @return Quiz
+	* @return VideoQuestion array
 	*/
-	public static function generateQuiz(Collection $scriptDefinitions, $selectedDefinitions)
+	public static function generateDefinitionQuiz(Collection $scriptDefinitions, $selectedDefinitions)
 	{
 		// Ensure that $scriptDefinitions is not empty.
 		if ($scriptDefinitions->isEmpty()) return null;
@@ -33,12 +34,9 @@ class QuizGeneration {
 		// Make a copy of the definitions collection.
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
 
-		// Create a new Quiz instance.
-		$quiz = new Quiz;	
-		$quiz->user_id = 1; // @TODO user authentication
-		$quiz->save();
+		$questions = array();
 
-		// Generate the Question instances associated to this Quiz.
+		// Generate the Question and Answer instances for each question.
 		foreach ($selectedDefinitions as $definitionId)
 		{
 			// Pull the Definition instance from the collection.
@@ -48,13 +46,24 @@ class QuizGeneration {
 
 			// Create a new Question instance
 			$question = Question::create([
-				'quiz_id'       => $quiz->id,
-				'definition_id' => $definitionId,
-				'question'      => 'What is the definition for '.$definition->word,
+				'answer_id' => -1, // Will be changed after the answer is generated
+				'question'	=> 'What is the definition of '.$definition->word.'?',
 			]);
+
+			$correctAnswer = Answer::create([
+				'question_id' 	=> $question->id,
+				'answer'		=> $definition->full_definition
+				]);
+			$correctAnswer->save();
+
+			$question->answer_id = $correctAnswer->id;
+			$question->save();
+
+			array_push($questions, $question);
 		}
 
-		return $quiz;
+		
+		return $questions;
 	}
 
 
@@ -69,22 +78,37 @@ class QuizGeneration {
 	 * @param  int         $answerId
 	 * @return array
 	 */
-	public static function generateQuestionDefinitions($scriptDefinitions, $answerId)
+	public static function generateAnswers($scriptDefinitions, $question)
 	{
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
 		$answers = new Collection;
 
 		// Throw in the correct answer, since we already know it.
-		$answer = $scriptDefinitions->pull($answerId);
+		$answer = Answer::find($question->answer_id)->first();
+		$scriptDefinitions->pull($question->answer_id);
 
-		if (! $answer) return null;
+		if (! $answer)
+		{
+			return $this->apiResponse(
+				'error',
+				"No answer found for {$question->question}.",
+				400
+			);
+		}
 		
 		$answers->push($answer);
 
 		// Pad out our selection of answers (up to 4) with random definitions.
 		while ($answers->count() < 4 && ! $scriptDefinitions->isEmpty())
 		{
-			$answers->push($scriptDefinitions->pullRandom());
+			$randomAnswer = $scriptDefinitions->pullRandom();
+			$a = Answer::create([
+				'answer' 		=> $randomAnswer->full_definition,
+				'question_id'	=> $question->id,
+			]);
+			$a->save();
+
+			$answers->push($a);
 		}
 
 		// Shuffle/randomize the answers.
@@ -107,11 +131,11 @@ class QuizGeneration {
 	 * @param  Definition  $definition
 	 * @return array
 	 */
-	protected static function formatDefinitionForResponse(Definition $definition)
+	protected static function formatDefinitionForResponse(Answer $answer)
 	{
 		return [
-			'id' => $definition->id,
-			'description' => $definition->full_definition,
+			'id' => $answer->id,
+			'answer' => $answer->answer,
 		];
 	}
 }

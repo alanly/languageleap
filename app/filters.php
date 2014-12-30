@@ -16,7 +16,12 @@ App::before(function($request)
 	/**
 	 * Store the current CSRF token in a cookie.
 	 */
-	setcookie('CSRF-TOKEN', csrf_token());
+	if (! App::runningUnitTests())
+	{
+		setcookie('CSRF-TOKEN', csrf_token());
+	}
+
+	App::setlocale(Session::get('lang','en'));
 });
 
 
@@ -46,7 +51,7 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('login');
+			return Redirect::guest('/');
 		}
 	}
 });

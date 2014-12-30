@@ -18,6 +18,23 @@ Route::get('/', function()
 });
 
 
+// Route for setting the language.
+Route::get('/language/{lang}', 'LanguageController@setLanguage');
+
+
+// Routes for login and logout.
+Route::group(['prefix' => 'login'], function()
+{
+	Route::get('/', 'AuthController@getLogin');
+	Route::post('/', 'AuthController@postLogin');
+});
+Route::get('logout', 'AuthController@getLogout');
+
+
+// Routes for registration and associated views.
+Route::controller('register', 'RegistrationController');
+
+
 // Route grouping for administration interface.
 Route::group(['prefix' => 'admin'], function()
 {
@@ -74,13 +91,11 @@ Route::group(['prefix' => 'api'], function()
 		
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');
+
 	});
 
-	// Route to get the definitions of specific words
-	Route::post('words/definitions', 'ApiWordController@getMultipleWords');
-
-	// Words
-	Route::resource('words', 'ApiWordController');
+	// Query the definition API for a definition
+	Route::resource('dictionaryDefinitions', 'ApiDictionaryController');
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
@@ -90,6 +105,9 @@ Route::group(['prefix' => 'api'], function()
 
 	// Quiz
 	Route::controller('quiz', 'ApiQuizController');
+
+	// Registration
+	Route::resource('users','ApiUserController');
 
 });
 
@@ -107,10 +125,10 @@ Route::group(array('prefix' => 'content'), function()
 });
 
 
-//video player
+// Video Player
 Route::get('/video/play/{id}', function($id)
 {
-    return View::make('player.player')->with("video_id",$id);
+	return View::make('player.player')->with('video_id', $id);
 });
 
 
@@ -123,6 +141,7 @@ Route::get('quiz', function()
 {
 	return View::make('quiz.main');
 });
+
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserProgressTable extends Migration {
+class UpdateQuizzesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,9 @@ class CreateUserProgressTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('user_progress', function($table){
-			$table->increments('id');
-			$table->integer('user_id')->unsigned();
-			$table->integer('word_id')->unsigned();
-
+		Schema::table('quizzes', function($table)
+		{
+			$table->integer('video_id')->unsigned()->default(-1);
 		});
 	}
 
@@ -27,7 +25,10 @@ class CreateUserProgressTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('user_progress');
+		Schema::table('quizzes', function($table)
+		{
+			$table->dropColumn(array('video_id'));
+		});
 	}
 
 }

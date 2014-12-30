@@ -14,10 +14,8 @@ class CreateQuestionTable extends Migration {
 	{
 		Schema::create('questions', function($table){
 			$table->increments('id');
-			$table->integer('quiz_id')->unsigned();
-			$table->integer('definition_id')->unsigned();
+			$table->integer('answer_id')->unsigned();
 			$table->string('question');
-			$table->integer('selected_id')->nullable();			
 		});
 	}
 
