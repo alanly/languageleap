@@ -1,5 +1,6 @@
 <?php
 
+use LangLeap\Levels\Level;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -31,7 +32,7 @@ Route::group(['prefix' => 'admin'], function()
 	// Interface index
 	Route::get('/', function()
 	{
-		return View::make('admin.index');
+		return View::make('admin.index')->with('levels', Level::all());
 	});
 
 	// Video interface

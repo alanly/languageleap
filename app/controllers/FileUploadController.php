@@ -29,7 +29,14 @@ class FileUploadController extends \BaseController {
 			
 		}
 		
-		$id = $response->getData()->data->id;
+		$data = $response->getData();
+
+		if($data->status === "error")
+		{
+			return $response;
+		}
+
+		$id = $data->data->id;
 		App::make('ApiScriptController', Input::all())->store($id);
 
 		$path = '/storage/media/videos/' . $type . 's/';

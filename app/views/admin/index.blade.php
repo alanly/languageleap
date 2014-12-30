@@ -42,6 +42,14 @@
 								<label>Description</label>
 								<input id="info-default-form-description-input" name="description" type="text" class="form-control" placeholder="" />
 							</div>
+							<div id="info-default-form-level" class="form-group">
+								<label>Level</label>
+								<select id="info-default-form-level-select" name="media-level" class="form-control">
+									@foreach($levels as $level)
+	    								<option value=" {{ $level->id }}">{{ $level->description }}</option>
+									@endforeach
+								</select>
+							</div>
 						</div>
 
 						<div id="info-extra-tab" aria-hidden="true" style="display: none;">
