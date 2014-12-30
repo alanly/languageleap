@@ -51,10 +51,16 @@ class ApiEpisodeController extends \BaseController {
 			);
 		}
 
+		$episodes = $season->episodes()->get();
+		$episode_array = array();
+		foreach($episodes as $episode){
+			$episode_array[] = $episode->toResponseArray();
+		}
+
 		return $this->generateResponse(
 			$show,
 			$season,
-			$season->episodes()->get()
+			$episode_array
 		);
 	}
 
