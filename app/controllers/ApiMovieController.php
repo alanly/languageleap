@@ -20,9 +20,15 @@ class ApiMovieController extends \BaseController {
 	{
 		$movies = Movie::all();
 
+		$movie_array = array();
+		foreach($movies as $movie)
+		{
+			$movie_array[] = $movie->toResponseArray();
+		}
+
 		return $this->apiResponse(
 			'success',
-			$movies
+			$movie_array
 		);
 	}
 

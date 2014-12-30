@@ -40,8 +40,8 @@ class Commercial extends Media {
 			'id' => $comm->id,
 			'name' => $comm->name,
 			'description' => $comm->description,
-			'videos' => $videos_array,
 			'level' => $comm->level->description,
+			'videos' => $videos_array,
 		);
 	}
 }
