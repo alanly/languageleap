@@ -1,7 +1,6 @@
 <?php namespace LangLeap\Videos;
 
 use LangLeap\Core\ValidatedModel;
-use LangLeap\Videos\Media;
 
 class Commercial extends Media {
 

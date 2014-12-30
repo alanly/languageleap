@@ -34,7 +34,7 @@ class ApiEpisodeControllerTest extends TestCase {
 	public function testStore()
 	{
 		// Seed test data
-		
+
 		$this->seed();
 
 		$show = Show::create(['name' => 'test show', 'description' => 'test show description']);

@@ -90,7 +90,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse('error', $episode->getErrors(), 400);
 		}
-		
+
 		return $this->generateResponse($show, $season, $episode, 201);
 	}
 
