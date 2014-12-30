@@ -51,16 +51,10 @@ class ApiEpisodeController extends \BaseController {
 			);
 		}
 
-		$episodes = $season->episodes()->get();
-		$episode_array = array();
-		foreach($episodes as $episode){
-			$episode_array[] = $episode->toResponseArray();
-		}
-
 		return $this->generateResponse(
 			$show,
 			$season,
-			$episode_array
+			$season->episodes()->get()
 		);
 	}
 
@@ -96,8 +90,8 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse('error', $episode->getErrors(), 400);
 		}
-
-		return $this->generateResponse($show, $season, $episode->toResponseArray(), 201);
+		
+		return $this->generateResponse($show, $season, $episode, 201);
 	}
 
 
@@ -154,7 +148,7 @@ class ApiEpisodeController extends \BaseController {
 			);
 		}
 
-		return $this->generateResponse($show, $season, $episode->toResponseArray());
+		return $this->generateResponse($show, $season, $episode);
 	}
 
 
@@ -218,7 +212,7 @@ class ApiEpisodeController extends \BaseController {
 			return $this->apiResponse('error', $episode->getErrors(), 400);
 		}
 
-		return $this->generateResponse($show, $season, $episode->toResponseArray());
+		return $this->generateResponse($show, $season, $episode);
 	}
 
 
@@ -302,12 +296,18 @@ class ApiEpisodeController extends \BaseController {
 
 		if ($episodes instanceof Episode)
 		{
-			$data['episode'] = $episodes;
+			$data['episode'] = $episodes->toResponseArray();
 			$data['videos'] = $episodes->videos;
 		}
 		else
 		{
-			$data['episodes'] = $episodes;
+			$episode_array = array();
+			foreach($episodes as $episode)
+			{
+				$episode_array[] = $episode->toResponseArray();
+			}
+
+			$data['episodes'] = $episode_array;
 		}
 
 		return $this->apiResponse('success', $data, $code);

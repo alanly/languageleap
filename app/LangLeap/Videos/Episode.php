@@ -44,10 +44,14 @@ class Episode extends Media implements Billable {
 	public function toResponseArray()
 	{
 		$episode = $this;
-		$videos = $episode->videos()->get();
-		$videos_array = array();
-		foreach($videos as $video){
-			$videos_array[] = $video->toResponseArray();
+		$level = $episode->level;
+		if(!$level)
+		{
+			$level = "Unranked";
+		}
+		else
+		{
+			$level = $level->description;
 		}
 		return array(
 			'id' => $episode->id,
@@ -55,9 +59,8 @@ class Episode extends Media implements Billable {
 			'number' => $episode->number,
 			'name' => $episode->name,
 			'description' => $episode->description,
-			'show_id' => $episode->show_id,
-			'videos' => $videos_array,
-			'level' => $episode->level->description,
+			'show_id' => $episode->season->show_id,
+			'level' => $level,
 		);
 	}
 
