@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('QuizTableSeeder');
 		$this->call('QuestionTableSeeder');
 		$this->call('UserTableSeeder');
+		$this->call('LevelTableSeeder');
 	}
 
 }

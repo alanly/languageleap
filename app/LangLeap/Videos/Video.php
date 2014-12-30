@@ -11,8 +11,7 @@ class Video extends ValidatedModel {
 		'path'          => 'required',
 		'viewable_id'   => 'required|integer',
 		'viewable_type' => 'required',
-		'language_id'	=> 'required',
-		'level_id'		=> 'required'
+		'language_id'	=> 'required'
 	];
 
 
@@ -60,10 +59,4 @@ class Video extends ValidatedModel {
 
 		return null;		
 	}
-
-	public function level()
-	{
-		return $this->belongsTo('LangLeap\Levels\Level');
-	}
-
 }
