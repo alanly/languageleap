@@ -12,6 +12,7 @@ class Video extends ValidatedModel {
 		'viewable_id'   => 'required|integer',
 		'viewable_type' => 'required',
 		'language_id'	=> 'required',
+		'level_id'		=> 'required'
 	];
 
 
@@ -58,6 +59,11 @@ class Video extends ValidatedModel {
 		}
 
 		return null;		
+	}
+
+	public function level()
+	{
+		return $this->hasOne('LangLeap\Levels\Level');
 	}
 
 }
