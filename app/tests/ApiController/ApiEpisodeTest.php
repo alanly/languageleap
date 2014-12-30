@@ -34,7 +34,6 @@ class ApiEpisodeControllerTest extends TestCase {
 	public function testStore()
 	{
 		// Seed test data
-
 		$this->seed();
 
 		$show = Show::create(['name' => 'test show', 'description' => 'test show description']);
@@ -44,7 +43,7 @@ class ApiEpisodeControllerTest extends TestCase {
 			'POST',
 			'ApiEpisodeController@store',
 			[$show->id, $season->id],
-			['number' => 1, 'name' => 'Test Episode']
+			['number' => 1, 'name' => 'Test Episode', 'level_id' => 1]
 		);
 
 		$this->assertResponseStatus(201);
