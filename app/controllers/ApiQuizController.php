@@ -93,7 +93,7 @@ class ApiQuizController extends \BaseController {
 		}
 
 		// Generate all the questions.
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $videoId, $scriptDefinitions, $selectedWords);
+		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, Input::all());
 		return $this->apiResponse(
 			'success',
 			$quiz->toResponseArray()

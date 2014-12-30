@@ -15,16 +15,21 @@ class QuizFactoryTest extends TestCase {
 
 		// Seed the database.
 		$this->seed();
+		$this->be(User::first());
 	}
 
 	public function testQuestionReturned()
 	{
-		$all_words = new Collection(Definition::all()->all());
-		$selected_words = array(Definition::first());
+		$definition_ids = Definition::all(['id']);
+		$all_words = [];
+		foreach($definition_ids as $did)
+		{
+			$all_words[] = $did->id;
+		}
+		$selected_words = array(Definition::first()->id);
 		$video_id = Video::first()->id;
-		$user_id = User::first()->id;
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($user_id, $video_id, $all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words , 'selected_words' => $selected_words]);
 
 		foreach($quiz->videoQuestions() as $vq)
 		{
@@ -38,58 +43,77 @@ class QuizFactoryTest extends TestCase {
 	
 	public function testNullReturnedWhenWordsAreNotSelected()
 	{
-		$all_words = new Collection(Definition::all()->all());
+		$definition_ids = Definition::all(['id']);
+		$all_words = [];
+		foreach($definition_ids as $did)
+		{
+			$all_words[] = $did->id;
+		}
 		$selected_words = array();
 		$video_id = Video::first()->id;
-		$user_id = User::first()->id;
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($user_id, $video_id, $all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words, 'selected_words' => $selected_words]);
 
 		$this->assertNull($quiz);
 	}
 
 	public function testNullReturnedWhenInvalidWordsAreSelected()
 	{
-		$all_words = new Collection(Definition::all()->all());
+		$definition_ids = Definition::all(['id']);
+		$all_words = [];
+		foreach($definition_ids as $did)
+		{
+			$all_words[] = $did->id;
+		}
 		$selected_words = array(-1);
 		$video_id = Video::first()->id;
-		$user_id = User::first()->id;
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($user_id, $video_id, $all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words, 'selected_words' => $selected_words]);
 
 		$this->assertNull($quiz);
 	}
 
 	public function testNullReturnedWhenScriptWordsNotSupplied()
 	{
-		$all_words = new Collection;
+		$all_words = [];
 		$selected_words = array(Definition::first()->id);
 		$video_id = Video::first()->id;
-		$user_id = User::first()->id;
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($user_id, $video_id, $all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words, 'selected_words' => $selected_words]);
 
 		$this->assertNull($quiz);
 	}
 	
 	public function testNullWhenVideoDoesNotExist()
 	{
-		$all_words = new Collection(Definition::all()->all());
+		$definition_ids = Definition::all(['id']);
+		$all_words = [];
+		foreach($definition_ids as $did)
+		{
+			$all_words[] = $did->id;
+		}
 		$selected_words = array(Definition::first());
-		$user_id = User::first()->id;
 		
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz($user_id, -1, $all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => -1, 'all_words' => $all_words, 'selected_words' => $selected_words]);
 		
 		$this->assertNull($quiz);
 	}
 	
 	public function testNullReturnedWhenUserDoesNotExist()
 	{
-		$all_words = new Collection(Definition::all()->all());
+		$user = App::make('\LangLeap\Accounts\User');
+		$user->id = -1;
+		$this->be($user);
+		$definition_ids = Definition::all(['id']);
+		$all_words = [];
+		foreach($definition_ids as $did)
+		{
+			$all_words[] = $did->id;
+		}
 		$selected_words = array(Definition::first()->id);
 		$video_id = Video::first()->id;
-
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(-1, $video_id, $all_words, $selected_words);
+		
+		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words, 'selected_words' => $selected_words]);
 
 		$this->assertNull($quiz);
 	}

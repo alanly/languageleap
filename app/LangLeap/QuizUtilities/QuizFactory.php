@@ -9,13 +9,14 @@ use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 use LangLeap\Accounts\User;
+use LangLeap\Core\UserInputResponse;
 
 /**
  * Factory that creates quizzes based on selected words in a script
  *
  * @author Quang Tran <tran.quang@live.com>
  */
- class QuizFactory {
+ class QuizFactory implements UserInputResponse {
  
 	private static $instance;
 	
@@ -26,6 +27,22 @@ use LangLeap\Accounts\User;
 			QuizFactory::$instance = new QuizFactory();
 		}
 		return QuizFactory::$instance;
+	}
+	
+	public function response($user_id, $input)
+	{
+		if (! $input['all_words'] || count($input['all_words']) < 1)
+		{
+			return null;
+		}
+		
+		// Retrieve a collection of all definitions in the script.
+		$scriptDefinitions = Definition::whereIn('id', $input['all_words'])->get();
+
+		// Use the overriden Collection class.
+		$scriptDefinitions = new Collection($scriptDefinitions->all());
+		
+		return $this->getDefinitionQuiz($user_id, $input['video_id'], $scriptDefinitions, $input['selected_words']);
 	}
 	
 	/**
@@ -39,7 +56,7 @@ use LangLeap\Accounts\User;
 	* @param  array $selectedDefinitions
 	* @return Quiz
 	*/
-	public function getDefinitionQuiz($user_id, $video_id, Collection $scriptDefinitions, $selectedDefinitions)
+	private function getDefinitionQuiz($user_id, $video_id, Collection $scriptDefinitions, $selectedDefinitions)
 	{
 		// Ensure that $scriptDefinitions is not empty.
 		if ($scriptDefinitions->isEmpty()) return null;
