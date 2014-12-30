@@ -1,3 +1,6 @@
+/*
+	toggles the add new media pulldown
+*/
 $("#button-add-new").click(function()
 {
   $("#slidedown-add-new").slideToggle("slow", function()
@@ -5,20 +8,46 @@ $("#button-add-new").click(function()
   });
 });
 
+/*
+	step by step logic for uploading a new media file
+*/
 var step = 0;
+$('#button-add-new-back').on("click", function()
+{
+	step--;
+	refreshContent();
+});
 $('#button-add-new-next').on("click", function()
 {
-	console.log("button-add-new-next onclick");
-	
 	step++;
-	if (step == 1)
+	refreshContent();
+});
+
+function refreshContent()
+{
+	if (step == 0)
 	{
-		$('#add-new-header').empty().append("<h2>Upload Script</h2>");
+		$('#add-new-header').empty().append("<h2>Media Info</h2>");
 		
+		// hide and show relevant panes
+		$('#add-new-body-info').css("display", "block");
+		$('#add-new-body-script').css("display", "none");
+		
+		// hide back button
+		$('#button-add-new-back').css("display", "none");
+	}
+	else if (step == 1)
+	{
+		$('#add-new-header').empty().append("<h2>Edit Script</h2>");
+		$('#button-add-new-next').empty().append("Next");
+				
 		// hide and show relevant panes
 		$('#add-new-body-info').css("display", "none");
 		$('#add-new-body-script').css("display", "block");
+		$('#add-new-body-media').css("display", "none");
 
+		// show back button
+		$('#button-add-new-back').css("display", "block");
 	}
 	else if (step == 2)
 	{
@@ -55,9 +84,8 @@ $('#button-add-new-next').on("click", function()
 			$('#add-new-body-upload').css("display", "block");
 		}
 	}
-	
 	return false;
-});
+}
 
 /*
 	show/hide form based on which media type is checked
@@ -77,6 +105,9 @@ $('#info-movie-radio').on("click", function()
 	$('#info-extra-tab').css("display", "block");
 });
 
+/*
+	shows media based on selected category
+*/
 $("#select-movies").click(function()
 {
 	$.getJSON("/api/metadata/movies/", function(data)

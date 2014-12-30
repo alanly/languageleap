@@ -75,8 +75,8 @@
 					upload progress ajax stuff goes here
 				</div>
 				<div class="modal-footer">
-					<button id="button-add-new-next" type="submit" class="btn btn-primary">Next</button>
-					<input id="button-add-new-submit" type="submit" class="btn btn-primary" style="display: none;" />
+					<button id="button-add-new-back" type="button" class="btn btn-primary" style="display: none;">Back</button>
+					<button id="button-add-new-next" type="button" class="btn btn-primary">Next</button>
 				</div>
 			</div>
 		  {{ Form::close() }}
