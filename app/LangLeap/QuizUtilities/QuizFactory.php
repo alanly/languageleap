@@ -42,7 +42,12 @@ use LangLeap\Core\UserInputResponse;
 		// Use the overriden Collection class.
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
 		
-		return $this->getDefinitionQuiz($user_id, $input['video_id'], $scriptDefinitions, $input['selected_words']);
+		$quiz = $this->getDefinitionQuiz($user_id, $input['video_id'], $scriptDefinitions, $input['selected_words']);
+		return [
+			'success',
+			$quiz->toResponseArray(),
+			200
+		];
 	}
 	
 	/**
@@ -56,7 +61,7 @@ use LangLeap\Core\UserInputResponse;
 	* @param  array $selectedDefinitions
 	* @return Quiz
 	*/
-	private function getDefinitionQuiz($user_id, $video_id, Collection $scriptDefinitions, $selectedDefinitions)
+	public function getDefinitionQuiz($user_id, $video_id, Collection $scriptDefinitions, $selectedDefinitions)
 	{
 		// Ensure that $scriptDefinitions is not empty.
 		if ($scriptDefinitions->isEmpty()) return null;

@@ -7,6 +7,7 @@ use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Quizzes\Result;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\QuizUtilities\QuizFactory;
+use LangLeap\QuizUtilities\QuizInputValidation;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 
@@ -27,76 +28,14 @@ class ApiQuizController extends \BaseController {
 	 */
 	public function postIndex()
 	{
-		// Ensure the video exists.
-		$videoId = Input::get("video_id");
-		if (Video::find($videoId) == null)
-		{
-			return $this->apiResponse(
-				'error',
-				"Video {$videoId} does not exists",
-				404
-			);
-		}
-
-		// Get all the selected words; if empty, return with redirect.
-		$selectedWords = Input::get("selected_words");
-		if (! $selectedWords || count($selectedWords) < 1)
-		{
-			return $this->apiResponse(
-				'success',
-				[ 'result' => ['redirect' => 'http://www.google.ca/'] ]
-			);
-		}
-
-		// Get all the words in the script; if empty, return 400 (client-side error).
-		$scriptWords = Input::get("all_words");
-		if (! $scriptWords || count($scriptWords) < 1)
-		{
-			return $this->apiResponse(
-				'error',
-				"Empty script supplied for video {$videoId}.",
-				400
-			);
-		}
-
-		// Retrieve a collection of all definitions in the script.
-		$scriptDefinitions = Definition::whereIn('id', $scriptWords)->get();
-
-		// Use the overriden Collection class.
-		$scriptDefinitions = new Collection($scriptDefinitions->all());
-
-		// Store the script definitions in the session for future requests.
-		Session::put('scriptDefinitions', $scriptDefinitions);
-
-		// If words are missing, then return a 404.
-		if ($scriptDefinitions->count() != count($scriptWords))
-		{
-			return $this->apiResponse(
-				'error',
-				'Only '.$scriptDefinitions->count().' definitions found for '.count($scriptWords).' words.',
-				404
-			);
-		}
-
-		// Ensure that the _selected_ words are within the realm of the script.
-		foreach ($selectedWords as $definitionId)
-		{
-			// If a selected word is not in the script, return 404.
-			if (! $scriptDefinitions->contains($definitionId))
-			{
-				return $this->apiResponse(
-					'error',
-					"Selected definition {$definitionId} is not in video {$videoId}.",
-					404
-				);
-			}
-		}
+		$quizDecorator = new QuizInputValidation(QuizFactory::getInstance());
 
 		// Generate all the questions.
-		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, Input::all());
+		$response = $quizDecorator->response(Auth::user()->id, Input::all());
 		return $this->apiResponse(
-			'success',
-			$quiz->toResponseArray()
+			$response[0],
+			$response[1],
+			$response[2]
 		);
 	}
 

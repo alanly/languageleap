@@ -20,16 +20,11 @@ class QuizFactoryTest extends TestCase {
 
 	public function testQuestionReturned()
 	{
-		$definition_ids = Definition::all(['id']);
-		$all_words = [];
-		foreach($definition_ids as $did)
-		{
-			$all_words[] = $did->id;
-		}
+		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array(Definition::first()->id);
 		$video_id = Video::first()->id;
 
-		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words , 'selected_words' => $selected_words]);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
 
 		foreach($quiz->videoQuestions() as $vq)
 		{
@@ -43,58 +38,44 @@ class QuizFactoryTest extends TestCase {
 	
 	public function testNullReturnedWhenWordsAreNotSelected()
 	{
-		$definition_ids = Definition::all(['id']);
-		$all_words = [];
-		foreach($definition_ids as $did)
-		{
-			$all_words[] = $did->id;
-		}
+		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array();
 		$video_id = Video::first()->id;
 
-		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words, 'selected_words' => $selected_words]);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
 
 		$this->assertNull($quiz);
 	}
 
 	public function testNullReturnedWhenInvalidWordsAreSelected()
 	{
-		$definition_ids = Definition::all(['id']);
-		$all_words = [];
-		foreach($definition_ids as $did)
-		{
-			$all_words[] = $did->id;
-		}
+		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array(-1);
 		$video_id = Video::first()->id;
 
-		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words, 'selected_words' => $selected_words]);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
 
 		$this->assertNull($quiz);
 	}
 
 	public function testNullReturnedWhenScriptWordsNotSupplied()
 	{
-		$all_words = [];
+		$all_words = new Collection([]);
 		$selected_words = array(Definition::first()->id);
 		$video_id = Video::first()->id;
 
-		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words, 'selected_words' => $selected_words]);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
 
 		$this->assertNull($quiz);
 	}
 	
 	public function testNullWhenVideoDoesNotExist()
 	{
-		$definition_ids = Definition::all(['id']);
-		$all_words = [];
-		foreach($definition_ids as $did)
-		{
-			$all_words[] = $did->id;
-		}
+		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array(Definition::first());
+		$video_id = -1;
 		
-		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => -1, 'all_words' => $all_words, 'selected_words' => $selected_words]);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
 		
 		$this->assertNull($quiz);
 	}
@@ -104,16 +85,12 @@ class QuizFactoryTest extends TestCase {
 		$user = App::make('\LangLeap\Accounts\User');
 		$user->id = -1;
 		$this->be($user);
-		$definition_ids = Definition::all(['id']);
-		$all_words = [];
-		foreach($definition_ids as $did)
-		{
-			$all_words[] = $did->id;
-		}
+		
+		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array(Definition::first()->id);
 		$video_id = Video::first()->id;
 		
-		$quiz = QuizFactory::getInstance()->response(Auth::user()->id, ['video_id' => $video_id, 'all_words' => $all_words, 'selected_words' => $selected_words]);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
 
 		$this->assertNull($quiz);
 	}
