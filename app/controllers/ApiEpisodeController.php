@@ -91,6 +91,14 @@ class ApiEpisodeController extends \BaseController {
 			return $this->apiResponse('error', $episode->getErrors(), 400);
 		}
 
+		/*
+		 * Need to retrieve the saved model from the database in case the `level_id`
+		 * wasn't defined in the input data. The default `level_id` is specified by
+		 * the table schema. Saving doesn't seem to sync the instance data with the 
+		 * persisted data. So here we are.
+		 */
+		$episode = $this->episodes->find($episode->id);
+
 		return $this->generateResponse($show, $season, $episode, 201);
 	}
 
