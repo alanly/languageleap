@@ -83,7 +83,7 @@ class ApiEpisodeController extends \BaseController {
 				'error', "Season {$seasonId} not found for show {$showId}.", 404
 			);
 		}
-
+		
 		$episode = $this->episodes->newInstance(Input::get());
 		
 		if (! $season->episodes()->save($episode))
@@ -91,7 +91,7 @@ class ApiEpisodeController extends \BaseController {
 			return $this->apiResponse('error', $episode->getErrors(), 400);
 		}
 
-		return $this->generateResponse($show, $season, $episode, 201);
+		return $this->generateResponse($show, $season, $episode->toResponseArray(), 201);
 	}
 
 
@@ -148,7 +148,7 @@ class ApiEpisodeController extends \BaseController {
 			);
 		}
 
-		return $this->generateResponse($show, $season, $episode);
+		return $this->generateResponse($show, $season, $episode->toResponseArray());
 	}
 
 
@@ -212,7 +212,7 @@ class ApiEpisodeController extends \BaseController {
 			return $this->apiResponse('error', $episode->getErrors(), 400);
 		}
 
-		return $this->generateResponse($show, $season, $episode);
+		return $this->generateResponse($show, $season, $episode->toResponseArray());
 	}
 
 

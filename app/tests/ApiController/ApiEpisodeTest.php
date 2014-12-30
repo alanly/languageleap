@@ -40,7 +40,7 @@ class ApiEpisodeControllerTest extends TestCase {
 			'POST',
 			'ApiEpisodeController@store',
 			[$show->id, $season->id],
-			['number' => 1]
+			['number' => 1, 'name' => 'Test Episode']
 		);
 
 		$this->assertResponseStatus(201);
