@@ -24,7 +24,7 @@ class VideoTest extends TestCase {
 		$this->assertCount(1, $video->script()->get());			
 	}
 
-		public function testLevelRelation()
+	public function testLevelRelation()
 	{
 		$commercial = $this->getCommercialInstance();
 		$script = $this->getScriptInstance();
