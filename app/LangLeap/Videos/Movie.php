@@ -6,14 +6,12 @@ use LangLeap\Videos\Media;
 
 class Movie extends Media implements Billable {
 
-	public $timestamps = false;
-	protected $fillable;
-	protected $rules;
-
-	function __construct()
+	function __construct($attributes = [])
 	{
+		$this->timestamps = false;
 		$this->fillable = array_merge(parent::getFillable(), ['director', 'actor', 'genre']);
 		$this->rules = array_merge(parent::getRules(), []);
+		parent::__construct($attributes);
 	}
 
 	public function videos()
