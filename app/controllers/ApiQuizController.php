@@ -98,4 +98,62 @@ class ApiQuizController extends \BaseController {
 			]
 		);
 	}
+	
+	public function putCustomQuestion()
+	{
+		$video_id = Input::get('video_id');
+		$question = Input::get('question');
+		$answers = Input::get('answer');
+		
+		$video = Video::find($video_id);
+		if (! $video)
+		{
+			return $this->apiResponse(
+				'error',
+				"Video {$video_id} not found.",
+				404
+			);
+		}
+		
+		if(!$question || !$answers || count($answers) < 1)
+		{
+			return $this->apiResponse(
+				'error',
+				'Fields not filled in properly',
+				400
+			);
+		}
+
+		$question = Question::create([
+			'question' 		=> $question,
+			'answer_id'	=> -1
+		]);
+		
+		// Shuffle the answers
+		$answer_id = -1;
+		while(count($answers) > 0)
+		{
+			$answer_key = array_rand($answers);
+			$answer = Answer::create([
+				'answer'			=> $answers[$answer_key],
+				'question_id'	=> $question->id
+			]);
+			if($answer_key == 0)
+			{
+				$answer_id = $answer->id;
+			}
+			unset($answers[$answer_key]);
+		}
+		
+		$question->answer_id = $answer_id;
+		$question->save();
+		
+		$vq = VideoQuestion::create([
+			'video_id'		=> $video_id,
+			'question_id'	=> $question->id,
+			'is_custom'	=> true
+		]);
+		
+		return Redirect::to('admin/quiz/new');
+	}
 }

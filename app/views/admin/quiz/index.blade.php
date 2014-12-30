@@ -16,10 +16,10 @@
 			</div>
 			<div class="panel-body">
 			<?php
-				echo Form::open(array('url' => '#', 'method' => 'post'));
+				echo Form::open(array('method' => 'put', 'action' => 'ApiQuizController@putCustomQuestion'));
 				
 				echo '<div class="form-group"/>';
-				echo Form::label('video', 'Video', array('class' => 'control-label'));
+				echo Form::label('video_id', 'Video', array('class' => 'control-label'));
 				
 				$dropdowns = array();
 				$videos = Video::all()->all();
@@ -29,7 +29,7 @@
 					$dropdowns[$v->id] = $media->name;
 				}
 				
-				echo Form::select('video', $dropdowns, array('class' => 'form-control'));
+				echo Form::select('video_id', $dropdowns, array('class' => 'form-control'));
 				echo '</div>';
 				
 				echo '<div class="form-group"/>';
