@@ -32,14 +32,14 @@ class ApiScriptController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store($id)
+	public function store()
 	{
 		$script = $this->scripts->newInstance();
 
 		$script->fill(Input::get());
-		$script->text = Input::get('script-text');
-		$script->video_id = $id;
-				
+		$script->text = Input::get('text');
+		$script->video_id = Input::get('video_id');
+
 		if (! $script->save())
 		{
 			return $this->apiResponse(
@@ -53,7 +53,7 @@ class ApiScriptController extends \BaseController {
 			'success',
 			$script->toArray(),
 			201
-		);	
+		);
 	}
 
 
