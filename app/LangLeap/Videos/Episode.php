@@ -14,8 +14,8 @@ class Episode extends Media implements Billable {
 		$this->timestamps = false;
 		$this->fillable = array_merge(parent::getFillable(), ['season_id', 'number']);
 		$this->rules = array_merge(parent::getRules(), [
-												'season_id'   => 'required|integer',
-												'number'      => 'required|integer',
+										'season_id'	=> 'required|integer',
+										'number'	=> 'required|integer',
 									]);
 		parent::__construct($attributes);
 	}
@@ -44,14 +44,15 @@ class Episode extends Media implements Billable {
 	public function toResponseArray()
 	{
 		$episode = $this;
+		
 		return array(
-			'id' => $episode->id,
-			'season_id' => $episode->season_id,
-			'number' => $episode->number,
-			'name' => $episode->name,
-			'description' => $episode->description,
-			'show_id' => $episode->season->show_id,
-			'level' => $episode->level->description,
+			'id'			=> $episode->id,
+			'season_id'		=> $episode->season_id,
+			'number'		=> $episode->number,
+			'name'			=> $episode->name,
+			'description'	=> $episode->description,
+			'show_id'		=> $episode->season->show_id,
+			'level'			=> $episode->level->description,
 		);
 	}
 
