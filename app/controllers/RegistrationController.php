@@ -72,6 +72,7 @@ class RegistrationController extends \BaseController {
 
 		$input['confirmation_code'] = str_random(30);
 		$input['language_id'] = Language::first()->id;
+		
 		$user = $this->users->newInstance($input);
 		
 		if (! $user->isValid() || $validator->fails())
