@@ -24,6 +24,7 @@ class EpisodeTest extends TestCase {
 		$episode = $this->getEpisodeInstance();
 		$episode->season_id = $season->id;
 		$episode->number = 1;
+		$episode->level_id = 1;
 		$episode->name = 'test';
 		$episode->save();
 		
@@ -49,6 +50,7 @@ class EpisodeTest extends TestCase {
 		$episode = $this->getEpisodeInstance();
 		$episode->season_id = $season->id;
 		$episode->number = 1;
+		$episode->level_id = 1;
 		$episode->name = 'test';
 		$episode->save();
 
