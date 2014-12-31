@@ -1,5 +1,7 @@
 <?php
 
+use LangLeap\Levels\Level;
+
 class CommercialTableSeeder extends Seeder {
 
 	/**
@@ -11,7 +13,9 @@ class CommercialTableSeeder extends Seeder {
 	{
 		DB::table('commercials')->delete();
 
+		$level = Level::first();
+
 		$c = App::make('LangLeap\Videos\Commercial');
-		$c = $c->create(['name' => 'Test Commercial']);
+		$c = $c->create(['name' => 'Test Commercial', 'level_id' => $level->id]);
 	}
 }

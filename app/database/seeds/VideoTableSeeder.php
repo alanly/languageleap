@@ -18,7 +18,7 @@ class VideoTableSeeder extends Seeder {
 		DB::table('videos')->delete();
 
 		$lang = Language::first();
-
+		
 		Commercial::first()->videos()->create(['path' => '/path/to/somewhere/1.mkv', 'language_id'   => $lang->id]);
 		Movie::first()->videos()->create(['path' => '/path/to/somewhere/2.mkv', 'language_id'   => $lang->id]);
 		Episode::first()->videos()->create(['path' => '/path/to/somewhere/3.mkv', 'language_id'   => $lang->id]);

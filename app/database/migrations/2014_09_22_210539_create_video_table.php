@@ -17,7 +17,6 @@ class CreateVideoTable extends Migration {
 			$table->morphs('viewable');
 			$table->integer('language_id');
 			$table->string('path');
-			$table->integer('level_id')->default(1);
 		});
 	}
 
