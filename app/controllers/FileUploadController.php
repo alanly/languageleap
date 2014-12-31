@@ -20,31 +20,43 @@ class FileUploadController extends \BaseController {
 		
 		if ($type == "commercial")
 		{
-			$response = App::make('ApiCommercialController', Input::all())->store();
+			$response = App::make('ApiCommercialController')->store();
 			
 		}
 		else if ($type == "show")
 		{
-			$response = App::make('ApiShowController', Input::all())->store();
-			$response = App::make('ApiSeasonController', array('number' => 1))->store();
+			$response = App::make('ApiShowController')->store();
+
 			
 		}
 		else if ($type == "movie")
 		{
-			$response = App::make('ApiMovieController', Input::all())->store();
+			$response = App::make('ApiMovieController')->store();
 			
 		}
 		
-		$data = $response->getData();
+		$id = $response->getData()->data->id;
+		
+		// get all post vars and add on video_id
+		$data = Input::all();
+		$data['video_id'] = $id;
+		
+		//save original input
+		$original = Request::input();
 
-		if($data->status === "error")
-		{
-			return $response;
-		}
+		//App::make('ApiScriptController')->store();
+		// create an internal request
+		$request = Request::create('admin/save-script', 'POST', $data);
+		// replace the old request with the internal request one
+		Request::replace($request->input());
+		
+		// shoot off the internal request
+		$response = Route::dispatch($request);
 
-		$id = $data->data->id;
-		App::make('ApiScriptController', Input::all())->store($id);
+		//replace the replaced input with the old one
+		Request::replace($original);
 
+		// move file to its rightful place
 		$path = '/storage/media/videos/' . $type . 's/';
 		Input::file('file')->move(app_path() . $path, $id . '.' . Input::file('file')->getClientOriginalExtension());
 		

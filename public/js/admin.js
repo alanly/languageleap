@@ -69,7 +69,7 @@ function refreshContent()
 		  var p = '';
 		  //p = $('#text').text();
 		  p = document.getElementById('script').innerHTML;
-		  p = "<input type='text' name='script-text' value='" + p + "'/>";
+		  p = "<input type='text' name='text' value='" + p + "'/>";
 
 			// append script to form for post
 		  $('#new-media-form').append(p);
@@ -118,7 +118,7 @@ $("#select-movies").click(function()
 			{
 				var id = val.id;
 				var name = val.name;
-				console.log(key + " " + id + " " + name);
+				//console.log(key + " " + id + " " + name);
 				s += '<span class="media" db-id="' + id + '">' + name + '</span>';
 		  });
 			
@@ -127,6 +127,9 @@ $("#select-movies").click(function()
 	});
 });
 
+/*
+	when a media title is clicked in the browser, refresh all values in the forms to reflect the clicked media
+*/
 $('#content').on('click', 'span.media', function(event)
 {
 	var id = $(this).attr('db-id');
@@ -134,7 +137,7 @@ $('#content').on('click', 'span.media', function(event)
 	var description;
 	var director;
 	var actor;
-	var thumb = "http://ia.media-imdb.com/images/M/MV5BMTY5NTAzNTc1NF5BMl5BanBnXkFtZTYwNDY4MDc3._V1_SX640_SY720_.jpg";
+	var thumb = "";
 	
 	$.getJSON("/api/metadata/movies/" + id, function(data)
 	{
@@ -143,13 +146,13 @@ $('#content').on('click', 'span.media', function(event)
 		director = data.data.director;
 		actor = data.data.actor;
 		
-		$('.modal-title').empty().append(name);
+		$('.edit-media-title').empty().append(name);
 		$('.modal-image').attr("src", thumb);
 		$('.modal-id').empty().append(id);
-		$('.modal-name').empty().append(name);
-		$('.modal-desc').empty().append(description);
-		$('.modal-director').empty().append(director);
-		$('.modal-actor').empty().append(actor);
+		$('#edit-media-info-name').val(name);
+		$('#edit-media-info-description').val(description);
+		$('#edit-media-info-director').val(director);
+		$('#edit-media-info-actor').val(actor);
 		
 		$('#media-modal').modal('show');
 	});
@@ -171,5 +174,12 @@ $('.modal-footer').on('click', '.span2', function(event)
 		$('.modal-body.script').attr("aria-hidden", false);
 		$('.modal-body.script').css("display", "block");
 	}
+});
 
+/*
+	save edited info
+*/
+$('#button-edit-save').on("click", function()
+{
+  document.getElementById("edit-media-form").submit();
 });

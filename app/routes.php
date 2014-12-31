@@ -67,6 +67,9 @@ Route::group(['prefix' => 'admin'], function()
 	// new media upload
 	Route::any('add-new-form-submit', 'FileUploadController@saveMedia');
 
+	// store script
+	Route::resource('save-script', 'ApiScriptController@store');
+
 });
 
 

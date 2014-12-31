@@ -2,13 +2,12 @@
 
 use LangLeap\TestCase;
 use LangLeap\Videos\Movie;
+use LangLeap\Levels\Level;
 
 
 /**
-*
-*	@author Thomas Rahn <Thomas@rahn.ca>
-*
-*/
+ * @author Thomas Rahn <Thomas@rahn.ca>
+ */
 class ApiMovieTest extends TestCase {
 
 	/**
@@ -50,11 +49,14 @@ class ApiMovieTest extends TestCase {
 
 	public function testStore()
 	{
+		$this->seed();
+		$level = Level::first();
+
 		$response = $this->action(
 			'POST',
 			'ApiMovieController@store',
 			[],
-			['name' => 'Test']
+			['name' => 'Test', 'level_id' => $level->id]
 		);
 
 		$this->assertResponseStatus(201);
