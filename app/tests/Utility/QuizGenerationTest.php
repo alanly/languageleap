@@ -2,7 +2,8 @@
 
 use LangLeap\TestCase;
 use LangLeap\Core\Collection;
-use LangLeap\Quizzes\Quiz;
+use LangLeap\Quizzes\Question;
+use LangLeap\Quizzes\Answer;
 use LangLeap\Words\Definition;
 use LangLeap\QuizUtilities\QuizGeneration;
 
@@ -16,14 +17,17 @@ class QuizGenerationTest extends TestCase {
 		$this->seed();
 	}
 
-	public function testQuizReturned()
+	public function testQuestionReturned()
 	{
 		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array(Definition::first());
 
-		$quiz = QuizGeneration::generateQuiz($all_words,$selected_words);
+		$questions = QuizGeneration::generateDefinitionQuiz($all_words, $selected_words);
 
-		$this->assertInstanceOf('LangLeap\Quizzes\Quiz', $quiz);
+		foreach($questions as $q)
+		{
+			$this->assertInstanceOf('LangLeap\Quizzes\Question', $q);
+		}
 	}
 	
 	public function testNullReturnedWhenWordsAreNotSelected()
@@ -31,9 +35,9 @@ class QuizGenerationTest extends TestCase {
 		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array();
 
-		$quiz = QuizGeneration::generateQuiz($all_words,$selected_words);
+		$question = QuizGeneration::generateDefinitionQuiz($all_words, $selected_words);
 
-		$this->assertNull($quiz);
+		$this->assertNull($question);
 	}
 
 	public function testNullReturnedWhenInvalidWordsAreSelected()
@@ -41,9 +45,9 @@ class QuizGenerationTest extends TestCase {
 		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array(-1);
 
-		$quiz = QuizGeneration::generateQuiz($all_words, $selected_words);
+		$question = QuizGeneration::generateDefinitionQuiz($all_words, $selected_words);
 
-		$this->assertNull($quiz);
+		$this->assertNull($question);
 	}
 
 	public function testNullReturnedWhenScriptWordsNotSupplied()
@@ -51,8 +55,8 @@ class QuizGenerationTest extends TestCase {
 		$all_words = new Collection;
 		$selected_words = array(Definition::first()->id);
 
-		$quiz = QuizGeneration::generateQuiz($all_words,$selected_words);
+		$question = QuizGeneration::generateDefinitionQuiz($all_words, $selected_words);
 
-		$this->assertNull($quiz);
+		$this->assertNull($question);
 	}
 }

@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreateQuestionTable extends Migration {
+class CreateQuizzesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,14 @@ class CreateQuestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('questions', function($table){
+		Schema::create('quizzes', function(Blueprint $table)
+		{
 			$table->increments('id');
-			$table->integer('answer_id')->unsigned();
-			$table->string('question');
+			$table->integer('user_id')->unsigned()->index();
+			$table->timestamps();
 		});
 	}
+
 
 	/**
 	 * Reverse the migrations.
@@ -26,7 +28,7 @@ class CreateQuestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('questions');
+		Schema::drop('quizzes');
 	}
 
 }

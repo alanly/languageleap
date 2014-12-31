@@ -1,30 +1,22 @@
 <?php
 
 use LangLeap\Core\Collection;
-use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Question;
-use LangLeap\QuizUtilities\QuizGeneration;
-use LangLeap\Words\Definition;
+use LangLeap\Quizzes\Answer;
+use LangLeap\Quizzes\VideoQuestion;
+use LangLeap\Quizzes\Result;
+use LangLeap\Quizzes\Quiz;
+use LangLeap\QuizUtilities\QuizFactory;
+use LangLeap\QuizUtilities\QuizInputValidation;
 use LangLeap\Videos\Video;
+use LangLeap\Words\Definition;
 
 /**
  * @author Thomas Rahn <thomas@rahn.ca>
  * @author Alan Ly <hello@alan.ly>
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
 class ApiQuizController extends \BaseController {
-
-	protected $quizzes;
-	protected $questions;
-	protected $definitions;
-	protected $videos;
-
-	public function __construct(Quiz $quiz, Question $question, Definition $definition, Video $video)
-	{
-		$this->quizzes = $quiz;
-		$this->questions = $question;
-		$this->definitions = $definition;
-		$this->videos = $video;
-	}
 
 	/**
 	 * This function will generate a json response that will contain, the quiz 
@@ -36,85 +28,14 @@ class ApiQuizController extends \BaseController {
 	 */
 	public function postIndex()
 	{
-		// Ensure the video exists.
-		$videoId = Input::get("video_id");
+		$quizDecorator = new QuizInputValidation(QuizFactory::getInstance());
 
-		if ($this->videos->where('id', $videoId)->count() < 1)
-		{
-			return $this->apiResponse(
-				'error',
-				"Video {$videoId} does not exists",
-				404
-			);
-		}
-
-		// Get all the selected words; if empty, return with redirect.
-		$selectedWords = Input::get("selected_words");
-
-		if (! $selectedWords || count($selectedWords) < 1)
-		{
-			return $this->apiResponse(
-				'success',
-				[ 'result' => ['redirect' => 'http://www.google.ca/'] ]
-			);
-		}
-
-		// Get all the words in the script; if empty, return 400 (client-side error).
-		$scriptWords = Input::get("all_words");
-
-		if (! $scriptWords || count($scriptWords) < 1)
-		{
-			return $this->apiResponse(
-				'error',
-				"Empty script supplied for video {$videoId}.",
-				400
-			);
-		}
-
-		// Retrieve a collection of all definitions in the script.
-		$scriptDefinitions = $this->definitions->whereIn('id', $scriptWords)->get();
-
-		// Use the overriden Collection class.
-		$scriptDefinitions = new Collection($scriptDefinitions->all());
-
-		// Store the script definitions in the session for future requests.
-		Session::put('scriptDefinitions', $scriptDefinitions);
-
-		// If words are missing, then return a 404.
-		if ($scriptDefinitions->count() != count($scriptWords))
-		{
-			return $this->apiResponse(
-				'error',
-				'Only '.$scriptDefinitions->count().' definitions found for '.count($scriptWords).' words.',
-				404
-			);
-		}
-
-		// Ensure that the _selected_ words are within the realm of the script.
-		foreach ($selectedWords as $definitionId)
-		{
-			// If a selected word is not in the script, return 404.
-			if (! $scriptDefinitions->contains($definitionId))
-			{
-				return $this->apiResponse(
-					'error',
-					"Selected definition {$definitionId} is not in video {$videoId}.",
-					404
-				);
-			}
-		}
-
-		// Generate a quiz instance based on the words given.
-		$quiz = QuizGeneration::generateQuiz($scriptDefinitions, $selectedWords);
-		$quiz->video_id = $videoId;
-		$quiz->save();
-
-		// Fetch the first unanswered question, and return it.
-		$question = $quiz->questions()->unanswered()->first();
-
+		// Generate all the questions.
+		$response = $quizDecorator->response(Auth::user()->id, Input::all());
 		return $this->apiResponse(
-			'success',
-			$this->generateJsonResponse($quiz, null, $question, $scriptDefinitions)
+			$response[0],
+			$response[1],
+			$response[2]
 		);
 	}
 
@@ -127,21 +48,19 @@ class ApiQuizController extends \BaseController {
 	public function putIndex()
 	{
 		// Ensure that the Question exists, else return a 404.
-		$questionId = Input::get('question_id');
-		$question = Question::find($questionId);
-
-		if (! $question)
+		$videoquestion_id = Input::get('videoquestion_id');
+		$videoquestion = VideoQuestion::find($videoquestion_id);
+		if (! $videoquestion)
 		{
 			return $this->apiResponse(
 				'error',
-				"Question {$questionId} not found.",
+				"Question {$videoquestion_id} not found.",
 				404
 			);
 		}
 
 		// Ensure the selected definition exists, otherwise return a 404.
 		$selectedId = Input::get("selected_id");
-
 		if (! $selectedId)
 		{
 			return $this->apiResponse(
@@ -150,100 +69,91 @@ class ApiQuizController extends \BaseController {
 				400
 			);
 		}
-
-		// Save the users answer in the question.
-		$question->selected_id = $selectedId;
-		$question->save();
-
-		// Retrieve the associated Quiz instance.
-		$quiz = $question->quiz()->first();
-
-		// Update the score if the user answered correctly.
-		if ($selectedId == $question->definition_id.'')
-		{
-			// Increment the score because they selected the right answer.
-			$quiz->increment("score");
-
-			// @TODO: Adjust user progress
-		}
 		
-		// Get an unanswered question.
-		$newQuestion = $quiz->questions()->unanswered()->first();
-
-		// If there are no more questions left, return the result.
-		if (! $newQuestion)
-		{
-			// Get the counts.
-			$numberOfTotalQuestions = $quiz->questions()->count();
-			$numberOfCorrectAnswers = $quiz->score;
-
-			// Generate the response.
-			$response = $this->generateJsonResponse($quiz, $question, null, null);
-			$response['result'] = [
-				'score'    => ((float)$numberOfCorrectAnswers / $numberOfTotalQuestions) * 100,
-				'redirect' => 'https://www.google.ca/', // @TODO: Determine the next video.
-			];
-
-			// Forget the definitions.
-			Session::forget('scriptDefinitions');
-
-			return $this->apiResponse('success', $response);
-		}
-
-		// Ensure we still have our script definitions that we stored from the
-		// original GET request.
-		if (! Session::has('scriptDefinitions'))
+		$result = Result::join('videoquestions', 'results.videoquestion_id', '=', 'videoquestions.id')
+			->where('videoquestions.id', '=', $videoquestion_id)
+			->where('results.user_id', '=', Auth::user()->id)
+			->orderBy('timestamp', 'desc')->first();
+		if (! $result)
 		{
 			return $this->apiResponse(
 				'error',
-				'Unable to retrieve the stored definitions. Please contact an administrator.',
-				500
+				"No result for user for question {$videoquestion_id}",
+				400
+			);
+		}
+
+		$isCorrectAnswer = $videoquestion->question->answer_id.'' === $selectedId;
+
+		if($isCorrectAnswer)
+		{
+			$result->is_correct = true;
+			$result->save();
+		}
+
+		return $this->apiResponse(
+			'success',
+			[
+				'is_correct'	=> $isCorrectAnswer
+			]
+		);
+	}
+	
+	public function putCustomQuestion()
+	{
+		$video_id = Input::get('video_id');
+		$question = Input::get('question');
+		$answers = Input::get('answer');
+		
+		$video = Video::find($video_id);
+		if (! $video)
+		{
+			return $this->apiResponse(
+				'error',
+				"Video {$video_id} not found.",
+				404
 			);
 		}
 		
-		return $this->apiResponse(
-			'success',
-			$this->generateJsonResponse($quiz, $question, $newQuestion, Session::get('scriptDefinitions'))
-		);
-	}
-
-	/**
-	 * Generates an appropriately formed data-array for the JSON response.
-  	 *
-  	 * @param  Quiz             $quiz
-  	 * @param  Question|null    $previousQuestion
-  	 * @param  Question|null    $currentQuestion
-  	 * @param  Collection|null  $definitions
-  	 * @return array
-  	 */
-	protected function generateJsonResponse(Quiz $quiz, $previousQuestion, $currentQuestion, $definitions)
-	{
-		$response = [];
-
-		$response['quiz_id'] = $quiz->id;
-
-		if ($previousQuestion !== null)
+		if(!$question || !$answers || count($answers) < 1)
 		{
-			$response['previous'] = [
-				'selected' => $previousQuestion->selected_id,
-				'answer'   => $previousQuestion->definition_id,
-				'result'   => $previousQuestion->selected_id === $previousQuestion->definition_id.'',
-			];
+			return $this->apiResponse(
+				'error',
+				'Fields not filled in properly',
+				400
+			);
 		}
 
-		if ($currentQuestion !== null)
+		$question = Question::create([
+			'question' 		=> $question,
+			'answer_id'	=> -1
+		]);
+		
+		// Shuffle the answers
+		$answer_id = -1;
+		while(count($answers) > 0)
 		{
-			$isLast = $quiz->questions()->unanswered()->count() == 1;
-
-			$response['question'] = [
-				'id' => $currentQuestion->id,
-				'description' => $currentQuestion->question,
-				'last' => $isLast,
-				'definitions' => QuizGeneration::generateQuestionDefinitions($definitions, $currentQuestion->definition_id),
-			];
+			$answer_key = array_rand($answers);
+			$answer = Answer::create([
+				'answer'			=> $answers[$answer_key],
+				'question_id'	=> $question->id
+			]);
+			if($answer_key == 0)
+			{
+				$answer_id = $answer->id;
+			}
+			unset($answers[$answer_key]);
 		}
-
-		return $response;
+		
+		$question->answer_id = $answer_id;
+		$question->save();
+		
+		$vq = VideoQuestion::create([
+			'video_id'		=> $video_id,
+			'question_id'	=> $question->id,
+			'is_custom'	=> true
+		]);
+		
+		return Redirect::to('admin/quiz/new');
 	}
-
 }

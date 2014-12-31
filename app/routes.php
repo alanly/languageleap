@@ -63,6 +63,11 @@ Route::group(['prefix' => 'admin'], function()
 		return View::make('admin.script.index');
 	});
 
+	// Dev quiz interface
+	Route::get('quiz/new', function()
+	{
+		return View::make('admin.quiz.index');
+	});
 });
 
 

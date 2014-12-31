@@ -1,66 +1,46 @@
 <?php namespace LangLeap\Quizzes;
 
 use LangLeap\TestCase;
-use LangLeap\Accounts\User;
 use App;
 
+
+/**
+*		@author Quang Tran <tran.quang@live.com>
+*/
 class QuizTest extends TestCase {
 
-	public function testQuestionsRelation()
+	public function setUp()
 	{
-		$user = $this->getUserInstance();
-		$video = $this->getVideoInstance();
-		$quiz = $this->getQuizInstance();
-		$question = $this->getQuestionInstance();
-		$quiz->user_id = $user->id;
-		$quiz->video_id = $video->id;	
-		$quiz->save();
-		$question->quiz_id = $quiz->id;	
-		$question->save();
-		$this->assertCount(1, $quiz->questions()->get());			
-	}
+		parent::setUp();
 
+		// Seed the database.
+		$this->seed();
+	}
+	
+	public function testVideoQuestionRelation()
+	{
+		$quiz = $this->getQuizInstance();
+		$quiz->save();
+		
+		$vq = $this->getVideoQuestionInstance();
+		$quiz->videoQuestions()->attach($vq->id);
+		
+		$this->assertCount(1, $quiz->videoQuestions()->get());
+	}
+	
 	protected function getQuizInstance()
 	{
 		return App::make('LangLeap\Quizzes\Quiz');
-	}	
-
-	protected function getUserInstance()
-	{
-		$this->seed();
-		return User::first();
 	}
-
-	protected function getQuestionInstance()
+	
+	protected function getVideoQuestionInstance()
 	{
-		$question =  App::make('LangLeap\Quizzes\Question');
-		$question->question = '';
-		$question->selected_id = 1; //un-need id
-		$question->definition_id = 1; //un-need id
-		return $question;
-	}
+		$videoQuestion = App::make('LangLeap\Quizzes\VideoQuestion');
+		$videoQuestion->question_id = 1;
+		$videoQuestion->video_id = 1;
+		$videoQuestion->is_custom = true;
+		$videoQuestion->save();
 
-	protected function getVideoInstance()
-	{
-		$video = App::make('LangLeap\Videos\Video');
-		$comm = App::make('LangLeap\Videos\Commercial');
-		$comm->name = 'Test';
-		$comm->save();
-		$video->viewable_id = $comm->id;
-		$video->viewable_type = 'LangLeap\Videos\Commercial';		
-		$video->path = '/path/to/somewhere';
-		$video->language_id = $this->getLanguageInstance()->id;
-		$video->save();
-		return $video;
-	}
-
-	protected function getLanguageInstance()
-	{
-		$lang = App::make('LangLeap\Core\Language');
-		$lang->code = 'en';
-		$lang->description = 'English';
-		$lang->save();
-
-		return $lang;
+		return $videoQuestion;
 	}
 }
