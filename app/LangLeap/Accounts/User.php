@@ -24,6 +24,7 @@ class User extends ValidatedModel implements UserInterface, RemindableInterface
 		'password'   => 'required',
 		'first_name' => 'required',
 		'last_name'  => 'required',
+		'language_id'=> 'required',
 	];
 
 
