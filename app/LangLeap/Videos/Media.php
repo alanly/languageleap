@@ -5,9 +5,7 @@ use LangLeap\Core\ValidatedModel;
 abstract class Media extends ValidatedModel{
 
 	private $fields = ['name', 'description', 'level_id'];
-	private $fieldRules  = [
-						'name'	=> 'required'
-						];
+	private $fieldRules  = ['name'	=> 'required'];
 
 	public function getFillable()
 	{
