@@ -19,4 +19,7 @@ return array(
 	'player' => array(
 		'error' => 'Your browser does not support HTML5 video.',
 	),
+	'audio' => array(
+		'error' => 'Your browser does not support HTML5 audio.',
+	),
 );

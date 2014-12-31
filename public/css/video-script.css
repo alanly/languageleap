@@ -55,3 +55,19 @@
 	background-color: #5CB85C;
 }
 
+#mute-audio {
+	background-size: 32px;
+	border: 0;
+	float: right;
+	height: 32px;
+	margin: 10px 20px 0 0;
+	width: 32px;
+}
+
+.pronunciations-on {
+	background: url(http://cdn.flaticon.com/png/64/498.png) no-repeat center;
+}
+
+.pronunciations-off {
+	background: url(http://cdn.flaticon.com/png/64/60750.png) no-repeat center;
+}

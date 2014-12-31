@@ -1,13 +1,16 @@
 <?php namespace LangLeap\Videos;
 
-use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
 
-class Movie extends ValidatedModel implements Billable {
+class Movie extends Media implements Billable {
 
-	public    $timestamps = false;
-	protected $fillable   = ['name', 'description', 'director', 'actor', 'genre'];
-	protected $rules      = ['name' => 'required'];
+	function __construct($attributes = [])
+	{
+		$this->timestamps = false;
+		$this->fillable = array_merge(parent::getFillable(), ['director', 'actor', 'genre']);
+		$this->rules = array_merge(parent::getRules(), []);
+		parent::__construct($attributes);
+	}
 
 	public function videos()
 	{
@@ -29,6 +32,7 @@ class Movie extends ValidatedModel implements Billable {
 			'director' => $movie->director,
 			'actor' => $movie->actor,
 			'genre' => $movie->genre,
+			'level' => $movie->level->description,
 			'videos' => $videos_array,
 		);
 	}

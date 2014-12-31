@@ -2,12 +2,15 @@
 
 use LangLeap\Core\ValidatedModel;
 
-class Commercial extends ValidatedModel {
+class Commercial extends Media {
 
-	public    $timestamps = false;
-	protected $fillable   = ['name', 'description'];
-	protected $rules      = ['name' => 'required'];
-	
+	function __construct($attributes = [])
+	{
+		$this->timestamps = false;
+		$this->fillable = array_merge(parent::getFillable(), []);
+		$this->rules = array_merge(parent::getRules(), []);
+		parent::__construct($attributes);
+	}
 
 	public static function boot()
 	{
@@ -37,6 +40,7 @@ class Commercial extends ValidatedModel {
 			'id' => $comm->id,
 			'name' => $comm->name,
 			'description' => $comm->description,
+			'level' => $comm->level->description,
 			'videos' => $videos_array,
 		);
 	}

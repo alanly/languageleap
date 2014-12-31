@@ -83,13 +83,21 @@ class ApiEpisodeController extends \BaseController {
 				'error', "Season {$seasonId} not found for show {$showId}.", 404
 			);
 		}
-
+		
 		$episode = $this->episodes->newInstance(Input::get());
 		
 		if (! $season->episodes()->save($episode))
 		{
 			return $this->apiResponse('error', $episode->getErrors(), 400);
 		}
+
+		/*
+		 * Need to retrieve the saved model from the database in case the `level_id`
+		 * wasn't defined in the input data. The default `level_id` is specified by
+		 * the table schema. Saving doesn't seem to sync the instance data with the 
+		 * persisted data. So here we are.
+		 */
+		$episode = $this->episodes->find($episode->id);
 
 		return $this->generateResponse($show, $season, $episode, 201);
 	}
@@ -296,12 +304,18 @@ class ApiEpisodeController extends \BaseController {
 
 		if ($episodes instanceof Episode)
 		{
-			$data['episode'] = $episodes;
+			$data['episode'] = $episodes->toResponseArray();
 			$data['videos'] = $episodes->videos;
 		}
 		else
 		{
-			$data['episodes'] = $episodes;
+			$episode_array = array();
+			foreach($episodes as $episode)
+			{
+				$episode_array[] = $episode->toResponseArray();
+			}
+
+			$data['episodes'] = $episode_array;
 		}
 
 		return $this->apiResponse('success', $data, $code);

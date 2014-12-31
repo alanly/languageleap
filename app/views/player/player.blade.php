@@ -20,9 +20,13 @@
 
 		<div id="script">
 		</div>
+		<audio id="word-audio" autoplay>
+			<p>@lang('player.audio.error')</p>
+		</audio>
 
 		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
 		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
+		<button id="mute-audio" class="pronunciations-on" title="Audio hover"></button>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
@@ -239,9 +243,12 @@
 							.tooltip('fixTitle');
 
 							$(this).attr('data-type', 'definedWord');
+							$(this).data('audio_url', data.data.audio_url);
 						});
 
 						word.tooltip('show');
+
+						$('#word-audio').attr('src', data.data.audio_url);
 					}
 				);*/
 
@@ -253,6 +260,8 @@
 				success : function(data)
 				{
 					setTooltipDefinition(word, data.data.definition);
+					setWordAudioUrl(word, data.data.audio_url);
+					setCurrentAudio(data.data.audio_url);
 				},
 				error : function(data)
 				{
@@ -277,25 +286,59 @@
 			word.tooltip('show');
 		}
 
+		function setWordAudioUrl(word, url)
+		{
+			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+				$(this).data('audio_url', url);
+			});
+		}
+
+		function setCurrentAudio(url)
+		{
+			$('#word-audio').attr('src', url);
+		}
+
+		function getMinutesFromTimestamp(timestamp)
+		{
+			return parseInt(timestamp.split(':')[0]);
+		}
+
+		function getSecondsFromTimestamp(timestamp)
+		{
+			return parseInt(timestamp.split(':')[1]);
+		}
+
+		function getTimeInSecondsFromTimestamp(timestamp)
+		{
+			return (getMinutesFromTimestamp(timestamp) * 60) + getSecondsFromTimestamp(timestamp);
+		}
+
 		function updateCurrentSpeaker()
 		{
 			var currentTimeInSeconds = Math.floor(this.currentTime);
-
-			// How many minutes into the video we currently are
-			var minutes = Math.floor(currentTimeInSeconds / 60);
-
-			// How many seconds into the current minute we are
-			var seconds = currentTimeInSeconds - (minutes * 60);
-
-			if (seconds < 10) { seconds = '0' + seconds; }
-			
-			var time = minutes + ':' + seconds;
-
 			var $speakers = $('#script span[data-timestamp]');
-			var $currentSpeaker = $speakers.filter('span[data-timestamp="' + time + '"]');
-			
-			if ($currentSpeaker.length >= 1)
+
+			if ($speakers.length > 0)
 			{
+				var $currentSpeaker = $speakers.eq(0);
+
+				var timestamp = $currentSpeaker.data('timestamp');
+				var smallestDifference = currentTimeInSeconds - getTimeInSecondsFromTimestamp(timestamp);
+
+				// Find the speaker that produces the smallest positive difference
+				$speakers.each(function()
+				{
+					timestamp = $(this).data('timestamp');
+					var tempDifference = currentTimeInSeconds - getTimeInSecondsFromTimestamp(timestamp);
+					
+					if (tempDifference < smallestDifference &&
+						tempDifference >= 0)
+					{
+						$currentSpeaker = $(this);
+						smallestDifference = tempDifference;
+					}
+				});
+
 				$speakers.removeClass('currently-speaking');
 				$currentSpeaker.addClass('currently-speaking');
 			}
@@ -336,6 +379,7 @@
 				}).on('mouseenter', 'span[data-type=definedWord]', function()
 				{
 					$(this).addClass('word-hover');
+					setCurrentAudio($(this).data('audio_url'));
 				})
 				.on('mouseleave', 'span[data-type=definedWord]', function()
 				{
@@ -348,6 +392,15 @@
 			});
 
 			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
+
+			$('#mute-audio').on('click', function()
+			{
+				$(this).toggleClass('pronunciations-off');
+				$(this).toggleClass('pronunciations-on');
+				
+				var $audio = $('#word-audio');
+				$audio.prop('muted', !$audio.prop('muted'));
+			});
 		});
 	</script>
 @stop
