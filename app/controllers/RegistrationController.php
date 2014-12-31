@@ -27,21 +27,19 @@ class RegistrationController extends \BaseController {
 
 	public function getIndex()
 	{
-		return View::make('account.registration.index');
+		return View::make('account.register');
 	}
 
 
 	public function getVerify($confirmationCode)
 	{
-		if(! $confirmationCode)
-		{
-			return Redirect::action('RegistrationController@getIndex');
-		}
-
 		$user = $this->users->whereConfirmationCode($confirmationCode)->first();
 
-		if (! $user)
+		if (! $confirmationCode || ! $user)
 		{
+			Session::flash('action.failed', true);
+			Session::flash('action.message', Lang::get('auth.verify.incorrect'));
+
 			return Redirect::action('RegistrationController@getIndex');
 		}
 
@@ -49,7 +47,10 @@ class RegistrationController extends \BaseController {
 		$user->confirmation_code = null;
 		$user->save();
 
-		return View::make('account.registration.verified');
+		Session::flash('action.failed', false);
+		Session::flash('action.message', Lang::get('auth.verify.activated'));
+
+		return Redirect::action('AuthController@getLogin');
 	}
 
 
@@ -93,7 +94,10 @@ class RegistrationController extends \BaseController {
 			}
 		);
 
-		return View::make('account.registration.success');
+		Session::flash('action.failed', false);
+		Session::flash('action.message', Lang::get('auth.register.success'));
+
+		return Redirect::action('AuthController@getLogin');
 	}
 
 

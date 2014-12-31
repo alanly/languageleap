@@ -1,7 +1,6 @@
 <?php namespace LangLeap\Videos;
 
 use LangLeap\Core\ValidatedModel;
-use LangLeap\Videos\Media;
 
 class Commercial extends Media {
 
@@ -43,8 +42,8 @@ class Commercial extends Media {
 			'id' 			=> $comm->id,
 			'name' 			=> $comm->name,
 			'description' 	=> $comm->description,
-			'videos' 		=> $videos_array,
-			'level' 		=> parent::level()->get(["description"]),
+			'level'			=> $comm->level->description,
+			'videos'		=> $videos_array,
 		);
 	}
 }

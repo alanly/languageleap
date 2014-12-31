@@ -1,8 +1,6 @@
 <?php namespace LangLeap\Videos;
 
-use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
-use LangLeap\Videos\Media;
 
 class Movie extends Media implements Billable {
 
@@ -36,8 +34,8 @@ class Movie extends Media implements Billable {
 			'director' 		=> $movie->director,
 			'actor' 		=> $movie->actor,
 			'genre' 		=> $movie->genre,
+			'level' 		=> $movie->level->description,
 			'videos' 		=> $videos_array,
-			'level' 		=> parent::level()->get(["description"]),
 		);
 	}
 
