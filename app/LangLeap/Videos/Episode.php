@@ -9,14 +9,22 @@ use LangLeap\Payments\Billable;
  */
 class Episode extends Media implements Billable {
 
-	function __construct($attributes = [])
+	public $timestamps = false;
+
+	function __construct(array $attributes = [])
 	{
-		$this->timestamps = false;
-		$this->fillable = array_merge(parent::getFillable(), ['season_id', 'number']);
-		$this->rules = array_merge(parent::getRules(), [
-												'season_id'   => 'required|integer',
-												'number'      => 'required|integer',
-									]);
+		// Add this model's attributes to the mass-assignable parameter.
+		array_push($this->fillable, 'season_id', 'number');
+
+		// Add the necessary rules for this model's specific attributes.
+		$this->rules['season_id'] = 'required|integer';
+		$this->rules['number']    = 'required|integer';
+
+		/*
+		 * Pass any construction parameters to the base constructor.
+		 * This needs to be performed last because the `fillable` paramter is set
+		 * above.
+		 */
 		parent::__construct($attributes);
 	}
 

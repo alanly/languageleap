@@ -2,20 +2,10 @@
 
 use LangLeap\Core\ValidatedModel;
 
-abstract class Media extends ValidatedModel{
+abstract class Media extends ValidatedModel {
 
-	private $fields = ['name', 'description', 'level_id'];
-	private $fieldRules  = ['name'	=> 'required'];
-
-	public function getFillable()
-	{
-		return $this->fields;
-	}
-
-	public function getRules()
-	{
-		return $this->fieldRules;
-	}
+	protected $fillable = ['name', 'description', 'level_id'];
+	protected $rules    = ['name' => 'required'];
 
 	public function level()
 	{
@@ -23,4 +13,5 @@ abstract class Media extends ValidatedModel{
 	}
 
 	abstract public function videos();
+
 }

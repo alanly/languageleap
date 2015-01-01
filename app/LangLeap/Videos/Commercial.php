@@ -1,16 +1,8 @@
 <?php namespace LangLeap\Videos;
 
-use LangLeap\Core\ValidatedModel;
-
 class Commercial extends Media {
 
-	function __construct($attributes = [])
-	{
-		$this->timestamps = false;
-		$this->fillable = array_merge(parent::getFillable(), []);
-		$this->rules = array_merge(parent::getRules(), []);
-		parent::__construct($attributes);
-	}
+	public $timestamps = false;
 
 	public static function boot()
 	{

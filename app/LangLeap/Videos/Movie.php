@@ -4,11 +4,18 @@ use LangLeap\Payments\Billable;
 
 class Movie extends Media implements Billable {
 
-	function __construct($attributes = [])
+	public $timestamps = false;
+
+	function __construct(array $attributes = [])
 	{
-		$this->timestamps = false;
-		$this->fillable = array_merge(parent::getFillable(), ['director', 'actor', 'genre']);
-		$this->rules = array_merge(parent::getRules(), []);
+		// Add this model's attributes to the mass-assignable parameter.
+		array_push($this->fillable, 'director', 'actor', 'genre');
+
+		/*
+		 * Pass any construction parameters to the base constructor.
+		 * This needs to be performed last because the `fillable` paramter is set
+		 * above.
+		 */
 		parent::__construct($attributes);
 	}
 
