@@ -26,7 +26,7 @@ class Episode extends Media implements Billable {
 
 		static::deleting(function($episode)
 		{
-			$episode->vdeos()->delete();
+			$episode->videos()->delete();
 		});
 
 	}

@@ -18,7 +18,7 @@ class Commercial extends Media {
 
 		static::deleting(function($commercial)
 		{
-			$commercial->vdeos()->delete();
+			$commercial->videos()->delete();
 		});
 
 	}
