@@ -4,6 +4,7 @@ class Commercial extends Media {
 
 	public $timestamps = false;
 
+
 	public static function boot()
 	{
 		parent::boot();
@@ -12,28 +13,30 @@ class Commercial extends Media {
 		{
 			$commercial->videos()->delete();
 		});
-
 	}
+
 
 	public function videos()
 	{
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
+
 	public function toResponseArray()
 	{
-		$comm = $this;
-		$videos = $comm->videos()->get();
-		$videos_array = array();
-		foreach($videos as $video){
-			$videos_array[] = $video->toResponseArray();
-		}
-		return array(
-			'id' => $comm->id,
-			'name' => $comm->name,
-			'description' => $comm->description,
-			'level' => $comm->level->description,
-			'videos' => $videos_array,
-		);
+		// Retrieve a listing of the associated videos as an array.
+		$videos = $this->videos->map(function($video)
+		{
+			return $video->toResponseArray();
+		});
+
+		return [
+			'id'          => $this->id,
+			'name'        => $this->name,
+			'description' => $this->description,
+			'level'       => $this->level->description,
+			'videos'      => $videos,
+		];
 	}
+
 }
