@@ -53,7 +53,7 @@ class RankQuizTest extends TestCase
 		2. User now has a 'level_id' which is NOT 0
 		3. Correct view is returned with User's new level
 		*/
-
+		
 	}
 
 	public function testGetRankQuizResultInvalid()

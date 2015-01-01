@@ -29,6 +29,22 @@ class RankQuizController extends \BaseController
 	{
 		//Get Answers here and rank the user based on score.
 		//Make sure all the questions are answered.
+		$userScore = 0;
+		$actual_answer = Input::get("answer_id");
+		$user_answer = Input::get("selected_id");
+		
+		if($userScore <= 1)
+		{
+			$user->level_id = 1;
+		}
+		else if($userScore > 1 && $userScore <= 3)
+		{
+			$user->level_id = 2;
+		}
+		else if($userScore > 3 && <= 5)
+		{
+			$user->level_id = 3;
+		}
 	}
 
 	private function getUser()
