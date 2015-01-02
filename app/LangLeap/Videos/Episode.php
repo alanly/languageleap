@@ -56,19 +56,6 @@ class Episode extends Media implements Billable {
 
 	public function toResponseArray()
 	{
-<<<<<<< HEAD
-		$episode = $this;
-		
-		return array(
-			'id'			=> $episode->id,
-			'season_id'		=> $episode->season_id,
-			'number'		=> $episode->number,
-			'name'			=> $episode->name,
-			'description'	=> $episode->description,
-			'show_id'		=> $episode->season->show_id,
-			'level'			=> $episode->level->description,
-		);
-=======
 		return [
 			'id'          => $this->id,
 			'season_id'   => $this->season_id,
@@ -78,7 +65,6 @@ class Episode extends Media implements Billable {
 			'show_id'     => $this->season->show_id,
 			'level'       => $this->level->description,
 		];
->>>>>>> 8529f710d47c54110658d88c4b7d17f45b52ecf1
 	}
 
 }
