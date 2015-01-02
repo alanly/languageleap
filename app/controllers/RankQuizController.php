@@ -89,7 +89,7 @@ class RankQuizController extends \BaseController
 		}
 		else
 		{
-			return Redirect::to('rank.tutorialquiz');
+			return Redirect::to('rank.tutorialquiz')
 				->with('action.failed', true)
 				->with('action.message', 'You need to answer all the questions before proceeding!');
 		}
