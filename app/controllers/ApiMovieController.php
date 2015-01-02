@@ -3,13 +3,14 @@ use LangLeap\Videos\Movie;
 
 class ApiMovieController extends \BaseController {
 
-
 	protected $movies;
+
 
 	public function __construct(Movie $movies)
 	{
 		$this->movies = $movies;
 	}
+
 
 	/**
 	 * Display a listing of the resource.
@@ -18,17 +19,12 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function index()
 	{
-		$movies = Movie::all();
-
-		$movie_array = array();
-		foreach($movies as $movie)
-		{
-			$movie_array[] = $movie->toResponseArray();
-		}
-
 		return $this->apiResponse(
 			'success',
-			$movie_array
+			$this->movies->all()->map(function($movie)
+			{
+				return $movie->toResponseArray();
+			})
 		);
 	}
 
@@ -40,24 +36,14 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function store()
 	{
-		$movie = new Movie;
-
-		$movie->fill(Input::get());
+		$movie = $this->movies->newInstance(Input::get());
 
 		if (! $movie->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$movie->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $movie->getErrors(), 400);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$movie->toArray(),
-			201
-		);	
+		return $this->apiResponse('success', $movie->toArray(), 201);
 	}
 
 
@@ -69,15 +55,11 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$movie = Movie::find($id);
+		$movie = $this->movies->find($id);
 
 		if (!$movie)
 		{
-			return $this->apiResponse(
-				'error',
-				"Movie {$id} not found.",
-				404
-			);
+			return $this->apiResponse('error', "Movie {$id} not found.", 404);
 		}
 
 		return $this->apiResponse("success", $movie->toResponseArray());
@@ -91,33 +73,21 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$movie = Movie::find($id);
+		$movie = $this->movies->find($id);
 
 		if (! $movie)
 		{
-			return $this->apiResponse(
-				'error',
-				"Movie {$id} not found.",
-				404
-			);
+			return $this->apiResponse('error', "Movie {$id} not found.", 404);
 		}
 
 		$movie->fill(Input::get());
 
 		if (! $movie->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$movie->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $movie->getErrors(), 400);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$movie->toArray(),
-			200
-		);
+		return $this->apiResponse('success', $movie->toArray(), 200);
 	}
 
 
@@ -129,24 +99,16 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$movie = Movie::find($id);
+		$movie = $this->movies->find($id);
 
 		if (! $movie)
 		{
-			return $this->apiResponse(
-				'error',
-				"Movie {$id} not found.",
-				404
-			);
+			return $this->apiResponse('error', "Movie {$id} not found.", 404);
 		}
 
 		$movie->videos()->delete();
 		$movie->delete();
 
-		return $this->apiResponse(
-			'success',
-			'Movie {$id} has been removed',
-			200
-		);
+		return $this->apiResponse('success', "Movie {$id} has been removed", 204);
 	}
 }

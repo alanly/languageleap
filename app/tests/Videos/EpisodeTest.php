@@ -15,7 +15,6 @@ class EpisodeTest extends TestCase {
 	{
 		$show = $this->getShowInstance();	
 
-		
 		$season = $this->getSeasonInstance();	
 		$season->show_id = $show->id;
 		$season->number = 1;
@@ -27,7 +26,6 @@ class EpisodeTest extends TestCase {
 		$episode->level_id = 1;
 		$episode->name = 'test';
 		$episode->save();
-		
 
 		$this->assertCount(1, $episode->season()->get());			
 	}
@@ -40,12 +38,10 @@ class EpisodeTest extends TestCase {
 		$show->image_path = 'test';
 		$show->save();
 
-
 		$season = $this->getSeasonInstance();
 		$season->show_id = $show->id;
 		$season->number = 1;
 		$season->save();
-
 		
 		$episode = $this->getEpisodeInstance();
 		$episode->season_id = $season->id;
@@ -53,7 +49,6 @@ class EpisodeTest extends TestCase {
 		$episode->level_id = 1;
 		$episode->name = 'test';
 		$episode->save();
-
 
 		$video = $this->getVideoInstance();
 		$video->path='/path/to/somewhere';
@@ -67,9 +62,28 @@ class EpisodeTest extends TestCase {
 		$script->save();	
 				
 		$this->assertCount(1, $episode->videos()->get());
+	}
 
+	public function testMassAssigningAttributesOnInstanceCreation()
+	{
+		$a = [
+			'name'        => 'Test',
+			'description' => 'Test Model',
+			'level_id'    => 1,
+			'season_id'   => 0,
+			'number'      => 0,
+		];
 
-	}	
+		$i = Episode::create($a);
+		$i = Episode::find($i->id);
+
+		$this->assertSame($a['name'], $i->name);
+		$this->assertSame($a['description'], $i->description);
+		$this->assertEquals($a['level_id'], $i->level_id);
+		$this->assertEquals($a['season_id'], $i->season_id);
+		$this->assertEquals($a['number'], $i->number);
+	}
+
 	protected function getShowInstance()
 	{
 		$show = App::make('LangLeap\Videos\Show');
@@ -79,6 +93,7 @@ class EpisodeTest extends TestCase {
 		$show->save();
 		return $show;
 	}
+
 	protected function getSeasonInstance()
 	{
 		return App::make('LangLeap\Videos\Season');

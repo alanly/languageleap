@@ -1,16 +1,9 @@
 <?php namespace LangLeap\Videos;
 
-use LangLeap\Core\ValidatedModel;
-
 class Commercial extends Media {
 
-	function __construct($attributes = [])
-	{
-		$this->timestamps = false;
-		$this->fillable = array_merge(parent::getFillable(), []);
-		$this->rules = array_merge(parent::getRules(), []);
-		parent::__construct($attributes);
-	}
+	public $timestamps = false;
+
 
 	public static function boot()
 	{
@@ -18,32 +11,32 @@ class Commercial extends Media {
 
 		static::deleting(function($commercial)
 		{
-			$commercial->vdeos()->delete();
+			$commercial->videos()->delete();
 		});
-
 	}
+
 
 	public function videos()
 	{
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
+
 	public function toResponseArray()
 	{
-		$comm = $this;
-		$videos = $comm->videos()->get();
-		$videos_array = array();
+		// Retrieve a listing of the associated videos as an array.
+		$videos = $this->videos->map(function($video)
+		{
+			return $video->toResponseArray();
+		});
 
-		foreach($videos as $video){
-			$videos_array[] = $video->toResponseArray();
-		}
-
-		return array(
-			'id' 			=> $comm->id,
-			'name' 			=> $comm->name,
-			'description' 	=> $comm->description,
-			'level'			=> $comm->level->description,
-			'videos'		=> $videos_array,
-		);
+		return [
+			'id'          => $this->id,
+			'name'        => $this->name,
+			'description' => $this->description,
+			'level'       => $this->level->description,
+			'videos'      => $videos,
+		];
 	}
+
 }

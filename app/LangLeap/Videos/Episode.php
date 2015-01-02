@@ -9,16 +9,26 @@ use LangLeap\Payments\Billable;
  */
 class Episode extends Media implements Billable {
 
-	function __construct($attributes = [])
+	public $timestamps = false;
+
+
+	function __construct(array $attributes = [])
 	{
-		$this->timestamps = false;
-		$this->fillable = array_merge(parent::getFillable(), ['season_id', 'number']);
-		$this->rules = array_merge(parent::getRules(), [
-										'season_id'	=> 'required|integer',
-										'number'	=> 'required|integer',
-									]);
+		// Add this model's attributes to the mass-assignable parameter.
+		array_push($this->fillable, 'season_id', 'number');
+
+		// Add the necessary rules for this model's specific attributes.
+		$this->rules['season_id'] = 'required|integer';
+		$this->rules['number']    = 'required|integer';
+
+		/*
+		 * Pass any construction parameters to the base constructor.
+		 * This needs to be performed last because the `fillable` paramter is set
+		 * above.
+		 */
 		parent::__construct($attributes);
 	}
+
 
 	public static function boot()
 	{
@@ -26,23 +36,27 @@ class Episode extends Media implements Billable {
 
 		static::deleting(function($episode)
 		{
-			$episode->vdeos()->delete();
+			$episode->videos()->delete();
 		});
 
 	}
+
 
 	public function season()
 	{
 		return $this->belongsTo('LangLeap\Videos\Season');
 	}
 
+
 	public function videos()
 	{
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
+
 	public function toResponseArray()
 	{
+<<<<<<< HEAD
 		$episode = $this;
 		
 		return array(
@@ -54,6 +68,17 @@ class Episode extends Media implements Billable {
 			'show_id'		=> $episode->season->show_id,
 			'level'			=> $episode->level->description,
 		);
+=======
+		return [
+			'id'          => $this->id,
+			'season_id'   => $this->season_id,
+			'number'      => $this->number,
+			'name'        => $this->name,
+			'description' => $this->description,
+			'show_id'     => $this->season->show_id,
+			'level'       => $this->level->description,
+		];
+>>>>>>> 8529f710d47c54110658d88c4b7d17f45b52ecf1
 	}
 
 }

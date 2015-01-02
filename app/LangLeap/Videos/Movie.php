@@ -4,39 +4,46 @@ use LangLeap\Payments\Billable;
 
 class Movie extends Media implements Billable {
 
-	function __construct($attributes = [])
+	public $timestamps = false;
+
+
+	function __construct(array $attributes = [])
 	{
-		$this->timestamps = false;
-		$this->fillable = array_merge(parent::getFillable(), ['director', 'actor', 'genre']);
-		$this->rules = array_merge(parent::getRules(), []);
+		// Add this model's attributes to the mass-assignable parameter.
+		array_push($this->fillable, 'director', 'actor', 'genre');
+
+		/*
+		 * Pass any construction parameters to the base constructor.
+		 * This needs to be performed last because the `fillable` paramter is set
+		 * above.
+		 */
 		parent::__construct($attributes);
 	}
+
 
 	public function videos()
 	{
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
+
 	public function toResponseArray()
 	{
-		$movie = $this;
-		$videos = $movie->videos()->get();
-		$videos_array = array();
+		$videos = $this->videos->map(function($video)
+		{
+			return $video->toResponseArray();
+		});
 
-		foreach($videos as $video){
-			$videos_array[] = $video->toResponseArray();
-		}
-		
-		return array(
-			'id' 			=> $movie->id,
-			'name' 			=> $movie->name,
-			'description' 	=> $movie->description,
-			'director' 		=> $movie->director,
-			'actor' 		=> $movie->actor,
-			'genre' 		=> $movie->genre,
-			'level' 		=> $movie->level->description,
-			'videos' 		=> $videos_array,
-		);
+		return [
+			'id'          => $this->id,
+			'name'        => $this->name,
+			'description' => $this->description,
+			'director'    => $this->director,
+			'actor'       => $this->actor,
+			'genre'       => $this->genre,
+			'level'       => $this->level->description,
+			'videos'      => $videos,
+		];
 	}
 
 }
