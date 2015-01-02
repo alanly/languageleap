@@ -18,11 +18,17 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function index()
 	{
-		$commercial = Commercial::all();
+		$commercials = Commercial::all();
+
+		$commercial_array = array();
+		foreach($commercials as $commercial)
+		{
+			$commercial_array[] = $commercial->toResponseArray();
+		}
 		
 		return $this->apiResponse(
 			'success',
-			$commercial->toArray()
+			$commercial_array
 		);
 
 

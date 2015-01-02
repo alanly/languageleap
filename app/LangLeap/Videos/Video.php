@@ -11,7 +11,7 @@ class Video extends ValidatedModel {
 		'path'          => 'required',
 		'viewable_id'   => 'required|integer',
 		'viewable_type' => 'required',
-		'language_id'	=> 'required',
+		'language_id'   => 'required'
 	];
 
 
@@ -40,24 +40,17 @@ class Video extends ValidatedModel {
 
 	public function toResponseArray()
 	{
-		$vid = $this;
-		$script = $vid->script()->first();
+		$script = $this->script;
 
-		if ($script != null)
-		{
-			return array(
-				'id' => $vid->id,
-				'path' => $vid->path,
-				'viewable_id' => $vid->viewable_id,
-				'viewable_type' => $vid->viewable_type,
-				'script' => array(
-					'id' => $script->id,
-					'text' => $script->text,
-				),
-			);
-		}
+		if (! $script) return null;
 
-		return null;		
+		return [
+			'id'            => $this->id,
+			'path'          => $this->path,
+			'viewable_id'   => $this->viewable_id,
+			'viewable_type' => $this->viewable_type,
+			'script'        => ['id' => $script->id, 'text' => $script->text],
+		];
 	}
 
 }
