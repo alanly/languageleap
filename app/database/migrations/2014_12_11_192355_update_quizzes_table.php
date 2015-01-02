@@ -14,7 +14,7 @@ class UpdateQuizzesTable extends Migration {
 	{
 		Schema::table('quizzes', function($table)
 		{
-			$table->integer('video_id')->unsigned()->default(-1);
+			$table->integer('video_id')->unsigned()->default(1);
 		});
 	}
 
