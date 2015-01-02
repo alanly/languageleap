@@ -60,8 +60,13 @@ class FileUploadController extends \BaseController {
 		$path = '/storage/media/videos/' . $type . 's/';
 		Input::file('file')->move(app_path() . $path, $id . '.' . Input::file('file')->getClientOriginalExtension());
 		
+
+		Session::flash('action.success', true);
+		Session::flash('action.message', Lang::get('admin.upload.success'));
 		
-		return View::make('admin.index')->with('levels',LeveL::all());
+		return View::make('admin.index')
+							->with('levels',LeveL::all());
+
 	}
 
 }
