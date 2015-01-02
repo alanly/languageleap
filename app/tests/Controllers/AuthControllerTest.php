@@ -18,7 +18,6 @@ class AuthenticationTest extends TestCase {
 	public function setUp()
 	{
 		parent::setUp();
-		$this->seed();
 	}
 
 
@@ -101,6 +100,28 @@ class AuthenticationTest extends TestCase {
 	}
 
 
+	public function testErrorReturnedWhenUnverifiedUserTriesToLogin()
+	{
+		$user = $this->createUser();
+		$user->is_confirmed = false;
+		$user->save();
+
+		$response = $this->action(
+			'POST',
+			'AuthController@postLogin',
+			[],
+			[
+				'username' => 'user',
+				'password' => 'password',
+			]
+		);
+
+		$this->assertRedirectedToAction('AuthController@getLogin');
+		$this->assertSessionHas('action.failed', true);
+		$this->assertFalse(Auth::check());
+	}
+
+
 	public function testSuccessWhenLoggingOutAsAnAuthenticatedUser()
 	{
 		$this->be($this->createUser());
@@ -137,14 +158,17 @@ class AuthenticationTest extends TestCase {
 	{
 		$user = $this->makeUserInstance();
 
+		$this->seed('LanguageTableSeeder');
+
 		return $user->create([
-			'username'   => $username,
-			'password'   => Hash::make($password),
-			'email'      => $email,
-			'first_name' => 'John',
-			'last_name'  => 'Smith',
-			'language_id'=> Language::first()->id,
-			'is_admin'   => $isAdmin,
+			'username'     => $username,
+			'password'     => Hash::make($password),
+			'email'        => $email,
+			'first_name'   => 'John',
+			'last_name'    => 'Smith',
+			'language_id'  => 1,
+			'is_admin'     => $isAdmin,
+			'is_confirmed' => true,
 		]);
 	}
 

@@ -6,10 +6,11 @@ body {
 	font-family: "Open Sans", sans-serif;
 }
 h1,h2,h3,h4,h5,h6 {
-	font-family: "Bree Serif", serif;
+	font-family: "Open Sans", sans-serif;
 	font-weight: 400;
+	margin: 0;
 }
-#new {
+#button-add-new {
 	padding: 20px;
 }
 #search {
@@ -50,10 +51,18 @@ h1,h2,h3,h4,h5,h6 {
 .form input {
 
 }
+
+.radio {
+	display: inline;
+}
+
 .form-script {
 
 }
-.form-script input[type="submit"] {
+#button-add-new-back {
+	float: left;
+}
+#button-add-new-next {
 	float: right;
 }
 .form-script textarea {
