@@ -50,6 +50,7 @@ class ApiQuizController extends \BaseController {
 		// Ensure that the Question exists, else return a 404.
 		$videoquestion_id = Input::get('videoquestion_id');
 		$videoquestion = VideoQuestion::find($videoquestion_id);
+
 		if (! $videoquestion)
 		{
 			return $this->apiResponse(
@@ -61,6 +62,7 @@ class ApiQuizController extends \BaseController {
 
 		// Ensure the selected definition exists, otherwise return a 404.
 		$selectedId = Input::get("selected_id");
+		
 		if (! $selectedId)
 		{
 			return $this->apiResponse(
@@ -74,6 +76,7 @@ class ApiQuizController extends \BaseController {
 			->where('videoquestions.id', '=', $videoquestion_id)
 			->where('results.user_id', '=', Auth::user()->id)
 			->orderBy('timestamp', 'desc')->first();
+
 		if (! $result)
 		{
 			return $this->apiResponse(
