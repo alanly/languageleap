@@ -168,8 +168,8 @@ use LangLeap\Core\UserInputResponse;
 		$question->save();
 		
 		// Take some close definitions to put as answers
-		$other_defs = Definition::where('id', '<', $definition->id)->orderBy('desc')->take(5)->get();
-		$other_defs = $other_defs->merge(Definition::where('id', '>', $definition->id)->orderBy('asc')->take(5)->get());
+		$other_defs = Definition::where('id', '<', $definition->id)->orderBy('id', 'desc')->take(5)->get();
+		$other_defs = $other_defs->merge(Definition::where('id', '>', $definition->id)->orderBy('id', 'asc')->take(5)->get());
 		$other_defs = new Collection($other_defs->all());
 		
 		// Give the question four answers
