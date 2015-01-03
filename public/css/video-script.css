@@ -31,12 +31,12 @@
 }
 
 .word-hover {
-	background-color: #BEBEBE;
+	background-color: #BEBEBE !important;
 	cursor: pointer;
 }
 
 .word-selected {
-	background-color: #DD8D8D;
+	background-color: #DD8D8D !important;
 }
 
 .continue {
