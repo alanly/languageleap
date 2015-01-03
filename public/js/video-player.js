@@ -1,5 +1,6 @@
 var mouse_down = false;
 
+//Get if the mouse is down
 $(document).mousedown(function() 
 {
     mouse_down = true;
@@ -13,6 +14,7 @@ $( document ).ready( function()
 	{
 		var videoPlayer = $('#video-player');
 
+		//Toggle Play/Pause and corresponding icon
 		$( '.play-pause' ).click( function()
 		{
 			if(videoPlayer.get(0).paused)
@@ -31,6 +33,7 @@ $( document ).ready( function()
 			return false;
 		});
 
+		//Udpate the current time of the video
 		videoPlayer.on('timeupdate', function()
 		{			
 			var seconds = Math.round(videoPlayer.get(0).currentTime);
@@ -40,6 +43,7 @@ $( document ).ready( function()
 			$('.current').text(time);
 		});
 
+		//Load the total length of the video
 		videoPlayer.on('loadedmetadata', function()
 		{
 			var seconds = Math.round(videoPlayer.get(0).duration);
@@ -49,6 +53,7 @@ $( document ).ready( function()
 			$('.duration').text(time);
 		});
 
+		//Change Play icon to Pause when the video is done
 		videoPlayer.on('timeupdate', function()
 		{		
 			if(Math.round(videoPlayer.get(0).currentTime) == Math.round(videoPlayer.get(0).duration))
@@ -57,24 +62,18 @@ $( document ).ready( function()
 			}
 		});
 
+		//Update the Seek Bar (slider) to match the current time of the video
 		videoPlayer.on('timeupdate', function()
 		{
-			var progressBar = $( '.progress-bar' );
-
-			var completionPercent = Math.floor(($( '.progress' ).width() / videoPlayer.get(0).duration) * videoPlayer.get(0).currentTime);
-
-			progressBar.width(completionPercent);
-			
 			var slider = $( '#slider-bar' );
 
 			if(!(slider.is(":hover") && mouse_down))
 			{
 				slider.val((100 / videoPlayer.get(0).duration) * videoPlayer.get(0).currentTime);
 			}
-
-			console.log($( '#slider-bar' ).val());
 		});
 
+		//Toggle play speed and corresponding icon
 		$( '.speed' ).click( function()
 		{
 			if(videoPlayer.get(0).playbackRate == 1)
@@ -91,12 +90,13 @@ $( document ).ready( function()
 			}
 		});
 
+		//Update current time of the video when the slider is manipulated
 		$( '.slider' ).change( function()
 		{
 			videoPlayer.get(0).currentTime = $( '#slider-bar' ).val();
 		});
 
-
+		//Toggle Mute and the corresponding icon
 		$( '.mute' ).click(function()
 		{
 			if( !videoPlayer.get(0).muted )
@@ -113,6 +113,7 @@ $( document ).ready( function()
 			}
 		});
 
+		//Enter fullscreen mode
 		$( '.full-screen' ).on( 'click', function()
 		{
 			videoPlayer.get(0).webkitEnterFullscreen();
