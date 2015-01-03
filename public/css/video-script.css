@@ -20,15 +20,14 @@
 	width: 590px;
 }
 
-[data-type=actor] {
-	background-color: #4C4C4C;
-	color: #fff;
+#script span {
+	background-color: #E4E4E4;
 	padding: 10px;
 }
 
-[data-type=word] {
-	padding: 10px;
-	background-color: #E4E4E4;
+#script [data-type=actor] {
+	background-color: #4C4C4C;
+	color: #fff;
 }
 
 .word-hover {
