@@ -235,23 +235,6 @@
 			timer = setTimeout(function()
 			{
 				var url = '/api/dictionaryDefinitions/';
-				/*$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
-					function(data)
-					{
-						$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
-							$(this).attr('data-original-title', data.data.definition)
-							.tooltip('fixTitle');
-
-							$(this).attr('data-type', 'definedWord');
-							$(this).data('audio_url', data.data.audio_url);
-						});
-
-						word.tooltip('show');
-
-						$('#word-audio').attr('src', data.data.audio_url);
-					}
-				);*/
-
 
 				$.ajax({
 				type : 'GET',
