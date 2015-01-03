@@ -2,6 +2,8 @@
 
 use LangLeap\Accounts\User;
 use LangLeap\Levels\Level;
+use LangLeap\Quizzes\Question;
+use LangLeap\Quizzes\Answer;
 
 class RankQuizController extends \BaseController 
 {
@@ -15,7 +17,36 @@ class RankQuizController extends \BaseController
 
 		if($user->level_id == 0)
 		{
-			return View::make('rank.tutorialquiz');
+			return View::make('rank.tutorialquiz')
+					->with('q1', (Question::find(1)->question))
+					->with('q2', (Question::find(2)->question))
+					->with('q3', (Question::find(3)->question))
+					->with('q4', (Question::find(4)->question))
+					
+					->with('a1', (Answer::find(1)->answer))
+					->with('a2', (Answer::find(2)->answer))
+					->with('a3', (Answer::find(3)->answer))
+					->with('a4', (Answer::find(4)->answer))
+					
+					->with('a5', (Answer::find(5)->answer))
+					->with('a6', (Answer::find(6)->answer))
+					->with('a7', (Answer::find(7)->answer))
+					->with('a8', (Answer::find(8)->answer))
+					
+					->with('a9', (Answer::find(9)->answer))
+					->with('a10', (Answer::find(10)->answer))
+					->with('a11', (Answer::find(11)->answer))
+					->with('a12', (Answer::find(12)->answer))
+					
+					->with('a13', (Answer::find(13)->answer))
+					->with('a14', (Answer::find(14)->answer))
+					->with('a15', (Answer::find(15)->answer))
+					->with('a16', (Answer::find(16)->answer))
+						
+					->with('a17', (Answer::find(17)->answer))
+					->with('a18', (Answer::find(18)->answer))
+					->with('a19', (Answer::find(19)->answer))
+					->with('a20', (Answer::find(20)->answer));
 		}
 		else
 		{

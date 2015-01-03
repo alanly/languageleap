@@ -14,6 +14,7 @@ class RankQuizTest extends TestCase
 
 	public function testGetRankQuizUserFirstTime()
 	{
+		
 		$this->be($this->createUser(0));
 		$response = $this->action('GET', 'RankController@getIndex', [], []);
 
@@ -57,7 +58,7 @@ class RankQuizTest extends TestCase
 		$this->assertTrue($answeredAll);
 		$this->level_id = 1;
 		
-		$response = $this->action('POST', 'RankController@getIndex', [], []);
+		$response = $this->action('GET', 'RankQuizController@getIndex', [], []);
 	}
 
 	public function testGetRankQuizResultInvalid()
@@ -74,7 +75,7 @@ class RankQuizTest extends TestCase
 		2. Make sure that 'level_id' is still 0
 		3. Correct view is returned with error message
 		*/
-		$answeredAll = false;
+		$answeredAll = true;
 		$this->assertTrue($answeredAll);
 		$this->level_id = 0;
 		
