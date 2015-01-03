@@ -2,37 +2,33 @@
 
 use Eloquent;
 
-/**
- * @author Alan Ly <hello@alan.ly>
- */
-class Quiz extends Eloquent {
+class Quiz extends Eloquent
+{
 
-	public function videoQuestions()
-	{
-		return $this->belongsToMany('LangLeap\Quizzes\VideoQuestion', 'videoquestion_quiz', 'quiz_id', 'videoquestion_id');
-	}
-	
+
+	/**
+	 * The database table used by the model.
+	 *
+	 * @var string
+	 */
+	protected $table = 'quizzes';
+	public $timestamps = false;
+	/**
+	*	This function returns the use that is associated with this quiz
+	*
+	*/
 	public function user()
 	{
-		return $this->belongsTo('LangLeap\Account\User');
+		return $this->belongsTo('LangLeap\Accounts\User');
 	}
-	
-	public function video()
+
+
+	/**
+	*	This function returns all the questions related to this quiz
+	*
+	*/	
+	public function questions()
 	{
-		return $this->belongsTo('LangLeap\Videos\Video');
-	}
-	
-	public function toResponseArray()
-	{
-		$response =  [
-			'id'	=> $this->id,
-			'video_questions'	=> []
-		];
-		
-		foreach($this->videoQuestions as $vq)
-		{
-			array_push($response['video_questions'], $vq->toResponseArray());
-		}
-		return $response;
+		return $this->hasMany('LangLeap\Quizzes\Question');
 	}
 }

@@ -19,7 +19,9 @@ class CreateShowTable extends Migration {
 			$table->string('image_path')->nullable();
 			$table->string('director')->nullable();
 			$table->string('actor')->nullable();
-			$table->string('genre')->nullable();		
+			$table->string('genre')->nullable();			
+
+
 		});
 	}
 

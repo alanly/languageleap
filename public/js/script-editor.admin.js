@@ -482,12 +482,7 @@ $(function() {
 	});
 
 	// A save was requested from the modal form
-	//$('#edit-form').submit(function() {
-	//	$('#edit-modal').modal('hide');
-	//	saveButtonClick();
-	//	return false;
-	//});
-	$('#save-button').on('click', function() {
+	$('#edit-form').submit(function() {
 		$('#edit-modal').modal('hide');
 		saveButtonClick();
 		return false;

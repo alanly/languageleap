@@ -73,7 +73,6 @@ function fetchCommercials()
 			content += '>';
 
 			content += '<div class="media-title">'
-			content += '<strong>Level: ' + value.level + '</strong><br/>';
 			content += '<strong>' + trimName(name) + '</strong>';
 			content += '</div>'
 
@@ -152,7 +151,6 @@ function fetchMovies()
 			content += createLiData(value.id, genre, actor, director);
 
 			content += '<div class="media-title">'
-			content += '<strong>Level: ' + value.level + '</strong><br/>';
 			content += '<strong>' + trimName(name) + '</strong>';
 			content += "</div>"
 
@@ -311,7 +309,7 @@ function fetchSeasonsEpisode(event)
 			var description = getStringCapitalise(value.description)
 
 			content += '<li>';
-			content += '<strong>Level: ' + value.level + '</strong><br/>';
+
 			content += '<strong>Episode ' + value.number + '</strong>';
 
 			content += '<a class="tooltiptext">';

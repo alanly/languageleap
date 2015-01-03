@@ -51,7 +51,7 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('/');
+			return Redirect::guest('/auth/login');
 		}
 	}
 });

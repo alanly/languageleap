@@ -5,7 +5,7 @@ use App;
 
 
 /**
-*		@author Dror Ozgaon <Dror.Ozgaon@gmail.com>
+*		@author Thomas Rahn <thomas@rahn.ca>
 */
 class QuestionTest extends TestCase {
 
@@ -14,28 +14,55 @@ class QuestionTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function testAnswerRelation()
+	public function testQuizRelation()
 	{
 		$question = $this->getQuestionInstance();
-		$answer = $this->getAnswerInstance();
+		$quiz = $this->getQuizInstance();
 		$question->question = '';
-		$question->answer_id = $answer->id;
+		$question->selected_id = 1;
+		$question->quiz_id = $quiz->id;
+		$question->definition_id = 1;
 		$question->save();
 	
-		$this->assertCount(1, $question->answers()->get());	
+		$this->assertCount(1, $question->quiz()->get());			
 	}
 	
-	protected function getAnswerInstance()
+	public function testDefinitionRelation()
 	{
-		$answer = App::make('LangLeap\Quizzes\Answer');
-		$answer->question_id = 1; // un-needed id
-		$answer->answer = ''; //un-needed id
-		$answer->save();
-		return $answer;
+		$question = $this->getQuestionInstance();
+		$definition = $this->getDefinitionInstance();
+
+		$question->question = 'question';
+		$question->selected_id = 1;
+		$question->quiz_id = 1; //un-needed id;
+		$question->definition_id = $definition->id;
+		$question->save();
+
+		$this->assertCount(1, $question->definition()->get());
+
+	}
+	protected function getQuizInstance()
+	{
+		$quiz = App::make('LangLeap\Quizzes\Quiz');
+		$quiz->user_id = 1; // un-needed id
+		$quiz->video_id = 1; //un-needed id
+		$quiz->save();
+		return $quiz;
 	}	
 
 	protected function getQuestionInstance()
 	{
 		return App::make('LangLeap\Quizzes\Question');
+	}
+
+	protected function getDefinitionInstance()
+	{
+		$def = App::make('LangLeap\Words\Definition');
+		$def->word = "Test word";
+		$def->definition = "This is a definition";
+		$def->full_definition = "This is the full definition";
+		$def->pronunciation = "T-est W-ord";
+		$def->save();
+		return $def;
 	}
 }

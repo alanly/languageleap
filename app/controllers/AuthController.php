@@ -17,9 +17,9 @@ class AuthController extends BaseController {
 
 	public function getLogin()
 	{
-		if (Auth::check()) return $this->intendedRedirect();
+		if (Auth::check()) return $this->authRedirect();
 
-		return View::make('account.login');
+		return View::make('auth.login');
 	}
 
 
@@ -36,27 +36,15 @@ class AuthController extends BaseController {
 		if (! $success)
 		{
 			// Redirect to login page with appropriate error messages.
-			Session::flash('action.failed', true);
-			Session::flash('action.message', Lang::get('auth.login.form_errors'));
-
-			return Redirect::action('AuthController@getLogin')->withInput();
-		}
-
-		// Make sure the user is verified.
-		if (! Auth::user()->is_confirmed)
-		{
-			Auth::logout();
-			
-			Session::flash('action.failed', true);
-			Session::flash('action.message', Lang::get('auth.login.unverified'));
-
-			return Redirect::action('AuthController@getLogin')->withInput();
+			return Redirect::action('AuthController@getLogin')
+				->with("action.failed", true)
+				->with("action.message", "Invalid username or password");
 		}
 
 		// Set the language.
 		Session::put('lang', Auth::user()->language);
 
-		return $this->intendedRedirect();
+		return $this->authRedirect();
 	}
 
 
@@ -64,22 +52,22 @@ class AuthController extends BaseController {
 	{
 		Auth::logout();
 
-		if (Auth::check())
-		{
-			Session::flash('action.failed', true);
-			Session::flash('action.message', Lang::get('auth.logout.error'));
+		$failed = Auth::check();
 
-			return Redirect::to('/');
+		if ($failed)
+		{
+			return Redirect::back()
+				->with('action.failed', true)
+				->with('action.message', 'Unable to logout. Please contact an administrator.');
 		}
 
-		Session::flash('action.failed', false);
-		Session::flash('action.message', Lang::get('auth.logout.success'));
-
-		return Redirect::action('AuthController@getLogin');
+		return Redirect::action('AuthController@getLogin')
+			->with('action.failed', false)
+			->with('action.message', 'You have been logged out.');
 	}
 
 
-	protected function intendedRedirect()
+	protected function authRedirect()
 	{
 		return Redirect::intended((Auth::user()->is_admin) ? '/admin' : '/');
 	}

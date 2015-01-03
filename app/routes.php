@@ -17,22 +17,11 @@ Route::get('/', function()
 	return View::make('index');
 });
 
-
-// Route for setting the language.
+//Route for the langauge
 Route::get('/language/{lang}', 'LanguageController@setLanguage');
 
-
-// Routes for login and logout.
-Route::group(['prefix' => 'login'], function()
-{
-	Route::get('/', 'AuthController@getLogin');
-	Route::post('/', 'AuthController@postLogin');
-});
-Route::get('logout', 'AuthController@getLogout');
-
-
-// Routes for registration and associated views.
-Route::controller('register', 'RegistrationController');
+// Routes for authentication views.
+Route::controller('auth', 'AuthController');
 
 
 // Route grouping for administration interface.
@@ -62,12 +51,6 @@ Route::group(['prefix' => 'admin'], function()
 	{
 		return View::make('admin.script.index');
 	});
-	
-	// new media upload
-	Route::any('add-new-form-submit', 'FileUploadController@saveMedia');
-
-	// store script
-	Route::resource('save-script', 'ApiScriptController@store');
 
 });
 
@@ -144,5 +127,14 @@ Route::get('quiz', function()
 });
 
 
+// Account Registration
+Route::controller('register', 'RegistrationController');
+
+
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
+
+Route::get('player/player2', function()
+{
+	return View::make('player.player2');
+});

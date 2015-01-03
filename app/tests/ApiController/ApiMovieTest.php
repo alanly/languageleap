@@ -109,7 +109,7 @@ class ApiMovieTest extends TestCase {
 		);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(400);
+		$this->assertResponseStatus(500);
 	}
 
 	public function testDestroy()
@@ -123,7 +123,7 @@ class ApiMovieTest extends TestCase {
 			[$movie->id]
 		);
 
-		$this->assertResponseStatus(204);
+		$this->assertResponseOk();
 
 		$movie = Movie::find($id);
 		$this->assertNUll($movie);

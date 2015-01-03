@@ -1,9 +1,13 @@
 <?php namespace LangLeap\Videos;
 
-class Commercial extends Media {
+use LangLeap\Core\ValidatedModel;
 
-	public $timestamps = false;
+class Commercial extends ValidatedModel {
 
+	public    $timestamps = false;
+	protected $fillable   = ['name', 'description'];
+	protected $rules      = ['name' => 'required'];
+	
 
 	public static function boot()
 	{
@@ -11,32 +15,29 @@ class Commercial extends Media {
 
 		static::deleting(function($commercial)
 		{
-			$commercial->videos()->delete();
+			$commercial->vdeos()->delete();
 		});
-	}
 
+	}
 
 	public function videos()
 	{
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
-
 	public function toResponseArray()
 	{
-		// Retrieve a listing of the associated videos as an array.
-		$videos = $this->videos->map(function($video)
-		{
-			return $video->toResponseArray();
-		});
-
-		return [
-			'id'          => $this->id,
-			'name'        => $this->name,
-			'description' => $this->description,
-			'level'       => $this->level->description,
-			'videos'      => $videos,
-		];
+		$comm = $this;
+		$videos = $comm->videos()->get();
+		$videos_array = array();
+		foreach($videos as $video){
+			$videos_array[] = $video->toResponseArray();
+		}
+		return array(
+			'id' => $comm->id,
+			'name' => $comm->name,
+			'description' => $comm->description,
+			'videos' => $videos_array,
+		);
 	}
-
 }

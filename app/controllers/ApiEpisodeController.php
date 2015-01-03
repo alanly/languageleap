@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Collection;
 use LangLeap\Videos\Show;
 use LangLeap\Videos\Season;
 use LangLeap\Videos\Episode;
@@ -84,21 +83,13 @@ class ApiEpisodeController extends \BaseController {
 				'error', "Season {$seasonId} not found for show {$showId}.", 404
 			);
 		}
-		
+
 		$episode = $this->episodes->newInstance(Input::get());
 		
 		if (! $season->episodes()->save($episode))
 		{
 			return $this->apiResponse('error', $episode->getErrors(), 400);
 		}
-
-		/*
-		 * Need to retrieve the saved model from the database in case the `level_id`
-		 * wasn't defined in the input data. The default `level_id` is specified by
-		 * the table schema. Saving doesn't seem to sync the instance data with the 
-		 * persisted data. So here we are.
-		 */
-		$episode = $this->episodes->find($episode->id);
 
 		return $this->generateResponse($show, $season, $episode, 201);
 	}
@@ -294,33 +285,23 @@ class ApiEpisodeController extends \BaseController {
 	/**
 	 * @param  LangLeap\Videos\Show           $show
 	 * @param  LangLeap\Videos\Season         $season
-	 * @param  mixed|LangLeap\Videos\Episode  $episodes
+	 * @param  mixed|LangLeap\Videos\Episode  $episode
 	 * @return Illuminate\Http\JsonResponse
 	 */
-	protected function generateResponse(Show $show, Season $season, $episodes, $code = 200)
+	protected function generateResponse(
+		Show $show, Season $season, $episodes, $code = 200
+	)
 	{
 		$data = ['show' => $show, 'season' => $season];
 
 		if ($episodes instanceof Episode)
 		{
-			$data['episode'] = $episodes->toResponseArray();
+			$data['episode'] = $episodes;
 			$data['videos'] = $episodes->videos;
 		}
-		elseif ($episodes instanceof Collection)
+		else
 		{
-			$data['episodes'] = $episodes->map(function($episode)
-			{
-				return $episode->toResponseArray();
-			});
-		}
-		elseif (is_array($episodes))
-		{
-			$data['episodes'] = array_map(function($episode)
-				{
-					return $episode->toResponseArray();
-				},
-				$episodes
-			);
+			$data['episodes'] = $episodes;
 		}
 
 		return $this->apiResponse('success', $data, $code);
