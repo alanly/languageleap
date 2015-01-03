@@ -230,7 +230,7 @@
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
 		}
 
-		function getDefinition(word)
+		function getDefinition($word)
 		{
 			timer = setTimeout(function()
 			{
@@ -239,16 +239,16 @@
 				$.ajax({
 				type : 'GET',
 				url : url,
-				data: {word: word.text().trim(), video_id : "{{ $video_id }}"},
+				data: {word: $word.text().trim(), video_id : "{{ $video_id }}"},
 				success : function(data)
 				{
-					setTooltipDefinition(word, data.data.definition);
-					setWordAudioUrl(word, data.data.audio_url);
+					setTooltipDefinition($word, data.data.definition);
+					setWordAudioUrl($word, data.data.audio_url);
 					setCurrentAudio(data.data.audio_url);
 				},
 				error : function(data)
 				{
-					setTooltipDefinition(word, "Definition not found.");
+					setTooltipDefinition($word, "Definition not found.");
 				}
 			});
 
@@ -257,21 +257,21 @@
 
 		}
 
-		function setTooltipDefinition(word, definition)
+		function setTooltipDefinition($word, definition)
 		{
-			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+			$('[name="' + $word.text().trim().toLowerCase() + 'Word"]').each(function() {
 				$(this).attr('data-original-title', definition)
 				.tooltip('fixTitle');
 
 				$(this).attr('data-type', 'definedWord');
 			});
 
-			word.tooltip('show');
+			$word.tooltip('show');
 		}
 
-		function setWordAudioUrl(word, url)
+		function setWordAudioUrl($word, url)
 		{
-			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+			$('[name="' + $word.text().trim().toLowerCase() + 'Word"]').each(function() {
 				$(this).data('audio_url', url);
 			});
 		}
