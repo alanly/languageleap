@@ -8,11 +8,6 @@ class Answer extends Eloquent {
 
 	public    $timestamps = false;
 	protected $fillable   = ['question_id', 'answer'];
-	protected $rules      = [
-		'question_id'   => 'required|integer',
-		'answer'    	=> 'required|string'
-		];
-
 
 	public function question()
 	{
