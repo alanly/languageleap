@@ -108,7 +108,7 @@ use LangLeap\Core\UserInputResponse;
 				$videoQuestion = VideoQuestion::create([
 					'question_id' 	=> $question->id,
 					'video_id'		=> $video_id,
-					'is_custom'	=> false
+					'is_custom'		=> false
 				]);
 				$quiz->videoQuestions()->attach($videoQuestion->id);
 				$videoQuestion->save();
@@ -117,9 +117,8 @@ use LangLeap\Core\UserInputResponse;
 			// Create a new result
 			$result = Result::create([
 				'videoquestion_id' 	=> $videoQuestion->id,
-				'user_id'				=> $user_id,
-				'is_correct'				=> false,
-				'timestamp'			=> date_default_timezone_get()
+				'user_id'			=> $user_id,
+				'is_correct'		=> false
 			]);
 			$result->save();
 		}
@@ -131,9 +130,8 @@ use LangLeap\Core\UserInputResponse;
 			// Create a new result
 			$result = Result::create([
 				'videoquestion_id' 	=> $vq->id,
-				'user_id'				=> $user_id,
-				'is_correct'				=> false,
-				'timestamp'			=> date_default_timezone_get()
+				'user_id'			=> $user_id,
+				'is_correct'		=> false
 			]);
 			$quiz->attach($vq);
 		}
