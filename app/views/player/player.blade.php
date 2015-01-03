@@ -386,7 +386,7 @@
 					$(this).removeClass('word-hover');
 				});
 
-			$('#script').on('click', 'span[data-type=word]', function()
+			$('#script').on('click', 'span[data-type!=actor]', function()
 			{
 				$(this).toggleClass('word-selected');
 			});
