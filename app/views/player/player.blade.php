@@ -3,52 +3,7 @@
 @section('css')
 	<link rel="stylesheet" href="/css/flashcard.css">
 	<link rel="stylesheet" href="/css/video-script.css">
-
-		<style>
-
-		.video-controls
-		{
-			width: 100%;
-			font-size: 30px;
-		}
-
-		.video-controls span, .video-controls div, .video-controls a
-		{
-			display: inline-block;
-			color: #999;
-		}
-
-		.mute, .full-screen
-		{
-			float: right;
-			padding-left: 20px;
-			margin-right: 20px;
-			color: #999;
-		}
-
-		.play-pause
-		{
-			margin-left: 20px;
-		}
-
-		.progress
-		{
-			margin-left: 50px;
-			margin-right: 50px;
-		}
-
-		.play-pause, .speed
-		{
-			padding-right: 20px;
-			color: #999;
-		}
-
-		.glyphicon:hover
-		{
-			color: #555;
-		}
-
-	</style>
+	<link rel="stylesheet" href="/css/video-player.css">
 @stop
 
 @section('content')
