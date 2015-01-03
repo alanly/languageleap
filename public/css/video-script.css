@@ -51,7 +51,7 @@
 }
 
 .currently-speaking {
-	background-color: #5CB85C;
+	background-color: #5CB85C !important;
 }
 
 #mute-audio {
