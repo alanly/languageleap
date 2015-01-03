@@ -62,7 +62,6 @@ class ApiCommercialController extends \BaseController {
 		);	
 	}
 
-
 	/**
 	 * Display the specified resource.
 	 *

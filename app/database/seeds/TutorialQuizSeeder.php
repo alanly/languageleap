@@ -2,6 +2,7 @@
 
 use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\Answer;
+use LangLeap\Core\Language;
 
 class TutorialQuizSeeder extends Seeder {
 

@@ -37,6 +37,8 @@ class ApiScriptController extends \BaseController {
 		$script = $this->scripts->newInstance();
 
 		$script->fill(Input::get());
+		$script->text = Input::get('text');
+		$script->video_id = Input::get('video_id');
 
 		if (! $script->save())
 		{
@@ -51,7 +53,7 @@ class ApiScriptController extends \BaseController {
 			'success',
 			$script->toArray(),
 			201
-		);	
+		);
 	}
 
 

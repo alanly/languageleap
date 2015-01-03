@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Collection;
 use LangLeap\Videos\Show;
 use LangLeap\Videos\Season;
 use LangLeap\Videos\Episode;
@@ -293,12 +294,10 @@ class ApiEpisodeController extends \BaseController {
 	/**
 	 * @param  LangLeap\Videos\Show           $show
 	 * @param  LangLeap\Videos\Season         $season
-	 * @param  mixed|LangLeap\Videos\Episode  $episode
+	 * @param  mixed|LangLeap\Videos\Episode  $episodes
 	 * @return Illuminate\Http\JsonResponse
 	 */
-	protected function generateResponse(
-		Show $show, Season $season, $episodes, $code = 200
-	)
+	protected function generateResponse(Show $show, Season $season, $episodes, $code = 200)
 	{
 		$data = ['show' => $show, 'season' => $season];
 
@@ -307,15 +306,21 @@ class ApiEpisodeController extends \BaseController {
 			$data['episode'] = $episodes->toResponseArray();
 			$data['videos'] = $episodes->videos;
 		}
-		else
+		elseif ($episodes instanceof Collection)
 		{
-			$episode_array = array();
-			foreach($episodes as $episode)
+			$data['episodes'] = $episodes->map(function($episode)
 			{
-				$episode_array[] = $episode->toResponseArray();
-			}
-
-			$data['episodes'] = $episode_array;
+				return $episode->toResponseArray();
+			});
+		}
+		elseif (is_array($episodes))
+		{
+			$data['episodes'] = array_map(function($episode)
+				{
+					return $episode->toResponseArray();
+				},
+				$episodes
+			);
 		}
 
 		return $this->apiResponse('success', $data, $code);

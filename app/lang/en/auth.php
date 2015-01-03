@@ -6,6 +6,7 @@ return [
 		'form_errors'    => 'The username and/or password you entered is incorrect or does not belong to an existing account.',
 		'create_account' => 'Create an account',
 		'page_name'      => 'Log in',
+		'unverified'     => 'Your account has not been verified yet. Please check your email for the confirmation message.',
 		'fields' => [
 			'submit' => 'Log in',
 			'remember' => 'Remember me',

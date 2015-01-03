@@ -21,7 +21,8 @@ class QuizInputValidation extends QuizDecorator
 	{
 		// Ensure the video exists.
 		$videoId = $input["video_id"];
-		if (Video::find($videoId) == null)
+
+		if (! Video::find($videoId))
 		{
 			return [
 				'error',
@@ -32,6 +33,7 @@ class QuizInputValidation extends QuizDecorator
 
 		// Get all the selected words; if empty, return with redirect.
 		$selectedWords =$input["selected_words"];
+
 		if (! $selectedWords || count($selectedWords) < 1)
 		{
 			return [
@@ -43,6 +45,7 @@ class QuizInputValidation extends QuizDecorator
 
 		// Get all the words in the script; if empty, return 400 (client-side error).
 		$scriptWords = $input["all_words"];
+		
 		if (! $scriptWords || count($scriptWords) < 1)
 		{
 			return [
@@ -63,7 +66,7 @@ class QuizInputValidation extends QuizDecorator
 		{
 			return [
 				'error',
-				'Only '.$scriptDefinitions->count().' definitions found for '.count($scriptWords).' words.',
+				'Only ' . $scriptDefinitions->count() . ' definitions found for ' . count($scriptWords) . ' words.',
 				404
 			];
 		}

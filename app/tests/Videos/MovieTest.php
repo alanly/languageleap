@@ -5,11 +5,6 @@ use App;
 
 class MovieTest extends TestCase {
 
-	/**
-	 * Testing getting all seasons for a particular show.
-	 *
-	 * @return void
-	 */
 	public function testVideoRelation()
 	{
 		$mov = $this->getMovieInstance();
@@ -25,6 +20,29 @@ class MovieTest extends TestCase {
 		
 		$this->assertCount(1, $mov->videos()->get());			
 	}
+
+	public function testMassAssigningAttributesOnInstanceCreation()
+	{
+		$a = [
+			'name'        => 'Test',
+			'description' => 'Test Model',
+			'level_id'    => 1,
+			'director'    => 'Mr. Director',
+			'actor'       => 'Dr. Actor',
+			'genre'       => 'Japanese Fusion Drama',
+		];
+
+		$i = Movie::create($a);
+		$i = Movie::find($i->id);
+
+		$this->assertSame($a['name'], $i->name);
+		$this->assertSame($a['description'], $i->description);
+		$this->assertEquals($a['level_id'], $i->level_id);
+		$this->assertSame($a['director'], $i->director);
+		$this->assertSame($a['actor'], $i->actor);
+		$this->assertSame($a['genre'], $i->genre);
+	}
+
 	protected function getMovieInstance()
 	{
 		$mov =  App::make('LangLeap\Videos\Movie');
@@ -33,6 +51,7 @@ class MovieTest extends TestCase {
 		$mov->save();
 		return $mov;
 	}
+
 	protected function getVideoInstance()
 	{
 		$video =  App::make('LangLeap\Videos\Video');
@@ -55,4 +74,5 @@ class MovieTest extends TestCase {
 
 		return $lang;
 	}
+
 }
