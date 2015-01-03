@@ -54,7 +54,7 @@ class ApiCommercialTest extends TestCase {
 			'POST',
 			'ApiCommercialController@store',
 			[],
-			['name' => 'Test', 'level_id' => 1]
+			['name' => 'Test']
 		);
 
 		$this->assertResponseStatus(201);

@@ -1,7 +1,7 @@
 <?php
 
+use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Question;
-use LangLeap\Quizzes\Answer;
 use LangLeap\Words\Definition;
 class QuestionTableSeeder extends Seeder {
 
@@ -14,11 +14,10 @@ class QuestionTableSeeder extends Seeder {
 	{
 		Eloquent::unguard();
 		DB::table('questions')->delete();
-		$question = App::make('LangLeap\Quizzes\Question');
 
-		$question->create(["question" => "WHAT IS UP1?", "answer_id" => 1]);
-		$question->create(["question" => "WHAT IS UP2?", "answer_id" => 2]);
-		$question->create(["question" => "WHAT IS UP3?", "answer_id" => 3]);
-		$question->create(["question" => "WHAT IS UP4?", "answer_id" => 4]);
+		$quiz = Quiz::first();
+		$def = Definition::first();
+		$quiz->questions()->create(["definition_id" => $def->id, "question" => "What is the definition for" . $def->word]);
+		$quiz->questions()->create(["definition_id" => $def->id, "question" => "What is the definition for" . $def->word]);
 	}
 }

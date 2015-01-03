@@ -6,12 +6,18 @@ use App;
 
 class CommercialTest extends TestCase {
 
+	/**
+	 * Testing getting all seasons for a particular show.
+	 *
+	 * @return void
+	 */
 	public function testVideoRelation()
 	{
+
 		$comm = $this->getCommercialInstance();
 		$script = $this->getScriptInstance();
-		$video  = $this->getVideoInstance();
 
+		$video  = $this->getVideoInstance();
 		$video->viewable_id = $comm->id;
 		$video->viewable_type = 'LangLeap\Videos\Commercial';
 		$video->save();
@@ -22,24 +28,6 @@ class CommercialTest extends TestCase {
 		
 		$this->assertCount(1, $comm->videos()->get());			
 	}
-
-	public function testMassAssigningAttributesOnInstanceCreation()
-	{
-		$a = [
-			'name'        => 'Test',
-			'description' => 'Test Commercial',
-			'level_id'    => 1,
-		];
-
-		$i = new Commercial($a);
-		$i->save();
-		$i = Commercial::find($i->id);
-
-		$this->assertSame($a['name'], $i->name);
-		$this->assertSame($a['description'], $i->description);
-		$this->assertEquals($a['level_id'], $i->level_id);
-	}
-
 	protected function getCommercialInstance()
 	{
 		$comm =  App::make('LangLeap\Videos\Commercial');
@@ -47,7 +35,6 @@ class CommercialTest extends TestCase {
 		$comm->save();
 		return $comm;
 	}
-
 	protected function getVideoInstance()
 	{
 		$video =  App::make('LangLeap\Videos\Video');
@@ -70,5 +57,4 @@ class CommercialTest extends TestCase {
 
 		return $lang;
 	}
-
 }

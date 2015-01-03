@@ -16,7 +16,6 @@ class CreateCommercialTable extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('description')->nullable();
-			$table->integer('level_id')->unsigned()->default(1);
 		});
 	}
 

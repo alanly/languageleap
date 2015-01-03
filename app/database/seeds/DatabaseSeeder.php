@@ -10,10 +10,8 @@ class DatabaseSeeder extends Seeder {
 	public function run()
 	{
 		Eloquent::unguard();
-		
+
 		$this->call('LanguageTableSeeder');
-		$this->call('UserTableSeeder');
-		$this->call('LevelTableSeeder');
 		$this->call('MovieTableSeeder');
 		$this->call('ShowTableSeeder');
 		$this->call('CommercialTableSeeder');
@@ -22,11 +20,9 @@ class DatabaseSeeder extends Seeder {
 		$this->call('VideoTableSeeder');
 		$this->call('ScriptTableSeeder');
 		$this->call('DefinitionTableSeeder');
-		$this->call('QuestionTableSeeder');
-		$this->call('AnswerTableSeeder');
-		$this->call('ResultTableSeeder');
 		$this->call('QuizTableSeeder');
-		$this->call('VideoQuestionTableSeeder');
+		$this->call('QuestionTableSeeder');
+		$this->call('UserTableSeeder');
 	}
 
 }

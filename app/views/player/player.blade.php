@@ -26,7 +26,6 @@
 					<a href="#" class="play-pause">
 						<span class="glyphicon glyphicon-play"></span>
 					</a>
-
 					<a href="#" class="speed">
 						<span class="glyphicon glyphicon-fast-forward"></span>
 					</a>
@@ -47,14 +46,14 @@
 						<span class="glyphicon glyphicon-volume-up"></span>
 					</a>
 				</div>
-			</div>			
-		</div>
-
-		<div id="script">
+			</div>					
 		</div>
 		<audio id="word-audio" autoplay>
 			<p>@lang('player.audio.error')</p>
 		</audio>
+
+		<div id="script">
+		</div>
 
 		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
 		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>

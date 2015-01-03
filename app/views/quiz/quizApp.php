@@ -4,21 +4,19 @@
 			<div class="quiz-container" ng-controller="QuizController">
 				<carousel interval="-1">
 					<slide ng-repeat="question in questions" active="question.active">
-						<h3>{{ question.question }}</h3>
+						<h3>{{ question.description }}</h3>
 
 						<form id="form-question-id-{{ question.id }}" class="question-form" role="form">
 							<div class="radio-group">
-								<div class="radio" id="radio-selection-id-{{ question.id }}-{{ definition.id }}" ng-repeat="definition in question.answers">
+								<div class="radio" id="radio-selection-id-{{ question.id }}-{{ definition.id }}" ng-repeat="definition in question.definitions">
 									<label>
 										<input type="radio" name="definition" ng-model="selection.definition_id" value="{{ definition.id }}" ng-click="submit(selection)">
-										{{ definition.answer }}
+										{{ definition.description }}
 									</label>
 								</div>
 							</div>
 
-							<button type="button" id="btn-next-{{ question.id }}" class="btn btn-next" ng-click="nextQuestion()" disabled="disabled">
-								{{ currentQuestionIndex == (questions.length - 1) ? 'Finish Quiz' : 'Next Question' }}
-							</button>
+							<button type="button" id="btn-next-{{ question.id }}" class="btn btn-next" ng-click="nextQuestion()" disabled="disabled">{{ question.last === true ? 'Finish Quiz' : 'Next Question' }}</button>
 						</form>
 					</slide>
 				</carousel>

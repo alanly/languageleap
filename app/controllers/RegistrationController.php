@@ -1,7 +1,6 @@
 <?php
 
 use LangLeap\Accounts\User;
-use LangLeap\Core\Language;
 
 /**
  * @author Thomas Rahn <thomas@rahn.ca>
@@ -28,19 +27,21 @@ class RegistrationController extends \BaseController {
 
 	public function getIndex()
 	{
-		return View::make('account.register');
+		return View::make('account.registration.index');
 	}
 
 
 	public function getVerify($confirmationCode)
 	{
+		if(! $confirmationCode)
+		{
+			return Redirect::action('RegistrationController@getIndex');
+		}
+
 		$user = $this->users->whereConfirmationCode($confirmationCode)->first();
 
-		if (! $confirmationCode || ! $user)
+		if (! $user)
 		{
-			Session::flash('action.failed', true);
-			Session::flash('action.message', Lang::get('auth.verify.incorrect'));
-
 			return Redirect::action('RegistrationController@getIndex');
 		}
 
@@ -48,10 +49,7 @@ class RegistrationController extends \BaseController {
 		$user->confirmation_code = null;
 		$user->save();
 
-		Session::flash('action.failed', false);
-		Session::flash('action.message', Lang::get('auth.verify.activated'));
-
-		return Redirect::action('AuthController@getLogin');
+		return View::make('account.registration.verified');
 	}
 
 
@@ -71,10 +69,9 @@ class RegistrationController extends \BaseController {
 		}
 
 		$input['confirmation_code'] = str_random(30);
-		$input['language_id'] = Language::first()->id;
 
 		$user = $this->users->newInstance($input);
-		
+
 		if (! $user->isValid() || $validator->fails())
 		{
 			$errors = $user->getErrors();
@@ -96,10 +93,7 @@ class RegistrationController extends \BaseController {
 			}
 		);
 
-		Session::flash('action.failed', false);
-		Session::flash('action.message', Lang::get('auth.register.success'));
-
-		return Redirect::action('AuthController@getLogin');
+		return View::make('account.registration.success');
 	}
 
 
