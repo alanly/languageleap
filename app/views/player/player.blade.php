@@ -244,7 +244,10 @@
 				{
 					setTooltipDefinition($word, data.data.definition);
 					setWordAudioUrl($word, data.data.audio_url);
-					setCurrentAudio(data.data.audio_url);
+
+					// Only play the audio clip if the mouse is still over the word
+					if ($($word[0]).is(':hover'))
+						setCurrentAudio(data.data.audio_url);
 				},
 				error : function(data)
 				{
@@ -266,7 +269,9 @@
 				$(this).attr('data-type', 'definedWord');
 			});
 
-			$word.tooltip('show');
+			// Only show the tooltip if the mouse is still hovering over the word
+			if ($($word[0]).is(':hover'))
+				$word.tooltip('show');
 		}
 
 		function setWordAudioUrl($word, url)
