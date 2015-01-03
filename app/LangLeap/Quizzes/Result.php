@@ -6,8 +6,7 @@ use Eloquent;
  */
 class Result extends Eloquent {
 
-	public    $timestamps = false;
-	protected $fillable   = ['videoquestion_id', 'user_id', 'is_correct', 'timestamp'];
+	protected $fillable   = ['videoquestion_id', 'user_id', 'is_correct'];
 
 	public function videoquestion()
 	{
