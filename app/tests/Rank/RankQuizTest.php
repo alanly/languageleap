@@ -53,7 +53,11 @@ class RankQuizTest extends TestCase
 		2. User now has a 'level_id' which is NOT 0
 		3. Correct view is returned with User's new level
 		*/
+		$answeredAll = true;
+		$this->assertTrue($answeredAll);
+		$this->level_id = 1;
 		
+		$response = $this->action('POST', 'RankController@getIndex', [], []);
 	}
 
 	public function testGetRankQuizResultInvalid()
@@ -70,6 +74,11 @@ class RankQuizTest extends TestCase
 		2. Make sure that 'level_id' is still 0
 		3. Correct view is returned with error message
 		*/
+		$answeredAll = false;
+		$this->assertTrue($answeredAll);
+		$this->level_id = 0;
+		
+		$response = $this->action('POST', 'RankController@getIndex', [], []);
 	}
 
 	protected function createUser(
