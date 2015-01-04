@@ -15,8 +15,8 @@ $( document ).ready( function()
 		var videoPlayer = $('#video-player');
 
 		$(function () {
-  			$('[data-toggle="tooltip"]').tooltip()
-		})
+  			$('[data-toggle="tooltip"]').tooltip();
+		});
 
 		//Toggle Play/Pause and corresponding icon
 		$( '.play-pause' ).click( function()

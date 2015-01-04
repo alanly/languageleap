@@ -22,7 +22,7 @@
 				<span class="glyphicon glyphicon-play"></span>
 			</a>
 
-			<a href="#" class="speed col-xs-1 col-md-1 col-lg-1" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Playing at 1x speed.">
+			<a href="#" class="speed col-xs-1 col-md-1 col-lg-1" data-toggle="tooltip" data-placement="bottom" data-original-title="Playing at 1x speed.">
 				<span class="glyphicon glyphicon-fast-forward"></span>
 			</a>
 
