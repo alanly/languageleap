@@ -133,6 +133,18 @@
 			$("#flashcard .carousel-inner").html(carouselItems);
 		}
 
+		function loadUndefinedSelectedWords()
+		{
+			var deffereds = [];
+
+			$('#script .word-selected[data-type=nonDefinedWord]').each(function()
+			{
+				deffereds.push(loadDefinition($(this)));
+			});
+
+			return deffereds;
+		}
+
 		function loadFlashcards()
 		{
 			// Check if any words have been selected
@@ -348,7 +360,7 @@
 
 			// Used to determine how long the mouse is hovered over a word
 			var hoverTimer;
-			
+
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
 				{
@@ -360,8 +372,9 @@
 				})
 				.on('mouseenter', 'span[data-type=nonDefinedWord]', function()
 				{
-					$(this).addClass('word-hover');
-					hoverTimer = setTimeout(getDefinition($(this)), 500);
+					var $this = $(this);
+					$this.addClass('word-hover');
+					hoverTimer = setTimeout(function() { loadDefinition($this); }, 500);
 				})
 				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
 				{
