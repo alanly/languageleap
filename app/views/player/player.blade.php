@@ -43,7 +43,6 @@
 		
 	<script>
 		var definitions = [];
-		var timer;
 
 		function loadScript()
 		{
@@ -266,6 +265,7 @@
 					$('#script [name=' + $word.attr('name') + ']').each(function()
 					{
 						$(this).data('full-definition', data.data.definition);
+						$(this).data('pronunciation', data.data.pronunciation);
 						setTooltipDefinition($(this), data.data.definition);
 						setWordAudioUrl($(this), data.data.audio_url);
 					});
