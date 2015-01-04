@@ -14,6 +14,10 @@ $( document ).ready( function()
 	{
 		var videoPlayer = $('#video-player');
 
+		$(function () {
+  			$('[data-toggle="tooltip"]').tooltip()
+		})
+
 		//Toggle Play/Pause and corresponding icon
 		$( '.play-pause' ).click( function()
 		{
@@ -80,19 +84,25 @@ $( document ).ready( function()
 			{
 				videoPlayer.get(0).playbackRate = 1.7;
 
-				$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
+				$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-backward' );
+
+				$( '.speed' ).attr('data-original-title', 'Playing at 1.7x speed.')
 			}
 			else if(videoPlayer.get(0).playbackRate == 1.7)
 			{
-				videoPlayer.get(0).playbackRate = 0.75;
+				videoPlayer.get(0).playbackRate = 0.7;
 
-				$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
+				$( '.glyphicon-step-backward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
+
+				$( '.speed' ).attr('data-original-title', 'Playing at 0.7x speed.')
 			}
 			else
 			{
 				videoPlayer.get(0).playbackRate = 1;
 
 				$( '.glyphicon-step-forward' ).attr( 'class', 'glyphicon glyphicon-fast-forward' );
+
+				$( '.speed' ).attr('data-original-title', 'Playing at 1x speed.')
 			}
 		});
 
