@@ -1,4 +1,7 @@
 <div id="scroller" class="carousel slide" data-ride="carousel">
+	<!-- Loading gif -->
+	{{ HTML::image('img/misc/loading.gif', 'Loading', array('class' => 'center-block loading')) }}
+
 	<!-- Wrapper for slides -->
 	<div class="carousel-inner text-center" role="listbox">
 		<div class="item"></div>

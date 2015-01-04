@@ -150,10 +150,13 @@
 			if ($('#script .word-selected').length == 0)
 				return;
 
+			$('#flashcard').modal();
+			$('#flashcard .loading').show();
+
 			$.when.apply(null, loadUndefinedSelectedWords()).done(function()
 			{
+				$('#flashcard .loading').hide();
 				loadCarouselItems();
-				$('#flashcard').modal();
 
 				// This makes the carousel work for dynamically loaded content
 				$('#scroller').carousel("pause").removeData()
