@@ -8,7 +8,7 @@ class VideoQuestion extends Eloquent {
 
 	public    $timestamps = false;
 	protected $table = 'videoquestions';
-	protected $fillable   = ['question_id', 'video_id', 'is_custom'];
+	protected $fillable   = ['video_id', 'question_id', 'is_custom'];
 
 	public function question()
 	{

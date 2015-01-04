@@ -69,6 +69,11 @@ Route::group(['prefix' => 'admin'], function()
 	// store script
 	Route::resource('save-script', 'ApiScriptController@store');
 
+	// Dev quiz interface
+	Route::get('quiz/new', function()
+	{
+		return View::make('admin.quiz.index');
+	});
 });
 
 
