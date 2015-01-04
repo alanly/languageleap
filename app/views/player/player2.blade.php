@@ -7,11 +7,12 @@
 @stop
 
 @section('content')
-<div class="jumbotron" style="padding: 0; margin-bottom: 0;">
+<!-- Player here -->
+<div class="jumbotron col-lg-6 col-md-6 col-xs-6" style="width: 50%;">	
 	<script src="/js/video-player.js"></script>	
 	<div id="video-container">
-		<video width="100%" id="video-player" preload="none">
-			<source class="source" type="video/mp4">
+		<video width="100%" id="video-player">
+			<source class="source" src="../videos/TestVideo.mp4" type="video/mp4">
 			<p>@lang('player.player.error')</p>
 		</video>
 
@@ -41,7 +42,7 @@
 				<span class="glyphicon glyphicon-volume-up"></span>
 			</a>
 		</div>
-	</div>			
+	</div>					
 </div>
 
 @stop

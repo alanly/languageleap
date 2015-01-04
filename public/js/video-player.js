@@ -78,13 +78,19 @@ $( document ).ready( function()
 		{
 			if(videoPlayer.get(0).playbackRate == 1)
 			{
-				videoPlayer.get(0).playbackRate += 0.5;
+				videoPlayer.get(0).playbackRate = 1.7;
+
+				$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
+			}
+			else if(videoPlayer.get(0).playbackRate == 1.7)
+			{
+				videoPlayer.get(0).playbackRate = 0.75;
 
 				$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
 			}
 			else
 			{
-				videoPlayer.get(0).playbackRate -= 0.5;
+				videoPlayer.get(0).playbackRate = 1;
 
 				$( '.glyphicon-step-forward' ).attr( 'class', 'glyphicon glyphicon-fast-forward' );
 			}
