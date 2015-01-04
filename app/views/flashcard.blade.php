@@ -1,16 +1,7 @@
 <div id="scroller" class="carousel slide" data-ride="carousel">
 	<!-- Wrapper for slides -->
 	<div class="carousel-inner text-center" role="listbox">
-		<?php $i = 0; ?>
-		@foreach ($words as $key => $value)
-		<div class="item {{ ($i == 0) ? 'active' : '' }}">
-			<h3>{{ $value['word'] }}<br>
-		
-			<small>{{ $value['pronunciation'] }}</small></h3><br>
-			<span>{{ $value['full_definition'] }}</span>
-		</div>
-		<?php $i++; ?>
-		@endforeach
+		<div class="item"></div>
 	</div>
 
 	<!-- Controls -->

@@ -35,6 +35,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
+					@include('flashcard')
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -119,25 +120,30 @@
 
 		function loadDefinitions()
 		{
-			definitions = [];
-			$('#script span[data-type=word]').each(function(index) {
-				var def_id = $(this).data("id");
-				if(def_id != null && $(this).hasClass("word-selected")){
-					var key = "word" + index;
-					//definitions.push({ key :  def_id });
-					definitions.push(def_id);
-				}
+			var carouselItems = '';
+			$('#script .word-selected').each(function(i)
+			{
+				carouselItems += 	'<div class="item' + ((i == 0) ? ' active' : '') + '">' +
+										'<h3>' + $(this).text() + '<br>' +
+										'<small>' + $(this).data('pronunciation') + '</small></h3><br>' +
+										'<span>' + $(this).data('full-definition') + '</span>' +
+									'</div>';
 			});
+
+			$("#flashcard .carousel-inner").html(carouselItems);
 		}
 
 		function loadFlashcards()
 		{
+			// Check if any words have been selected
+			if ($('#script .word-selected').length == 0)
+				return;
+			
 			loadDefinitions();
-			if(definitions.length > 0){
-				$("#flashcard .modal-body").load('/flashcard', { definitions : definitions }, function(data){
-					$('#flashcard').modal();
-				});
-			}
+			$('#flashcard').modal();
+
+			// This makes the carousel work for dynamically loaded content
+			$('#scroller').carousel("pause").removeData()
 		}
 
 		function loadQuiz() {
@@ -237,25 +243,23 @@
 				var url = '/api/dictionaryDefinitions/';
 
 				$.ajax({
-				type : 'GET',
-				url : url,
-				data: {word: $word.text().trim(), video_id : "{{ $video_id }}"},
-				success : function(data)
-				{
-					setTooltipDefinition($word, data.data.definition);
-					setWordAudioUrl($word, data.data.audio_url);
+					type : 'GET',
+					url : url,
+					data: {word: $word.text().trim(), video_id : "{{ $video_id }}"},
+					success : function(data)
+					{
+						setTooltipDefinition($word, data.data.definition);
+						setWordAudioUrl($word, data.data.audio_url);
 
-					// Only play the audio clip if the mouse is still over the word
-					if ($($word[0]).is(':hover'))
-						setCurrentAudio(data.data.audio_url);
-				},
-				error : function(data)
-				{
-					setTooltipDefinition($word, "Definition not found.");
-				}
-			});
-
-
+						// Only play the audio clip if the mouse is still over the word
+						if ($($word[0]).is(':hover'))
+							setCurrentAudio(data.data.audio_url);
+					},
+					error : function(data)
+					{
+						setTooltipDefinition($word, "Definition not found.");
+					}
+				});
 			}, 500);
 
 		}
