@@ -262,9 +262,14 @@
 				data: { word: $word.text().trim(), video_id : "{{ $video_id }}" },
 				success : function(data)
 				{
-					setTooltipDefinition($word, data.data.definition);
-					setWordAudioUrl($word, data.data.audio_url);
-
+					// For each of the same word
+					$('#script [name=' + $word.attr('name') + ']').each(function()
+					{
+						$(this).data('full-definition', data.data.definition);
+						setTooltipDefinition($(this), data.data.definition);
+						setWordAudioUrl($(this), data.data.audio_url);
+					});
+					
 					// Only play the audio clip if the mouse is still over the word
 					if ($($word[0]).is(':hover'))
 						setCurrentAudio(data.data.audio_url);
@@ -278,12 +283,10 @@
 
 		function setTooltipDefinition($word, definition)
 		{
-			$('[name="' + $word.text().trim().toLowerCase() + 'Word"]').each(function() {
-				$(this).attr('data-original-title', definition)
-				.tooltip('fixTitle');
+			$word.attr('data-original-title', definition)
+			.tooltip('fixTitle');
 
-				$(this).attr('data-type', 'definedWord');
-			});
+			$word.attr('data-type', 'definedWord');
 
 			// Only show the tooltip if the mouse is still hovering over the word
 			if ($($word[0]).is(':hover'))
