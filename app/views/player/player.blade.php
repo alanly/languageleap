@@ -118,7 +118,7 @@
 			});
 		}
 
-		function loadDefinitions()
+		function loadCarouselItems()
 		{
 			var carouselItems = '';
 			$('#script .word-selected').each(function(i)
@@ -138,8 +138,8 @@
 			// Check if any words have been selected
 			if ($('#script .word-selected').length == 0)
 				return;
-			
-			loadDefinitions();
+
+			loadCarouselItems();
 			$('#flashcard').modal();
 
 			// This makes the carousel work for dynamically loaded content
@@ -238,30 +238,26 @@
 
 		function getDefinition($word)
 		{
-			timer = setTimeout(function()
-			{
-				var url = '/api/dictionaryDefinitions/';
+			var url = '/api/dictionaryDefinitions/';
 
-				$.ajax({
-					type : 'GET',
-					url : url,
-					data: {word: $word.text().trim(), video_id : "{{ $video_id }}"},
-					success : function(data)
-					{
-						setTooltipDefinition($word, data.data.definition);
-						setWordAudioUrl($word, data.data.audio_url);
+			$.ajax({
+				type : 'GET',
+				url : url,
+				data: {word: $word.text().trim(), video_id : "{{ $video_id }}"},
+				success : function(data)
+				{
+					setTooltipDefinition($word, data.data.definition);
+					setWordAudioUrl($word, data.data.audio_url);
 
-						// Only play the audio clip if the mouse is still over the word
-						if ($($word[0]).is(':hover'))
-							setCurrentAudio(data.data.audio_url);
-					},
-					error : function(data)
-					{
-						setTooltipDefinition($word, "Definition not found.");
-					}
-				});
-			}, 500);
-
+					// Only play the audio clip if the mouse is still over the word
+					if ($($word[0]).is(':hover'))
+						setCurrentAudio(data.data.audio_url);
+				},
+				error : function(data)
+				{
+					setTooltipDefinition($word, "Definition not found.");
+				}
+			});
 		}
 
 		function setTooltipDefinition($word, definition)
@@ -350,6 +346,9 @@
 				loadQuiz();
 			});
 
+			// Used to determine how long the mouse is hovered over a word
+			var hoverTimer;
+			
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
 				{
@@ -362,12 +361,12 @@
 				.on('mouseenter', 'span[data-type=nonDefinedWord]', function()
 				{
 					$(this).addClass('word-hover');
-					getDefinition($(this));
+					hoverTimer = setTimeout(getDefinition($(this)), 500);
 				})
 				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
 				{
 					$(this).removeClass('word-hover');
-					clearTimeout(timer);
+					clearTimeout(hoverTimer);
 				}).on('mouseenter', 'span[data-type=definedWord]', function()
 				{
 					$(this).addClass('word-hover');
