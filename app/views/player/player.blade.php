@@ -151,11 +151,15 @@
 			if ($('#script .word-selected').length == 0)
 				return;
 
-			loadCarouselItems();
-			$('#flashcard').modal();
+			$.when.apply(null, loadUndefinedSelectedWords()).done(function()
+			{
+				loadCarouselItems();
+				$('#flashcard').modal();
 
-			// This makes the carousel work for dynamically loaded content
-			$('#scroller').carousel("pause").removeData()
+				// This makes the carousel work for dynamically loaded content
+				$('#scroller').carousel("pause").removeData()
+			});
+			
 		}
 
 		function loadQuiz() {
@@ -248,14 +252,14 @@
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
 		}
 
-		function getDefinition($word)
+		function loadDefinition($word)
 		{
 			var url = '/api/dictionaryDefinitions/';
 
-			$.ajax({
-				type : 'GET',
-				url : url,
-				data: {word: $word.text().trim(), video_id : "{{ $video_id }}"},
+			return $.ajax({
+				type: 'GET',
+				url: url,
+				data: { word: $word.text().trim(), video_id : "{{ $video_id }}" },
 				success : function(data)
 				{
 					setTooltipDefinition($word, data.data.definition);
