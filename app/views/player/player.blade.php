@@ -8,7 +8,7 @@
 
 @section('content')
 	<div id="wrapper">
-		<div class="error-message alert alert-danger">
+		<div class="error-message alert alert-danger" style="display:none">
 		</div>
 
 		<div class="row">
@@ -98,7 +98,8 @@
 		}
 
 		function loadVideo()
-		{loadScript();
+		{
+			loadScript();
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -245,11 +246,11 @@
 		function getTextBetweenSpans()
 		{
 			var text = $('#script')
-									.clone()	//clone the element
-									.children()	//select all the children
-									.remove()	//remove all the children
-									.end()		//again go back to selected element
-									.text();
+						.clone()	//clone the element
+						.children()	//select all the children
+						.remove()	//remove all the children
+						.end()		//again go back to selected element
+						.text();
 
 			return text;
 		}
@@ -269,39 +270,25 @@
 			timer = setTimeout(function()
 			{
 				var url = '/api/dictionaryDefinitions/';
-				/*$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
-					function(data)
-					{
-						$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
-							$(this).attr('data-original-title', data.data.definition)
-							.tooltip('fixTitle');
-
-							$(this).attr('data-type', 'definedWord');
-							$(this).data('audio_url', data.data.audio_url);
-						});
-
-						word.tooltip('show');
-
-						$('#word-audio').attr('src', data.data.audio_url);
-					}
-				);*/
-
 
 				$.ajax({
-				type : 'GET',
-				url : url,
-				data: {word: word.text().trim(), video_id : "{{ $video_id }}"},
-				success : function(data)
-				{
-					setTooltipDefinition(word, data.data.definition);
-					setWordAudioUrl(word, data.data.audio_url);
-					setCurrentAudio(data.data.audio_url);
-				},
-				error : function(data)
-				{
-					setTooltipDefinition(word, "Definition not found.");
-				}
-			});
+					type : 'GET',
+					url : url,
+					data: {
+						word: word.text().trim(), 
+						video_id : "{{ $video_id }}"
+					},
+					success : function(data)
+					{
+						setTooltipDefinition(word, data.data.definition);
+						setWordAudioUrl(word, data.data.audio_url);
+						setCurrentAudio(data.data.audio_url);
+					},
+					error : function(data)
+					{
+						setTooltipDefinition(word, "Definition not found.");
+					}
+				});
 
 
 			}, 500);
