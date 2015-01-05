@@ -21,11 +21,7 @@
 			<a href="#" class="play-pause col-xs-1 col-md-1 col-lg-1">
 				<span class="glyphicon glyphicon-play"></span>
 			</a>
-			<!--
-			<a href="#" class="speed col-xs-1 col-md-1 col-lg-1" data-toggle="tooltip" data-placement="bottom" data-original-title="Playing at 1x speed.">
-				<span class="glyphicon glyphicon-fast-forward"></span>
-			</a>-->
-
+			
 			<div class="dropdown speed-dropdown" data-toggle="tooltip" data-placement="top" data-original-title="Playing at 1x speed.">
 				<button class="btn btn-default dropdown-toggle speed-dropdown" type="button" id="speed-drop" data-toggle="dropdown" aria-expanded="true">
 				    <span class="glyphicon glyphicon-fast-forward"></span>
