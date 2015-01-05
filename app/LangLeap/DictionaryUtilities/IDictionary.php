@@ -9,6 +9,7 @@ use LangLeap\Words\Definition;
 interface IDictionary 
 {
 	public function getDefinition($word);
-	public function getPronunciation($word);
+	public function getAudio($word);
+	public function getHyphenatedWord($word);
 }
 
