@@ -7,7 +7,7 @@ use Eloquent;
  */
 class Quiz extends Eloquent {
 
-	protected $fillable ['score'];
+	protected $fillable = ['score'];
 	
 	public function videoQuestions()
 	{

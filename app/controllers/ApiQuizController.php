@@ -159,7 +159,7 @@ class ApiQuizController extends \BaseController {
 	public function getScore($quiz_id)
 	{
 		$quiz = Quiz::find($quiz_id);
-		if($!quiz)
+		if(!$quiz)
 		{
 			return $this->apiResponse(
 				'error',
