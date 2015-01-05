@@ -7,6 +7,8 @@ use Eloquent;
  */
 class Quiz extends Eloquent {
 
+	protected $fillable ['score'];
+	
 	public function videoQuestions()
 	{
 		return $this->belongsToMany('LangLeap\Quizzes\VideoQuestion', 'videoquestion_quiz', 'quiz_id', 'videoquestion_id');

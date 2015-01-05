@@ -155,4 +155,23 @@ class ApiQuizController extends \BaseController {
 		
 		return Redirect::to('admin/quiz/new')->with('success', $success)->with('message', $message);
 	}
+	
+	public function getScore($quiz_id)
+	{
+		$quiz = Quiz::find($quiz_id);
+		if($!quiz)
+		{
+			return $this->apiResponse(
+				'error',
+				'Quiz {$quiz_id} not found',
+				404
+			);
+		}
+		
+		return $this->apiResponse(
+			'success',
+			['score' => $quiz->score],
+			200
+		);
+	}
 }

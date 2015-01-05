@@ -27,8 +27,8 @@ class UpdateResultTable extends Migration {
 	{
 		Schema::table('results', function($table)
 		{
-			$table->integer('user_id')->unsigned();
-			$table->integer('attempt')->unsigned();
+			$table->integer('user_id')->unsigned()->default(0);
+			$table->integer('attempt')->unsigned()->default(0);
 		});
 	}
 
