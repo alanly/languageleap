@@ -78,31 +78,25 @@ $( document ).ready( function()
 	});
 
 	//Toggle play speed and corresponding icon
-	$( '.speed' ).click( function()
+	$( '.dropdown-menu li a' ).click( function()
 	{
-		if(videoPlayer.get(0).playbackRate == 1)
+		if($(this).hasClass('faster'))
 		{
 			videoPlayer.get(0).playbackRate = 1.7;
 
-			$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-backward' );
-
-			$( '.speed' ).attr('data-original-title', 'Playing at 1.7x speed.')
+			$( '.speed-dropdown' ).attr('data-original-title', 'Playing at 1.7x speed.');
 		}
-		else if(videoPlayer.get(0).playbackRate == 1.7)
+		else if($(this).hasClass('slower'))
 		{
 			videoPlayer.get(0).playbackRate = 0.7;
 
-			$( '.glyphicon-step-backward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
-
-			$( '.speed' ).attr('data-original-title', 'Playing at 0.7x speed.')
+			$( '.speed-dropdown' ).attr('data-original-title', 'Playing at 0.7x speed.');
 		}
-		else
+		else if($(this).hasClass('normal'))
 		{
 			videoPlayer.get(0).playbackRate = 1;
 
-			$( '.glyphicon-step-forward' ).attr( 'class', 'glyphicon glyphicon-fast-forward' );
-
-			$( '.speed' ).attr('data-original-title', 'Playing at 1x speed.')
+			$( '.speed-dropdown' ).attr('data-original-title', 'Playing at 1x speed.');
 		}
 	});
 

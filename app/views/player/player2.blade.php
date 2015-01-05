@@ -21,10 +21,22 @@
 			<a href="#" class="play-pause col-xs-1 col-md-1 col-lg-1">
 				<span class="glyphicon glyphicon-play"></span>
 			</a>
-
+			<!--
 			<a href="#" class="speed col-xs-1 col-md-1 col-lg-1" data-toggle="tooltip" data-placement="bottom" data-original-title="Playing at 1x speed.">
 				<span class="glyphicon glyphicon-fast-forward"></span>
-			</a>
+			</a>-->
+
+			<div class="dropdown speed-dropdown" data-toggle="tooltip" data-placement="top" data-original-title="Playing at 1x speed.">
+				<button class="btn btn-default dropdown-toggle speed-dropdown" type="button" id="speed-drop" data-toggle="dropdown" aria-expanded="true">
+				    <span class="glyphicon glyphicon-fast-forward"></span>
+				    <span class="caret"></span>
+			  	</button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="speed-drop">
+					<li role="presentation"><a class="speed faster" role="menuitem" tabindex="-1" href="#">Faster</a></li>
+					<li role="presentation"><a class="speed normal" role="menuitem" tabindex="-1" href="#">Normal</a></li>
+					<li role="presentation"><a class="speed slower" role="menuitem" tabindex="-1" href="#">Slower</a></li>
+				</ul>
+			</div>
 
 			<div class="video-time col-xs-3 col-md-3 col-lg-3">
 				<span class="current">0:00</span>/<span class="duration">0:00</span>
