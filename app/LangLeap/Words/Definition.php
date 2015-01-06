@@ -9,7 +9,7 @@ use Eloquent;
 class Definition extends Eloquent {
 
 	public    $timestamps = false;
-	protected $fillable   = ['word', 'definition', 'full_definition', 'pronunciation'];
+	protected $fillable   = ['word', 'definition', 'full_definition', 'pronunciation', 'synonym'];
 	
 	public function toResponseArray()
 	{
@@ -20,6 +20,7 @@ class Definition extends Eloquent {
 			'full_definition' => $this->full_definition,
 			'pronunciation' => $this->pronunciation,
 			'audio_url' => $this->audio_url,
+			'synonym' => $this->synonym,
 		);
 	}
 
