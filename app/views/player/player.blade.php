@@ -141,12 +141,13 @@
 						$this.tooltip({
 							'container': '#script',
 							'placement': 'auto top',
-							'title': data.data.definition
+							'title': data.data.synonym
 						});
 
 						$this.data('definition', data.data.definition);
 						$this.data('full-definition', data.data.full_definition);
 						$this.data('pronunciation', data.data.pronunciation);
+						$this.data('synonym', data.data.synonym);
 					} else {
 						// Handle failure
 					}
@@ -157,7 +158,7 @@
 				$(this).tooltip({
 						'container': '#script',
 						'placement': 'auto top',
-						'title': 'Loading definition...'
+						'title': 'Loading synonym...'
 				});
 			});
 		}
@@ -324,18 +325,18 @@
 					{
 						$(this).data('full-definition', data.data.definition);
 						$(this).data('pronunciation', data.data.pronunciation);
-						setTooltipDefinition($(this), data.data.definition);
+						setTooltipSynonym($(this), data.data.synonym);
 						setWordAudioUrl($(this), data.data.audio_url);
 					});
 				},
 				error : function(data)
 				{
-					setTooltipDefinition($word, "Definition not found.");
+					setTooltipSynonym($word, "Synonym not found.");
 				}
 			});
 		}
 
-		function setTooltipDefinition($word, definition)
+		function setTooltipSynonym($word, definition)
 		{
 			$word.attr('data-original-title', definition)
 			.tooltip('fixTitle');
