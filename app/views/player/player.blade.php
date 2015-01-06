@@ -71,7 +71,6 @@
 
 		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
 		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
-		<button id="mute-audio" class="pronunciations-on" title="Audio hover"></button>
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
@@ -318,10 +317,6 @@
 						setTooltipDefinition($(this), data.data.definition);
 						setWordAudioUrl($(this), data.data.audio_url);
 					});
-					
-					// Only play the audio clip if the mouse is still over the word
-					if ($($word[0]).is(':hover'))
-						setCurrentAudio(data.data.audio_url);
 				},
 				error : function(data)
 				{
@@ -440,7 +435,6 @@
 				.on('mouseenter', 'span[data-type=definedWord]', function()
 				{
 					$(this).addClass('word-hover');
-					setCurrentAudio($(this).data('audio_url'));
 				})
 				.on('mouseleave', 'span[data-type=definedWord]', function()
 				{
@@ -453,15 +447,6 @@
 			});
 
 			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
-
-			$('#mute-audio').on('click', function()
-			{
-				$(this).toggleClass('pronunciations-off');
-				$(this).toggleClass('pronunciations-on');
-				
-				var $audio = $('#word-audio');
-				$audio.prop('muted', !$audio.prop('muted'));
-			});
 		});
 	</script>
 @stop
