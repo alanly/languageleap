@@ -169,7 +169,9 @@
 			{
 				carouselItems += '<div class="item' + ((i == 0) ? ' active' : '') + '">' +
 								'<h3>' + $(this).text() + '<br>' +
-								'<small>' + $(this).data('pronunciation') + '</small></h3><br>' +
+								'<small>' + $(this).data('pronunciation') +
+								'<button class="play-pronunciation" data-audio-url="' + $(this).data('audio-url') + '"></button></small></h3>' +
+								'<br>' +
 								'<span>' + $(this).data('full-definition') + '</span>' +
 								'</div>';
 			});
@@ -197,7 +199,7 @@
 
 			// Clear existing carousel items
 			$("#flashcard .carousel-inner").html('');
-			
+
 			$('#flashcard').modal();
 			$('#flashcard .loading').show();
 
@@ -343,7 +345,7 @@
 		function setWordAudioUrl($word, url)
 		{
 			$('[name="' + $word.text().trim().toLowerCase() + 'Word"]').each(function() {
-				$(this).data('audio_url', url);
+				$(this).data('audio-url', url);
 			});
 		}
 
@@ -450,6 +452,11 @@
 			});
 
 			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
+
+			$('#flashcard').on('click', '.play-pronunciation', function()
+			{
+				setCurrentAudio($(this).data('audio-url'));
+			});
 		});
 	</script>
 @stop
