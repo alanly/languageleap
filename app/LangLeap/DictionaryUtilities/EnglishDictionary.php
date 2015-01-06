@@ -10,6 +10,7 @@ class EnglishDictionary implements IDictionary
 {
 	private $API_KEY = '0d275e6214609368a960d06d0d40810e58033359378726f83';
 	private $DICTIONARY_SOURCE = 'wiktionary';
+	private $client = null;
 
 	/**
 	 * Returns a definition of a word
@@ -19,13 +20,15 @@ class EnglishDictionary implements IDictionary
 	 */
 	public function getDefinition($word)
 	{
-		//Make requests here
+		$this->openConnection();
 		$dictionaryDefinition = $this->getWordDefinition($word);
 		$audioUrl = $this->getAudio($word);
 		$hyphenatedWord = $this->getHyphenatedWord($word);
+		$synonym = $this->getSynonym($word);
 
 		if(!$dictionaryDefinition)
 		{
+			$this->closeConnection();
 			return null;
 		}
 
@@ -33,7 +36,10 @@ class EnglishDictionary implements IDictionary
 		$def->definition = $dictionaryDefinition;
 		$def->audio_url = $audioUrl;
 		$def->pronunciation = $hyphenatedWord;
+		$def->synonym = $synonym;
 		
+
+		$this->closeConnection();
 		return $def;
 	}
 
@@ -45,9 +51,7 @@ class EnglishDictionary implements IDictionary
 	 */
 	public function getAudio($word)
 	{
-		$client = $this->instantiateConnection();
-
-		$audios = $client->wordAudio($word)
+		$audios = $this->client->wordAudio($word)
 							->limit(1)
 							->useCanonical(true)
 							->get();
@@ -57,9 +61,27 @@ class EnglishDictionary implements IDictionary
 			return null;
 		}
 
-		$this->closeConnection($client);
-
 		return $audios[0]->fileUrl;
+	}
+
+	/**
+	 * Returns the synonym of a word
+	 *
+	 * @param  string  $word
+	 * @return string
+	 */
+	public function getSynonym($word)
+	{
+		return "HELLO";
+
+		$synonyms = $this->client;
+
+		if(!$synonyms)
+		{
+			return null;
+		}
+
+		return $synonyms[0]->text;
 	}
 
 	/**
@@ -70,9 +92,7 @@ class EnglishDictionary implements IDictionary
 	 */
 	public function getHyphenatedWord($word)
 	{
-		$client = $this->instantiateConnection();
-
-		$wordSegments = $client->wordHyphenation($word)
+		$wordSegments = $this->client->wordHyphenation($word)
 							->limit(20)
 							->useCanonical(true)
 							->get();
@@ -81,8 +101,6 @@ class EnglishDictionary implements IDictionary
 		{
 			return null;
 		}
-
-		$this->closeConnection($client);
 		
 		return $this->parseToHyphenatedString($wordSegments);;
 	}
@@ -100,10 +118,8 @@ class EnglishDictionary implements IDictionary
 
 	private function getWordDefinition($word)
 	{
-		$client = $this->instantiateConnection();
-
 		//Returns an array of Definition Objects, only take the text of the first one.
-		$definitions = $client->wordDefinitions($word)
+		$definitions = $this->client->wordDefinitions($word)
 							->sourceDictionaries($this->DICTIONARY_SOURCE)
 							->limit(1)
 							->includeRelated(false)
@@ -115,9 +131,12 @@ class EnglishDictionary implements IDictionary
 			return null;
 		}
 
-		$this->closeConnection($client);
-
 		return $definitions[0]->text;
+	}
+
+	private function openConnection()
+	{
+		$this->client = $this->instantiateConnection();
 	}
 
 	private function instantiateConnection()
@@ -127,9 +146,9 @@ class EnglishDictionary implements IDictionary
 		return $client;
 	}
 
-	private function closeConnection($client)
+	private function closeConnection()
 	{
-		unset($client);
+		unset($this->client);
 	}
 }
 
