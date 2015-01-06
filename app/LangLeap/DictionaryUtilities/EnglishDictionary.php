@@ -23,6 +23,7 @@ class EnglishDictionary implements IDictionary
 		$dictionaryDefinition = $this->getWordDefinition($word);
 		$audioUrl = $this->getAudio($word);
 		$hyphenatedWord = $this->getHyphenatedWord($word);
+		$synonym = $this->getSynonym($word);
 
 		if(!$dictionaryDefinition)
 		{
@@ -33,6 +34,7 @@ class EnglishDictionary implements IDictionary
 		$def->definition = $dictionaryDefinition;
 		$def->audio_url = $audioUrl;
 		$def->pronunciation = $hyphenatedWord;
+		$def->synonym = $synonym;
 		
 		return $def;
 	}
@@ -60,6 +62,29 @@ class EnglishDictionary implements IDictionary
 		$this->closeConnection($client);
 
 		return $audios[0]->fileUrl;
+	}
+
+	/**
+	 * Returns the synonym of a word
+	 *
+	 * @param  string  $word
+	 * @return string
+	 */
+	public function getSynonym($word)
+	{
+		return "HELLO";
+		$client = $this->instantiateConnection();
+
+		$synonyms = $client;
+
+		if(!$synonym)
+		{
+			return null;
+		}
+
+		$this->closeConnection($client);
+
+		return $synonyms[0]->text;
 	}
 
 	/**
