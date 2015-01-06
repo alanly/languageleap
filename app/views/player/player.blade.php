@@ -167,10 +167,15 @@
 			var carouselItems = '';
 			$('#script .word-selected').each(function(i)
 			{
+				// Determine whether audio is available for the current word
+				var audioUrl = ($(this).data('audio-url')) ? ('data-audio-url="' + $(this).data('audio-url') + '"') : 'disabled';
+				var notAvailable =  (!$(this).data('audio-url')) ? ' not-available" title="Not available' : '';
+				
 				carouselItems += '<div class="item' + ((i == 0) ? ' active' : '') + '">' +
 								'<h3>' + $(this).text() + '<br>' +
 								'<small>' + $(this).data('pronunciation') +
-								'<button class="play-pronunciation" data-audio-url="' + $(this).data('audio-url') + '"></button></small></h3>' +
+								'<button class="play-pronunciation glyphicon glyphicon-volume-up' + notAvailable + '" ' + audioUrl +
+								'></button></small></h3>' +
 								'<br>' +
 								'<span>' + $(this).data('full-definition') + '</span>' +
 								'</div>';

@@ -55,11 +55,18 @@
 }
 
 .play-pronunciation {
-	background: url(http://cdn.flaticon.com/png/64/498.png) no-repeat center;
-	background-size: 20px;
+	background: none;
 	border: 0;
-	height: 20px;
-	margin-left: 10px;
-	vertical-align: bottom;
-	width: 20px;
+	color: #000;
+	font-size: 25px !important;
+	height: 25px !important;
+	margin-left: 10px !important;
+	padding: 0 !important;
+	top: 5px;
+	vertical-align: text-bottom;
+	width: 25px !important;
+}
+
+.not-available {
+	color: grey;
 }
