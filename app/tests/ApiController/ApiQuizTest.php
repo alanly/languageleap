@@ -8,6 +8,7 @@ use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\Result;
+use LangLeap\Quizzes\Quiz;
 use LangLeap\Accounts\User;
 
 class ApiQuizControllerTest extends TestCase {
@@ -177,5 +178,20 @@ class ApiQuizControllerTest extends TestCase {
 		);
 		
 		$this->assertResponseOk();
+	}
+	
+	public function testQuizScore()
+	{
+		$quiz = Quiz::first();
+		$response = $this->call(
+			'get',
+			'api/quiz/score/'.$quiz->id
+		);
+		
+		$this->assertResponseOk();
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		
+		$data = $response->getData()->data;
+		$this->assertObjectHasAttribute('score', $data);
 	}
 }
