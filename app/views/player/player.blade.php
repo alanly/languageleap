@@ -165,11 +165,11 @@
 			var carouselItems = '';
 			$('#script .word-selected').each(function(i)
 			{
-				carouselItems += 	'<div class="item' + ((i == 0) ? ' active' : '') + '">' +
-										'<h3>' + $(this).text() + '<br>' +
-										'<small>' + $(this).data('pronunciation') + '</small></h3><br>' +
-										'<span>' + $(this).data('full-definition') + '</span>' +
-									'</div>';
+				carouselItems += '<div class="item' + ((i == 0) ? ' active' : '') + '">' +
+								'<h3>' + $(this).text() + '<br>' +
+								'<small>' + $(this).data('pronunciation') + '</small></h3><br>' +
+								'<span>' + $(this).data('full-definition') + '</span>' +
+								'</div>';
 			});
 
 			$("#flashcard .carousel-inner").html(carouselItems);
