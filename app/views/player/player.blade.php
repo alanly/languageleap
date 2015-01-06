@@ -195,6 +195,9 @@
 			if ($('#script .word-selected').length == 0)
 				return;
 
+			// Clear existing carousel items
+			$("#flashcard .carousel-inner").html('');
+			
 			$('#flashcard').modal();
 			$('#flashcard .loading').show();
 
