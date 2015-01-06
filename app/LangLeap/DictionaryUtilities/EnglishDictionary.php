@@ -10,7 +10,9 @@ class EnglishDictionary implements IDictionary
 {
 	private $API_KEY = '0d275e6214609368a960d06d0d40810e58033359378726f83';
 	private $DICTIONARY_SOURCE = 'wiktionary';
+	private $NUMBER_OF_SYNONYMS = 3;
 	private $client = null;
+
 
 	/**
 	 * Returns a definition of a word
@@ -72,16 +74,31 @@ class EnglishDictionary implements IDictionary
 	 */
 	public function getSynonym($word)
 	{
-		return "HELLO";
-
-		$synonyms = $this->client;
-
+		$synonyms = $this->client->wordRelatedWords($word)->limit($this->NUMBER_OF_SYNONYMS)->relationshipTypes('synonym')->get();
 		if(!$synonyms)
 		{
 			return null;
 		}
 
-		return $synonyms[0]->text;
+		$words = $synonyms[0]->words;
+		if(!$words)
+		{
+			return null;
+		}
+
+		$delimitedSynonyms = '';
+
+		for($i = 0; $i < count($words); $i++)
+		{
+			$delimitedSynonyms .= $words[$i];
+
+			if($i < count($words) - 1)
+			{
+				$delimitedSynonyms .= ', ';
+			}
+		}
+
+		return $delimitedSynonyms;
 	}
 
 	/**
