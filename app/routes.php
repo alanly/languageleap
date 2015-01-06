@@ -133,10 +133,6 @@ Route::get('/video/play/{id}', function($id)
 });
 
 
-// Flashcard
-Route::controller('flashcard', 'FlashcardController');
-
-
 // Quiz View
 Route::get('quiz', function()
 {

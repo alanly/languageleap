@@ -77,6 +77,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
+					@include('flashcard')
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -84,7 +85,6 @@
 		
 	<script>
 		var definitions = [];
-		var timer;
 
 		function loadScript()
 		{
@@ -160,27 +160,51 @@
 			});
 		}
 
-		function loadDefinitions()
+		function loadCarouselItems()
 		{
-			definitions = [];
-			$('#script span[data-type=word]').each(function(index) {
-				var def_id = $(this).data("id");
-				if(def_id != null && $(this).hasClass("word-selected")){
-					var key = "word" + index;
-					//definitions.push({ key :  def_id });
-					definitions.push(def_id);
-				}
+			var carouselItems = '';
+			$('#script .word-selected').each(function(i)
+			{
+				carouselItems += 	'<div class="item' + ((i == 0) ? ' active' : '') + '">' +
+										'<h3>' + $(this).text() + '<br>' +
+										'<small>' + $(this).data('pronunciation') + '</small></h3><br>' +
+										'<span>' + $(this).data('full-definition') + '</span>' +
+									'</div>';
 			});
+
+			$("#flashcard .carousel-inner").html(carouselItems);
+		}
+
+		function loadUndefinedSelectedWords()
+		{
+			var deffereds = [];
+
+			$('#script .word-selected[data-type=nonDefinedWord]').each(function()
+			{
+				deffereds.push(loadDefinition($(this)));
+			});
+
+			return deffereds;
 		}
 
 		function loadFlashcards()
 		{
-			loadDefinitions();
-			if(definitions.length > 0){
-				$("#flashcard .modal-body").load('/flashcard', { definitions : definitions }, function(data){
-					$('#flashcard').modal();
-				});
-			}
+			// Check if any words have been selected
+			if ($('#script .word-selected').length == 0)
+				return;
+
+			$('#flashcard').modal();
+			$('#flashcard .loading').show();
+
+			$.when.apply(null, loadUndefinedSelectedWords()).done(function()
+			{
+				$('#flashcard .loading').hide();
+				loadCarouselItems();
+
+				// This makes the carousel work for dynamically loaded content
+				$('#scroller').carousel("pause").removeData()
+			});
+			
 		}
 
 		function loadQuiz() {
@@ -273,51 +297,51 @@
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
 		}
 
-		function getDefinition(word)
+		function loadDefinition($word)
 		{
-			timer = setTimeout(function()
-			{
-				var url = '/api/dictionaryDefinitions/';
+			var url = '/api/dictionaryDefinitions/';
 
-				$.ajax({
-					type : 'GET',
-					url : url,
-					data: {
-						word: word.text().trim(), 
-						video_id : "{{ $video_id }}"
-					},
-					success : function(data)
+			return $.ajax({
+				type: 'GET',
+				url: url,
+				data: { word: $word.text().trim(), video_id : "{{ $video_id }}" },
+				success : function(data)
+				{
+					// For each of the same word
+					$('#script [name=' + $word.attr('name') + ']').each(function()
 					{
-						setTooltipDefinition(word, data.data.definition);
-						setWordAudioUrl(word, data.data.audio_url);
+						$(this).data('full-definition', data.data.definition);
+						$(this).data('pronunciation', data.data.pronunciation);
+						setTooltipDefinition($(this), data.data.definition);
+						setWordAudioUrl($(this), data.data.audio_url);
+					});
+					
+					// Only play the audio clip if the mouse is still over the word
+					if ($($word[0]).is(':hover'))
 						setCurrentAudio(data.data.audio_url);
-					},
-					error : function(data)
-					{
-						setTooltipDefinition(word, "Definition not found.");
-					}
-				});
-
-
-			}, 500);
-
-		}
-
-		function setTooltipDefinition(word, definition)
-		{
-			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
-				$(this).attr('data-original-title', definition)
-				.tooltip('fixTitle');
-
-				$(this).attr('data-type', 'definedWord');
+				},
+				error : function(data)
+				{
+					setTooltipDefinition($word, "Definition not found.");
+				}
 			});
-
-			word.tooltip('show');
 		}
 
-		function setWordAudioUrl(word, url)
+		function setTooltipDefinition($word, definition)
 		{
-			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+			$word.attr('data-original-title', definition)
+			.tooltip('fixTitle');
+
+			$word.attr('data-type', 'definedWord');
+
+			// Only show the tooltip if the mouse is still hovering over the word
+			if ($($word[0]).is(':hover'))
+				$word.tooltip('show');
+		}
+
+		function setWordAudioUrl($word, url)
+		{
+			$('[name="' + $word.text().trim().toLowerCase() + 'Word"]').each(function() {
 				$(this).data('audio_url', url);
 			});
 		}
@@ -387,6 +411,9 @@
 				loadQuiz();
 			});
 
+			// Used to determine how long the mouse is hovered over a word
+			var hoverTimer;
+
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
 				{
@@ -398,13 +425,14 @@
 				})
 				.on('mouseenter', 'span[data-type=nonDefinedWord]', function()
 				{
-					$(this).addClass('word-hover');
-					getDefinition($(this));
+					var $this = $(this);
+					$this.addClass('word-hover');
+					hoverTimer = setTimeout(function() { loadDefinition($this); }, 500);
 				})
 				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
 				{
 					$(this).removeClass('word-hover');
-					clearTimeout(timer);
+					clearTimeout(hoverTimer);
 				}).on('mouseenter', 'span[data-type=definedWord]', function()
 				{
 					$(this).addClass('word-hover');
@@ -415,7 +443,7 @@
 					$(this).removeClass('word-hover');
 				});
 
-			$('#script').on('click', 'span[data-type=word]', function()
+			$('#script').on('click', 'span[data-type!=actor]', function()
 			{
 				$(this).toggleClass('word-selected');
 			});
