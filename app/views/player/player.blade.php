@@ -325,8 +325,10 @@
 					{
 						$(this).data('full-definition', data.data.definition);
 						$(this).data('pronunciation', data.data.pronunciation);
-						setTooltipSynonym($(this), data.data.synonym);
+						setTooltipSynonym($(this), ((data.data.synonym) ? data.data.synonym : 'Synonym not found.'));
 						setWordAudioUrl($(this), data.data.audio_url);
+
+						$(this).attr('data-type', 'definedWord');
 					});
 				},
 				error : function(data)
@@ -336,12 +338,10 @@
 			});
 		}
 
-		function setTooltipSynonym($word, definition)
+		function setTooltipSynonym($word, synonym)
 		{
-			$word.attr('data-original-title', definition)
+			$word.attr('data-original-title', synonym)
 			.tooltip('fixTitle');
-
-			$word.attr('data-type', 'definedWord');
 
 			// Only show the tooltip if the mouse is still hovering over the word
 			if ($($word[0]).is(':hover'))
