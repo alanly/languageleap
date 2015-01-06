@@ -6,6 +6,10 @@
 	<link rel="stylesheet" href="/css/video-player.css">
 @stop
 
+@section('javascript')
+	<script src="/js/video-player.js"></script>	
+@stop
+
 @section('content')
 	<div id="wrapper">
 		<div class="error-message alert alert-danger" style="display:none">
@@ -17,7 +21,6 @@
 
 			<!-- Player here -->
 			<div class="jumbotron col-lg-6 col-md-6 col-xs-6" style="width: 50%;">	
-				<script src="/js/video-player.js"></script>	
 				<div id="video-container">
 					<video width="100%" id="video-player">
 						<source class="source" type="video/mp4">
@@ -433,7 +436,8 @@
 				{
 					$(this).removeClass('word-hover');
 					clearTimeout(hoverTimer);
-				}).on('mouseenter', 'span[data-type=definedWord]', function()
+				})
+				.on('mouseenter', 'span[data-type=definedWord]', function()
 				{
 					$(this).addClass('word-hover');
 					setCurrentAudio($(this).data('audio_url'));
