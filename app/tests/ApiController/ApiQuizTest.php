@@ -138,7 +138,7 @@ class ApiQuizControllerTest extends TestCase {
 		$response = $this->action(
 			'put',
 			'ApiQuizController@putIndex',
-			[],['question_id' => -1]
+			[],['videoquestion_id' => -1, 'selected_id' => 1, 'quiz_id' => 1]
 		);
 		
 		$this->assertResponseStatus(404);	
@@ -155,7 +155,7 @@ class ApiQuizControllerTest extends TestCase {
 		$response = $this->action(
 			'put',
 			'ApiQuizController@putIndex',
-			[],['videoquestion_id' => $videoquestion->id]
+			[],['videoquestion_id' => 1, 'quiz_id' => 1]
 		);
 
 		$this->assertResponseStatus(400);	

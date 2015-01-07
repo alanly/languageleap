@@ -1,14 +1,14 @@
 <?php
 
-use LangLeap\Core\Collection;
 use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\QuizUtilities\QuizFactory;
-use LangLeap\QuizUtilities\QuizInputValidation;
+use LangLeap\QuizUtilities\QuizCreationValidation;
+use LangLeap\QuizUtilities\QuizAnswerValidation;
+use LangLeap\QuizUtilities\QuizAnswerUpdate;
 use LangLeap\Videos\Video;
-use LangLeap\Words\Definition;
 
 /**
  * @author Thomas Rahn <thomas@rahn.ca>
@@ -27,7 +27,7 @@ class ApiQuizController extends \BaseController {
 	 */
 	public function postIndex()
 	{
-		$quizDecorator = new QuizInputValidation(QuizFactory::getInstance());
+		$quizDecorator = new QuizCreationValidation(QuizFactory::getInstance());
 
 		// Generate all the questions.
 		$response = $quizDecorator->response(Auth::user()->id, Input::all());
@@ -46,60 +46,14 @@ class ApiQuizController extends \BaseController {
 	 */
 	public function putIndex()
 	{
-		// Ensure that the Question exists, else return a 404.
-		$videoquestion_id = Input::get('videoquestion_id');
-		$videoquestion = VideoQuestion::find($videoquestion_id);
-
-		if (! $videoquestion)
-		{
-			return $this->apiResponse(
-				'error',
-				"Question {$videoquestion_id} not found.",
-				404
-			);
-		}
-
-		// Ensure the selected definition exists, otherwise return a 404.
-		$selectedId = Input::get("selected_id");
+		$answerDecorator = new QuizAnswerValidation(new QuizAnswerUpdate());
 		
-		if (! $selectedId)
-		{
-			return $this->apiResponse(
-				'error',
-				"The selected definition {$selectedId} is invalid",
-				400
-			);
-		}
-
-		$isCorrectAnswer = $videoquestion->question->answer_id.'' === $selectedId;
-
-		$quiz_id = Input::get('quiz_id');
-		$quiz = Quiz::find($quiz_id);
-		
-		if(!$quiz)
-		{
-			return $this->apiResponse(
-				'error',
-				"Quiz {$quiz_id} not found.",
-				404
-			);
-		}
-			
-		$videoquestion->quiz()->updateExistingPivot($quiz_id, ['is_correct' => $isCorrectAnswer]); // Update the correctness of the quiz
-		
-		// Update the quiz score
-		$correctAnswers = $quiz->videoQuestions->filter(function($vq) {
-			return $vq->pivot->is_correct;
-		});
-		$score = ($correctAnswers->count() * 100)/$quiz->videoQuestions->count();
-		$quiz->score = $score;
-		$quiz->save();
-		
+		// Run validation and update the quiz score if validation passes
+		$response = $answerDecorator->response(Auth::user()->id, Input::all());
 		return $this->apiResponse(
-			'success',
-			[
-				'is_correct'	=> $isCorrectAnswer,
-			]
+			$response[0],
+			$response[1],
+			$response[2]
 		);
 	}
 	

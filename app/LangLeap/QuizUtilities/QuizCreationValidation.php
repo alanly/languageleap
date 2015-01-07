@@ -1,20 +1,21 @@
 <?php namespace LangLeap\QuizUtilities;
 
 use LangLeap\Core\UserInputResponse;
+use LangLeap\Core\InputDecorator;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 use LangLeap\Core\Collection;
 
 /**
- * Concrete decorator that adds validation behavior
+ * Concrete decorator that adds validation behavior to Quiz creation
  *
  * @author Quang Tran <tran.quang@live.com>
  */
-class QuizInputValidation extends QuizDecorator
+class QuizCreationValidation extends InputDecorator
 {
-	function __construct(UserInputResponse $decoratedQuizFactory)
+	function __construct(UserInputResponse $decoratedInputResponse)
 	{
-		parent::__construct($decoratedQuizFactory);
+		parent::__construct($decoratedInputResponse);
 	}
 	
 	public function response($user_id, $input)
