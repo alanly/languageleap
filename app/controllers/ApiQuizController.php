@@ -4,7 +4,6 @@ use LangLeap\Core\Collection;
 use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\VideoQuestion;
-use LangLeap\Quizzes\Result;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\QuizUtilities\QuizFactory;
 use LangLeap\QuizUtilities\QuizInputValidation;
@@ -71,33 +70,30 @@ class ApiQuizController extends \BaseController {
 				400
 			);
 		}
-		
-		$result = Result::join('videoquestions', 'results.videoquestion_id', '=', 'videoquestions.id')
-			->where('videoquestions.id', '=', $videoquestion_id)
-			->where('results.user_id', '=', Auth::user()->id)
-			->orderBy('created_at', 'desc')->first();
-
-		if (! $result)
-		{
-			return $this->apiResponse(
-				'error',
-				"No result for user for question {$videoquestion_id}",
-				400
-			);
-		}
 
 		$isCorrectAnswer = $videoquestion->question->answer_id.'' === $selectedId;
 
+		$quiz_id = Input::get('quiz_id');
+		$quiz = Quiz::find($quiz_id);
+		
+		if(!$quiz)
+		{
+			return $this->apiResponse(
+				'error',
+				"Quiz {$quiz_id} not found.",
+				404
+			);
+		}
+			
 		if($isCorrectAnswer)
 		{
-			$result->is_correct = true;
-			$result->save();
+			$videoquestion->quiz()->updateExistingPivot($quiz_id, ['is_correct' => true]);
 		}
 
 		return $this->apiResponse(
 			'success',
 			[
-				'is_correct'	=> $isCorrectAnswer
+				'is_correct'	=> $isCorrectAnswer,
 			]
 		);
 	}

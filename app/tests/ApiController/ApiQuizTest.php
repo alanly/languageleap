@@ -171,10 +171,12 @@ class ApiQuizControllerTest extends TestCase {
 	{
 		$videoquestion = VideoQuestion::first();
 		$selected_id = $videoquestion->question->answers->first()->id;
+		$quiz_id = $videoquestion->quiz()->first()->id;
+		
 		$response = $this->action(
 			'put',
 			'ApiQuizController@putIndex',
-			[],['videoquestion_id' => $videoquestion->id, 'selected_id' => $selected_id]
+			[],['videoquestion_id' => $videoquestion->id, 'selected_id' => $selected_id, 'quiz_id' => $quiz_id]
 		);
 		
 		$this->assertResponseOk();
