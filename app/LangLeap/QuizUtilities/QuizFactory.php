@@ -76,8 +76,10 @@ use LangLeap\Core\UserInputResponse;
 		if(User::find($user_id) == null) return null;
 		
 		// Create a new quiz
-		$quiz = Quiz::create([]);
-	
+		$quiz = Quiz::create([
+			'user_id'	=> $user_id
+		]);
+		
 		// Make a copy of the definitions collection.
 		$scriptDefinitions = new Collection($scriptDefinitions->all());
 		$questionPrepend = 'What is the definition of ';
