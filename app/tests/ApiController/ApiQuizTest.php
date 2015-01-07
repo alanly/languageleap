@@ -167,10 +167,33 @@ class ApiQuizControllerTest extends TestCase {
 	*	The response should be a JSON string in the format:
 	*	{"status":"success", "data":{"is_correct":"true"} } 
 	*/
-	public function testQuizUpdate()
+	public function testQuizUpdateCorrect()
 	{
 		$videoquestion = VideoQuestion::first();
-		$selected_id = $videoquestion->question->answers->first()->id;
+		$selected_id = $videoquestion->question->answer_id;
+		$quiz = $videoquestion->quiz()->first();
+		$prevScore = $quiz->score;
+		
+		$response = $this->action(
+			'put',
+			'ApiQuizController@putIndex',
+			[],['videoquestion_id' => $videoquestion->id, 'selected_id' => $selected_id, 'quiz_id' => $quiz->id]
+		);
+		
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+		
+		$data = $response->getData()->data;
+		$this->assertTrue($data->is_correct);
+		
+		$this->assertGreaterThan($prevScore, Quiz::find($quiz->id)->score); // Check score updates
+	}
+	
+	public function testQuizUpdateIncorrect()
+	{
+		$videoquestion = VideoQuestion::first();
+		
+		$selected_id = $videoquestion->question->answers->filter(function($answer) {return $answer->id != $answer->question->answer_id;})->first()->id;
 		$quiz_id = $videoquestion->quiz()->first()->id;
 		
 		$response = $this->action(
@@ -179,7 +202,11 @@ class ApiQuizControllerTest extends TestCase {
 			[],['videoquestion_id' => $videoquestion->id, 'selected_id' => $selected_id, 'quiz_id' => $quiz_id]
 		);
 		
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
+		
+		$data = $response->getData()->data;
+		$this->assertFalse($data->is_correct);
 	}
 	
 	public function testQuizScore()

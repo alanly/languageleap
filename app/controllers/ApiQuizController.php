@@ -85,11 +85,16 @@ class ApiQuizController extends \BaseController {
 			);
 		}
 			
-		if($isCorrectAnswer)
-		{
-			$videoquestion->quiz()->updateExistingPivot($quiz_id, ['is_correct' => true]);
-		}
-
+		$videoquestion->quiz()->updateExistingPivot($quiz_id, ['is_correct' => $isCorrectAnswer]); // Update the correctness of the quiz
+		
+		// Update the quiz score
+		$correctAnswers = $quiz->videoQuestions->filter(function($vq) {
+			return $vq->pivot->is_correct;
+		});
+		$score = ($correctAnswers->count() * 100)/$quiz->videoQuestions->count();
+		$quiz->score = $score;
+		$quiz->save();
+		
 		return $this->apiResponse(
 			'success',
 			[
