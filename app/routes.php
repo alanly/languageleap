@@ -64,12 +64,6 @@ Route::group(['prefix' => 'admin'], function()
 		return View::make('admin.script.index');
 	});
 	
-	// new media upload
-	Route::any('add-new-form-submit', 'FileUploadController@saveMedia');
-
-	// store script
-	Route::resource('save-script', 'ApiScriptController@store');
-
 });
 
 
@@ -82,9 +76,11 @@ Route::group(['prefix' => 'api'], function()
 	{
 		// Commercials
 		Route::resource('commercials', 'ApiCommercialController');
+		Route::patch('commercials/update-script/{id}', 'ApiCommercialController@updateScript');
 
 		// Movies
 		Route::resource('movies', 'ApiMovieController');
+		Route::patch('movies/update-script/{id}', 'ApiMovieController@updateScript');
 
 		// Shows (and Seasons and Episodes)
 		Route::resource('shows', 'ApiShowController');

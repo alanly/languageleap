@@ -18,6 +18,8 @@ class FileUploadController extends \BaseController {
 
 		$type = Input::get('info-radio');
 		
+		$response = App::make('ApiVideoController')->store();
+		
 		if ($type == "commercial")
 		{
 			$response = App::make('ApiCommercialController')->store();
@@ -34,7 +36,7 @@ class FileUploadController extends \BaseController {
 			$response = App::make('ApiMovieController')->store();
 			
 		}
-		
+
 		$id = $response->getData()->data->id;
 		
 		// get all post vars and add on video_id
@@ -46,7 +48,7 @@ class FileUploadController extends \BaseController {
 
 		//App::make('ApiScriptController')->store();
 		// create an internal request
-		$request = Request::create('admin/save-script', 'POST', $data);
+		$request = Request::create('/api/scripts', 'POST', $data);
 		// replace the old request with the internal request one
 		Request::replace($request->input());
 		

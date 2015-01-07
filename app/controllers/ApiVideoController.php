@@ -1,5 +1,6 @@
 <?php
 
+use LangLeap\Levels\Level;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Script;
 use LangLeap\Core\Language;
@@ -7,6 +8,7 @@ use LangLeap\WordUtilities\ScriptFile;
 
 /**
 * @author Thomas Rahn <thomas@rahn.ca>
+* @author David Siekut
 */
 class ApiVideoController extends \BaseController {
 
@@ -26,7 +28,7 @@ class ApiVideoController extends \BaseController {
 			$videoArray[] = $vid->toResponseArray();
 		}
 
-		return $this->apiResponse("success",$videoArray);
+		return $this->apiResponse("success", $videoArray);
 	}
 
 	/**
@@ -40,15 +42,21 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function store()
 	{
-		$script_file = Input::file('script');
-		$file = Input::file('video');
-		$type = Input::get('video_type');
-		$lang = Language::find(Input::get('language_id'))->first();
-
-		$video = $this->setVideo($file,$type,null, $lang);
-		$this->setScript($script_file, $video->id);
-
-		return $this->apiResponse("success",$video->toResponseArray());
+		$script_text = Input::get('text');
+		$file = Input::file('file');
+		$type = Input::get('info-radio');
+		// TODO replace with language id from post
+		$lang = Language::where('code' , '=', 'en')->first();
+		$video = $this->setVideo($file, $type, null, $lang);
+		
+		$this->setScript($script_text, $video->id);
+		//return $this->apiResponse("success", $video->toResponseArray());
+		
+		Session::flash('action.success', true);
+		Session::flash('action.message', Lang::get('admin.upload.success'));
+		
+		return View::make('admin.index')
+							->with('levels',LeveL::all());
 	}
 
 	/**
@@ -97,15 +105,15 @@ class ApiVideoController extends \BaseController {
 		}
 
 		$script_file = Input::file('script');
-		$file = Input::file('video');
+		$file = Input::file('file');
 		$type = Input::get('video_type');
 		$lang = Language::find(Input::get('language_id'))->first();
 		
-		$video = $this->setVideo($file,$type, $video, $lang);
+		$video = $this->setVideo($file, $type, $video, $lang);
 		
-		$this->setScript($script_file, $video->id,$video->script()->first());
+		$this->setScript($script_file, $video->id, $video->script()->first());
 
-		return $this->apiResponse("success",$video->toResponseArray());
+		return $this->apiResponse("success", $video->toResponseArray());
 	}
 
 
@@ -139,15 +147,14 @@ class ApiVideoController extends \BaseController {
 	*	@param int $video_id 
 	*/
 
-	private function setScript($file,$video_id, Script $script = null)
+	private function setScript($text, $video_id, Script $script = null)
 	{
 		if($script == null)
 		{
 			$script = new Script;
 		}
 
-		$script_text = ScriptFile::retrieveText($file);
-		$script->text = $script_text;
+		$script->text = $text;
 		$script->video_id = $video_id;
 		$script->save();
 	}
@@ -163,7 +170,14 @@ class ApiVideoController extends \BaseController {
 	*/
 	private function setVideo($file, $type, Video $video = null, Language $lang)
 	{
-		$ext = $file->getClientOriginalExtension();
+		if (! $file)
+		{
+			$ext = ".mkv";
+		}
+		else
+		{
+			$ext = $file->getClientOriginalExtension();
+		}
 
 		if($video == null)
 		{
@@ -172,21 +186,24 @@ class ApiVideoController extends \BaseController {
 		
 		$path = "";
 
-		if($type === "commercial")
+		if($type == "commercial")
 		{
-			$video->viewable_id = Input::get('commercial');
+			$response = App::make('ApiCommercialController')->store();
+			$video->viewable_id = $response->getData()->data->id;
 			$video->viewable_type = 'LangLeap\Videos\Commercial';
 			$path = Config::get('media.paths.videos.commercials');
 		}
-		elseif($type === "movie")
+		elseif($type == "movie")
 		{
-			$video->viewable_id = Input::get('movie');;
+			$response = App::make('ApiMovieController')->store();
+			$video->viewable_id = $response->getData()->data->id;
 			$video->viewable_type = 'LangLeap\Videos\Movie';
 			$path = Config::get('media.paths.videos.movies');
 		}
-		elseif($type === "show")
+		elseif($type == "show")
 		{
-			$video->viewable_id = Input::get('episode');;
+			$response = App::make('ApiShowController')->store();
+			$video->viewable_id = $response->getData()->data->id;
 			$video->viewable_type = 'LangLeap\Videos\Episode';
 			$path = Config::get('media.paths.videos.shows');
 		}
@@ -200,7 +217,7 @@ class ApiVideoController extends \BaseController {
 		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
 
 		if (!App::environment('testing')) {
-			$video_file = $file->move($path,$new_name);
+			$video_file = $file->move($path, $new_name);
 		}
 		$video->save();
 

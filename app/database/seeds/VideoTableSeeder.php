@@ -3,6 +3,7 @@
 use LangLeap\Videos\Video;
 use LangLeap\Videos\Episode;
 use LangLeap\Videos\Movie;
+use LangLeap\Videos\Show;
 use LangLeap\Videos\Commercial;
 use LangLeap\Core\Language;
 
@@ -19,8 +20,23 @@ class VideoTableSeeder extends Seeder {
 
 		$lang = Language::first();
 		
-		Commercial::first()->videos()->create(['path' => '/path/to/somewhere/1.mkv', 'language_id'   => $lang->id]);
-		Movie::first()->videos()->create(['path' => '/path/to/somewhere/2.mkv', 'language_id'   => $lang->id]);
-		Episode::first()->videos()->create(['path' => '/path/to/somewhere/3.mkv', 'language_id'   => $lang->id]);
+		$movies = Movie::all();
+		foreach ($movies as $movie)
+		{
+			$movie->videos()->create(['path' => '/path/to/somewhere/media.mkv', 'language_id'   => $lang->id]);
+		}
+				
+		$commercials = Commercial::all();
+		foreach ($commercials as $commercial)
+		{
+			$commercial->videos()->create(['path' => '/path/to/somewhere/media.mkv', 'language_id'   => $lang->id]);
+		}
+		
+		$shows = Episode::all();
+		foreach ($shows as $show)
+		{
+			$show->videos()->create(['path' => '/path/to/somewhere/media.mkv', 'language_id'   => $lang->id]);
+		}
 	}
+	
 }

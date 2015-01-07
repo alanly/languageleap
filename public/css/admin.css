@@ -25,13 +25,20 @@ h1,h2,h3,h4,h5,h6 {
 	font-size: 1.8em;
 	cursor: pointer
 }
+#select span:hover {
+	text-decoration: underline;
+}
 #select span:last-child {
 	margin-right: 0;
 }
 #content span.media {
+	font-size: 1.3em;
 	display: block;
 	margin-top: 2px;
 	cursor: pointer;
+}
+#content span.media:hover {
+	text-decoration: underline;
 }
 .info-row {
 	margin-bottom: 5px;
@@ -40,10 +47,17 @@ h1,h2,h3,h4,h5,h6 {
 	max-width:90%;
 }
 .modal-footer {
+	text-align: left;
+	font-size: 1.5em;
 	margin-top: 0;
 }
-.modal-footer div.span2 {
+.modal-footer span {
+	display: inline-block;
 	cursor: pointer;
+	margin-right: 30px;
+}
+.modal-footer span:hover {
+	text-decoration: underline;
 }
 .form label {
 	margin-right: 10px;
@@ -59,12 +73,20 @@ h1,h2,h3,h4,h5,h6 {
 .form-script {
 
 }
+
 #button-add-new-back {
 	float: left;
 }
 #button-add-new-next {
 	float: right;
 }
+#button-edit-info-save {
+	margin-right: 20px;
+}
+#button-edit-script-save {
+	margin-right: 20px;
+}
+
 .form-script textarea {
 	display: block;
 	vertical-align: text-top;
