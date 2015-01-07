@@ -19,7 +19,7 @@ class ApiQuizControllerTest extends TestCase {
 
 		// Seed the database and login
 		$this->seed();
-		$this->be(User::first());
+		$this->be(User::where('is_admin', '=', true)->first());
 	}
 
 	/**
@@ -222,5 +222,18 @@ class ApiQuizControllerTest extends TestCase {
 		
 		$data = $response->getData()->data;
 		$this->assertObjectHasAttribute('score', $data);
+	}
+	
+	public function testQuizUnauthorized()
+	{
+		$user = User::where('is_admin', '=', false)->first();
+		$this->be($user);
+		$quiz = Quiz::where('user_id', '<>', $user->id)->first();
+		$response = $this->call(
+			'get',
+			'api/quiz/score/'.$quiz->id
+		);
+		
+		$this->assertResponseStatus(401);
 	}
 }

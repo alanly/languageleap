@@ -4,6 +4,7 @@ use LangLeap\Core\UserInputResponse;
 use LangLeap\Core\InputDecorator;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\VideoQuestion;
+use LangLeap\Accounts\User;
 
 /**
  * Concrete decorator that adds validation behavior to Quiz creation
@@ -59,6 +60,14 @@ class QuizAnswerValidation extends InputDecorator
 				'error',
 				"Quiz {$quiz_id} not found.",
 				404
+			];
+		}
+		else if($quiz->user_id != $user_id && !User::find($user_id)->is_admin)
+		{
+			return [
+				'error',
+				'Not authorized to answer questions for quiz {$quiz_id}',
+				401
 			];
 		}
 		

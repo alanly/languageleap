@@ -123,6 +123,15 @@ class ApiQuizController extends \BaseController {
 			);
 		}
 		
+		if($quiz->user_id != Auth::user()->id && !Auth::user()->is_admin)
+		{
+			return $this->apiResponse(
+				'error',
+				'Not authorized to view quiz {$quiz_id}',
+				401
+			);
+		}
+		
 		return $this->apiResponse(
 			'success',
 			['score' => $quiz->score],
