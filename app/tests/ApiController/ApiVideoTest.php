@@ -49,15 +49,14 @@ class ApiVideoControllerTest extends TestCase {
 		);
 
 		$text = "This is a test script.";
-
+		dd($file);
 		$response = $this->action(
 			'POST',
 			'ApiVideoController@store',
 			[],
-			[ 'video_type' => 'commercial', 'commercial' => $commercial->id, 'language_id' => $language->id ],
-			['file'=> $file, 'text' => $text]
+			[ 'video_type' => 'commercial', 'commercial' => $commercial->id, 'language_id' => $language->id, 'text', $text],
+			['file'=> $file]
 		);
-
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 	}

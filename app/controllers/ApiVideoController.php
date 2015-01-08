@@ -153,7 +153,6 @@ class ApiVideoController extends \BaseController {
 		{
 			$script = new Script;
 		}
-
 		$script->text = $text;
 		$script->video_id = $video_id;
 		$script->save();
