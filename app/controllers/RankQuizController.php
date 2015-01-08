@@ -18,7 +18,7 @@ class RankQuizController extends \BaseController
 		if($user->level_id == 0)
 		{
 			return View::make('rank.tutorialquiz')
-					->with('q1', (Question::find(1)->question))
+					/*->with('q1', (Question::find(1)->question))
 					->with('q2', (Question::find(2)->question))
 					->with('q3', (Question::find(3)->question))
 					->with('q4', (Question::find(4)->question))
@@ -46,7 +46,7 @@ class RankQuizController extends \BaseController
 					->with('a17', (Answer::find(17)->answer))
 					->with('a18', (Answer::find(18)->answer))
 					->with('a19', (Answer::find(19)->answer))
-					->with('a20', (Answer::find(20)->answer));
+					->with('a20', (Answer::find(20)->answer))*/;
 		}
 		else
 		{

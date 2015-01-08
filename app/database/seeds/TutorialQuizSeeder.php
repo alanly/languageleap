@@ -31,13 +31,13 @@ class TutorialQuizSeeder extends Seeder {
 		$c = $this->createTutorialCommercial();
 		$video = $c->videos()->first();
 		
-		$vq1 = $videoquestion->create(["question_id" => 1, "video_id" => $video->id, "is_custom" => true])->id;
+		/*$vq1 = $videoquestion->create(["question_id" => 1, "video_id" => $video->id, "is_custom" => true])->id;
 		$vq2 = $videoquestion->create(["question_id" => 2, "video_id" => $video->id, "is_custom" => true])->id;
 		$vq3 = $videoquestion->create(["question_id" => 3, "video_id" => $video->id, "is_custom" => true])->id;
 		$vq4 = $videoquestion->create(["question_id" => 4, "video_id" => $video->id, "is_custom" => true])->id;
 		$vq5 = $videoquestion->create(["question_id" => 5, "video_id" => $video->id, "is_custom" => true])->id;
 		
-		$quiz->videoquestions()->attach([$vq1, $vq2, $vq3, $vq4, $vq5]);
+		$quiz->videoQuestions()->attach([$vq1, $vq2, $vq3, $vq4, $vq5]);*/
 	}
 	
 	private function createAnswers()
