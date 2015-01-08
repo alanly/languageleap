@@ -65,7 +65,9 @@ class ApiQuizController extends \BaseController {
 		
 		$message = 'Custom question saved successfully';
 		$success = true;
+
 		$video = Video::find($video_id);
+
 		if (! $video)
 		{
 			$success = false;

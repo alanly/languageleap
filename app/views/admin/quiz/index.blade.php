@@ -20,8 +20,7 @@
 				{{ Form::label('video_id', 'Video', array('class' => 'control-label')) }}
 				<select name="video_id" id="video_id">
 					@foreach($videos as $v)
-						<option id="{{ $v->id }}">{{ $v->viewable->name }}</option>
-
+						<option value="{{ $v->id }}">{{ $v->viewable->name }}</option>
 					@endforeach
 				</select>
 				</div>
