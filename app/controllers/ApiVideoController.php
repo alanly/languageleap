@@ -45,18 +45,16 @@ class ApiVideoController extends \BaseController {
 		$script_text = Input::get('text');
 		$file = Input::file('file');
 		$type = Input::get('info-radio');
+		
 		// TODO replace with language id from post
 		$lang = Language::where('code' , '=', 'en')->first();
 		$video = $this->setVideo($file, $type, null, $lang);
-		
 		$this->setScript($script_text, $video->id);
-		//return $this->apiResponse("success", $video->toResponseArray());
 		
 		Session::flash('action.success', true);
 		Session::flash('action.message', Lang::get('admin.upload.success'));
 		
-		return View::make('admin.index')
-							->with('levels',LeveL::all());
+		return $this->apiResponse("success",$video->toResponseArray());
 	}
 
 	/**
@@ -219,8 +217,7 @@ class ApiVideoController extends \BaseController {
 			$video_file = $file->move($path, $new_name);
 		}
 		$video->save();
-
-		return $video;
+		return $video->first();
 	}
 
 }
