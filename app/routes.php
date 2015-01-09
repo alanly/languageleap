@@ -132,6 +132,11 @@ Route::get('/video/play/{id}', function($id)
 	return View::make('player.player')->with('video_id', $id);
 });
 
+// Score View
+Route::get('score', function()
+{
+	return View::make('account.score');
+});
 
 // Quiz View
 Route::get('quiz', function()
