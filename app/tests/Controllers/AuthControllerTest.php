@@ -139,7 +139,7 @@ class AuthenticationTest extends TestCase {
 		Route::enableFilters();
 
 		$this->action('GET', 'AuthController@getLogout');
-		$this->assertRedirectedTo('/');
+		$this->assertRedirectedTo('/login');
 	}
 
 
