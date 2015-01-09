@@ -29,6 +29,15 @@ class ApiQuizController extends \BaseController {
 	{
 		$quizDecorator = new QuizCreationValidation(QuizFactory::getInstance());
 
+		if(! Auth::check())
+		{
+			return $this->apiResponse(
+				"error",
+				"User Must be logged in",
+				"403"
+			);
+		}
+
 		// Generate all the questions.
 		$response = $quizDecorator->response(Auth::user()->id, Input::all());
 		return $this->apiResponse(
