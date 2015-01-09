@@ -15,6 +15,7 @@ return [
 				'password' => 'Password',
 			]
 		],
+		'unauthorized'	=> "You need to be logged in to continue",
 	],
 
 	'register' => [

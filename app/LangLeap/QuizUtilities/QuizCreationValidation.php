@@ -13,7 +13,7 @@ use LangLeap\Core\Collection;
  */
 class QuizCreationValidation extends InputDecorator
 {
-	function __construct(UserInputResponse $decoratedInputResponse)
+	public function __construct(UserInputResponse $decoratedInputResponse)
 	{
 		parent::__construct($decoratedInputResponse);
 	}

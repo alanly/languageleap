@@ -142,10 +142,10 @@ Route::get('/video/play/{id}', function($id)
 
 
 // Quiz View
-Route::get('quiz', function()
+Route::get('quiz', ['before' => 'auth', function()
 {
 	return View::make('quiz.main');
-});
+}]);
 
 
 // CSRF Test Route
