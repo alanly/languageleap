@@ -12,7 +12,11 @@ class QuizTableSeeder extends Seeder {
 		Eloquent::unguard();
 		DB::table('quizzes')->delete();
 
+		$user_id = \LangLeap\Accounts\User::first()->id;
+		
 		$q = App::make('LangLeap\Quizzes\Quiz');
-		$q->create([]);
+		$q->create([
+			'user_id' => $user_id
+		]);
 	}
 }
