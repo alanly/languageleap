@@ -82,8 +82,6 @@
 					<div id="edit-container">
 						<div id="add-script" class="script-editor" contenteditable=true></div>
 					</div>
-					
-					@include('admin.script.script')
 				</div>
 				<!-- /step two -->
 				<!-- step three -->
@@ -102,6 +100,10 @@
 			</div>
 		  {{ Form::close() }}
 		</div>
+
+		<!-- modal for the script editor -->
+		@include('admin.script.script')
+		<!-- /modal for the script editor -->
 	</div>
 	<!-- /pulldown modal for adding new media -->
 	
