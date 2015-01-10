@@ -49,17 +49,17 @@
 		
 		@if(Session::get('success') !== null)
 			@if(Session::get('success'))
-					<div class="alert alert-success">
-						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-						<span class="sr-only">Save Successful:</span>
-						{{ Session::get('message') }}
-					</div>
+				<div class="alert alert-success">
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+					<span class="sr-only">Save Successful:</span>
+					{{ Session::get('message') }}
+				</div>
 			@else
-					<div class="alert alert-danger">
-						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-						<span class="sr-only">Save Failed:</span>
-						{{ Session::get('message') }}
-					</div>
+				<div class="alert alert-danger">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Save Failed:</span>
+					{{ Session::get('message') }}
+				</div>
 			@endif
 		@endif
 	</div> <!-- col-md-6 -->

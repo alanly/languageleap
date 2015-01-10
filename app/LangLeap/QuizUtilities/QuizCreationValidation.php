@@ -1,22 +1,18 @@
 <?php namespace LangLeap\QuizUtilities;
 
-use LangLeap\Core\UserInputResponse;
+use LangLeap\Core\Collection;
 use LangLeap\Core\InputDecorator;
+use LangLeap\Core\UserInputResponse;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
-use LangLeap\Core\Collection;
+
 
 /**
  * Concrete decorator that adds validation behavior to Quiz creation
  *
  * @author Quang Tran <tran.quang@live.com>
  */
-class QuizCreationValidation extends InputDecorator
-{
-	public function __construct(UserInputResponse $decoratedInputResponse)
-	{
-		parent::__construct($decoratedInputResponse);
-	}
+class QuizCreationValidation extends InputDecorator {
 	
 	public function response($user_id, $input)
 	{
@@ -25,15 +21,11 @@ class QuizCreationValidation extends InputDecorator
 
 		if (! Video::find($videoId))
 		{
-			return [
-				'error',
-				"Video {$videoId} does not exists",
-				404
-			];
+			return ['error', "Video {$videoId} does not exists", 404];
 		}
 
 		// Get all the selected words; if empty, return with redirect.
-		$selectedWords =$input["selected_words"];
+		$selectedWords = $input["selected_words"];
 
 		if (! $selectedWords || count($selectedWords) < 1)
 		{
@@ -67,7 +59,7 @@ class QuizCreationValidation extends InputDecorator
 		{
 			return [
 				'error',
-				'Only ' . $scriptDefinitions->count() . ' definitions found for ' . count($scriptWords) . ' words.',
+				'Only '.$scriptDefinitions->count().' definitions found for '.count($scriptWords).' words.',
 				404
 			];
 		}

@@ -5,8 +5,8 @@
  *
  * @author Quang Tran <tran.quang@live.com>
  */
-abstract class InputDecorator implements UserInputResponse
-{
+abstract class InputDecorator implements UserInputResponse {
+
 	protected $decoratedResponse;
 	
 	public function __construct(UserInputResponse $decoratedResponse)
@@ -18,4 +18,5 @@ abstract class InputDecorator implements UserInputResponse
 	{
 		return $this->decoratedResponse->response($user_id, $input);
 	}
+
 }
