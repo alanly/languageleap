@@ -49,9 +49,12 @@ class VideoContentControllerTest extends TestCase {
 		$intPath = Config::get('media.paths.xsendfile.videos').'/'.basename(Config::get('media.test')).'/1.mkv';
 		$this->assertEquals($intPath, $response->headers->get('X-Accel-Redirect'));
 
+		// Determine the number of header values there are, when sendfile is enabled.
+		$numberOfHeaderValuesWithSendfile = count($response->headers->all());
+
 		Config::set('media.paths.xsendfile.server', null);
 		$response = $this->action('GET', 'VideoContentController@getVideo', [$video->id]);
-		$this->assertCount(8, $response->headers->all());
+		$this->assertCount($numberOfHeaderValuesWithSendfile - 1, $response->headers->all());
 	}
 
 
