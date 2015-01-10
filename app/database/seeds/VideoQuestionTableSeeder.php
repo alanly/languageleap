@@ -20,7 +20,7 @@ class VideoQuestionTableSeeder extends Seeder {
 		$videoquestion = App::make('LangLeap\Quizzes\VideoQuestion');
 		
 		$quiz = Quiz::first();
-		$video_id = Video::first();
+		$video_id = Video::first()->id;
 		
 		$vq1 = $videoquestion->create(["question_id" => 1, "video_id" => $video_id, "is_custom" => false])->id;
 		$vq2 = $videoquestion->create(["question_id" => 2, "video_id" => $video_id, "is_custom" => false])->id;

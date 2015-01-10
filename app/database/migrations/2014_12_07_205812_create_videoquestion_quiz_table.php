@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateVideoQuestionQuizTable extends Migration {
+class CreateVideoquestionQuizTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -17,13 +17,7 @@ class CreateVideoQuestionQuizTable extends Migration {
 			$table->increments('id');
 			$table->integer('videoquestion_id')->unsigned();
 			$table->integer('quiz_id')->unsigned();
-
-			$table->foreign('videoquestion_id')
-			      ->references('id')->on('videoquestions')
-			      ->onDelete('cascade');
-			$table->foreign('quiz_id')
-			      ->references('id')->on('quizzes')
-			      ->onDelete('cascade');
+			$table->boolean('is_correct')->default(false);
 		});
 	}
 
