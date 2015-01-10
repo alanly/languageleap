@@ -33,14 +33,17 @@
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-buttons">
 				</button>
-				<a class="navbar-brand" href="/">Language Leap</a>
+				<a class="navbar-brand" href="/" style="text-decoration: none;">Language Leap</a>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-buttons">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Quizzes <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-decoration: none;">
+							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+							@lang('navbar.buttons.quiz-reminder.name')
+							<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li>No quizzes to do</li>
+							<li class="text-center">@lang('navbar.buttons.quiz-reminder.none')</li>
 						</ul>
 					</li>
 				</ul>
