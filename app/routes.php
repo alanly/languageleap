@@ -150,7 +150,7 @@ Route::get('quiz', function()
 
 // Ranking Process
 Route::controller('rank/quiz', 'RankQuizController');
-Route::get('/rank/tutorial','TutorialQuizContentController@getIndex');
+Route::controller('rank/tutorial','TutorialQuizContentController');
 Route::controller('rank', 'RankController');
 
 // CSRF Test Route

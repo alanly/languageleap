@@ -21,11 +21,11 @@ class TutorialQuizSeeder extends Seeder {
 	{
 		$question = App::make('LangLeap\Quizzes\Question');
 		
-		$q1 = $question->create(["question" => "What does Language Leap teach?", "answer_id" => 2]);
-		$q2 = $question->create(["question" => "What do you see beside the video?", "answer_id" => 8]);
-		$q3 = $question->create(["question" => "What can you gain by spending more time on Language Leap?", "answer_id" => 12]);
-		$q4 = $question->create(["question" => "How do you learn new words?", "answer_id" => 13]);
-		$q5 = $question->create(["question" => "What do you need to use Language Leap?", "answer_id" => 17]);
+		$q1 = $question->create(["id"=> "1", "question" => "What does Language Leap teach?", "answer_id" => 2]);
+		$q2 = $question->create(["id"=> "2", "question" => "What do you see beside the video?", "answer_id" => 8]);
+		$q3 = $question->create(["id"=> "3", "question" => "What can you gain by spending more time on Language Leap?", "answer_id" => 12]);
+		$q4 = $question->create(["id"=> "4", "question" => "How do you learn new words?", "answer_id" => 13]);
+		$q5 = $question->create(["id"=> "5", "question" => "What do you need to use Language Leap?", "answer_id" => 17]);
 		
 		$quiz = App::make('LangLeap\Quizzes\Quiz');
 		$c = $this->createTutorialCommercial();
