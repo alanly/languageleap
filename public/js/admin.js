@@ -68,7 +68,7 @@ function refreshContent()
 		{
 		  var p = '';
 		  //p = $('#text').text();
-		  p = document.getElementById('script').innerHTML;
+		  p =	document.getElementById('add-script').innerHTML,
 		  p = "<input type='text' name='text' value='" + p + "'/>";
 
 			// append script to form for post
@@ -108,39 +108,65 @@ $('#info-movie-radio').on("click", function()
 /*
 	shows media based on selected category
 */
+var currentType;
 $("#select-movies").click(function()
 {
+	currentType = "movies";
 	$.getJSON("/api/metadata/movies/", function(data)
 	{
-			var s = "";
-			
-		  $.each(data.data, function(key, val)
-			{
-				var id = val.id;
-				var name = val.name;
-				//console.log(key + " " + id + " " + name);
-				s += '<span class="media" db-id="' + id + '">' + name + '</span>';
-		  });
-			
-			$('#content').empty().append(s);
-			//s.detach();
+		buildList(data);
 	});
 });
+$("#select-commercials").click(function()
+{
+	currentType = "commercials";
+	$.getJSON("/api/metadata/commercials/", function(data)
+	{
+		buildList(data);
+	});
+});
+$("#select-shows").click(function()
+{
+	currentType = "shows";
+	$.getJSON("/api/metadata/shows/", function(data)
+	{
+		buildList(data);
+	});
+});
+
+function buildList(data)
+{
+	var s = "";
+	
+  $.each(data.data, function(key, val)
+	{
+		var id = val.id;
+		var name = val.name;
+		//console.log(key + " " + id + " " + name);
+		s += '<span class="media" db-id="' + id + '">' + name + '</span>';
+  });
+	
+	$('#content').empty().append(s);
+	//s.detach();
+}
 
 /*
 	when a media title is clicked in the browser, refresh all values in the forms to reflect the clicked media
 */
+var id;
 $('#content').on('click', 'span.media', function(event)
 {
-	var id = $(this).attr('db-id');
+	id = $(this).attr('db-id');
 	var name;
 	var description;
 	var director;
 	var actor;
 	var thumb = "";
 	
-	$.getJSON("/api/metadata/movies/" + id, function(data)
+	// get metadata for specified media
+	$.getJSON("/api/metadata/" + currentType + "/" + id, function(data)
 	{
+		//info view
 		name = data.data.name;
 		description = data.data.description;
 		director = data.data.director;
@@ -155,14 +181,81 @@ $('#content').on('click', 'span.media', function(event)
 		$('#edit-media-info-actor').val(actor);
 		
 		$('#media-modal').modal('show');
+		
+		//script view
+		script = data.data.videos[0].script.text;
+		$('#edit-script').empty().append(script);
+		$('#footer-info').trigger( "click" );
 	});
 });
 
-$('.modal-footer').on('click', '.span2', function(event)
+/*
+	save edited info
+*/
+$('#button-edit-info-save').on("click", function()
+{
+	$('#button-edit-info-save').prop("disabled", true);
+	$('#button-edit-info-save').html("Saving...");
+	
+	$.ajax(
+	{
+		type: "POST",
+		url: "/api/metadata/" + currentType + "/" + id,
+		data:
+		{
+			name: $('#edit-media-info-name').val(),
+			description: $('#edit-media-info-description').val(),
+			director: $('#edit-media-info-director').val(),
+			actor: $('#edit-media-info-actor').val(),
+			level: $('#edit-media-info-level').val(),
+			_method: "PATCH"
+		},
+		success: function(data)
+		{
+			console.log(data);
+			$('#edit-script').prop("disabled", false);
+			$('#button-edit-info-save').prop("disabled", false);
+			$('#button-edit-info-save').html("Save");
+		}
+	});
+});
+
+/*
+	save edited script
+*/
+$('#button-edit-script-save').on("click", function()
+{
+	$('#edit-script').css("opacity", 0.5);
+	$('#button-edit-script-save').prop("disabled", true);
+	$('#button-edit-script-save').html("Saving...");
+	
+	$.ajax(
+	{
+		type: "POST",
+		url: "/api/metadata/" + currentType + "/update-script/" + id,
+		data:
+		{
+			text: document.getElementById('edit-script').innerHTML,
+			_method: "PATCH"
+		},
+		success: function(data)
+		{
+			console.log(data);
+			$('#edit-script').css("opacity", 1);
+			$('#button-edit-script-save').prop("disabled", false);
+			$('#button-edit-script-save').html("Save");
+		}
+	});
+});
+
+/*
+	footer tab was clicked, switch tabs
+*/
+$('.modal-footer').on('click', 'span', function(event)
 {
 	var id = $(this).attr('id');
-	$('.modal-body').attr("aria-hidden", true);
-	$('.modal-body').css("display", "none");
+	$('#media-modal .modal-body').attr("aria-hidden", true);
+	$('#media-modal .modal-body').css("display", "none");
 	
 	if (id == "footer-info")
 	{
@@ -174,12 +267,4 @@ $('.modal-footer').on('click', '.span2', function(event)
 		$('.modal-body.script').attr("aria-hidden", false);
 		$('.modal-body.script').css("display", "block");
 	}
-});
-
-/*
-	save edited info
-*/
-$('#button-edit-save').on("click", function()
-{
-  document.getElementById("edit-media-form").submit();
 });
