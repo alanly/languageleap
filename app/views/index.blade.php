@@ -27,6 +27,27 @@
 @stop
 
 @section('content')
+<div id="navbar">
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-buttons">
+				</button>
+				<a class="navbar-brand" href="/">Language Leap</a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-buttons">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Quizzes <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li>No quizzes to do</li>
+						</ul>
+					</li>
+				</ul>
+			</div> <!-- / .navbar-collapse -->
+		</div> <!-- / .container-fluid -->
+	</nav>
+</div>
 <div id="accordion" class="evoslider default">
 	<dl>
 		<dt id="firstTab">@lang('index.accordion.items.default')</dt>
