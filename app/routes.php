@@ -138,10 +138,6 @@ Route::get('/video/play/{id}', function($id)
 });
 
 
-// Flashcard
-Route::controller('flashcard', 'FlashcardController');
-
-
 // Quiz View
 Route::get('quiz', function()
 {
@@ -155,3 +151,9 @@ Route::controller('rank', 'RankController');
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
+
+// Quiz View
+Route::get('player/player2', function()
+{
+	return View::make('player.player2');
+});

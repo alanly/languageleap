@@ -1,0 +1,45 @@
+.jumbotron
+{
+	padding: 0; 
+	margin-bottom: 0;
+}
+
+.video-controls
+{
+	width: 100%;
+	font-size: 27px;
+
+}
+
+.slider
+{	
+	margin-right: -100px;
+	margin-top: 5px;
+}
+
+.video-controls span, .video-controls div, .video-controls a
+{
+	display: inline-block;
+	color: #999;
+}
+
+.mute, .full-screen
+{
+	float: right;
+	color: #999;
+}
+
+.play-pause, .speed
+{
+	color: #999;
+}
+
+.glyphicon:hover
+{
+	color: #555;
+}
+
+.speed-dropdown
+{
+	float: left;
+}

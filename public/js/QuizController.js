@@ -13,131 +13,139 @@ quizApp.run(function($http)
 });
 
 /**
- * Define our QuizController.
+ * Define the controller for our quiz interface.
  */
 quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 {
-	// Contains all the questions in the quiz.
+
+	// Contain the ID of the ongoing quiz.
+	var quizID = $scope.quizID = -1;
+
+	// Contain an array of all the questions.
 	var questions = $scope.questions = [];
 
+	// Contain the index of the current question.
+	var currentQuestionIndex = $scope.currentQuestionIndex = -1;
+
+	// Contain a count of the number of correctly answered questions.
 	var correctQuestionsCount = $scope.correctQuestionsCount = 0;
-
-	// Hold the current question object
-	var currentQuestion = $scope.currentQuestion = {};
-
-	// Hold the current quiz ID
-	var currentQuizID = $scope.currentQuizID = -1;
-
-	// Hold the current form selection.
-	var selection = $scope.selection = {};
-
-	// Hold the destination URL to redirect to after the quiz
-	var redirectUrl = $scope.redirectUrl = '';
 
 	// Get the video information from the local storage.
 	var videoInfo = $scope.videoInfo = JSON.parse(localStorage.getItem("quizPrerequisites"));
 
-	console.log(videoInfo);
+	/**
+	 * Load questions from the API on boot.
+	 */
+	$http.post(
+		'/api/quiz',
+		{
+			'video_id':       videoInfo.video_id,
+			'selected_words': videoInfo.selected_words,
+			'all_words':      videoInfo.all_words
+		}
+	).
+		success(function(data, status, headers, config)
+		{
+			// Store the data retrieved.
+			$scope.quizID = data.data.id;
+			$scope.questions = data.data.video_questions;
 
-	// Function simply appends the specified question object to the collection.
-	$scope.appendQuestion = function(question)
-	{
-		questions.push(question);
-	};
+			// Ensure that we have data.
+			if (! Array.isArray($scope.questions) || $scope.questions.length < 1)
+			{
+				$window.alert('An error occured while attempting to load the quiz. Please return and try again.');
+				return console.error(data);
+			}
 
-	// Function to handle submitting an answer for a question on the quiz.
-	$scope.submit = function(formSelection)
+			console.log(data);
+
+			// Activate the first question in the array.
+			$scope.questions[0].active = true;
+			$scope.currentQuestionIndex = 0;
+		}).
+		error(function(data, status, headers, config)
+		{
+			$window.alert('An error occured while attempting to load the quiz. Please return and try again.');
+			return console.error(data);
+		});
+
+	$scope.submit = function(selection)
 	{
-		selection = angular.copy(formSelection);
+		// Retrieve the actual form selection.
+		selection = angular.copy(selection);
 
 		if (! selection)
 		{
-			return console.log('no selection was made');
+			return console.error('Form was submitted without selection.');
 		}
 
+		// Reference the current question.
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+
+		if (currentQuestion.active !== true)
+		{
+			return console.error('Form was submitted against an inactive question.');
+		}
+
+		// Send the request to the API and fetch the result.
 		$http.put(
 			'/api/quiz',
 			{
-				'quiz_id': currentQuizID,
-				'question_id': currentQuestion.id,
+				'videoquestion_id': currentQuestion.id,
 				'selected_id': selection.definition_id
 			}
-		).success(function(response)
-		{
-			console.log(response);
-			var previous = response.data.previous;
-			var question = response.data.question;
-			var result   = response.data.result;
-
-			// Add question to collection.
-			if (question !== undefined)
+		).
+			success(function(data, status, headers, config)
 			{
-				$scope.appendQuestion(response.data.question);
-			}
+				var isCorrect = data.data.is_correct;
 
-			if (result !== undefined)
+				if (isCorrect === true)
+				{
+					// Increment our counter.
+					$scope.correctQuestionsCount++;
+				}
+
+				// Highlight the selection appropriately.
+				$('#radio-selection-id-'+currentQuestion.id+'-'+selection.definition_id).
+					addClass('has-' + (isCorrect === true ? 'success' : 'error'));
+
+				// Disable the form's radio buttons.
+				$('#form-question-id-'+currentQuestion.id+' input').prop('disabled', true);
+
+				// Enable the "Next Question" button and modify its colouring
+				$('#btn-next-'+currentQuestion.id).addClass('btn-success');
+				$('#btn-next-'+currentQuestion.id).prop('disabled', false);
+			}).
+			error(function(data, status, headers, config)
 			{
-				$scope.redirectUrl = result.redirect;
-			}
-
-			// Highlight the wrong answer
-			if (previous.result === false)
-			{
-				$('#radio-selection-id-'+currentQuestion.id+'-'+previous.selected).addClass('has-error');	
-			}
-
-			// Highlight the correct answer
-			$('#radio-selection-id-'+currentQuestion.id+'-'+previous.answer).addClass('has-success');
-
-			if (previous.result === true)
-			{
-				console.log("Correct answer");
-				$scope.correctQuestionsCount = $scope.correctQuestionsCount + 1;
-			}
-
-			// Disable radio buttons
-			$('#form-question-id-'+currentQuestion.id+' input').prop('disabled', true);
-
-			// Enable the "Next Question" button and modify its colouring
-			$('#btn-next-'+currentQuestion.id).addClass('btn-success');
-			$('#btn-next-'+currentQuestion.id).prop('disabled', false);
-
-			if (currentQuestion.last === true)
-			{
-				$('.btn-score-open').prop('disabled', false)
-			}
-		}).error(function(response)
-		{
-			$('#btn-submit-'+currentQuestion.id).removeClass('btn-warning').addClass('btn-error');
-			console.log('an error occured while submitting the selection.');
-			console.log(response);
-		});
+				return console.error(data);
+			});
 	};
 
+	/**
+	 * Load the proceeding question.
+	 * @return void
+	 */
 	$scope.nextQuestion = function()
 	{
-		if (currentQuestion.last === true)
-		{
-			return $scope.openScore();
-		}
+		// If there are no more questions, then open the score window.
+		if ($scope.currentQuestionIndex === ($scope.questions.length - 1)) return $scope.openScore();
 
-		var questionIndex = questions.indexOf(currentQuestion) + 1;
-
-		if (questionIndex >= questions.length) return;
+		// Deactivate the current question.
+		$scope.questions[$scope.currentQuestionIndex].active = false;
 
 		// "Uncheck" selection
 		$('.radio input').prop('checked', false);
 
-		// Disable current question
-		currentQuestion.active = false;
-
-		// Increment current question pointer
-		currentQuestion = questions[questionIndex];
-
-		// Enable new question
-		currentQuestion.active = true;
+		// Increment to the next question.
+		$scope.currentQuestionIndex++;
+		$scope.questions[$scope.currentQuestionIndex].active = true;
 	};
 
+	/**
+	 * Open the score-modal dialog.
+	 * @return void
+	 */
 	$scope.openScore = function()
 	{
 		var modalInstance = $modal.open(
@@ -148,54 +156,29 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			resolve: {
 				correctQuestionsCount: function() { return $scope.correctQuestionsCount; },
 				questionsCount: function() { return $scope.questions.length; },
-				redirect: function() { return $scope.redirectUrl; }
+				redirect: function() { return 'https://www.reddit.com/'; }
 			}
 		});
 	};
-
-	// Fetch the initial question at boot.
-	$http.post(
-		'/api/quiz',
-		{
-			'video_id': videoInfo.video_id,
-			'selected_words': videoInfo.selected_words,
-			'all_words': videoInfo.all_words
-		}
-	).success(function(response)
-	{
-		var question = response.data.question;
-
-		if (question === undefined)
-		{
-			redirectUrl = response.data.result.redirect;
-
-			if (redirectUrl === undefined)
-			{
-				$window.alert('An error occurred while loading this quiz. Please notify an administrator.');
-			}
-
-			return $window.location = redirectUrl;
-		}
-
-		currentQuizID = response.data.quiz_id;
-
-		currentQuestion = question;
-		currentQuestion.active = true;
-
-		$scope.appendQuestion(question);
-	});
+	
 });
 
-quizApp.controller('ScoreModalInstanceController', function($scope, $modalInstance, correctQuestionsCount, questionsCount, redirect)
-{
-
-	$scope.correctQuestionsCount = correctQuestionsCount;
-	$scope.questionsCount = questionsCount;
-	$scope.redirect = redirect;
-
-	$scope.finalScore = function()
+/**
+ * Define the controller for our score modal window interface.
+ */
+quizApp.controller(
+	'ScoreModalInstanceController',
+	function($scope, $modalInstance, correctQuestionsCount, questionsCount, redirect)
 	{
-		return (correctQuestionsCount / questionsCount) * 100;
-	};
 
-});
+		$scope.correctQuestionsCount = correctQuestionsCount;
+		$scope.questionsCount = questionsCount;
+		$scope.redirect = redirect;
+
+		$scope.finalScore = function()
+		{
+			return (correctQuestionsCount / questionsCount) * 100;
+		};
+
+	}
+);

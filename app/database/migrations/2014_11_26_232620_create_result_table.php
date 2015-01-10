@@ -12,13 +12,13 @@ class CreateResultTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('results', function($table){
+		Schema::create('results', function($table)
+		{
 			$table->increments('id');
-			$table->integer('user_id')->unsigned();
+			$table->integer('user_id')->unsigned()->default(0);
 			$table->integer('videoquestion_id')->unsigned();
 			$table->boolean('is_correct');
-			$table->timestamp('timestamp');
-			$table->integer('attempt')->default(0);
+			$table->timestamps();
 		});
 	}
 

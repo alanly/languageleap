@@ -75,7 +75,7 @@ class ApiQuizController extends \BaseController {
 		$result = Result::join('videoquestions', 'results.videoquestion_id', '=', 'videoquestions.id')
 			->where('videoquestions.id', '=', $videoquestion_id)
 			->where('results.user_id', '=', Auth::user()->id)
-			->orderBy('timestamp', 'desc')->first();
+			->orderBy('created_at', 'desc')->first();
 
 		if (! $result)
 		{

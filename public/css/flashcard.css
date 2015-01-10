@@ -32,3 +32,10 @@
 #scroller .glyphicon-chevron-left {
 	margin-left: 0;
 }
+
+.loading {
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}

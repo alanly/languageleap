@@ -3,23 +3,68 @@
 @section('css')
 	<link rel="stylesheet" href="/css/flashcard.css">
 	<link rel="stylesheet" href="/css/video-script.css">
+	<link rel="stylesheet" href="/css/video-player.css">
+@stop
+
+@section('javascript')
+	<script src="/js/video-player.js"></script>	
 @stop
 
 @section('content')
 	<div id="wrapper">
-		<div class="error-message alert alert-danger" style="display:none; margin-top:25px;">
+		<div class="error-message alert alert-danger" style="display:none">
 		</div>
 
-		<!-- Player here -->
-		<div id="player-container">
-			<video width="100%" controls id="video-player" preload='none'>
-				<source class="source" type="video/mp4">
-				<p>@lang('player.player.error')</p>
-			</video>
-		</div>
+		<div class="row">
+			<div id="script" class="col-lg-6 col-md-6 col-xs-6" style="width: 50%;">
+			</div>
 
-		<div id="script">
-		</div>
+			<!-- Player here -->
+			<div class="jumbotron col-lg-6 col-md-6 col-xs-6" style="width: 50%;">	
+				<div id="video-container">
+					<video width="100%" id="video-player">
+						<source class="source" type="video/mp4">
+						<p>@lang('player.player.error')</p>
+					</video>
+
+					<!--Player controls-->
+					<div class="video-controls" style="width: 100%;">				
+						<a href="#" class="play-pause col-xs-1 col-md-1 col-lg-1">
+							<span class="glyphicon glyphicon-play"></span>
+						</a>
+						
+						<div class="dropdown speed-dropdown" data-toggle="tooltip" data-placement="top" data-original-title="Playing at 1x speed.">
+							<button class="btn btn-default dropdown-toggle speed-dropdown" type="button" id="speed-drop" data-toggle="dropdown" aria-expanded="true">
+							    <span class="glyphicon glyphicon-fast-forward"></span>
+							    <span class="caret"></span>
+						  	</button>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="speed-drop">
+								<li role="presentation"><a class="speed faster" role="menuitem" tabindex="-1" href="#">Faster</a></li>
+								<li role="presentation"><a class="speed normal" role="menuitem" tabindex="-1" href="#">Normal</a></li>
+								<li role="presentation"><a class="speed slower" role="menuitem" tabindex="-1" href="#">Slower</a></li>
+							</ul>
+						</div>
+
+						<div class="video-time col-xs-3 col-md-3 col-lg-3">
+							<span class="current">0:00</span>/<span class="duration">0:00</span>
+						</div>
+						
+						<div id="slider" class="slider col-xs-5 col-md-5 col-lg-5">
+							<input type="range" id="slider-bar" class="slider-width" value="0" min="0" max="100"/>
+						</div>
+
+						<a href="#" class="full-screen col-xs-1 col-md-1 col-lg-1">
+							<span class="glyphicon glyphicon-fullscreen"></span>
+						</a>
+
+						<a href="#" class="mute col-xs-1 col-md-1 col-lg-1">
+							<span class="glyphicon glyphicon-volume-up"></span>
+						</a>
+					</div>
+				</div>					
+			</div>
+
+
 		<audio id="word-audio" autoplay>
 			<p>@lang('player.audio.error')</p>
 		</audio>
@@ -35,6 +80,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
+					@include('flashcard')
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -42,7 +88,6 @@
 		
 	<script>
 		var definitions = [];
-		var timer;
 
 		function loadScript()
 		{
@@ -64,7 +109,8 @@
 		}
 
 		function loadVideo()
-		{loadScript();
+		{
+			loadScript();
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -117,27 +163,51 @@
 			});
 		}
 
-		function loadDefinitions()
+		function loadCarouselItems()
 		{
-			definitions = [];
-			$('#script span[data-type=word]').each(function(index) {
-				var def_id = $(this).data("id");
-				if(def_id != null && $(this).hasClass("word-selected")){
-					var key = "word" + index;
-					//definitions.push({ key :  def_id });
-					definitions.push(def_id);
-				}
+			var carouselItems = '';
+			$('#script .word-selected').each(function(i)
+			{
+				carouselItems += '<div class="item' + ((i == 0) ? ' active' : '') + '">' +
+								'<h3>' + $(this).text() + '<br>' +
+								'<small>' + $(this).data('pronunciation') + '</small></h3><br>' +
+								'<span>' + $(this).data('full-definition') + '</span>' +
+								'</div>';
 			});
+
+			$("#flashcard .carousel-inner").html(carouselItems);
+		}
+
+		function loadUndefinedSelectedWords()
+		{
+			var deffereds = [];
+
+			$('#script .word-selected[data-type=nonDefinedWord]').each(function()
+			{
+				deffereds.push(loadDefinition($(this)));
+			});
+
+			return deffereds;
 		}
 
 		function loadFlashcards()
 		{
-			loadDefinitions();
-			if(definitions.length > 0){
-				$("#flashcard .modal-body").load('/flashcard', { definitions : definitions }, function(data){
-					$('#flashcard').modal();
-				});
-			}
+			// Check if any words have been selected
+			if ($('#script .word-selected').length == 0)
+				return;
+
+			$('#flashcard').modal();
+			$('#flashcard .loading').show();
+
+			$.when.apply(null, loadUndefinedSelectedWords()).done(function()
+			{
+				$('#flashcard .loading').hide();
+				loadCarouselItems();
+
+				// This makes the carousel work for dynamically loaded content
+				$('#scroller').carousel("pause").removeData()
+			});
+			
 		}
 
 		function loadQuiz() {
@@ -211,11 +281,11 @@
 		function getTextBetweenSpans()
 		{
 			var text = $('#script')
-									.clone()	//clone the element
-									.children()	//select all the children
-									.remove()	//remove all the children
-									.end()		//again go back to selected element
-									.text();
+						.clone()	//clone the element
+						.children()	//select all the children
+						.remove()	//remove all the children
+						.end()		//again go back to selected element
+						.text();
 
 			return text;
 		}
@@ -230,65 +300,51 @@
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
 		}
 
-		function getDefinition(word)
+		function loadDefinition($word)
 		{
-			timer = setTimeout(function()
-			{
-				var url = '/api/dictionaryDefinitions/';
-				/*$.get(url, { word: word.text().trim(), video_id : "{{ $video_id }}"}, 
-					function(data)
-					{
-						$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
-							$(this).attr('data-original-title', data.data.definition)
-							.tooltip('fixTitle');
+			var url = '/api/dictionaryDefinitions/';
 
-							$(this).attr('data-type', 'definedWord');
-							$(this).data('audio_url', data.data.audio_url);
-						});
-
-						word.tooltip('show');
-
-						$('#word-audio').attr('src', data.data.audio_url);
-					}
-				);*/
-
-
-				$.ajax({
-				type : 'GET',
-				url : url,
-				data: {word: word.text().trim(), video_id : "{{ $video_id }}"},
+			return $.ajax({
+				type: 'GET',
+				url: url,
+				data: { word: $word.text().trim(), video_id : "{{ $video_id }}" },
 				success : function(data)
 				{
-					setTooltipDefinition(word, data.data.definition);
-					setWordAudioUrl(word, data.data.audio_url);
-					setCurrentAudio(data.data.audio_url);
+					// For each of the same word
+					$('#script [name=' + $word.attr('name') + ']').each(function()
+					{
+						$(this).data('full-definition', data.data.definition);
+						$(this).data('pronunciation', data.data.pronunciation);
+						setTooltipDefinition($(this), data.data.definition);
+						setWordAudioUrl($(this), data.data.audio_url);
+					});
+					
+					// Only play the audio clip if the mouse is still over the word
+					if ($($word[0]).is(':hover'))
+						setCurrentAudio(data.data.audio_url);
 				},
 				error : function(data)
 				{
-					setTooltipDefinition(word, "Definition not found.");
+					setTooltipDefinition($word, "Definition not found.");
 				}
 			});
-
-
-			}, 500);
-
 		}
 
-		function setTooltipDefinition(word, definition)
+		function setTooltipDefinition($word, definition)
 		{
-			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
-				$(this).attr('data-original-title', definition)
-				.tooltip('fixTitle');
+			$word.attr('data-original-title', definition)
+			.tooltip('fixTitle');
 
-				$(this).attr('data-type', 'definedWord');
-			});
+			$word.attr('data-type', 'definedWord');
 
-			word.tooltip('show');
+			// Only show the tooltip if the mouse is still hovering over the word
+			if ($($word[0]).is(':hover'))
+				$word.tooltip('show');
 		}
 
-		function setWordAudioUrl(word, url)
+		function setWordAudioUrl($word, url)
 		{
-			$('[name="' + word.text().trim().toLowerCase() + 'Word"]').each(function() {
+			$('[name="' + $word.text().trim().toLowerCase() + 'Word"]').each(function() {
 				$(this).data('audio_url', url);
 			});
 		}
@@ -358,6 +414,9 @@
 				loadQuiz();
 			});
 
+			// Used to determine how long the mouse is hovered over a word
+			var hoverTimer;
+
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
 				{
@@ -369,14 +428,16 @@
 				})
 				.on('mouseenter', 'span[data-type=nonDefinedWord]', function()
 				{
-					$(this).addClass('word-hover');
-					getDefinition($(this));
+					var $this = $(this);
+					$this.addClass('word-hover');
+					hoverTimer = setTimeout(function() { loadDefinition($this); }, 500);
 				})
 				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
 				{
 					$(this).removeClass('word-hover');
-					clearTimeout(timer);
-				}).on('mouseenter', 'span[data-type=definedWord]', function()
+					clearTimeout(hoverTimer);
+				})
+				.on('mouseenter', 'span[data-type=definedWord]', function()
 				{
 					$(this).addClass('word-hover');
 					setCurrentAudio($(this).data('audio_url'));
@@ -386,7 +447,7 @@
 					$(this).removeClass('word-hover');
 				});
 
-			$('#script').on('click', 'span[data-type=word]', function()
+			$('#script').on('click', 'span[data-type!=actor]', function()
 			{
 				$(this).toggleClass('word-selected');
 			});

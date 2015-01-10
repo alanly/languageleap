@@ -20,7 +20,7 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-md-offset-3">
-				{{ Form::open(['url' => '/rank/tutorial', 'class' => 'form-horizontal reg-form', 'role' => 'form', 'action' => 'RankQuizController@checkAnsweredAll']) }}
+				{{ Form::open(['url' => '/index.php', 'class' => 'form-horizontal reg-form', 'role' => 'form', 'action' => 'RankQuizController@checkAnsweredAll']) }}
 					<div class="form-group">
 						{{ Form::label('q1', '1. ', ['class' => 'control-label', 'id' => 'q1']) }} </br>
 						<div class="col-sm-8">
