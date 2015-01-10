@@ -1,5 +1,7 @@
 <?php
 
+use LangLeap\Videos\Video;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -10,6 +12,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
 
 // Accordion
 Route::get('/', function()
@@ -72,7 +75,7 @@ Route::group(['prefix' => 'admin'], function()
 	// Dev quiz interface
 	Route::get('quiz/new', function()
 	{
-		return View::make('admin.quiz.index');
+		return View::make('admin.quiz.index')->with('videos', Video::All());
 	});
 });
 
@@ -139,10 +142,10 @@ Route::get('/video/play/{id}', function($id)
 
 
 // Quiz View
-Route::get('quiz', function()
+Route::get('quiz', ['before' => 'auth', function()
 {
 	return View::make('quiz.main');
-});
+}]);
 
 // Ranking Process
 Route::controller('rank/quiz', 'RankQuizController');

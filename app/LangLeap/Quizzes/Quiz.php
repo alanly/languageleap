@@ -7,9 +7,11 @@ use Eloquent;
  */
 class Quiz extends Eloquent {
 
+	protected $fillable = ['score', 'user_id'];
+	
 	public function videoQuestions()
 	{
-		return $this->belongsToMany('LangLeap\Quizzes\VideoQuestion', 'videoquestion_quiz', 'quiz_id', 'videoquestion_id');
+		return $this->belongsToMany('LangLeap\Quizzes\VideoQuestion', 'videoquestion_quiz', 'quiz_id', 'videoquestion_id')->withPivot('is_correct');
 	}
 	
 	public function user()
