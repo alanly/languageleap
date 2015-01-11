@@ -88,6 +88,17 @@
 	<script>
 		var definitions = [];
 
+		function initTooltips()
+		{
+			$('#script span[data-type!=actor]').each(function() {
+				$(this).tooltip({
+						'container': '#script',
+						'placement': 'auto top',
+						'title': 'Loading synonym...'
+				});
+			});
+		}
+
 		function loadScript()
 		{
 			$.ajax({
@@ -98,7 +109,7 @@
 					addNonDefinedTags();
 					$('#script br').remove();
 					$('#script span[data-type=actor]:not(:first)').before('<br>');
-					loadScriptDefinitions();
+					initTooltips();
 				},
 				error : function(data){
 					var json = $.parseJSON(data);
@@ -124,42 +135,6 @@
 					$('.error-message').html(json.data);
 					$('.error-message').show();
 				}
-			});
-		}
-
-		// Later on, this will be used for flashcards
-		function loadScriptDefinitions() {
-			$('#script span[data-type=word]').each(function() {
-				var $this = $(this);
-				var definitionId = $this.data('id');
-
-				if (definitionId == undefined)
-					return;
-
-				$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
-					if (data.status == 'success') {
-						$this.tooltip({
-							'container': '#script',
-							'placement': 'auto top',
-							'title': data.data.synonym
-						});
-
-						$this.data('definition', data.data.definition);
-						$this.data('full-definition', data.data.full_definition);
-						$this.data('pronunciation', data.data.pronunciation);
-						$this.data('synonym', data.data.synonym);
-					} else {
-						// Handle failure
-					}
-				});
-			});
-
-			$('#script span[data-type=nonDefinedWord]').each(function() {
-				$(this).tooltip({
-						'container': '#script',
-						'placement': 'auto top',
-						'title': 'Loading synonym...'
-				});
 			});
 		}
 
@@ -191,7 +166,21 @@
 
 			$('#script .word-selected[data-type=nonDefinedWord]').each(function()
 			{
-				deffereds.push(loadDefinition($(this)));
+				deffereds.push(loadDictionaryDefinition($(this)));
+			});
+
+			return deffereds;
+		}
+
+		function loadAdminDefinedSelectedWords()
+		{
+			var deffereds = [];
+
+			$('#script .word-selected[data-type=word]').each(function()
+			{
+				// Check if the definition has already been loaded
+				if (!$(this).data('definition'))
+					deffereds.push(loadAdminDefinition($(this)));
 			});
 
 			return deffereds;
@@ -209,7 +198,8 @@
 			$('#flashcard').modal();
 			$('#flashcard .loading').show();
 
-			$.when.apply(null, loadUndefinedSelectedWords()).done(function()
+			// When all ajax calls are done, execute the anonymous callback function
+			$.when.apply($, loadAdminDefinedSelectedWords().concat(loadUndefinedSelectedWords())).done(function()
 			{
 				$('#flashcard .loading').hide();
 				loadCarouselItems();
@@ -310,7 +300,33 @@
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
 		}
 
-		function loadDefinition($word)
+		function loadAdminDefinition($word)
+		{
+			var definitionId = $word.data('id');
+
+			if (definitionId == undefined)
+				return;
+
+			var url = '/api/metadata/definitions/' + definitionId;
+
+			return $.ajax({
+				type: 'GET',
+				url: url,
+				success : function(data)
+				{
+					$word.data('definition', data.data.definition);
+					$word.data('full-definition', data.data.full_definition);
+					$word.data('pronunciation', data.data.pronunciation);
+					setTooltipSynonym($word, ((data.data.synonym) ? data.data.synonym : 'Synonym not found.'));
+				},
+				error : function(data)
+				{
+					setTooltipSynonym($word, "Synonym not found.");
+				}
+			});
+		}
+
+		function loadDictionaryDefinition($word)
 		{
 			var url = '/api/dictionaryDefinitions/';
 
@@ -426,17 +442,22 @@
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
 				{
-					$(this).addClass('word-hover');
+					var $this = $(this);
+					$this.addClass('word-hover');
+
+					if (!$this.data('definition'))
+						hoverTimer = setTimeout(function() { loadAdminDefinition($this); }, 500);
 				})
 				.on('mouseleave', 'span[data-type=word]', function()
 				{
 					$(this).removeClass('word-hover');
+					clearTimeout(hoverTimer);
 				})
 				.on('mouseenter', 'span[data-type=nonDefinedWord]', function()
 				{
 					var $this = $(this);
 					$this.addClass('word-hover');
-					hoverTimer = setTimeout(function() { loadDefinition($this); }, 500);
+					hoverTimer = setTimeout(function() { loadDictionaryDefinition($this); }, 500);
 				})
 				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
 				{
