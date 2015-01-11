@@ -8,12 +8,38 @@
 	.reg-form {
 		padding-top: 3rem;
 	}
+	.skip{
+		position: fixed;
+		top: 0px;
+		right: 0px; 
+	}
 </style>
 @stop
 
 @section('content')
 	<div class="container">
 		<div class="row">
+			<div class="col-sm-8 col-sm-offset-4">
+				<button type="button" class="btn btn-primary btn-lg skip" data-toggle="modal" data-target="#skip">Skip Ranking Process</button>
+			</div>
+
+			<div class="modal fade" id="skip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">You will be ranked as "Beginner"</h4>
+							</div>
+							<div class="modal-body">
+	 							Skipping the ranking process will automatically rank you as a beginner.
+							</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary">OK</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						</div>
+						</div>
+					</div>
+			</div>
 			<div class="col-sm-12">
 				<h2 class="text-center">Tutorial Quiz!</h2>
 			</div>
@@ -146,5 +172,6 @@
 				}
 			});
 		});
+
 	</script>
 @stop
