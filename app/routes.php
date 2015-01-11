@@ -147,12 +147,9 @@ Route::get('quiz', ['before' => 'auth', function()
 	return View::make('quiz.main');
 }]);
 
+// Ranking Process
+Route::controller('rank/quiz', 'RankQuizController');
+Route::controller('rank/tutorial','TutorialQuizContentController');
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
-
-// Quiz View
-Route::get('player/player2', function()
-{
-	return View::make('player.player2');
-});

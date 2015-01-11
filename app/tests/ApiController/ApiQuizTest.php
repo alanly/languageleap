@@ -152,10 +152,11 @@ class ApiQuizControllerTest extends TestCase {
 	public function testQuizUpdateWithNoAnswer()
 	{
 		$videoquestion = VideoQuestion::first();
+		$quiz = $videoquestion->quiz()->first();
 		$response = $this->action(
 			'put',
 			'ApiQuizController@putIndex',
-			[],['videoquestion_id' => 1, 'quiz_id' => 1]
+			[],['videoquestion_id' => $videoquestion->id, 'quiz_id' => $quiz->id]
 		);
 
 		$this->assertResponseStatus(400);	

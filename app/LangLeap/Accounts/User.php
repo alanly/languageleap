@@ -33,10 +33,8 @@ class User extends ValidatedModel implements UserInterface, RemindableInterface
 		return $this->hasMany('LangLeap\Payments\Invoice');
 	}
 
-
-	public function quizzes()
+	public function level()
 	{
-		return $this->hasMany('LangLeap\Quizzes\Quiz');
+		return $this->hasOne('LangLeap\Levels\Level');
 	}
-
 }
