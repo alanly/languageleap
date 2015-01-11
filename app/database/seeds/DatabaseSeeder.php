@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder {
 		$this->call('VideoTableSeeder');
 		$this->call('ScriptTableSeeder');
 		$this->call('DefinitionTableSeeder');
+		
+		$this->call('TutorialQuizSeeder');
+		
 		$this->call('QuestionTableSeeder');
 		$this->call('AnswerTableSeeder');
 		$this->call('QuizTableSeeder');

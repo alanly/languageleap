@@ -1,14 +1,24 @@
  <?php
  
-use LangLeap\Quizzes\Question;
-use LangLeap\Quizzes\Answer;
+use LangLeap\Quizzes\VideoQuestion;
  
 class TutorialQuizContentController extends \BaseController
 {	
 	public function getIndex()
 	{
-		$tutorialQuestions = Question::where('id', '<', 6)->get();
-		$tutorialAnswers = Answer::where('id', '<', 21)->get();
+		$tutorialQuestions = [];
+		$tutorialAnswers = [];
+		
+		$vqs = VideoQuestion::join('videos', 'videos.id', '=', 'videoquestions.video_id')->where('videos.path', '=', '/path/to/tutorial/video.mkv')->get();
+		\Log::info($vqs);
+		foreach($vqs as $vq)
+		{
+			array_push($tutorialQuestions, $vq->question);
+			foreach($vq->question->answers as $ans)
+			{
+				array_push($tutorialAnswers, $ans);
+			}
+		}
 		
 		$tutorialData = [$tutorialQuestions, $tutorialAnswers];
 		
