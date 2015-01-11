@@ -153,11 +153,5 @@ Route::controller('rank/tutorial','TutorialQuizContentController');
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
-// Test Player View
-Route::get('player/player2', function()
-{
-	return View::make('player.player2');
-});
-
 //User Level
 Route::get('level', 'ApiUserLevelController@showLevel');
