@@ -143,14 +143,31 @@
 			var carouselItems = '';
 			$('#script .word-selected').each(function(i)
 			{
-				// Determine whether audio is available for the current word
-				var audioUrl = ($(this).data('audio-url')) ? ('data-audio-url="' + $(this).data('audio-url') + '"') : 'disabled';
-				var notAvailable =  (!$(this).data('audio-url')) ? ' not-available" title="Not available' : '';
+				var audioAttribute = '';
+
+				// Determine whether audio is available for the current word(s)
+				if ($(this).data('type') == 'word') {
+					audioAttribute = 'disabled';
+
+					var audioUrl = '';
+					$.each($(this).children(), function()
+					{
+						if ($(this).data('audio-url'))
+							audioUrl += $(this).data('audio-url') + ' ';
+					});
+
+					if (audioUrl != '')
+						audioAttribute = 'data-audio-url="' + audioUrl + '"';
+				} else {
+					audioAttribute = ($(this).data('audio-url')) ? ('data-audio-url="' + $(this).data('audio-url') + '"') : 'disabled';
+				}
+
+				var notAvailable =  (audioAttribute == 'disabled') ? ' not-available" title="Not available' : '';
 				
 				carouselItems += '<div class="item' + ((i == 0) ? ' active' : '') + '">' +
 								'<h3>' + $(this).text() + '<br>' +
 								'<small>' + $(this).data('pronunciation') +
-								'<button class="play-pronunciation glyphicon glyphicon-volume-up' + notAvailable + '" ' + audioUrl +
+								'<button class="play-pronunciation glyphicon glyphicon-volume-up' + notAvailable + '" ' + audioAttribute +
 								'></button></small></h3>' +
 								'<br>' +
 								'<span>' + $(this).data('full-definition') + '</span>' +
