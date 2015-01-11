@@ -157,3 +157,4 @@ Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
 //User Level
 Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserLevelController@showLevel']);
+
