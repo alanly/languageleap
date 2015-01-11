@@ -23,12 +23,12 @@ class DatabaseSeeder extends Seeder {
 		$this->call('ScriptTableSeeder');
 		$this->call('DefinitionTableSeeder');
 		
-		$this->call('TutorialQuizSeeder');
-		
 		$this->call('QuestionTableSeeder');
 		$this->call('AnswerTableSeeder');
 		$this->call('QuizTableSeeder');
 		$this->call('VideoQuestionTableSeeder');
+		
+		$this->call('TutorialQuizSeeder');
 	}
 
 }
