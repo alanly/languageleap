@@ -141,10 +141,11 @@ Route::get('/video/play/{id}', function($id)
 });
 
 // Score View
-Route::get('score', function()
-{
-	return View::make('account.score');
-});
+//Route::get('level', function()
+//{
+//	return View::make('account.level');
+//});
+Route::get('level', 'ApiUserLevelController');
 
 // Quiz View
 Route::get('quiz', ['before' => 'auth', function()
