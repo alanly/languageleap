@@ -14,8 +14,8 @@ class RankQuizTest extends TestCase
 
 	public function testGetRankQuizUserFirstTime()
 	{
-		$this->be($this->createUser(0));
-		$response = $this->action('GET', 'RankQuizController@getIndex', [], []);
+		$this->be($this->createUser(1));
+		$response = $this->action('GET', 'RankQuizController@getIndex');
 
 		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseOk();
@@ -23,8 +23,8 @@ class RankQuizTest extends TestCase
 
 	public function testGetRankQuizUserNotFirstTime()
 	{
-		$this->be($this->createUser(1));
-		$response = $this->action('GET', 'RankQuizController@getIndex', [], []);
+		$this->be($this->createUser(0));
+		$response = $this->action('GET', 'RankQuizController@getIndex');
 
 		$this->assertInstanceOf('Illuminate\Http\RedirectResponse', $response);
 		$this->assertResponseStatus(302);
@@ -32,46 +32,10 @@ class RankQuizTest extends TestCase
 
 	public function testGetRankQuizUserInvalid()
 	{
-		$response = $this->action('GET', 'RankQuizController@getIndex', [], []);
+		$response = $this->action('GET', 'RankQuizController@getIndex');
 
 		$this->assertInstanceOf('Illuminate\Http\Response', $response);
-		$this->assertResponseStatus(404);
-	}
-
-
-	public function testGetRankQuizResultValid()
-	{
-		$this->be($this->createUser(0));
-		$response = $this->action('GET', 'RankQuizController@getIndex', [], []);
-
-		$this->assertInstanceOf('Illuminate\Http\Response', $response);
-		$this->assertResponseOk();
-
-		/*
-		Assertions TODO
-		1. User answered all questions
-		2. User now has a 'level_id' which is NOT 0
-		3. Correct view is returned with User's new level
-		*/
-	}
-
-	public function testGetRankQuizResultInvalid()
-	{
-		$this->be($this->createUser(0));
-		$response = $this->action('GET', 'RankQuizController@getIndex', [], []);
-
-		$this->assertInstanceOf('Illuminate\Http\Response', $response);
-		$this->assertResponseOk();
-
-		/*
-		Assertions TODO
-		1. User answered all questions --> This should fail
-		2. Make sure that 'level_id' is still 0
-		3. Correct view is returned with error message
-		*/
-		$answeredAll = true;
-		$this->assertTrue($answeredAll);
-		$this->level_id = 0;
+		$this->assertResponseStatus(403);
 	}
 
 	protected function createUser(
