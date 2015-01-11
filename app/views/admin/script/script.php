@@ -42,12 +42,16 @@
 							<textarea type="text" class="form-control" placeholder="Enter a definition"></textarea>
 						</div>
 						<div id="full-definition" class="form-group">
-							<label>Full Definition (Optional)</label>
+							<label>Full Definition</label>
 							<textarea type="text" class="form-control" placeholder="Enter a full definition"></textarea>
 						</div>
 						<div id="pronunciation" class="form-group">
-							<label>Pronunciation (Optional)</label>
+							<label>Pronunciation</label>
 							<input type="text" class="form-control" placeholder="Enter the pronunciation" />
+						</div>
+						<div id="synonyms" class="form-group">
+							<label>Synonyms</label>
+							<input type="text" class="form-control" placeholder="Enter comma separated synonyms" />
 						</div>
 					</div>
 				</div>
