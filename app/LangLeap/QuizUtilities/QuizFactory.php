@@ -32,25 +32,33 @@ class QuizFactory implements UserInputResponse {
 	
 	public function response($user_id, $input)
 	{
-		if (! $input['all_words'] || count($input['all_words']) < 1)
+		if($input) // there is input then create a quiz based on that
 		{
-			return null;
+			if (! $input['all_words'] || count($input['all_words']) < 1)
+			{
+				return null;
+			}
+			
+			// Retrieve a collection of all definitions in the script.
+			$scriptDefinitions = Definition::whereIn('id', $input['all_words'])->get();
+
+			// Use the overriden Collection class.
+			$scriptDefinitions = new Collection($scriptDefinitions->all());
+			
+			$quiz = $this->getDefinitionQuiz(
+				$user_id,
+				$input['video_id'],
+				$scriptDefinitions,
+				$input['selected_words']
+			);
+
+			return ['success', $quiz->toResponseArray(), 200];
 		}
-		
-		// Retrieve a collection of all definitions in the script.
-		$scriptDefinitions = Definition::whereIn('id', $input['all_words'])->get();
-
-		// Use the overriden Collection class.
-		$scriptDefinitions = new Collection($scriptDefinitions->all());
-		
-		$quiz = $this->getDefinitionQuiz(
-			$user_id,
-			$input['video_id'],
-			$scriptDefinitions,
-			$input['selected_words']
-		);
-
-		return ['success', $quiz->toResponseArray(), 200];
+		else // Create a quiz from questions that are wrong
+		{
+			$quiz = $this->getReminderQuiz($user_id);
+			return ['success', $quiz->toResponseArray(), 200];
+		}
 	}
 	
 	/**
@@ -136,6 +144,38 @@ class QuizFactory implements UserInputResponse {
 		$quiz->save();
 
 		return $quiz;
+	}
+	
+	/**
+	 *  This function will generate a new Quiz instance based on the questions that
+	 *  have been answered incorrectly in the past.
+	 * 
+	 * @param  int         $user_id
+	 */
+	public function getReminderQuiz($user_id)
+	{
+		$videoQuestions = VideoQuestion::select(array('videoquestions.*', 'videoquestion_quiz.updated_at', \DB::raw('count(videoquestions.id) as attempts')))
+			->join('videoquestion_quiz', 'videoquestion_quiz.videoquestion_id', '=', 'videoquestions.id')->join('questions', 'questions.id', '=', 'videoquestions.question_id')->join('quizzes', 'quizzes.id', '=', 'videoquestion_quiz.quiz_id')
+			->where('videoquestions.is_custom', '=', false)->where('videoquestion_quiz.created_at', '<>', 'videoquestion_quiz.updated_at')->where('videoquestion_quiz.is_correct', '=', false)->where('quizzes.user_id', '=', $user_id)
+			->groupBy('videoquestions.id')->orderBy('attempts', 'desc')->orderBy('videoquestion_quiz.updated_at', 'desc')->get();
+			
+		if($videoQuestions && $videoQuestions->count() > 0)
+		{
+			$quiz = Quiz::create([
+				'user_id' => $user_id
+			]);
+			
+			while($videoQuestions->count() > 0 && $quiz->videoQuestions()->count() < 5)
+			{
+				$vq = $videoQuestions->shift();
+				$quiz->videoQuestions()->attach($vq->id);
+			}
+			$quiz->save();
+			
+			return $quiz;
+		}
+		
+		return null;
 	}
 	
 	/**

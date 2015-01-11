@@ -148,34 +148,20 @@ class ApiQuizController extends \BaseController {
 			);
 		}
 		
-		// Find the video questions that were attempted and are wrong by this user
-		$videoQuestions = VideoQuestion::select(array('videoquestions.*', 'videoquestion_quiz.updated_at', DB::raw('count(videoquestions.id) as attempts')))
-			->join('videoquestion_quiz', 'videoquestion_quiz.videoquestion_id', '=', 'videoquestions.id')->join('questions', 'questions.id', '=', 'videoquestions.question_id')->join('quizzes', 'quizzes.id', '=', 'videoquestion_quiz.quiz_id')
-			->where('videoquestions.is_custom', '=', false)->where('videoquestion_quiz.created_at', '<>', 'videoquestion_quiz.updated_at')->where('videoquestion_quiz.is_correct', '=', false)->where('quizzes.user_id', '=', Auth::user()->id)
-			->groupBy('videoquestions.id')->orderBy('attempts', 'desc')->orderBy('videoquestion_quiz.updated_at', 'desc')->get();
-		
-		if($videoQuestions && $videoQuestions->count() > 0)
+		$quiz = QuizFactory::getInstance()->getReminderQuiz($user->id);
+		if($quiz)
 		{
-			$quiz = Quiz::create([
-				'user_id' => $user->id
-			]);
-			
-			while($videoQuestions->count() > 0 && $quiz->videoQuestions()->count() < 5)
-			{
-				$vq = $videoQuestions->shift();
-				$quiz->videoQuestions()->attach($vq->id);
-			}
-			$quiz->save();
-			
 			return $this->apiResponse(
 				'success',
 				['quiz_id' => $quiz->id]
 			);
 		}
-		
-		return $this->apiResponse(
-			'success',
-			['quiz_id' => -1]
-		);
+		else
+		{
+			return $this->apiResponse(
+				'success',
+				['quiz_id' => -1]
+			);
+		}
 	}
 }
