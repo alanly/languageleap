@@ -138,6 +138,18 @@
 			});
 		}
 
+		function playAudio(audioArray){
+			var current = 0;
+			
+			setCurrentAudio(audioArray[current]);
+			$('#word-audio').bind('ended', function(e){
+				current++;
+				if (current < audioArray.length) {
+					setCurrentAudio(audioArray[current]);
+				}
+			});
+		}
+
 		function loadCarouselItems()
 		{
 			var carouselItems = '';
@@ -532,7 +544,7 @@
 
 			$('#flashcard').on('click', '.play-pronunciation', function()
 			{
-				setCurrentAudio($(this).data('audio-url'));
+				playAudio($(this).data('audio-url').split(' '));
 			});
 		});
 	</script>
