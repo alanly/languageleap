@@ -20,7 +20,7 @@
 	width: 590px;
 }
 
-#script span {
+#script > span {
 	background-color: #E4E4E4;
 	padding: 10px;
 }

@@ -178,9 +178,26 @@
 
 			$('#script .word-selected[data-type=word]').each(function()
 			{
+				var $this = $(this);
+
+				// Check if the audio has already been loaded
+				if ($this.children().length == 0) {
+					var words = $this.text().split(' ');
+					$($this).empty();
+					$.each(words, function(i, v) {
+						$($this).append($('<span>').text(v + ((i == words.length - 1) ? '' : ' ')));
+					});
+
+					// For each word, load its audio
+					$.each($($this).find('span'), function()
+					{
+						deffereds.push(loadDictionaryDefinition($(this), initAdminWordAudioData));
+					});
+				}
+
 				// Check if the definition has already been loaded
-				if (!$(this).data('definition'))
-					deffereds.push(loadAdminDefinition($(this)));
+				if (!$this.data('definition'))
+					deffereds.push(loadAdminDefinition($this));
 			});
 
 			return deffereds;
