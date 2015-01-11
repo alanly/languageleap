@@ -16,7 +16,7 @@
 
 	
 	<div class="jumbotron">
-		<h1>{{$level}}</h1>
+		<h1>{{ $level->description }}</h1>
 	</div>
 
 </div>

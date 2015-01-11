@@ -35,6 +35,6 @@ class User extends ValidatedModel implements UserInterface, RemindableInterface
 
 	public function level()
 	{
-		return $this->hasOne('LangLeap\Levels\Level');
+		return $this->belongsTo('LangLeap\Levels\Level');
 	}
 }

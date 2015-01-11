@@ -154,4 +154,4 @@ Route::controller('rank/tutorial','TutorialQuizContentController');
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
 //User Level
-Route::get('level', 'ApiUserLevelController@showLevel');
+Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserLevelController@showLevel']);
