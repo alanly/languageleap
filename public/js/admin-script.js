@@ -558,6 +558,7 @@ function loadDefinitions() {
 				$this.data('definition', data.data.definition);
 				$this.data('full-definition', data.data.full_definition);
 				$this.data('pronunciation', data.data.pronunciation);
+				$this.data('synonyms', data.data.synonym);
 			} else {
 				// Handle failure
 			}
@@ -577,7 +578,8 @@ function saveDefinitions(scriptId) {
 			'word': $this.text(),
 			'definition': $this.data('definition'),
 			'full_definition': $this.data('full-definition'),
-			'pronunciation': $this.data('pronunciation')
+			'pronunciation': $this.data('pronunciation'),
+			'synonym': $this.data('synonyms')
 		};
 
 		if ($this.data('id')) {
