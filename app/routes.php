@@ -147,7 +147,7 @@ Route::get('quiz', ['before' => 'auth', function()
 }]);
 
 // Ranking Process
-Route::controller('rank/quiz/skip', 'SkipRankController');
+Route::get('rank/skip', ['before' => 'auth', 'uses' => 'RankQuizController@skipRanking']);
 Route::controller('rank/quiz', 'RankQuizController');
 Route::controller('rank/tutorial','TutorialQuizContentController');
 

@@ -100,4 +100,24 @@ class RankQuizController extends \BaseController
 				->with('action.message', 'You need to answer all the questions before proceeding!');
 		}
 	}
+	
+	/**
+	 * Skips user ranking and redirects to user profile page.
+	 */
+	public function skipRanking()
+	{
+		$user = Auth::user();
+		
+		// if not ranked
+		if ($user->level_id == Level::where('code', '=', 'ur')->first()->id)
+		{
+			$user->level_id = Level::where('code', '=', 'be')->first()->id;
+			$user->save();
+			return Redirect::to('/level');
+		}
+		else
+		{
+			return Response::make("You have already been ranked.", 400);
+		}
+	}
 }

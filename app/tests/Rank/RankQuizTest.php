@@ -37,6 +37,24 @@ class RankQuizTest extends TestCase
 		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseStatus(403);
 	}
+	
+	public function testSkipRankUnranked()
+	{
+		$this->be($this->createUser(1));
+		$response = $this->action('GET', 'RankQuizController@skipRanking');
+
+		$this->assertInstanceOf('Illuminate\Http\RedirectResponse', $response);
+		$this->assertResponseStatus(302);
+	}
+	
+	public function testSkipRankAlreadyRanked()
+	{
+		$this->be($this->createUser(2));
+		$response = $this->action('GET', 'RankQuizController@skipRanking');
+
+		$this->assertInstanceOf('Illuminate\Http\Response', $response);
+		$this->assertResponseStatus(400);
+	}
 
 	protected function createUser(
 		$level_id,

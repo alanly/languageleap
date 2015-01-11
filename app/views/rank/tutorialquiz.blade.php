@@ -34,7 +34,7 @@
 	 							Skipping the ranking process will automatically rank you as a beginner.
 							</div>
 						<div class="modal-footer">
-							{{ Form::open(['url' => '/rank/quiz/skip', 'class' => 'form-horizontal reg-form', 'role' => 'form', 'method' => 'GET']) }}
+							{{ Form::open(['url' => '/rank/skip', 'class' => 'form-horizontal reg-form', 'role' => 'form', 'method' => 'GET']) }}
 							{{ Form::submit('Continue', ['class' => 'btn btn-primary']) }}
 							{{ Form::button('Cancel', ['class' => 'btn btn-default', 'data-dismiss' => 'modal']) }}
 							{{ Form::close() }}
