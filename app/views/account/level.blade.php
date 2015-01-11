@@ -14,9 +14,11 @@
 		<h3 class="text-muted">Language Leap</h3>
 	</div>
 
+	
 	<div class="jumbotron">
-		<h1>Jumbotron heading</h1>
+		<h1>{{$level}}</h1>
 	</div>
+
 </div>
 
 
