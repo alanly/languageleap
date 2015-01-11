@@ -166,7 +166,7 @@
 
 			$('#script .word-selected[data-type=nonDefinedWord]').each(function()
 			{
-				deffereds.push(loadDictionaryDefinition($(this)));
+				deffereds.push(loadDictionaryDefinition($(this), initNonDefinedWordData));
 			});
 
 			return deffereds;
@@ -326,7 +326,7 @@
 			});
 		}
 
-		function loadDictionaryDefinition($word)
+		function loadDictionaryDefinition($word, callback)
 		{
 			var url = '/api/dictionaryDefinitions/';
 
@@ -336,22 +336,38 @@
 				data: { word: $word.text().trim(), video_id : "{{ $video_id }}" },
 				success : function(data)
 				{
-					// For each of the same word
-					$('#script [name=' + $word.attr('name') + ']').each(function()
-					{
-						$(this).data('full-definition', data.data.definition);
-						$(this).data('pronunciation', data.data.pronunciation);
-						setTooltipSynonym($(this), ((data.data.synonym) ? data.data.synonym : 'Synonym not found.'));
-						setWordAudioUrl($(this), data.data.audio_url);
-
-						$(this).attr('data-type', 'definedWord');
-					});
+					callback($word, data);
 				},
 				error : function(data)
 				{
+					callback($word)
+				}
+			});
+		}
+
+		function initNonDefinedWordData($word, data)
+		{
+			// For each of the same word
+			$('#script [name=' + $word.attr('name') + ']').each(function()
+			{
+				if (data && data.status == 'success') {
+					$(this).data('full-definition', data.data.definition);
+					$(this).data('pronunciation', data.data.pronunciation);
+					setTooltipSynonym($(this), ((data.data.synonym) ? data.data.synonym : 'Synonym not found.'));
+					setWordAudioUrl($(this), data.data.audio_url);
+
+					$(this).attr('data-type', 'definedWord');
+				} else {
 					setTooltipSynonym($word, "Synonym not found.");
 				}
 			});
+		}
+
+		function initAdminWordAudioData($word, data)
+		{
+			if (data && data.status == 'success') {
+				$word.data('audio-url', data.data.audio_url);
+			}
 		}
 
 		function setTooltipSynonym($word, synonym)
@@ -457,7 +473,7 @@
 				{
 					var $this = $(this);
 					$this.addClass('word-hover');
-					hoverTimer = setTimeout(function() { loadDictionaryDefinition($this); }, 500);
+					hoverTimer = setTimeout(function() { loadDictionaryDefinition($this, initNonDefinedWordData); }, 500);
 				})
 				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
 				{
