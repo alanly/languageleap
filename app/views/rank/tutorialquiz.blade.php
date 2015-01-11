@@ -20,7 +20,7 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-md-offset-3">
-				{{ Form::open(['url' => '/index.php', 'class' => 'form-horizontal reg-form', 'role' => 'form', 'action' => 'RankQuizController@checkAnsweredAll']) }}
+				{{ Form::open(['url' => '/rank/quiz/answers', 'class' => 'form-horizontal reg-form', 'role' => 'form', 'action' => 'POST']) }}
 					<div class="form-group">
 						{{ Form::label('q1', '1. ', ['class' => 'control-label', 'id' => 'q1']) }} </br>
 						<div class="col-sm-8">
@@ -86,6 +86,13 @@
 							{{ Form::label('a5', ' ', ['class' => 'control-label', 'id' => 'a20']) }} </br>
 						</div>
 					</div>
+					
+					{{ Form::hidden('q1', '', ['id' => 'q1id']) }}
+					{{ Form::hidden('q2', '', ['id' => 'q2id']) }}
+					{{ Form::hidden('q3', '', ['id' => 'q3id']) }}
+					{{ Form::hidden('q4', '', ['id' => 'q4id']) }}
+					{{ Form::hidden('q5', '', ['id' => 'q5id']) }}
+					
 					<div class="form-group">
 						<div class="col-sm-8 col-sm-offset-4">
 							{{ Form::submit('Submit', ['class' => 'btn btn-primary']) }}
@@ -103,30 +110,35 @@
 				dataType: 'json',
 				success : function(data) {
 					$("#q1").append(data.data[0][0].question);
+					$("#q1id").val(data.data[0][0].id);
 					$("#a1").append(data.data[1][0].answer);
 					$("#a2").append(data.data[1][1].answer);
 					$("#a3").append(data.data[1][2].answer);
 					$("#a4").append(data.data[1][3].answer);
 					
 					$("#q2").append(data.data[0][1].question);
+					$("#q2id").val(data.data[0][1].id);
 					$("#a5").append(data.data[1][4].answer);
 					$("#a6").append(data.data[1][5].answer);
 					$("#a7").append(data.data[1][6].answer);
 					$("#a8").append(data.data[1][7].answer);
 					
-					$("#q3").append(data.data[0][2].question);	
+					$("#q3").append(data.data[0][2].question);
+					$("#q3id").val(data.data[0][2].id);
 					$("#a9").append(data.data[1][8].answer);
 					$("#a10").append(data.data[1][9].answer);
 					$("#a11").append(data.data[1][10].answer);
 					$("#a12").append(data.data[1][11].answer);
 					
 					$("#q4").append(data.data[0][3].question);
+					$("#q4id").val(data.data[0][3].id);
 					$("#a13").append(data.data[1][12].answer);
 					$("#a14").append(data.data[1][13].answer);
 					$("#a15").append(data.data[1][14].answer);
 					$("#a16").append(data.data[1][15].answer);
 					
 					$("#q5").append(data.data[0][4].question);
+					$("#q5id").val(data.data[0][4].id);
 					$("#a17").append(data.data[1][16].answer);
 					$("#a18").append(data.data[1][17].answer);
 					$("#a19").append(data.data[1][18].answer);
