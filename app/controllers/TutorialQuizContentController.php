@@ -10,7 +10,6 @@ class TutorialQuizContentController extends \BaseController
 		$tutorialAnswers = [];
 		
 		$vqs = VideoQuestion::join('videos', 'videos.id', '=', 'videoquestions.video_id')->where('videos.path', '=', '/path/to/tutorial/video.mkv')->get();
-		\Log::info($vqs);
 		foreach($vqs as $vq)
 		{
 			array_push($tutorialQuestions, $vq->question);
