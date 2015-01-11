@@ -119,7 +119,6 @@ class ApiQuizController extends \BaseController {
 	public function getScore($quiz_id)
 	{
 		$quiz = Quiz::find($quiz_id);
-		
 		if (! $quiz)
 		{
 			return $this->apiResponse('error', "Quiz {$quiz_id} not found", 404);
@@ -135,5 +134,48 @@ class ApiQuizController extends \BaseController {
 		}
 		
 		return $this->apiResponse('success', ['score' => $quiz->score], 200);
+	}
+	
+	public function getReminder()
+	{
+		$user = Auth::user();
+		if(!$user)
+		{
+			return $this->apiResponse(
+				'error',
+				'Must be logged in to get reminder quizzes',
+				401
+			);
+		}
+		
+		// Find the video questions that were attempted and are wrong by this user
+		$videoQuestions = VideoQuestion::select(array('videoquestions.*', 'videoquestion_quiz.updated_at', DB::raw('count(videoquestions.id) as attempts')))
+			->join('videoquestion_quiz', 'videoquestion_quiz.videoquestion_id', '=', 'videoquestions.id')->join('questions', 'questions.id', '=', 'videoquestions.question_id')->join('quizzes', 'quizzes.id', '=', 'videoquestion_quiz.quiz_id')
+			->where('videoquestions.is_custom', '=', false)->where('videoquestion_quiz.created_at', '<>', 'videoquestion_quiz.updated_at')->where('videoquestion_quiz.is_correct', '=', false)->where('quizzes.user_id', '=', Auth::user()->id)
+			->groupBy('videoquestions.id')->orderBy('attempts', 'desc')->orderBy('videoquestion_quiz.updated_at', 'desc')->get();
+		
+		if($videoQuestions && $videoQuestions->count() > 0)
+		{
+			$quiz = Quiz::create([
+				'user_id' => $user->id
+			]);
+			
+			while($videoQuestions->count() > 0 && $quiz->videoQuestions()->count() < 5)
+			{
+				$vq = $videoQuestions->shift();
+				$quiz->videoQuestions()->attach($vq->id);
+			}
+			$quiz->save();
+			
+			return $this->apiResponse(
+				'success',
+				['quiz_id' => $quiz->id]
+			);
+		}
+		
+		return $this->apiResponse(
+			'success',
+			['quiz_id' => -1]
+		);
 	}
 }

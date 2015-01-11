@@ -236,4 +236,18 @@ class ApiQuizControllerTest extends TestCase {
 		
 		$this->assertResponseStatus(401);
 	}
+	
+	public function testReminder()
+	{
+		$response = $this->call(
+			'get',
+			'api/quiz/reminder'
+		);
+		
+		$this->assertResponseOk();
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		
+		$data = $response->getData()->data;
+		$this->assertObjectHasAttribute('quiz_id', $data);
+	}
 }

@@ -39,11 +39,10 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-decoration: none;">
-							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 							@lang('navbar.buttons.quiz-reminder.name')
 							<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li class="text-center">@lang('navbar.buttons.quiz-reminder.none')</li>
+							<li class="text-center" id="quiz-link">@lang('navbar.buttons.quiz-reminder.none')</li>
 						</ul>
 					</li>
 				</ul>
@@ -182,6 +181,21 @@
 		"selectEpisode" : 			"@lang('index.accordion.episodes.select')",	
 		"selectVideos" : 			"@lang('index.accordion.videos.select')",	
 	};
+	
+	// When the document is ready, make a request to the server to see if there is a quiz to do
+	$(document).ready(function() {
+		$.ajax({
+			type: "GET",
+			url: "api/quiz/reminder",
+			success: function(data) {
+				var quiz_id = data.data.quiz_id;
+				if(quiz_id > 0)
+				{
+					$("#quiz-link").html('<a href="quiz"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>');
+				}
+			},
+		})
+	});
 </script>
 @stop
 
