@@ -1,15 +1,15 @@
 <?php
 use LangLeap\Videos\Show;
 
-class ApiShowController extends \BaseController {
+class ApiUserLevelController extends \BaseController {
 
 	    /**
-     * Show the profile for the given user.
+     * Show the level for the given user.
      */
-    public function showLevel($id)
+    public function showLevel()
     {
-        $user = User::find($id);
+        $user = Auth::user();
 
-        return View::make('account.level', 'user' => $language_id);
+        return View::make('account.level', ['level' => $user->level_id]);
     }
 }

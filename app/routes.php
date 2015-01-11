@@ -140,13 +140,6 @@ Route::get('/video/play/{id}', function($id)
 	return View::make('player.player')->with('video_id', $id);
 });
 
-// Score View
-//Route::get('level', function()
-//{
-//	return View::make('account.level');
-//});
-Route::get('level', 'ApiUserLevelController');
-
 // Quiz View
 Route::get('quiz', ['before' => 'auth', function()
 {
@@ -160,8 +153,11 @@ Route::controller('rank/tutorial','TutorialQuizContentController');
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
-// Quiz View
+// Test Player View
 Route::get('player/player2', function()
 {
 	return View::make('player.player2');
 });
+
+//User Level
+Route::get('level', 'ApiUserLevelController@showLevel');
