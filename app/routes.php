@@ -147,9 +147,10 @@ Route::get('quiz', ['before' => 'auth', function()
 }]);
 
 // Ranking Process
+Route::controller('rank/quiz/skip', 'SkipRankController');
 Route::controller('rank/quiz', 'RankQuizController');
 Route::controller('rank/tutorial','TutorialQuizContentController');
-Route::controller('rank/quiz/skip', 'SkipRankController');
+
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
