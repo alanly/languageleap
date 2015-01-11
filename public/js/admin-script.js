@@ -493,16 +493,17 @@ $(function() {
 	});
 
 	// A save was requested from the modal form
-	//$('#edit-form').submit(function() {
-	//	$('#edit-modal').modal('hide');
-	//	saveButtonClick();
-	//	return false;
-	//});
-	$('#save-button').on('click', function() {
+	$('#edit-form').submit(function(event) {
 		$('#edit-modal').modal('hide');
 		saveButtonClick();
 		return false;
 	});
+
+	$('#no-tag-radio').on('click', noTagButtonClick);
+	$('#word-radio').on('click', wordButtonClick);
+	$('#actor-radio').on('click', actorButtonClick);
+	$('#remove-button').on('click', removeButtonClick);
+	$('#cancel-button').on('click', cancelButtonClick);
 });
 
 //////////////////////////////////////////////////////////////

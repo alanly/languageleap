@@ -16,17 +16,17 @@
 						<label>Tag text as</label>
 						<div class="radio">
 							<label>
-								<input type="radio" name="tag-radio" id="no-tag-radio" value="none" checked onclick="noTagButtonClick();"> None
+								<input type="radio" name="tag-radio" id="no-tag-radio" value="none" checked> None
 							</label>
 						</div>
 						<div class="radio word-button">
 							<label>
-								<input type="radio" name="tag-radio" id="word-radio" value="word" onclick="wordButtonClick();"> Word(s)
+								<input type="radio" name="tag-radio" id="word-radio" value="word"> Word(s)
 							</label>
 						</div>
 						<div class="radio actor-button">
 							<label>
-								<input type="radio" name="tag-radio" id="actor-radio" value="actor" onclick="actorButtonClick();"> Actor
+								<input type="radio" name="tag-radio" id="actor-radio" value="actor"> Actor
 							</label>
 						</div>
 					</div>
@@ -56,7 +56,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button id="save-button" type="button" class="btn btn-primary">Save</button>
+					<button id="save-button" type="submit" class="btn btn-primary">Save</button>
 					<button id="remove-button" type="button" class="btn btn-danger" data-dismiss="modal">Remove</button>
 					<button id="cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 				</div>
