@@ -12,10 +12,10 @@ class RankQuizController extends \BaseController
 		$user = Auth::user();
 		if(!$user)
 		{
-			return Response::make("Must be logged in to access this page.", 404);
+			return Response::make("Must be logged in to access this page.", 403);
 		}
 
-		if($user->level_id == 0)
+		if($user->level_id == 1)
 		{
 			return View::make('rank.tutorialquiz');
 		}
