@@ -103,7 +103,7 @@ class QuizFactory implements UserInputResponse {
 			// Try to find the video question for that word for re-use
 			$videoQuestion = null;	
 			$videoQuestions = VideoQuestion::join('questions', 'questions.id', '=', 'videoquestions.question_id')
-			                               ->where('questions.question', 'like', '%' . $definition->word . '%');
+			                               ->where('questions.question', 'like', '%' . $definition->word . '%')->where('videoquestions.video_id', '=', $video_id);
 			
 			foreach($videoQuestions as $vq)
 			{
