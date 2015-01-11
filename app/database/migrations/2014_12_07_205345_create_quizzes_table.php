@@ -16,6 +16,8 @@ class CreateQuizzesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->timestamps();
+			$table->tinyInteger('score')->default(0);
+			$table->integer('user_id')->unsigned()->default(0);
 		});
 	}
 

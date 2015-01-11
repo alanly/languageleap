@@ -91,6 +91,7 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 		$http.put(
 			'/api/quiz',
 			{
+				'quiz_id': $scope.quizID,
 				'videoquestion_id': currentQuestion.id,
 				'selected_id': selection.definition_id
 			}

@@ -51,7 +51,10 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('/');
+			//Redirect to login with an unauthorized message
+			Session::flash('action.failed', true);
+			Session::flash('action.message', Lang::get('auth.login.unauthorized'));
+			return Redirect::guest('/login');
 		}
 	}
 });
