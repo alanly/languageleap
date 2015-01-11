@@ -9,6 +9,6 @@ class ApiUserLevelController extends \BaseController {
 	{
 		$user = Auth::user();
 	
-		return View::make('account.level', ['level' => $user->level_id]);
+		return View::make('account.level')->with('level', $user->level->first());
 	}
 }
