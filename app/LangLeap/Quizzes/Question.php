@@ -18,12 +18,4 @@ class Question extends Eloquent {
 	{
 		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
 	}
-	
-	/*public function toResponseArray()
-	{
-		return [
-			'question'	=>	$this->question,
-			'answers'	=>	$this->answers(),
-		];
-	}*/
 }
