@@ -41,7 +41,7 @@ class RankQuizController
 	public function postIndex()
 	{
 		// The request must be via AJAX, in JSON form.
-		if (! Request::ajax() || ! Request::isJson())
+		if (! Request::ajax() && ! Request::isJson())
 		{
 			return $this->apiResponse('error', 'Invalid request method.', 405);
 		}
