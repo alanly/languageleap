@@ -1,28 +1,18 @@
 <?php
 
-use LangLeap\Accounts\User;
 use LangLeap\Levels\Level;
-use LangLeap\Quizzes\Answer;
-use LangLeap\Quizzes\Question;
+use LangLeap\Rank\Quiz as RankQuiz;
+use LangLeap\Rank\QuizCreationListener as RankQuizCreationListener;
 use LangLeap\Rank\RankingListener;
-use LangLeap\Rank\UserRanker;
 
 /**
  * @author KC Wan
  * @author Thomas Rahn <thomas@rahn.ca>
  * @author Alan Ly <hello@alan.ly>
  */
-class RankQuizController extends \BaseController implements RankingListener {
-
-	/**
-	 * @var LangLeap\Quizzes\Answer
-	 */
-	protected $answers;
-
-	/**
-	 * @var LangLeap\Quizzes\Question
-	 */
-	protected $questions;
+class RankQuizController
+	extends \BaseController
+	implements RankingListener, RankQuizCreationListener {
 
 	/**
 	 * @var LangLeap\Levels\Level
@@ -30,7 +20,7 @@ class RankQuizController extends \BaseController implements RankingListener {
 	protected $levels;
 
 
-	public function __construct(Answer $answers, Question $questions, Level $levels)
+	public function __construct(Level $levels)
 	{
 		// Enable filters for this controller.
 		$this->beforeFilter('auth');
@@ -38,8 +28,6 @@ class RankQuizController extends \BaseController implements RankingListener {
 		$this->beforeFilter('csrf', ['on' => 'post|put']);
 
 		// Assign the injected dependencies.
-		$this->answers = $answers;
-		$this->questions = $questions;
 		$this->levels = $levels;
 	}
 
@@ -93,6 +81,12 @@ class RankQuizController extends \BaseController implements RankingListener {
 		return $this->apiResponse(
 			'success', [ 'user' => $user, 'redirect' => URL::to('/') ]
 		);
+	}
+
+
+	public function quizCreated(RankQuiz $quiz)
+	{
+		// @TODO handle response for created quiz.
 	}
 
 }
