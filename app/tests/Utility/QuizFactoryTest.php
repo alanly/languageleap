@@ -26,13 +26,13 @@ class QuizFactoryTest extends TestCase {
 
 		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
 
-		foreach($quiz->videoQuestions() as $vq)
+		$this->assertNotEmpty($quiz->videoQuestions);
+
+		foreach ($quiz->videoQuestions as $vq)
 		{
 			$this->assertInstanceOf('LangLeap\Quizzes\VideoQuestion', $vq);
-			foreach($vq->questions as $q)
-			{
-				$this->assertGreaterThan(1, $q->answers()->count());
-			}
+			$question = $vq->question;
+			$this->assertGreaterThan(1, $question->answers->count());
 		}
 	}
 	
