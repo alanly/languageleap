@@ -39,14 +39,21 @@ class RankQuizController
 	}
 
 
+	public function getQuiz()
+	{
+		// Get an instance of our quiz creator.
+		$quizCreator = App::make('LangLeap\Rank\QuizCreator');
+
+		// Create the quiz.
+		$quiz = $quizCreator->createQuiz($this);
+
+		// Generate the response
+		return $this->apiResponse('success', $quiz);
+	}
+
+
 	public function postIndex()
 	{
-		// The request must be via AJAX, in JSON form.
-		if (! Request::ajax() && ! Request::isJson())
-		{
-			return $this->apiResponse('error', 'Invalid request method.', 405);
-		}
-
 		$questions = Input::get('questions');
 
 		// There should be 5 questions.
@@ -87,7 +94,8 @@ class RankQuizController
 
 	public function quizCreated(RankQuiz $quiz)
 	{
-		// @TODO handle response for created quiz.
+		// We'll simply return the quiz instance.
+		return $quiz;
 	}
 
 }
