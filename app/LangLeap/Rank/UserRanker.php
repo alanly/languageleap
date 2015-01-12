@@ -65,16 +65,17 @@ class UserRanker {
 			if (intval($q->selected) === $answer->id) ++$numberOfCorrectAnswers;
 		}
 
-		// Distill things so that we're between a level of 1 and 3 based on the
-		// number of correctly answered questions.
-		$distillRatio   = $numberOfQuestions / 3;
-		$distilledLevel = $numberOfCorrectAnswers / $distillRatio;
+		// We have a choice of three-levels:
+		//   - 2:Beginner
+		//   - 3:Intermediate
+		//   - 4:Advanced
+		// We must pick between these based on how well the user performs.
+		
+		$resultRatio = $numberOfCorrectAnswers / $numberOfQuestions;
 
-		// Round out the value to the next integer.
-		$distilledLevel = intval(ceil($distilledLevel));
-
-		// Update the user and return the result of the operation.
-		$user->level_id = $distilledLevel;
+		if ($resultRatio >= 0.7) $user->level_id = 4;
+		if ($resultRatio < 0.7 && $resultRatio > 0.4) $user->level_id = 3;
+		if ($resultRatio <= 0.4) $user->level_id = 2;
 
 		return $user->save();
 	}
