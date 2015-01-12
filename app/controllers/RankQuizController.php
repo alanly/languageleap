@@ -2,101 +2,97 @@
 
 use LangLeap\Accounts\User;
 use LangLeap\Levels\Level;
-use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\Answer;
+use LangLeap\Quizzes\Question;
+use LangLeap\Rank\RankingListener;
+use LangLeap\Rank\UserRanker;
 
-class RankQuizController extends \BaseController 
-{
+/**
+ * @author KC Wan
+ * @author Thomas Rahn <thomas@rahn.ca>
+ * @author Alan Ly <hello@alan.ly>
+ */
+class RankQuizController extends \BaseController implements RankingListener {
+
+	/**
+	 * @var LangLeap\Quizzes\Answer
+	 */
+	protected $answers;
+
+	/**
+	 * @var LangLeap\Quizzes\Question
+	 */
+	protected $questions;
+
+	/**
+	 * @var LangLeap\Levels\Level
+	 */
+	protected $levels;
+
+
+	public function __construct(Answer $answers, Question $questions, Level $levels)
+	{
+		// Enable filters for this controller.
+		$this->beforeFilter('auth');
+		$this->beforeFilter('@filterRankedUsers');
+		$this->beforeFilter('csrf', ['on' => 'post|put']);
+
+		// Assign the injected dependencies.
+		$this->answers = $answers;
+		$this->questions = $questions;
+		$this->levels = $levels;
+	}
+
+
 	public function getIndex()
 	{
-		$user = Auth::user();
-		if(!$user)
-		{
-			return Response::make("Must be logged in to access this page.", 403);
-		}
-
-		if($user->level_id == Level::where('code','=','ur')->first()->id)
-		{
-			return View::make('rank.tutorialquiz');
-		}
-		else
-		{
-			return Redirect::to('/');
-		}
+		return View::make('rank.tutorialquiz');
 	}
 
-	public function rankUser()
+
+	public function postIndex()
 	{
-		// Compares answers and ranks the user
-		$userScore = 0;
-		
-		$actualAnswer1 = Answer::find(Question::find(Input::get('q1'))->answer_id)->answer;
-		$actualAnswer2 = Answer::find(Question::find(Input::get('q2'))->answer_id)->answer;
-		$actualAnswer3 = Answer::find(Question::find(Input::get('q3'))->answer_id)->answer;
-		$actualAnswer4 = Answer::find(Question::find(Input::get('q4'))->answer_id)->answer;
-		$actualAnswer5 = Answer::find(Question::find(Input::get('q5'))->answer_id)->answer;
+		// The request must be via AJAX, in JSON form.
+		if (! Request::ajax() || ! Request::isJson())
+		{
+			return $this->apiResponse('error', 'Invalid request method.', 405);
+		}
 
-		if(Input::get('a1') == $actualAnswer1)
+		$questions = Input::get('questions');
+
+		// There should be 5 questions.
+		if (! $questions || (count($questions) < 5))
 		{
-			$userScore++;
+			return $this->apiResponse('error', 'Missing or incomplete questions object in request.', 400);
 		}
-		if(Input::get('a2') == $actualAnswer2)
-		{
-			$userScore++;
-		}
-		if(Input::get('a3') == $actualAnswer3)
-		{
-			$userScore++;
-		}
-		if(Input::get('a4') == $actualAnswer4)
-		{
-			$userScore++;
-		}
-		if(Input::get('a5') == $actualAnswer5)
-		{
-			$userScore++;
-		}
-		
-		$user = Auth::user();
-		if($userScore <= 1)
-		{
-			$user->level_id = 1;
-		}
-		if($userScore > 2 && $userScore <= 3)
-		{
-			$user->level_id = 2;
-		}
-		if($userScore > 3 && $userScore <= 5)
-		{
-			$user->level_id = 3;
-		}
-		$user->save();
-		
-		return Redirect::to('/');
+
+		$userRanker = App::make('LangLeap\Rank\UserRanker');
+
+		return $userRanker->rank($this, Auth::user(), $questions);
 	}
-	
-	// Makes sure the user answered every question
-	public function postAnswers()
+
+
+	public function filterRankedUsers($route, $request)
 	{
-		$answeredAll = false;
-		
-		$a1 = Input::get('a1');
-		$a2 = Input::get('a2');
-		$a3 = Input::get('a3');
-		$a4 = Input::get('a4');
-		$a5 = Input::get('a5');
-		
-		if($a1 && $a2 && $a3 && $a4 && $a5)
-		{
-			$answeredAll = true;
-			return $this->rankUser();
-		}
-		else
-		{
-			return Redirect::to('rank.tutorialquiz')
-				->with('action.failed', true)
-				->with('action.message', 'You need to answer all the questions before proceeding!');
-		}
+		$user = Auth::user();
+		$unrankedLevel = $this->levels->where('code', 'ur')->first();
+
+		// Return to home if the user has already been ranked.
+		if ($user->level_id !== $unrankedLevel->id) return Redirect::to('/');
 	}
+
+
+	public function userRanked($user)
+	{
+		if (! $user)
+		{
+			return $this->apiResponse('error', 'Error when updating user.', 500);
+		}
+
+		// Generate a response containing the user and the redirection URL.
+		return $this->apiResponse(
+			'success', [ 'user' => $user, 'redirect' => URL::to('/') ]
+		);
+	}
+
 }
-	
