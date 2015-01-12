@@ -15,15 +15,13 @@ class RankQuizController extends \BaseController
 			return Response::make("Must be logged in to access this page.", 403);
 		}
 
-		if($user->level_id == 1)
+		if($user->level_id == Level::where('code','=','ur')->first()->id)
 		{
 			return View::make('rank.tutorialquiz');
 		}
 		else
 		{
-			return Redirect::to('/')
-					->with('action.failed', true)
-					->with('action.message', 'You have already taken the tutorial quiz!');
+			return Redirect::to('/');
 		}
 	}
 

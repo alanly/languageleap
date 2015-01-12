@@ -1,7 +1,8 @@
  <?php
  
 use LangLeap\Quizzes\VideoQuestion;
- 
+use LangLeap\Core\Collection;
+
 class TutorialQuizContentController extends \BaseController
 {	
 	public function getIndex()
@@ -39,10 +40,39 @@ class TutorialQuizContentController extends \BaseController
 			);
 		}
 		
-		return $this->apiResponse(
+		return $this->generateResponse($tutorialQuestions);
+
+		/*return $this->apiResponse(
 			'success',
 			$tutorialData,
 			200
-		);
+		);*/
+	}
+
+	/**
+	 * @param  Collection of LangLeap\Quizzes\Questions   $question
+	 * @return Illuminate\Http\JsonResponse
+	 */
+	protected function generateResponse($questions)
+	{
+		$code = 200;
+		$question_array = [];
+		foreach ($questions as $question) {
+			$answers = [];
+			foreach($question->answers as $ans){
+				array_push($answers, [
+						'id' => $ans->id,
+						'answer' => $ans->answer
+					]);
+			}
+
+			array_push($question_array, [
+					'id' => $question->id,
+					'question' => $question->question,
+					'answers' => $answers
+				]);
+		}
+		
+		return $this->apiResponse('success', ["questions" => $question_array], $code);
 	}
  }

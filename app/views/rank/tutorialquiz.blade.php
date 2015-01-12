@@ -109,7 +109,8 @@
 				url: '/rank/tutorial',
 				dataType: 'json',
 				success : function(data) {
-					$("#q1").append(data.data[0][0].question);
+					var questions = data.data.questions;
+					/*$("#q1").append(data.data[0][0].question);
 					$("#q1id").val(data.data[0][0].id);
 					$("#a1").append(data.data[1][0].answer);
 					$("#a2").append(data.data[1][1].answer);
@@ -142,7 +143,20 @@
 					$("#a17").append(data.data[1][16].answer);
 					$("#a18").append(data.data[1][17].answer);
 					$("#a19").append(data.data[1][18].answer);
-					$("#a20").append(data.data[1][19].answer);
+					$("#a20").append(data.data[1][19].answer);*/
+					var counter = 1;
+					for(var i = 0; i < questions.length; i++){
+						
+						$("#q"+ (i+1)).append(questions[i].question);
+						$("#qid"+ (i+1)).append(questions[i].id);
+						
+						var answers = questions[i].answers;
+
+						for(var j = 0; j < answers.length; j++){
+							$("#a"+counter).append(answers[j].answer);
+							counter++;
+						}
+					}
 				}
 			});
 		});
