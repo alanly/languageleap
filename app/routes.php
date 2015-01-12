@@ -151,8 +151,7 @@ Route::get('quiz', ['before' => 'auth', function()
 
 
 // Ranking Process
-Route::controller('rank/quiz', 'RankQuizController');
-Route::controller('rank/tutorial','TutorialQuizContentController');
+Route::controller('rank', 'RankQuizController');
 
 
 // CSRF Test Route
