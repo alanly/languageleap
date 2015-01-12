@@ -1,5 +1,6 @@
 <?php namespace LangLeap\Rank;
 
+use App;
 use LangLeap\Quizzes\Answer as VideoAnswer;
 
 /**
