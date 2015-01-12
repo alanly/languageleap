@@ -1,8 +1,8 @@
 <?php namespace LangLeap\Rank;
 
 use LangLeap\Accounts\User;
-use LangLeap\Quizzes\Answers;
-use LangLeap\Quizzes\Questions;
+use LangLeap\Quizzes\Answer;
+use LangLeap\Quizzes\Question;
 
 /**
  * @author Alan Ly <hello@alan.ly>
@@ -20,12 +20,13 @@ class UserRanker {
 	protected $questions;
 
 
-	public function __construct(Answers $answers, Questions $questions)
+	public function __construct(Answer $answers, Question $questions)
 	{
 		// Hold onto injected dependencies.
 		$this->answers = $answers;
 		$this->questions = $questions;
 	}
+
 
 	/**
 	 * Ranks the given user for the ranking listener. The questions are given as
@@ -38,28 +39,35 @@ class UserRanker {
 	 */
 	public function rank(RankingListener $listener, User $user, array $questions)
 	{
-		// @TODO perform ranking for $user
 		$this->performUserRanking($user, $questions);
 		
 		return $listener->userRanked($user);
 	}
+
 
 	protected function performUserRanking(User $user, array $questions)
 	{
 		$numberOfQuestions = count($questions);
 		$numberOfCorrectAnswers = 0;
 
-		foreach ($questions as $q => $a)
+		foreach ($questions as $q)
 		{
-			$question = $this->questions->find($q);
+			// @NOTICE Laravel seems to default towards converting JSON data from the
+			//         input, into an associative array by default. In order to deal
+			//         with this, there are two approaches. Either we accept things as
+			//         they are, in array form. Or we can convert things to objects.
+			//         I am choosing to do the latter.
+			$q = (object) $q;
+
+			$question = $this->questions->find($q->id);
 			$answer = $question->answer;
 
-			if ($a === $answer->id) ++$numberOfCorrectAnswers;
+			if (intval($q->selected) === $answer->id) ++$numberOfCorrectAnswers;
 		}
 
 		// Distill things so that we're between a level of 1 and 3 based on the
 		// number of correctly answered questions.
-		$distillRatio   = $numberOfQuestions / 3
+		$distillRatio   = $numberOfQuestions / 3;
 		$distilledLevel = $numberOfCorrectAnswers / $distillRatio;
 
 		// Round out the value to the next integer.
