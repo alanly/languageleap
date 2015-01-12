@@ -24,8 +24,9 @@ class RankQuizController
 	{
 		// Enable filters for this controller.
 		$this->beforeFilter('auth');
-		$this->beforeFilter('@filterRankedUsers');
+		$this->beforeFilter('ajax', ['except' => 'getIndex']);
 		$this->beforeFilter('csrf', ['on' => 'post|put']);
+		$this->beforeFilter('@filterUnrankedUsers');
 
 		// Assign the injected dependencies.
 		$this->levels = $levels;
@@ -60,7 +61,7 @@ class RankQuizController
 	}
 
 
-	public function filterRankedUsers($route, $request)
+	public function filterUnrankedUsers($route, $request)
 	{
 		$user = Auth::user();
 		$unrankedLevel = $this->levels->where('code', 'ur')->first();
