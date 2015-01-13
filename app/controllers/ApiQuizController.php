@@ -4,11 +4,7 @@ use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\Question;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\VideoQuestion;
-use LangLeap\QuizUtilities\QuizAnswerUpdate;
-use LangLeap\QuizUtilities\QuizAnswerValidation;
-use LangLeap\QuizUtilities\QuizCreationValidation;
-use LangLeap\QuizUtilities\QuizFactory;
-use LangLeap\QuizUtilities\ReminderQuizValidation;
+use LangLeap\QuizUtilities\QuizUtils;
 use LangLeap\Videos\Video;
 
 /**
@@ -28,11 +24,7 @@ class ApiQuizController extends \BaseController {
 	 */
 	public function postIndex()
 	{
-		$quizDecorator = new QuizCreationValidation(QuizFactory::getInstance());
-
-		// Generate all the questions.
-		$response = $quizDecorator->response(Auth::user(), Input::all());
-
+		$response = QuizUtils::createVideoQuiz(Auth::user(), Input::all());
 		return $this->apiResponse(
 			$response[0], $response[1], $response[2]
 		);
@@ -46,11 +38,7 @@ class ApiQuizController extends \BaseController {
 	 */
 	public function putIndex()
 	{
-		$answerDecorator = new QuizAnswerValidation(new QuizAnswerUpdate());
-		
-		// Run validation and update the quiz score if validation passes
-		$response = $answerDecorator->response(Auth::user(), Input::all());
-		
+		$response = QuizUtils::answerQuizQuestion(Auth::user(), Input::all());
 		return $this->apiResponse(
 			$response[0], $response[1], $response[2]
 		);
@@ -139,12 +127,9 @@ class ApiQuizController extends \BaseController {
 	
 	public function getReminder()
 	{	
-		$quizDecorator = new ReminderQuizValidation(QuizFactory::getInstance());
-		$response = $quizDecorator->response(Auth::user(), null);
+		$response = QuizUtils::createReminderQuiz(Auth::user(), null);
 		return $this->apiResponse(
-			$response[0],
-			$response[1],
-			$response[2]
+			$response[0], $response[1], $response[2]
 		);
 	}
 }
