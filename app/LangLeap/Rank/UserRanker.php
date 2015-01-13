@@ -1,8 +1,8 @@
 <?php namespace LangLeap\Rank;
 
 use LangLeap\Accounts\User;
-use LangLeap\Quizzes\Answer;
-use LangLeap\Quizzes\Question;
+use LangLeap\Quizzes\Answer as QuizAnswer;
+use LangLeap\Quizzes\Question as QuizQuestion;
 
 /**
  * @author Alan Ly <hello@alan.ly>
@@ -20,7 +20,7 @@ class UserRanker {
 	protected $questions;
 
 
-	public function __construct(Answer $answers, Question $questions)
+	public function __construct(QuizAnswer $answers, QuizQuestion $questions)
 	{
 		// Hold onto injected dependencies.
 		$this->answers = $answers;
@@ -64,7 +64,7 @@ class UserRanker {
 
 			if (! isset($q->selected)) return App::abort(400, 'Incomplete request.');
 
-			if (intval($q->selected) === $answer->id) ++$numberOfCorrectAnswers;
+			if (intval($q->selected) == $answer->id) ++$numberOfCorrectAnswers;
 		}
 
 		// We have a choice of three-levels:
