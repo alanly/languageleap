@@ -24,7 +24,7 @@ class RankQuizController
 	{
 		// Enable filters for this controller.
 		$this->beforeFilter('auth');
-		$this->beforeFilter('ajax', ['except' => ['getIndex', 'getVideo']]);
+		$this->beforeFilter('ajax', ['except' => ['getIndex', 'getVideo', 'getSkip']]);
 		$this->beforeFilter('csrf', ['on' => 'post|put']);
 		$this->beforeFilter('@filterUnrankedUsers');
 
@@ -41,6 +41,26 @@ class RankQuizController
 	public function getVideo()
 	{
 		return View::make('rank.tutorialvideo');
+	}
+
+	/**
+	 * Skips user ranking and redirects to user profile page.
+	 */
+	public function getSkip()
+	{
+		$user = Auth::user();
+		
+		// if not ranked
+		if ($user->level_id == Level::where('code', '=', 'ur')->first()->id)
+		{
+			$user->level_id = Level::where('code', '=', 'be')->first()->id;
+			$user->save();
+			return Redirect::to('/');
+		}
+		else
+		{
+			return Response::make("You have already been ranked.", 400);
+		}
 	}
 
 	public function getQuiz()
@@ -102,23 +122,4 @@ class RankQuizController
 		return $quiz;
 	}
 
-	/**
-	 * Skips user ranking and redirects to user profile page.
-	 */
-	public function skipRanking()
-	{
-		$user = Auth::user();
-		
-		// if not ranked
-		if ($user->level_id == Level::where('code', '=', 'ur')->first()->id)
-		{
-			$user->level_id = Level::where('code', '=', 'be')->first()->id;
-			$user->save();
-			return Redirect::to('/level');
-		}
-		else
-		{
-			return Response::make("You have already been ranked.", 400);
-		}
-	}
 }

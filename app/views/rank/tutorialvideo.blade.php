@@ -1,218 +1,71 @@
 @extends('master')
 
 @section('css')
-	<link rel="stylesheet" href="/css/flashcard.css">
-	<link rel="stylesheet" href="/css/video-script.css">
+	<link rel="stylesheet" href="/css/video-player.css">
+@stop
 
-	<style>
 
-		.video-controls
-		{
-			width: 50%;
-			font-size: 30px;
-		}
-
-		.video-controls span, .video-controls div, .video-controls a
-		{
-			display: inline-block;
-			color: #999;
-		}
-
-		.mute, .full-screen
-		{
-			float: right;
-			padding-left: 20px;
-			margin-right: 20px;
-			color: #999;
-		}
-
-		.play-pause
-		{
-			margin-left: 20px;
-		}
-
-		.progress
-		{
-			margin-left: 50px;
-			margin-right: 1000px;
-		}
-
-		.play-pause, .speed
-		{
-			padding-right: 20px;
-			color: #999;
-		}
-
-		.glyphicon:hover
-		{
-			color: #555;
-		}
-		
-		.title
-		{
-			padding-left: 20px;
-		}
-		
-		.jumbotron
-		{
-			padding-left: 20px;
-		}
-
-	</style>
+@section('javascript')
+	<script src="/js/video-player.js"></script>	
 @stop
 
 @section('content')
+
 <div class="title">
 	<h1>Tutorial Video</h1>
 </div>
 <div class="jumbotron" style="padding-left: 20px; margin-bottom: 0;">	
-	<div id="video-container">
+	<!-- Player here -->
+	<div class="jumbotron col-lg-6 col-md-6 col-xs-6" style="width: 50%;">	
+		<div id="video-container">
+			<video width="100%" id="video-player">
+				<source class="source" type="video/mp4" src="/videos/TestVideo.mp4">
+				<p>@lang('player.player.error')</p>
+			</video>
 
-		<video width="50%" id="video-player">
-			<source src="../videos/TestVideo.mp4" type="video/mp4"/>
-			Your browser does not support the video tag.
-		</video>
+			<!--Player controls-->
+			<div class="video-controls" style="width: 100%;">				
+				<a href="#" class="play-pause col-xs-1 col-md-1 col-lg-1">
+					<span class="glyphicon glyphicon-play"></span>
+				</a>
+				
+				<div class="dropdown speed-dropdown" data-toggle="tooltip" data-placement="top" data-original-title="Playing at 1x speed.">
+					<button class="btn btn-default dropdown-toggle speed-dropdown" type="button" id="speed-drop" data-toggle="dropdown" aria-expanded="true">
+					    <span class="glyphicon glyphicon-fast-forward"></span>
+					    <span class="caret"></span>
+				  	</button>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="speed-drop">
+						<li role="presentation"><a class="speed faster" role="menuitem" tabindex="-1" href="#">Faster</a></li>
+						<li role="presentation"><a class="speed normal" role="menuitem" tabindex="-1" href="#">Normal</a></li>
+						<li role="presentation"><a class="speed slower" role="menuitem" tabindex="-1" href="#">Slower</a></li>
+					</ul>
+				</div>
 
-		<div class="video-controls" style="width: 50%; font-size: 30px;">
-		
-			<a href="#" class="play-pause">
-				<span class="glyphicon glyphicon-play"></span>
-			</a>
+				<div class="video-time col-xs-3 col-md-3 col-lg-3">
+					<span class="current">0:00</span>/<span class="duration">0:00</span>
+				</div>
+				
+				<div id="slider" class="slider col-xs-5 col-md-5 col-lg-5">
+					<input type="range" id="slider-bar" class="slider-width" value="0" min="0" max="100"/>
+				</div>
 
-			<a href="#" class="speed">
-				<span class="glyphicon glyphicon-fast-forward"></span>
-			</a>
+				<a href="#" class="full-screen col-xs-1 col-md-1 col-lg-1">
+					<span class="glyphicon glyphicon-fullscreen"></span>
+				</a>
 
-			<div class="video-time">
-				<span class="current">0:00</span>/<span class="duration">0:00</span>
+				<a href="#" class="mute col-xs-1 col-md-1 col-lg-1">
+					<span class="glyphicon glyphicon-volume-up"></span>
+				</a>
 			</div>
-
-			<a href="#" class="full-screen">
-				<span class="glyphicon glyphicon-fullscreen"></span>
-			</a>
-
-			<a href="#" class="mute">
-				<span class="glyphicon glyphicon-volume-up"></span>
-			</a>
-		</div>
-
+		</div>					
+		<audio id="word-audio" autoplay>
+			<p>@lang('player.audio.error')</p>
+		</audio>
 	</div>
-
-	<div class="progress">
-		<div class="progress-bar" style="width: 0%;">
-		</div>
-	</div>
-	
 	<div class="form-group">
 		<div id="quizButton">
-			{{ Form::submit('Proceed to Quiz', ['class' => 'btn btn-primary']) }}
+			<a class="btn btn-primary" href="{{ URL::to('/rank') }}">Proceed to Quiz</a>
 		</div>
 	</div>
 </div>
-
-<script>
-	$( document ).ready( function() 
-	{
-		var videoPlayer = $('#video-player');
-		
-		$( '.play-pause' ).click( function()
-		{
-			if(videoPlayer.get(0).paused)
-			{
-				videoPlayer.get(0).play();
-
-				$( '.glyphicon-play' ).attr( 'class', 'glyphicon glyphicon-pause' );
-			}
-			else
-			{
-				videoPlayer.get(0).pause();
-
-				$( '.glyphicon-pause' ).attr( 'class', 'glyphicon glyphicon-play' );
-			}
-
-			return false;
-		});
-
-		videoPlayer.on('timeupdate', function()
-		{			
-			var seconds = Math.round(videoPlayer.get(0).currentTime);
-
-			var time = parseInt(seconds / 60, 10) + ":" + ((parseInt(seconds % 60, 10) < 10) ? "0" : "") + parseInt(seconds % 60, 10);
-
-			$('.current').text(time);
-		});
-
-		videoPlayer.on('loadedmetadata', function()
-		{
-			var seconds = Math.round(videoPlayer.get(0).duration);
-
-			var time = parseInt(seconds / 60, 10) + ":" + ((parseInt(seconds % 60, 10) < 10) ? "0" : "") + parseInt(seconds % 60, 10);
-
-			$('.duration').text(time);
-		});
-
-		videoPlayer.on('timeupdate', function()
-		{		
-			if(Math.round(videoPlayer.get(0).currentTime) == Math.round(videoPlayer.get(0).duration))
-			{
-				$( '.glyphicon-pause' ).attr( 'class', 'glyphicon glyphicon-play' );
-			}
-		});
-
-		videoPlayer.on('timeupdate', function()
-		{
-			var progressBar = $( '.progress-bar' );
-
-			var completionPercent = Math.floor(($( '.progress' ).width() / videoPlayer.get(0).duration) * videoPlayer.get(0).currentTime);
-
-			progressBar.width(completionPercent);
-			console.log(progressBar[0].style.width);
-		});
-
-		$( '.speed' ).click( function()
-		{
-			if(videoPlayer.get(0).playbackRate == 1)
-			{
-				videoPlayer.get(0).playbackRate += 0.5;
-
-				$( '.glyphicon-fast-forward' ).attr( 'class', 'glyphicon glyphicon-step-forward' );
-			}
-			else
-			{
-				videoPlayer.get(0).playbackRate -= 0.5;
-
-				$( '.glyphicon-step-forward' ).attr( 'class', 'glyphicon glyphicon-fast-forward' );
-			}
-		});
-
-		$( '.mute' ).click(function()
-		{
-			if( !videoPlayer.get(0).muted )
-			{
-				videoPlayer.get(0).muted = true;
-
-				$('.glyphicon-volume-up').attr( 'class' , 'glyphicon glyphicon-volume-off');
-			}
-			else
-			{
-				videoPlayer.get(0).muted = false;
-
-				$('.glyphicon-volume-off').attr( 'class' , 'glyphicon glyphicon-volume-up');
-			}
-		});
-
-		$( '.full-screen' ).on( 'click', function()
-		{
-			videoPlayer.get(0).webkitEnterFullscreen();
-			videoPlayer.get(0).mozRequestFullScreen();
-			return false;
-		});
-		
-		$('#quizButton').click(function()
-		{
-			location.href='tutorialquiz';
-		});
-	});
-
-</script>
 @stop

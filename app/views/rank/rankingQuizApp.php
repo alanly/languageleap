@@ -1,5 +1,8 @@
 <div class="container" ng-app="rankingQuizApp">
 	<div class="row">
+		<div class="col-sm-6">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#skip">Skip Ranking Process</button>
+		</div>
 		<div class="col-sm-6 col-sm-offset-3">
 			<h2>Let's see how good you are!</h2>
 			<p>This ranking procedure let's us figure out how much you already know,
@@ -43,4 +46,24 @@
 			<a href="{{ redirect }}" class="btn btn-primary">Continue</a>
 		</div>
 	</script>
+</div>
+
+<div class="modal fade" id="skip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">You will be ranked as "Beginner"</h4>
+			</div>
+			<div class="modal-body">
+					Skipping the ranking process will automatically rank you as a beginner.
+			</div>
+			<div class="modal-footer">
+				<form action="/rank/skip" class="form-horizontal reg-form" method="GET">
+					<input type="submit" class="btn btn-primary" value="Skip"/>
+					<input type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel"/>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
