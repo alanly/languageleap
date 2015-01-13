@@ -12,8 +12,8 @@ class DatabaseSeeder extends Seeder {
 		Eloquent::unguard();
 		
 		$this->call('LanguageTableSeeder');
-		$this->call('UserTableSeeder');
 		$this->call('LevelTableSeeder');
+		$this->call('UserTableSeeder');
 		$this->call('MovieTableSeeder');
 		$this->call('ShowTableSeeder');
 		$this->call('CommercialTableSeeder');
@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('AnswerTableSeeder');
 		$this->call('QuizTableSeeder');
 		$this->call('VideoQuestionTableSeeder');
+		$this->call('TutorialQuizSeeder');
 	}
 
 }

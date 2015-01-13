@@ -140,19 +140,21 @@ Route::get('/video/play/{id}', function($id)
 	return View::make('player.player')->with('video_id', $id);
 });
 
-
 // Quiz View
 Route::get('quiz', ['before' => 'auth', function()
 {
 	return View::make('quiz.main');
 }]);
 
+// Ranking Process
+Route::get('rank/skip', ['before' => 'auth', 'uses' => 'RankQuizController@skipRanking']);
+Route::controller('rank/quiz', 'RankQuizController');
+Route::controller('rank/tutorial','TutorialQuizContentController');
+
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
-// Quiz View
-Route::get('player/player2', function()
-{
-	return View::make('player.player2');
-});
+//User Level
+Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserLevelController@showLevel']);
+
