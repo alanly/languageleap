@@ -10,8 +10,8 @@ interface UserInputResponse
 	/**
 	* Return an array with the parameters for BaseController::apiResponse in the same order
 	*
-	* @param int $user_id
+	* @param User $user
 	* @param array $input
 	*/
-	public function response($user_id, $input);
+	public function response($user, $input);
 }

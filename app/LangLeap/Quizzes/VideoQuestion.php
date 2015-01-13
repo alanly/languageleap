@@ -35,7 +35,7 @@ class VideoQuestion extends Eloquent {
 			'answers'	=> []
 		];
 		
-		$answers = new Collection($this->question->answers);
+		$answers = new Collection($this->question->answers->all());
 		while($answers->count() > 0)
 		{
 			$a = $answers->pullRandom();

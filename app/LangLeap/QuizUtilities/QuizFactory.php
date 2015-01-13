@@ -30,7 +30,7 @@ class QuizFactory implements UserInputResponse {
 		return QuizFactory::$instance;
 	}
 	
-	public function response($user_id, $input)
+	public function response($user, $input)
 	{
 		if($input) // there is input then create a quiz based on that
 		{
@@ -46,7 +46,7 @@ class QuizFactory implements UserInputResponse {
 			$scriptDefinitions = new Collection($scriptDefinitions->all());
 			
 			$quiz = $this->getDefinitionQuiz(
-				$user_id,
+				$user->id,
 				$input['video_id'],
 				$scriptDefinitions,
 				$input['selected_words']
@@ -56,8 +56,15 @@ class QuizFactory implements UserInputResponse {
 		}
 		else // Create a quiz from questions that are wrong
 		{
-			$quiz = $this->getReminderQuiz($user_id);
-			return ['success', $quiz->toResponseArray(), 200];
+			$quiz = $this->getReminderQuiz($user->id);
+			if(! $quiz)
+			{
+				return ['success', ['quiz_id' => -1], 200];
+			}
+			else
+			{
+				return ['success', ['quiz_id' => $quiz->id], 200];
+			}
 		}
 	}
 	

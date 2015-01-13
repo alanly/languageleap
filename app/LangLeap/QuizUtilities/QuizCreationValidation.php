@@ -2,7 +2,6 @@
 
 use LangLeap\Core\Collection;
 use LangLeap\Core\InputDecorator;
-use LangLeap\Core\UserInputResponse;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 
@@ -14,8 +13,13 @@ use LangLeap\Words\Definition;
  */
 class QuizCreationValidation extends InputDecorator {
 	
-	public function response($user_id, $input)
+	public function response($user, $input)
 	{
+		if (! $user)
+		{
+			return ['error', 'Must be logged in to create a quiz.', 401];
+		}
+	
 		// Ensure the video exists.
 		$videoId = $input["video_id"];
 
@@ -78,6 +82,6 @@ class QuizCreationValidation extends InputDecorator {
 			}
 		}
 		
-		return parent::response($user_id, $input);
+		return parent::response($user, $input);
 	}
 }

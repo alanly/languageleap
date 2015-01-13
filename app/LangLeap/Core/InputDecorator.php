@@ -14,9 +14,9 @@ abstract class InputDecorator implements UserInputResponse {
 		$this->decoratedResponse = $decoratedResponse;
 	}
 	
-	public function response($user_id, $input)
+	public function response($user, $input)
 	{
-		return $this->decoratedResponse->response($user_id, $input);
+		return $this->decoratedResponse->response($user, $input);
 	}
 
 }

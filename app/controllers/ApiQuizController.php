@@ -8,6 +8,7 @@ use LangLeap\QuizUtilities\QuizAnswerUpdate;
 use LangLeap\QuizUtilities\QuizAnswerValidation;
 use LangLeap\QuizUtilities\QuizCreationValidation;
 use LangLeap\QuizUtilities\QuizFactory;
+use LangLeap\QuizUtilities\ReminderQuizValidation;
 use LangLeap\Videos\Video;
 
 /**
@@ -30,7 +31,7 @@ class ApiQuizController extends \BaseController {
 		$quizDecorator = new QuizCreationValidation(QuizFactory::getInstance());
 
 		// Generate all the questions.
-		$response = $quizDecorator->response(Auth::user()->id, Input::all());
+		$response = $quizDecorator->response(Auth::user(), Input::all());
 
 		return $this->apiResponse(
 			$response[0], $response[1], $response[2]
@@ -48,7 +49,7 @@ class ApiQuizController extends \BaseController {
 		$answerDecorator = new QuizAnswerValidation(new QuizAnswerUpdate());
 		
 		// Run validation and update the quiz score if validation passes
-		$response = $answerDecorator->response(Auth::user()->id, Input::all());
+		$response = $answerDecorator->response(Auth::user(), Input::all());
 		
 		return $this->apiResponse(
 			$response[0], $response[1], $response[2]
@@ -137,31 +138,13 @@ class ApiQuizController extends \BaseController {
 	}
 	
 	public function getReminder()
-	{
-		$user = Auth::user();
-		if(!$user)
-		{
-			return $this->apiResponse(
-				'error',
-				'Must be logged in to get reminder quizzes',
-				401
-			);
-		}
-		
-		$quiz = QuizFactory::getInstance()->getReminderQuiz($user->id);
-		if($quiz)
-		{
-			return $this->apiResponse(
-				'success',
-				['quiz_id' => $quiz->id]
-			);
-		}
-		else
-		{
-			return $this->apiResponse(
-				'success',
-				['quiz_id' => -1]
-			);
-		}
+	{	
+		$quizDecorator = new ReminderQuizValidation(QuizFactory::getInstance());
+		$response = $quizDecorator->response(Auth::user(), null);
+		return $this->apiResponse(
+			$response[0],
+			$response[1],
+			$response[2]
+		);
 	}
 }

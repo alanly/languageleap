@@ -11,7 +11,7 @@ use LangLeap\Quizzes\VideoQuestion;
  */
 class QuizAnswerUpdate implements UserInputResponse {
 
-	public function response($user_id, $input)
+	public function response($user, $input)
 	{
 		$quiz = Quiz::find($input['quiz_id']);
 		$selectedId = $input['selected_id'];
