@@ -3,39 +3,51 @@
 use LangLeap\TestCase;
 use App;
 
-
 /**
-*		@author Dror Ozgaon <Dror.Ozgaon@gmail.com>
-*/
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
+ * @author Alan Ly <hello@alan.ly>
+ */
 class QuestionTest extends TestCase {
 
-	/**
-	 * Testing getting all seasons for a particular show.
-	 *
-	 * @return void
-	 */
-	public function testAnswerRelation()
+	public function testAnswersRelationshipFunctionWorks()
 	{
-		$question = $this->getQuestionInstance();
-		$answer = $this->getAnswerInstance();
-		$question->question = '';
-		$question->answer_id = $answer->id;
-		$question->save();
-	
-		$this->assertCount(1, $question->answers()->get());	
-	}
-	
-	protected function getAnswerInstance()
-	{
-		$answer = App::make('LangLeap\Quizzes\Answer');
-		$answer->question_id = 1; // un-needed id
-		$answer->answer = ''; //un-needed id
-		$answer->save();
-		return $answer;
-	}	
+		// Create a series of answers.
+		$a = [
+			Answer::create(['answer' => 'test answer 1']),
+			Answer::create(['answer' => 'test answer 2']),
+			Answer::create(['answer' => 'test answer 3']),
+		];
 
-	protected function getQuestionInstance()
-	{
-		return App::make('LangLeap\Quizzes\Question');
+		// Create our question.
+		$q = new Question(['question' => 'test question']);
+		$q->answer_id = $a[0]->id;
+		$q->save();
+
+		// Save the associated answers.
+		$q->answers()->saveMany($a);
+
+		$this->assertCount(count($a), $q->answers);
 	}
+
+
+	public function testAnswerRelationshipFunctionReturnsCorrectAnswerInstance()
+	{
+		// Create a series of answers.
+		$a = [
+			Answer::create(['answer' => 'test answer 1']),
+			Answer::create(['answer' => 'test answer 2']),
+			Answer::create(['answer' => 'test answer 3']),
+		];
+
+		// Create our question.
+		$q = new Question(['question' => 'test question']);
+		$q->answer_id = $a[0]->id;
+		$q->save();
+
+		// Save the associated answers.
+		$q->answers()->saveMany($a);
+
+		$this->assertSame($a[0]->answer, $q->answer->answer);
+	}
+
 }

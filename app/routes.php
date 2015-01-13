@@ -77,6 +77,7 @@ Route::group(['prefix' => 'admin'], function()
 	{
 		return View::make('admin.quiz.index')->with('videos', Video::All());
 	});
+
 });
 
 
@@ -87,6 +88,7 @@ Route::group(['prefix' => 'api'], function()
 	// Metadata controllers for media resources.
 	Route::group(['prefix' => 'metadata'], function()
 	{
+
 		// Commercials
 		Route::resource('commercials', 'ApiCommercialController');
 
@@ -148,11 +150,13 @@ Route::get('quiz', ['before' => 'auth', function()
 }]);
 
 
+// Ranking Process
+Route::controller('rank', 'RankQuizController');
+
+
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
-// Quiz View
-Route::get('player/player2', function()
-{
-	return View::make('player.player2');
-});
+
+//User Level
+Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserLevelController@showLevel']);

@@ -49,13 +49,11 @@ Route::filter('auth', function()
 		{
 			return Response::make('Unauthorized', 401);
 		}
-		else
-		{
-			//Redirect to login with an unauthorized message
-			Session::flash('action.failed', true);
-			Session::flash('action.message', Lang::get('auth.login.unauthorized'));
-			return Redirect::guest('/login');
-		}
+
+		// Redirect to login with an unauthorized message
+		Session::flash('action.failed', true);
+		Session::flash('action.message', Lang::get('auth.login.unauthorized'));
+		return Redirect::guest('/login');
 	}
 });
 
@@ -100,5 +98,25 @@ Route::filter('csrf', function()
 	if (Session::token() !== $token)
 	{
 		throw new Illuminate\Session\TokenMismatchException;
+	}
+});
+
+/*
+|--------------------------------------------------------------------------
+| AJAX Request Filter
+|--------------------------------------------------------------------------
+|
+| The AJAX request filter checks if the request is being performed via AJAX
+| methods. Note that this is not a guarantee that the request is being made via
+| AJAX, it simply checks the request headers, which can always be specified by
+| the client at will.
+|
+*/
+
+Route::filter('ajax', function()
+{
+	if (! Request::ajax() && ! Request::isJson())
+	{
+		return Response::make('Method Not Allowed', 405);
 	}
 });
