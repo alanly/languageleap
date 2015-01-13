@@ -2,10 +2,13 @@
 
 use LangLeap\TestCase;
 use LangLeap\Levels\Level;
+use LangLeap\Core\Language;
 
 /**
  * @author KC Wan
  * @author Alan Ly <hello@alan.ly>
+ * @author Thomas Rahn <thomas@rahn.ca>
+ * @author David Siekut <david.siekut@gmail.com>
  */
 class RankQuizTest extends TestCase {
 
@@ -163,4 +166,43 @@ class RankQuizTest extends TestCase {
 		$this->assertEquals(4, $level->id);
 	}
 	
+	public function testSkipRankUnranked()
+	{
+		$this->be($this->createUser(1));
+		$response = $this->action('GET', 'RankQuizController@getSkip');
+
+		$this->assertInstanceOf('Illuminate\Http\RedirectResponse', $response);
+		$this->assertResponseStatus(302);
+	}
+	
+	public function testSkipRankAlreadyRanked()
+	{
+		$this->be($this->createUser(2));
+		$response = $this->action('GET', 'RankQuizController@getSkip');
+
+		$this->assertInstanceOf('Illuminate\Http\Response', $response);
+		$this->assertResponseStatus(400);
+	}
+
+	protected function createUser(
+ 		$level_id,
+ 		$username = 'user',
+ 		$password = 'password',
+ 		$email    = 'admin@test.com',
+ 		$isAdmin  = false
+ 	)
+ 	{
+ 		$user = App::make('LangLeap\Accounts\User');;
+ 
+ 		return $user->create([
+ 			'username'   => $username,
+ 			'password'   => Hash::make($password),
+ 			'email'      => $email,
+ 			'first_name' => 'John',
+ 			'last_name'  => 'Smith',
+ 			'language_id'=> Language::first()->id,
+ 			'is_admin'   => $isAdmin,
+ 			'level_id'	 => $level_id,
+ 		]);
+ 	}
 }
