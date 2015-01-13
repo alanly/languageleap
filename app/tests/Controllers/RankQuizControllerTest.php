@@ -119,5 +119,48 @@ class RankQuizTest extends TestCase {
 		$this->assertObjectHasAttribute('id', $a);
 		$this->assertObjectHasAttribute('text', $a);
 	}
+
+
+	public function testUserIsRankedAccordinglyToTheQuizAnswers()
+	{
+		$user = new LangLeap\Accounts\User;
+		$user->level_id = Level::where('code', 'ur')->first()->id;
+		$this->be($user);
+
+		$response = $this->action('GET', 'RankQuizController@getQuiz', [], [], [],
+			['HTTP_X-Requested-With' => 'XMLHttpRequest']
+		);
+
+		$jsonData = $response->getData()->data;
+		$questions = $jsonData->questions;
+
+		// Add the appropriate answer to each each question,
+		// simulating a user selection.
+
+		for ($i = 0; $i < count($questions); ++$i)
+		{
+			$q = $questions[$i];
+			$q = App::make('LangLeap\Quizzes\Question')->find($q->id);
+			$a = $q->answer;
+
+			$questions[$i]->selected = intval($a->id);
+		}
+
+		// Submit our "answered questions"
+		$response = $this->action('POST', 'RankQuizController@postQuiz', [],
+			['questions' => $questions]);
+
+		$this->assertResponseOk();
+
+		$data = $response->getData()->data;
+
+		$this->assertObjectHasAttribute('user', $data);
+		$this->assertObjectHasAttribute('level', $data);
+		$this->assertObjectHasAttribute('redirect', $data);
+
+		$level = $data->level;
+
+		$this->assertEquals(4, $level->id);
+	}
 	
 }
