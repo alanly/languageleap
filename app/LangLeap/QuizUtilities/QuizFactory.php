@@ -52,7 +52,7 @@ class QuizFactory implements UserInputResponse {
 				$input['selected_words']
 			);
 
-			return ['success', $quiz->toResponseArray(), 200];
+			return ['success', ['quiz_id' => $quiz->id], 200];
 		}
 		else // Create a quiz from questions that are wrong
 		{

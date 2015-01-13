@@ -191,6 +191,9 @@
 				var quiz_id = data.data.quiz_id;
 				if(quiz_id > 0)
 				{
+					// Store data in the HTML5 Storage schema
+					localStorage.setItem("quizPrerequisites", JSON.stringify({'quiz_id': data.data.quiz_id}));
+						
 					$("#quiz-link").html('<a href="quiz"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>');
 				}
 			},

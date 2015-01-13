@@ -31,18 +31,15 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 	var correctQuestionsCount = $scope.correctQuestionsCount = 0;
 
 	// Get the video information from the local storage.
-	var videoInfo = $scope.videoInfo = JSON.parse(localStorage.getItem("quizPrerequisites"));
+	var quizInfo = $scope.videoInfo = JSON.parse(localStorage.getItem("quizPrerequisites"));
+	
+	console.log(quizInfo);
 
 	/**
 	 * Load questions from the API on boot.
 	 */
-	$http.post(
-		'/api/quiz',
-		{
-			'video_id':       videoInfo.video_id,
-			'selected_words': videoInfo.selected_words,
-			'all_words':      videoInfo.all_words
-		}
+	$http.get(
+		'/api/quiz/' + quizInfo.quiz_id
 	).
 		success(function(data, status, headers, config)
 		{

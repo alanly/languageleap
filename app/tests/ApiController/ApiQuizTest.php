@@ -22,6 +22,18 @@ class ApiQuizControllerTest extends TestCase {
 		$this->be(User::where('is_admin', '=', true)->first());
 	}
 
+	
+	public function testIndex()
+	{
+		$video = Video::first();
+		
+		$response = $this->action(
+			'post',
+			'ApiQuizController@getIndex',
+			[],["video_id" => $video->id, "all_words" => $all_words, "selected_words" => $selected_words]
+		);
+	}
+	
 	/**
 	*	This method will test the postIndex method of the ApiQuizController.
 	*
@@ -45,7 +57,7 @@ class ApiQuizControllerTest extends TestCase {
 	*	 }
 	* } 
 	*/
-	public function testIndex()
+	public function testVideo()
 	{
 		$video = Video::first();
 
@@ -60,7 +72,7 @@ class ApiQuizControllerTest extends TestCase {
 
 		$response = $this->action(
 			'post',
-			'ApiQuizController@postIndex',
+			'ApiQuizController@postVideo',
 			[],["video_id" => $video->id, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 
@@ -68,7 +80,7 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertResponseOk();
 		
 		$data = $response->getData()->data;
-		$this->assertObjectHasAttribute('id', $data);
+		$this->assertObjectHasAttribute('quiz_id', $data);
 		$this->assertObjectHasAttribute('video_questions', $data);
 
 		$videoQuestions = $data->video_questions;
