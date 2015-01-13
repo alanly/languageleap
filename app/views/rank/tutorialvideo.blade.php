@@ -62,10 +62,10 @@
 			<p>@lang('player.audio.error')</p>
 		</audio>
 	</div>
-	<div class="form-group">
-		<div id="quizButton">
-			<a class="btn btn-primary" href="{{ URL::to('/rank') }}">Proceed to Quiz</a>
-		</div>
+</div>
+<div class="form-group">
+	<div id="quizButton">
+		<a class="btn btn-primary" href="{{ URL::to('/rank') }}">Proceed to Quiz</a>
 	</div>
 </div>
 @stop
