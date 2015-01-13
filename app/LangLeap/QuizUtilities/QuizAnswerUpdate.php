@@ -23,7 +23,7 @@ class QuizAnswerUpdate implements UserInputResponse {
 		// Update the correctness of the quiz
 		$videoquestion->quiz()->updateExistingPivot(
 			$quiz->id,
-			['is_correct' => $isCorrectAnswer]
+			['is_correct' => $isCorrectAnswer, 'attempted' => true]
 		);
 		
 		// Update the quiz score

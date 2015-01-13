@@ -221,6 +221,8 @@
 					'all_words': $('#script span[data-type=word]').map(function() { return $(this).data('id'); }).get()
 				};
 
+				
+				
 				$.ajax({
 					url: '/api/quiz/video',
 					type: 'POST',
@@ -419,6 +421,7 @@
 			$('.continue').click(function()
 			{
 				loadQuiz();
+				$(this).attr('disabled', 'disabled');
 			});
 
 			// Used to determine how long the mouse is hovered over a word

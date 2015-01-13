@@ -14,17 +14,17 @@ class VideoQuestion extends Eloquent {
 
 	public function question()
 	{
-		return $this->belongsTo('LangLeap\Quizzes\Question');
+		return $this->belongsTo('LangLeap\Quizzes\Question', 'question_id');
 	}
-
-	public function results()
+	
+	public function video()
 	{
-		return $this->hasMany('LangLeap\Quizzes\Result');
+		return $this->belongsTo('LangLeap\Videos\Video');
 	}
 	
 	public function quiz()
 	{
-		return $this->belongsToMany('LangLeap\Quizzes\Quiz', 'videoquestion_quiz', 'videoquestion_id', 'quiz_id')->withPivot('is_correct')->withTimestamps();
+		return $this->belongsToMany('LangLeap\Quizzes\Quiz', 'videoquestion_quiz', 'videoquestion_id', 'quiz_id')->withPivot('is_correct', 'attempted');
 	}
 	
 	public function toResponseArray()

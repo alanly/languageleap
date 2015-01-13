@@ -109,12 +109,12 @@ class QuizFactory implements UserInputResponse {
 			
 			// Try to find the video question for that word for re-use
 			$videoQuestion = null;	
-			$videoQuestions = VideoQuestion::join('questions', 'questions.id', '=', 'videoquestions.question_id')
-			                               ->where('questions.question', 'like', '%' . $definition->word . '%')->where('videoquestions.video_id', '=', $video_id);
-			
+			$videoQuestions = VideoQuestion::select('videoquestions.*')->join('questions', 'questions.id', '=', 'videoquestions.question_id')
+			                               ->where('questions.question', 'like', '%' . $definition->word . '%')->where('videoquestions.video_id', '=', $video_id)->get();
+
 			foreach($videoQuestions as $vq)
 			{
-				$indexOfWord = stripos($vq->question()->question, $definition->word);
+				$indexOfWord = strripos($vq->question->question, $definition->word);
 				if ( ($indexOfWord !== false) && ($indexOfWord > strlen($questionPrepend) - 1) ) // Check index in case word appears in question (e.g.: "what")
 				{
 					$videoQuestion = $vq;
@@ -161,16 +161,28 @@ class QuizFactory implements UserInputResponse {
 	 */
 	public function getReminderQuiz($user_id)
 	{
-		$videoQuestions = VideoQuestion::select(array('videoquestions.*', 'videoquestion_quiz.updated_at', \DB::raw('count(videoquestions.id) as attempts')))
-			->join('videoquestion_quiz', 'videoquestion_quiz.videoquestion_id', '=', 'videoquestions.id')->join('questions', 'questions.id', '=', 'videoquestions.question_id')->join('quizzes', 'quizzes.id', '=', 'videoquestion_quiz.quiz_id')
-			->where('videoquestions.is_custom', '=', false)->where('videoquestion_quiz.created_at', '<>', 'videoquestion_quiz.updated_at')->where('videoquestion_quiz.is_correct', '=', false)->where('quizzes.user_id', '=', $user_id)
-			->groupBy('videoquestions.id')->orderBy('attempts', 'desc')->orderBy('videoquestion_quiz.updated_at', 'desc')->get();
-			
-		if($videoQuestions && $videoQuestions->count() > 0)
+		$allQuestions = VideoQuestion::select(
+			array('videoquestions.*', 
+			\DB::raw('COUNT(NULLIF(videoquestion_quiz.is_correct, 0)) as correct'), 
+			\DB::raw('COUNT(NULLIF(videoquestion_quiz.is_correct, 1)) as incorrect'))
+		)
+			->join('videoquestion_quiz', 'videoquestion_quiz.videoquestion_id', '=', 'videoquestions.id')->join('quizzes', 'quizzes.id', '=', 'videoquestion_quiz.quiz_id')
+			->where('videoquestions.is_custom', '=', false)->where('videoquestion_quiz.attempted', '=', true)
+			->where('quizzes.user_id', '=', $user_id)->groupBy('videoquestions.id')->get();
+		
+		$videoQuestions = new Collection([]);
+		foreach($allQuestions as $q) // Possibly add the question to the reminder quiz if it has been wrong more than 34% of the time.
 		{
-			$quiz = Quiz::create([
-				'user_id' => $user_id
-			]);
+			$percentRight = (float)$q->correct/(float)($q->correct + $q->incorrect);
+			if($percentRight < 0.66)
+			{
+				$videoQuestions->add($q);
+			}
+		}
+		
+		if($videoQuestions->count() > 0)
+		{
+			$quiz = Quiz::create(['user_id' => $user_id]);
 			
 			while($videoQuestions->count() > 0 && $quiz->videoQuestions()->count() < 5)
 			{
