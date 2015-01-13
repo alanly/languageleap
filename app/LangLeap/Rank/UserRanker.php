@@ -62,6 +62,8 @@ class UserRanker {
 			$question = $this->questions->find($q->id);
 			$answer = $question->answer;
 
+			if (! isset($q->selected)) return App::abort(400, 'Incomplete request.');
+
 			if (intval($q->selected) === $answer->id) ++$numberOfCorrectAnswers;
 		}
 
