@@ -17,6 +17,8 @@ return array(
 		'quiz-reminder' => array(
 			'name' => 'Quizzes',
 			'none' => 'No quizzes to do',
+			'attempt' => 'Attempt',
 		),
 	),
+	'brand' => 'Language Leap'
 );
