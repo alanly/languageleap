@@ -22,18 +22,6 @@ class ApiQuizControllerTest extends TestCase {
 		$this->be(User::where('is_admin', '=', true)->first());
 	}
 
-	
-	public function testIndex()
-	{
-		$video = Video::first();
-		
-		$response = $this->action(
-			'post',
-			'ApiQuizController@getIndex',
-			[],["video_id" => $video->id, "all_words" => $all_words, "selected_words" => $selected_words]
-		);
-	}
-	
 	/**
 	*	This method will test the postIndex method of the ApiQuizController.
 	*
@@ -57,6 +45,36 @@ class ApiQuizControllerTest extends TestCase {
 	*	 }
 	* } 
 	*/
+	public function testIndex()
+	{
+		$quiz = Quiz::first();
+		
+		$response = $this->action(
+			'post',
+			'ApiQuizController@postIndex',
+			[],["quiz_id" => $quiz->id]
+		);
+		
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+		
+		$data = $response->getData()->data;
+		$this->assertObjectHasAttribute('id', $data);
+		$this->assertObjectHasAttribute('video_questions', $data);
+
+		$videoQuestions = $data->video_questions;
+		$this->assertGreaterThan(0, count($videoQuestions));
+		foreach($data->video_questions as $vq)
+		{
+			$this->assertObjectHasAttribute('id', $vq);
+			$this->assertObjectHasAttribute('question', $vq);
+			$this->assertObjectHasAttribute('answers', $vq);
+		}
+	}
+	
+	/**
+	 * This test will check if a quiz is created when submitting words to the ApiQuizController
+	 */
 	public function testVideo()
 	{
 		$video = Video::first();
@@ -81,17 +99,7 @@ class ApiQuizControllerTest extends TestCase {
 		
 		$data = $response->getData()->data;
 		$this->assertObjectHasAttribute('quiz_id', $data);
-		$this->assertObjectHasAttribute('video_questions', $data);
-
-		$videoQuestions = $data->video_questions;
-		$this->assertGreaterThan(0, count($videoQuestions));
-		foreach($data->video_questions as $vq)
-		{
-			$this->assertObjectHasAttribute('id', $vq);
-			$this->assertObjectHasAttribute('question', $vq);
-			$this->assertObjectHasAttribute('answers', $vq);
-			$this->assertGreaterThan(1, count($vq->answers));
-		}
+		$this->assertGreaterThan(0, $data->quiz_id);
 	}
 
 	/**
@@ -108,7 +116,7 @@ class ApiQuizControllerTest extends TestCase {
 
 		$response = $this->action(
 			'post',
-			'ApiQuizController@postIndex',
+			'ApiQuizController@postVideo',
 			[],["video_id"=>$video->id, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 
@@ -132,7 +140,7 @@ class ApiQuizControllerTest extends TestCase {
 
 		$response = $this->action(
 			'post',
-			'ApiQuizController@postIndex',
+			'ApiQuizController@postVideo',
 			[],["video_id"=>-1, "all_words" => $all_words, "selected_words" => $selected_words]
 		);
 

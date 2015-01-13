@@ -38,8 +38,11 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 	/**
 	 * Load questions from the API on boot.
 	 */
-	$http.get(
-		'/api/quiz/' + quizInfo.quiz_id
+	$http.post(
+		'/api/quiz',
+		{
+			'quiz_id': quizInfo.quiz_id
+		}
 	).
 		success(function(data, status, headers, config)
 		{

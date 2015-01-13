@@ -19,8 +19,9 @@ class ApiQuizController extends \BaseController {
 	 * 
 	 * @return Response
 	 */
-	public function getIndex($quiz_id)
+	public function postIndex()
 	{
+		$quiz_id = Input::get('quiz_id');
 		$quiz = Quiz::find($quiz_id);
 		return $this->apiResponse(
 			'success', $quiz->toResponseArray()
