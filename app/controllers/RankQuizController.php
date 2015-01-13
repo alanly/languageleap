@@ -35,7 +35,7 @@ class RankQuizController
 
 	public function getIndex()
 	{
-		return View::make('rank.tutorialquiz');
+		return View::make('rank.quiz');
 	}
 
 
@@ -52,12 +52,12 @@ class RankQuizController
 	}
 
 
-	public function postIndex()
+	public function postQuiz()
 	{
 		$questions = Input::get('questions');
 
-		// There should be 5 questions.
-		if (! $questions || (count($questions) < 5))
+		// There should be questions.
+		if (! $questions || (count($questions) < 1))
 		{
 			return $this->apiResponse('error', 'Missing or incomplete questions object in request.', 400);
 		}
@@ -85,9 +85,9 @@ class RankQuizController
 			return $this->apiResponse('error', 'Error when updating user.', 500);
 		}
 
-		// Generate a response containing the user and the redirection URL.
+		// Generate a response containin the needed values.
 		return $this->apiResponse(
-			'success', [ 'user' => $user, 'redirect' => URL::to('/') ]
+			'success', [ 'user' => $user, 'level' => $user->level, 'redirect' => URL::to('/') ]
 		);
 	}
 
