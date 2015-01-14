@@ -495,3 +495,19 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
+
+$('#button-edit-info-done').on("click", function()
+{
+	var cutForm = $('#cut-form');
+
+	if($('#user_role_cut_by').is(':checked'))
+	{
+		cutForm.attr("url", "/api/videos/cut/segments");
+	}
+	else if($('#user_role_cut_at').is(':checked'))
+	{
+		cutForm.attr("url", "/api/videos/cut/times");
+	}
+
+	console.log(cutForm.attr("url"));
+});
