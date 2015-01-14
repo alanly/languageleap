@@ -110,7 +110,7 @@ Route::group(['prefix' => 'api'], function()
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
-	
+	Route::controller('videos/cut', 'ApiCutVideoController');
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 

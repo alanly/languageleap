@@ -5,15 +5,25 @@ use LangLeap\CutVideoUtilities\CutVideoAdapter;
 
 class ApiCutVideoController extends BaseController {
 
-	public function cutIntoSegments()
+	public function postSegments()
 	{
+		$user = Auth::user();
+		if(!$user || !$user->is_admin)
+		{
+			return $this->apiResponse(
+				'error',
+				'Must be an administrator to edit videos',
+				401
+			);
+		}
+		
 		$video_id = Input::get("video_id");
 		if(!$video_id)
 		{
 			return $this->apiResponse(
 				'error',
 				"Video id is missing.",
-				404
+				400
 			);
 		}
 
@@ -33,7 +43,7 @@ class ApiCutVideoController extends BaseController {
 			return $this->apiResponse(
 				'error',
 				"Media type is missing.",
-				404
+				400
 			);
 		}
 
@@ -43,7 +53,7 @@ class ApiCutVideoController extends BaseController {
 			return $this->apiResponse(
 				'error',
 				"Media {$media_id} is missing.",
-				404
+				400
 			);
 		}
 
@@ -53,14 +63,14 @@ class ApiCutVideoController extends BaseController {
 			return $this->apiResponse(
 				'error',
 				"Cut into segments value is missing.",
-				404
+				400
 			);
 		}
 
 		return $this->cutVideoEqually($video, $media_id, $mediaType, $segments);
 	}
 
-	public function cutVideoEqually($video, $media_id, $mediaType, $segments)
+	private function cutVideoEqually($video, $media_id, $mediaType, $segments)
 	{
 		/*
 		$ffmpeg = FFMpeg::create();
@@ -78,7 +88,7 @@ class ApiCutVideoController extends BaseController {
 		$videoCutter->cutVideoIntoSegmets($segments);
 	}
 
-	public function cutAtTimes()
+	public function postTimes()
 	{
 
 	}
