@@ -145,35 +145,75 @@
 		        	<img class="modal-image" src="" />
 		        </div>
 		        <div class="col-xs-8">
-							<div class="info-row">ID: <span class="modal-id"></span></div>
+					<div class="info-row">ID: <span class="modal-id"></span></div>
 
-							<div id="" class="form-group">
-								<label>Name</label>
-								<input id="edit-media-info-name" name="name" type="text" class="form-control" placeholder="" />
+					<div id="" class="form-group">
+						<label>Name</label>
+						<input id="edit-media-info-name" name="name" type="text" class="form-control" placeholder="" />
 
-								<label>Description</label>
-								<input id="edit-media-info-description" name="description" type="text" class="form-control" placeholder="" />
+						<label>Description</label>
+						<input id="edit-media-info-description" name="description" type="text" class="form-control" placeholder="" />
 
-								<label>Director</label>
-								<input id="edit-media-info-director" name="director" type="text" class="form-control" placeholder="" />
-								
-								<label>Actor</label>
-								<input id="edit-media-info-actor" name="actor" type="text" class="form-control" placeholder="" />
-							
-								<label>Level</label>
-								<select id="edit-media-info-level" name="level_id" class="form-control">
-									@foreach($levels as $level)
-		  								<option value="{{ $level->id }}">{{ $level->description }}</option>
-									@endforeach
-								</select>
-							
-							</div>
+						<label>Director</label>
+						<input id="edit-media-info-director" name="director" type="text" class="form-control" placeholder="" />
+						
+						<label>Actor</label>
+						<input id="edit-media-info-actor" name="actor" type="text" class="form-control" placeholder="" />
+					
+						<label>Level</label>
+						<select id="edit-media-info-level" name="level_id" class="form-control">
+							@foreach($levels as $level)
+		  						<option value="{{ $level->id }}">{{ $level->description }}</option>
+							@endforeach
+						</select>
+					
+					</div>
 		        </div>
-						<button id="button-edit-info-save" type="button" class="btn btn-primary pull-right">Save</button>
+					<button id="button-edit-info-save" type="button" class="btn btn-primary pull-right">Save</button>
 		    </div>
 				{{ Form::close() }}
       </div>
 			<!-- /info -->
+
+			<!-- split -->
+		<div class="modal-body split clearfix" aria-hidden="true" style="display: none;">
+
+			<div class="row" style="padding-left: 20px;">
+				<div class="col-lg-6">
+					<video controls>
+						<source class="source" type="video/mp4">
+						<p>@lang('player.player.error')</p>
+					</video>
+				</div>
+				<div class="col-lg-6"  style="padding-right: 35px;">
+					<div class="control-group">
+						<div class="controls">
+							{{ Form::open(array('url'=>'/api/videos/cut/segments', 'id' => 'cut-form')) }}
+							<div class="radio row">
+								<br/>
+								<label>
+									<input id="user_role_cut_by" name="user[role]" type="radio" value="Cut by">
+					                Cut By 
+					                <input type="text">
+								</label>
+								<br/>
+								<br/>
+								<label>
+									<input id="user_role_cut_at" name="user[role]" type="radio" value="Cut at">
+									Cut At 
+									<input type="text" size="10" style="text-align: right;"> for 
+									<input type="text" size="10" style="text-align: right;"> seconds</br>
+								</label>
+							</div>
+							{{ Form::close() }}
+						</div>
+						<button id="button-edit-info-done" type="button" class="btn btn-primary pull-right">Done</button>
+					</div>
+				</div>
+			</div>
+		</div>
+			<!-- /split -->
+
 			
 			<!-- script -->
       <div class="modal-body script clearfix" aria-hidden="true" style="display: none;">
@@ -245,6 +285,7 @@
 		    <div class="row-fluid">
 					<span id="footer-info">Info</span>
 					<span id="footer-seasons" aria-hidden="true" style="display: none;">Seasons</span>
+					<span id="footer-split">Split</span>
 					<span id="footer-script">Script</span>
 					<span id="footer-media"></span>
 				</div>				

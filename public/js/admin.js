@@ -455,6 +455,11 @@ $('.modal-footer').on('click', 'span', function(event)
 		$('.modal-body.info').attr("aria-hidden", false);
 		$('.modal-body.info').css("display", "block");
 	}
+	else if (id == "footer-split")
+	{
+		$('.modal-body.split').attr("aria-hidden", false);
+		$('.modal-body.split').css("display", "block");
+	}
 	else if (id == "footer-script")
 	{
 		$('.modal-body.script').attr("aria-hidden", false);
