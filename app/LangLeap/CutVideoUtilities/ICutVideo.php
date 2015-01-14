@@ -8,6 +8,6 @@ use LangLeap\Core\Collection;
 interface ICutVideo 
 {
 	public function cutVideoIntoSegmets($numberOfSegments);
-	public function cutVideoAtSpecifiedLocations($cutOffTimes);
+	public function cutVideoAtSpecifiedTimes($cutOffTimes);
 }
 

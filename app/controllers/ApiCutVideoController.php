@@ -57,10 +57,10 @@ class ApiCutVideoController extends BaseController {
 			);
 		}
 
-		return $this->cutVideoEqually($video, $media_id, $mediaType, $segments);
+		return $this->cutVideoEqually($video, $media_id, $segments);
 	}
 
-	public function cutVideoEqually($video, $media_id, $mediaType, $segments)
+	public function cutVideoEqually($video, $media_id, $segments)
 	{
 		/*
 		$ffmpeg = FFMpeg::create();
@@ -74,7 +74,7 @@ class ApiCutVideoController extends BaseController {
 		->save(new FFMpeg\Format\Video\X264("libvo_aacenc"), 'video1.mp4');
 		*/
 
-		$videoCutter = new CutVideoAdapter($video, $media_id, $mediaType);
+		$videoCutter = new CutVideoAdapter($video, $media_id);
 		$videoCutter->cutVideoIntoSegmets($segments);
 	}
 
