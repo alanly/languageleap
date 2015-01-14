@@ -1,6 +1,7 @@
 <?php
 
 use LangLeap\Videos\Video;
+use LangLeap\CutVideoUtilities\CutVideoAdapter;
 
 class ApiCutVideoController extends BaseController {
 
@@ -56,14 +57,12 @@ class ApiCutVideoController extends BaseController {
 			);
 		}
 
-		if($mediaType == "Commercial")
-		{
-			return $this->cutCommercialIntoSegments($video, $media_id, $segments);
-		}
+		return $this->cutVideoEqually($video, $media_id, $mediaType, $segments);
 	}
 
-	public function cutCommercialIntoSegments($video, $media_id, $segments)
+	public function cutVideoEqually($video, $media_id, $mediaType, $segments)
 	{
+		/*
 		$ffmpeg = FFMpeg::create();
 		$ffmpegVideo = $ffmpeg->open("app\\" . $video->path);
 
@@ -73,6 +72,10 @@ class ApiCutVideoController extends BaseController {
 		$ffmpegVideo->filters()->clip(FFMpeg\Coordinate\TimeCode::fromSeconds(1), FFMpeg\Coordinate\TimeCode::fromSeconds(30));
 		$ffmpegVideo
 		->save(new FFMpeg\Format\Video\X264("libvo_aacenc"), 'video1.mp4');
+		*/
+
+		$videoCutter = new CutVideoAdapter($video, $media_id, $mediaType);
+		$videoCutter->cutVideoIntoSegmets($segments);
 	}
 
 	public function cutAtTimes()

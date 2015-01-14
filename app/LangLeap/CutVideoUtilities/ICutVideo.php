@@ -1,13 +1,13 @@
-<?php namespace LangLeap\VideoCutterUtilities;
+<?php namespace LangLeap\CutVideoUtilities;
 
 use LangLeap\Core\Collection;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
-interface IVideoCutter 
+interface ICutVideo 
 {
 	public function cutVideoIntoSegmets($numberOfSegments);
-	public function cutVideoAtLocation($cutOffTimes)
+	public function cutVideoAtSpecifiedLocations($cutOffTimes);
 }
 

@@ -1,31 +1,32 @@
-<?php namespace LangLeap\VideoCutterUtilities;
+<?php namespace LangLeap\CutVideoUtilities;
 
 use LangLeap\Core\Collection;
+use LangLeap\CutVideoUtilities\CutVideoFactory;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
-class VideoCutter implements IVideoCutter
+class CutVideo implements ICutVideo
 {
 	private $videoCutter;
 	private $videoFormatter;
 	private $media_id;
 	private $mediaType;
 
-	public __construct($video, $media_id, $mediaType)
+	function __construct($video, $media_id, $mediaType)
 	{
-		$this->videoCutter = VideoCutterFactory::getInstance()->getFFmpeg($video->path);
-		$this->videoFormatter = VideoCutterFactory::getInstance()->getFFprobe($video->path);
+		$this->videoCutter = CutVideoFactory::getInstance()->getFFmpeg($video->path);
+		$this->videoFormatter = CutVideoFactory::getInstance()->getFFprobe($video->path);
 		$this->media_id = $media_id;
 		$this->mediaType = $mediaType;
 	}
 
 	public function cutVideoIntoSegmets($numberOfSegments)
 	{
-		$cutOffTimes = $this->getEqualCutOffTimes($numberOfSegments);
+		$cutOffTimes = $this->getEqualCutoffTimes($numberOfSegments);
 	}
 
-	public function cutVideoAtLocation($cutOffTimes)
+	public function cutVideoAtSpecifiedLocations($cutOffTimes)
 	{
 		
 	}
@@ -45,18 +46,22 @@ class VideoCutter implements IVideoCutter
 		$duration = $this->getVideoDuration();
 		$secondsPerVideo = intval($duration/$numberOfSegments);
 
-		$this->getTimesToCut($secondsPerVideo, $duration);
+		return $this->getTimesToCut($secondsPerVideo, $duration);
 	}
 
 	private function getTimesToCut($secondsPerVideo, $duration)
 	{
 		$currentTime = 0;
-		$arrayOfTimes = array();
+		$cutoffTimes = array();
 
 		while($currentTime < $duration)
 		{
-			
+			$timeAndDuration = ["time" => $currentTime, "duration" => $secondsPerVideo];
+			array_push($arrayOfTimes, $timeAndDuration);
+			$currentTime += $secondsPerVideo;
 		}
+		
+		return $cutoffTimes;
 	}
 
 	private function getVideoDuration()

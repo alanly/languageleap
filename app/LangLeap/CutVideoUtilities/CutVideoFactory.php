@@ -1,11 +1,13 @@
-<?php namespace LangLeap\VideoCutterUtilities;
+<?php namespace LangLeap\CutVideoUtilities;
 
 use LangLeap\Core\Collection;
+use FFMpeg;
+use FFProbe;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
-class VideoCutterFactory
+class CutVideoFactory
 {
 	private static $instance;
 
