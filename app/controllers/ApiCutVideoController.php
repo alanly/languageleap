@@ -37,26 +37,6 @@ class ApiCutVideoController extends BaseController {
 			);
 		}
 
-		$mediaType = Input::get("mediaType");
-		if(!$mediaType)
-		{
-			return $this->apiResponse(
-				'error',
-				"Media type is missing.",
-				400
-			);
-		}
-
-		$media_id = Input::get("media_id");
-		if(!$media_id)
-		{
-			return $this->apiResponse(
-				'error',
-				"Media {$media_id} is missing.",
-				400
-			);
-		}
-
 		$segments = Input::get("segments");
 		if(!$segments)
 		{
@@ -67,10 +47,10 @@ class ApiCutVideoController extends BaseController {
 			);
 		}
 
-		return $this->cutVideoEqually($video, $media_id, $mediaType, $segments);
+		return $this->cutVideoEqually($video, $segments);
 	}
 
-	private function cutVideoEqually($video, $media_id, $mediaType, $segments)
+	private function cutVideoEqually($video, $segments)
 	{
 		/*
 		$ffmpeg = FFMpeg::create();
@@ -84,7 +64,7 @@ class ApiCutVideoController extends BaseController {
 		->save(new FFMpeg\Format\Video\X264("libvo_aacenc"), 'video1.mp4');
 		*/
 
-		$videoCutter = new CutVideoAdapter($video, $media_id, $mediaType);
+		$videoCutter = new CutVideoAdapter($video);
 		$videoCutter->cutVideoIntoSegmets($segments);
 	}
 

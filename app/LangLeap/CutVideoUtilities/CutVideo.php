@@ -3,6 +3,7 @@
 use LangLeap\Core\Collection;
 use LangLeap\CutVideoUtilities\CutVideoFactory;
 use LangLeap\Videos\Video;
+use FFMpeg;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
@@ -11,31 +12,30 @@ class CutVideo implements ICutVideo
 {
 	private $cutVideo;
 	private $videoFormatter;
-	private $media_id;
 	private $video;
 	private $AUDIO_CODEC = "libvo_aacenc";
 	private $NUMBER_OF_ZEROES_VIDEO_NAME = 3;
 
-	function __construct($video, $media_id)
+	function __construct($video)
 	{
 		$this->cutVideo = CutVideoFactory::getInstance()->getFFmpeg($video->path);
 		$this->videoFormatter = CutVideoFactory::getInstance()->getFFprobe($video->path);
-		$this->media_id = $media_id;
 		$this->video = $video;
 	}
 
 	public function cutVideoIntoSegmets($numberOfSegments)
 	{
-		$cutOffTimes = $this->getEqualCutoffTimes($numberOfSegments);
+		$cutoffTimes = $this->getEqualCutoffTimes($numberOfSegments);
+		$this->cutVideoAtSpecifiedTimes($cutoffTimes);
 	}
 
 	public function cutVideoAtSpecifiedTimes($cutOffTimes)
 	{
-		$counter = 0;
+		$counter = 1;
 
-		for($timeAndDuration as $time)
+		foreach($cutOffTimes as $time)
 		{
-			$this->cutAt($time[0], $time[1], $counter++)
+			$this->cutAt($time["time"], $time["duration"], $counter++);
 		}
 	}
 
@@ -43,34 +43,26 @@ class CutVideo implements ICutVideo
 	{	
 		$this->cutVideo->filters()->clip($this->getTimeCode($start), $this->getTimeCode($duration));
 		$videoPath = $this->getVideoPath($counter);
-		$this->cutVideo->save(new FFMpeg\Format\Video\X264($AUDIO_CODEC), $videoPath);
+		$this->cutVideo->save(new FFMpeg\Format\Video\X264($this->AUDIO_CODEC), $videoPath);
 		$this->createVideoAssociation($videoPath);
 	}
 
 	private function getVideoPath($counter)
 	{
 		$videoName = $this->getVideoName($counter);
-		$lastSlashPosition = strrpos($video->path, "/");
-		$videoPath = substr(0, $lastSlashPosition + 1) . $videoName;
+		$lastSlashPosition = strrpos($this->video->path, "\\");
+		$videoPath = substr($this->video->path, 0, $lastSlashPosition + 1) . $videoName;
 
-		return $videoPath;
+		return "app\\" . $videoPath;
 	}
 
 	private function getVideoName($counter)
 	{
-		$name = $this->videoFormatter->get("name");
-		$numberOfZeroes = $this->NUMBER_OF_ZEROES_VIDEO_NAME - intval(strlen((string)$num));
+		$name = $this->videoFormatter->get("tags")["title"];
+		$number = sprintf("%03d", $counter);
+		$name = $name . "_" . $number;
 
-		$name = $name . "_";
-
-		for($i = 0; $i < $numberOfZeroes; $i++)
-		{
-			$name . "0";
-		}
-
-		$name = $name . $counter;
-
-		return $name . ".mp4"
+		return $name . ".mp4";
 	}
 
 	private function createVideoAssociation($path)
@@ -99,7 +91,7 @@ class CutVideo implements ICutVideo
 	private function getCutoffTimes($secondsPerVideo, $duration)
 	{
 		$currentTime = 0;
-		$cutoffTimes = array();
+		$cutoffTimes = [];
 
 		while($currentTime < $duration)
 		{
@@ -117,4 +109,3 @@ class CutVideo implements ICutVideo
 		return intval($duration);
 	}
 }
-

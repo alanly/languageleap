@@ -10,9 +10,9 @@ class CutVideoAdapter
 {
 	private $videoCutter;
 
-	function __construct($video, $media_id, $mediaType)
+	function __construct($video)
 	{
-		$this->videoCutter = new CutVideo($video, $media_id, $mediaType);
+		$this->videoCutter = new CutVideo($video);
 	}
 
 	public function cutVideoIntoSegmets($numberOfSegments)
