@@ -57,7 +57,7 @@ class CutVideo implements ICutVideo
 		while($currentTime < $duration)
 		{
 			$timeAndDuration = ["time" => $currentTime, "duration" => $secondsPerVideo];
-			array_push($arrayOfTimes, $timeAndDuration);
+			array_push($cutoffTimes, $timeAndDuration);
 			$currentTime += $secondsPerVideo;
 		}
 		
