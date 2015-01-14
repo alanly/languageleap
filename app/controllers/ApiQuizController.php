@@ -139,9 +139,10 @@ class ApiQuizController extends \BaseController {
 	
 	public function getReminder()
 	{	
-		$response = QuizUtils::createReminderQuiz(Auth::user(), null);
+		$response = QuizUtils::createReminderQuiz(Auth::user(), []);
 		return $this->apiResponse(
 			$response[0], $response[1], $response[2]
 		);
 	}
+
 }
