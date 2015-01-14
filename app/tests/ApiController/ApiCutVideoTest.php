@@ -7,17 +7,157 @@ use LangLeap\TestCase;
 */
 class ApiCutVideoTest extends TestCase {
 
+	private $commercial;
+	private $video;
+
+	public function setUp()
+	{
+		parent::setUp();
+		$this->commercial = $this->getCommercialInstance();
+		$this->video = $this->getVideoInstance();
+		$this->be($this->getUserInstance(true));
+	}
+
 	public function testCutVideoEqually()
 	{
-		$commercial = $this->getCommercialInstance();
-		$video = $this->getVideoInstance();
-
-		$response = $this->action('GET', 'ApiCutVideoController@cutIntoSegments', [], [	"video_id" => $video->id, 
-																						"mediaType" => "Commercial", 
-																						"media_id" => $commercial->id,
-																						"segments" => 5
-																					]);
-
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postSegments', 
+			[], ["video_id" => $this->video->id, "mediaType" => "Commercial", "media_id" => $this->commercial->id, "segments" => 5]
+		);
+		
+		$this->assertResponseOk();
+	}
+	
+	public function testCutVideoTimes()
+	{
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postTimes',
+			[], [
+				"video_id" => $this->video->id, 
+				"mediaType" => "Commercial", 
+				"media_id" => $this->commercial->id, 
+				"times" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
+			]
+		);
+		
+		$this->assertResponseOk();
+	}
+	
+	public function testCutVideoUnauthorized()
+	{
+		$this->be($this->getUserInstance(false));
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postSegments', 
+			[], ["video_id" => $this->video->id, "mediaType" => "Commercial", "media_id" => $this->commercial->id, "segments" => 5]
+		);
+		$this->assertResponseStatus(401);
+		
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postTimes', 
+			[], [
+				"video_id" => $this->video->id, 
+				"mediaType" => "Commercial", 
+				"media_id" => $this->commercial->id, 
+				"times" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
+			]
+		);
+		$this->assertResponseStatus(401);
+	}
+	
+	public function testCutVideoMissingVideo()
+	{
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postSegments', 
+			[], ["mediaType" => "Commercial", "media_id" => $this->commercial->id, "segments" => 5]
+		);
+		$this->assertResponseStatus(400);
+		
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postTimes', 
+			[], [
+				"mediaType" => "Commercial", 
+				"media_id" => $this->commercial->id, 
+				"times" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
+			]
+		);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testCutVideoMissingType()
+	{
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postSegments', 
+			[], ["video_id" => $this->video->id, "media_id" => $this->commercial->id, "segments" => 5]
+		);
+		$this->assertResponseStatus(400);
+		
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postTimes', 
+			[], [
+				"video_id" => $this->video->id, 
+				"media_id" => $this->commercial->id, 
+				"times" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
+			]
+		);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testCutVideoMissingMedia()
+	{
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postSegments', 
+			[], ["video_id" => $this->video->id, "mediaType" => "Commercial", "segments" => 5]
+		);
+		$this->assertResponseStatus(400);
+		
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postTimes', 
+			[], [
+				"video_id" => $this->video->id, 
+				"mediaType" => "Commercial", 
+				"times" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
+			]
+		);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testCutVideoMissingSegments()
+	{
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postSegments', 
+			[], ["video_id" => $this->video->id, "mediaType" => "Commercial", "media_id" => $this->commercial->id]
+		);
+		$this->assertResponseStatus(400);
+		
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postTimes', 
+			[], [
+				"video_id" => $this->video->id, 
+				"mediaType" => "Commercial", 
+				"media_id" => $this->commercial->id, 
+			]
+		);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testCutVideoVideoNotFound()
+	{
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postSegments', 
+			[], ["video_id" => -1, "mediaType" => "Commercial", "media_id" => $this->commercial->id, "segments" => 5]
+		);
+		$this->assertResponseStatus(404);
+		
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postTimes', 
+			[], [
+				"video_id" => -1, 
+				"mediaType" => "Commercial", 
+				"media_id" => $this->commercial->id, 
+				"times" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
+			]
+		);
+		$this->assertResponseStatus(404);
 	}
 	
 	protected function getVideoInstance()
@@ -41,5 +181,19 @@ class ApiCutVideoTest extends TestCase {
 		$commercial->save();
 		
 		return $commercial;
+	}
+	
+	protected function getUserInstance($is_admin)
+	{
+		$user = App::make('LangLeap\Accounts\User');
+		$user->username = 'username';
+		$user->email = 'username@email.com';
+		$user->password = 'password';
+		$user->first_name = 'John';
+		$user->last_name = 'Doe';
+		$user->language_id = 1;
+		$user->is_admin = $is_admin;
+		
+		return $user;
 	}
 }
