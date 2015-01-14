@@ -18,6 +18,7 @@ class CreateVideoquestionQuizTable extends Migration {
 			$table->integer('videoquestion_id')->unsigned();
 			$table->integer('quiz_id')->unsigned();
 			$table->boolean('is_correct')->default(false);
+			$table->boolean('attempted')->default(false);
 		});
 	}
 

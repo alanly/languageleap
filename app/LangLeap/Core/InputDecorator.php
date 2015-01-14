@@ -1,5 +1,7 @@
 <?php namespace LangLeap\Core;
 
+use LangLeap\Accounts\User;
+
 /**
  * Decorator pattern for the quiz to add logging, validation, etc.
  *
@@ -14,9 +16,16 @@ abstract class InputDecorator implements UserInputResponse {
 		$this->decoratedResponse = $decoratedResponse;
 	}
 	
-	public function response($user_id, $input)
+	/**
+	 * Return an array with the parameters for BaseController::apiResponse in the same order
+	 *
+	 * @param  User  $user
+	 * @param  array $input
+	 * @return array
+	 */
+	public function response(User $user, array $input)
 	{
-		return $this->decoratedResponse->response($user_id, $input);
+		return $this->decoratedResponse->response($user, $input);
 	}
 
 }

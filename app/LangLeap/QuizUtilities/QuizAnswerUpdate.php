@@ -1,5 +1,6 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use LangLeap\Accounts\User;
 use LangLeap\Core\UserInputResponse;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\VideoQuestion;
@@ -11,7 +12,14 @@ use LangLeap\Quizzes\VideoQuestion;
  */
 class QuizAnswerUpdate implements UserInputResponse {
 
-	public function response($user_id, $input)
+	/**
+	 * Return an array with the parameters for BaseController::apiResponse in the same order
+	 *
+	 * @param  User  $user
+	 * @param  array $input
+	 * @return array
+	 */
+	public function response(User $user, array $input)
 	{
 		$quiz = Quiz::find($input['quiz_id']);
 		$selectedId = $input['selected_id'];
@@ -23,7 +31,7 @@ class QuizAnswerUpdate implements UserInputResponse {
 		// Update the correctness of the quiz
 		$videoquestion->quiz()->updateExistingPivot(
 			$quiz->id,
-			['is_correct' => $isCorrectAnswer]
+			['is_correct' => $isCorrectAnswer, 'attempted' => true]
 		);
 		
 		// Update the quiz score

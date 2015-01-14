@@ -30,27 +30,49 @@ class QuizFactory implements UserInputResponse {
 		return QuizFactory::$instance;
 	}
 	
-	public function response($user_id, $input)
+	/**
+	 * Return an array with the parameters for BaseController::apiResponse in the same order
+	 *
+	 * @param  User  $user
+	 * @param  array $input
+	 * @return array
+	 */
+	public function response(User $user, array $input)
 	{
-		if (! $input['all_words'] || count($input['all_words']) < 1)
+		if($input) // there is input then create a quiz based on that
 		{
-			return null;
+			if (! $input['all_words'] || count($input['all_words']) < 1)
+			{
+				return null;
+			}
+			
+			// Retrieve a collection of all definitions in the script.
+			$scriptDefinitions = Definition::whereIn('id', $input['all_words'])->get();
+
+			// Use the overriden Collection class.
+			$scriptDefinitions = new Collection($scriptDefinitions->all());
+			
+			$quiz = $this->getDefinitionQuiz(
+				$user->id,
+				$input['video_id'],
+				$scriptDefinitions,
+				$input['selected_words']
+			);
+
+			return ['success', ['quiz_id' => $quiz->id], 200];
 		}
-		
-		// Retrieve a collection of all definitions in the script.
-		$scriptDefinitions = Definition::whereIn('id', $input['all_words'])->get();
-
-		// Use the overriden Collection class.
-		$scriptDefinitions = new Collection($scriptDefinitions->all());
-		
-		$quiz = $this->getDefinitionQuiz(
-			$user_id,
-			$input['video_id'],
-			$scriptDefinitions,
-			$input['selected_words']
-		);
-
-		return ['success', $quiz->toResponseArray(), 200];
+		else // Create a quiz from questions that are wrong
+		{
+			$quiz = $this->getReminderQuiz($user->id);
+			if(! $quiz)
+			{
+				return ['success', ['quiz_id' => -1], 200];
+			}
+			else
+			{
+				return ['success', ['quiz_id' => $quiz->id], 200];
+			}
+		}
 	}
 	
 	/**
@@ -94,12 +116,12 @@ class QuizFactory implements UserInputResponse {
 			
 			// Try to find the video question for that word for re-use
 			$videoQuestion = null;	
-			$videoQuestions = VideoQuestion::join('questions', 'questions.id', '=', 'videoquestions.question_id')
-			                               ->where('questions.question', 'like', '%' . $definition->word . '%');
-			
+			$videoQuestions = VideoQuestion::select('videoquestions.*')->join('questions', 'questions.id', '=', 'videoquestions.question_id')
+			                               ->where('questions.question', 'like', '%' . $definition->word . '%')->where('videoquestions.video_id', '=', $video_id)->get();
+
 			foreach($videoQuestions as $vq)
 			{
-				$indexOfWord = stripos($vq->question()->question, $definition->word);
+				$indexOfWord = strripos($vq->question->question, $definition->word);
 				if ( ($indexOfWord !== false) && ($indexOfWord > strlen($questionPrepend) - 1) ) // Check index in case word appears in question (e.g.: "what")
 				{
 					$videoQuestion = $vq;
@@ -136,6 +158,50 @@ class QuizFactory implements UserInputResponse {
 		$quiz->save();
 
 		return $quiz;
+	}
+	
+	/**
+	 *  This function will generate a new Quiz instance based on the questions that
+	 *  have been answered incorrectly in the past.
+	 * 
+	 * @param  int         $user_id
+	 */
+	public function getReminderQuiz($user_id)
+	{
+		$allQuestions = VideoQuestion::select(
+			array('videoquestions.*', 
+			\DB::raw('COUNT(NULLIF(videoquestion_quiz.is_correct, 0)) as correct'), 
+			\DB::raw('COUNT(NULLIF(videoquestion_quiz.is_correct, 1)) as incorrect'))
+		)
+			->join('videoquestion_quiz', 'videoquestion_quiz.videoquestion_id', '=', 'videoquestions.id')->join('quizzes', 'quizzes.id', '=', 'videoquestion_quiz.quiz_id')
+			->where('videoquestions.is_custom', '=', false)->where('videoquestion_quiz.attempted', '=', true)
+			->where('quizzes.user_id', '=', $user_id)->groupBy('videoquestions.id')->get();
+		
+		$videoQuestions = new Collection([]);
+		foreach($allQuestions as $q) // Possibly add the question to the reminder quiz if it has been wrong more than 34% of the time.
+		{
+			$percentRight = (float)$q->correct/(float)($q->correct + $q->incorrect);
+			if($percentRight < 0.66)
+			{
+				$videoQuestions->add($q);
+			}
+		}
+		
+		if($videoQuestions->count() > 0)
+		{
+			$quiz = Quiz::create(['user_id' => $user_id]);
+			
+			while($videoQuestions->count() > 0 && $quiz->videoQuestions()->count() < 5)
+			{
+				$vq = $videoQuestions->shift();
+				$quiz->videoQuestions()->attach($vq->id);
+			}
+			$quiz->save();
+			
+			return $quiz;
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -186,4 +252,5 @@ class QuizFactory implements UserInputResponse {
 		
 		return $question;
 	}
+
 }

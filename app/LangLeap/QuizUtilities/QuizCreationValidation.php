@@ -1,11 +1,10 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use LangLeap\Accounts\User;
 use LangLeap\Core\Collection;
 use LangLeap\Core\InputDecorator;
-use LangLeap\Core\UserInputResponse;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
-
 
 /**
  * Concrete decorator that adds validation behavior to Quiz creation
@@ -14,8 +13,20 @@ use LangLeap\Words\Definition;
  */
 class QuizCreationValidation extends InputDecorator {
 	
-	public function response($user_id, $input)
+	/**
+	 * Return an array with the parameters for BaseController::apiResponse in the same order
+	 *
+	 * @param  User  $user
+	 * @param  array $input
+	 * @return array
+	 */
+	public function response(User $user, array $input)
 	{
+		if (! $user)
+		{
+			return ['error', 'Must be logged in to create a quiz.', 401];
+		}
+	
 		// Ensure the video exists.
 		$videoId = $input["video_id"];
 
@@ -78,6 +89,7 @@ class QuizCreationValidation extends InputDecorator {
 			}
 		}
 		
-		return parent::response($user_id, $input);
+		return parent::response($user, $input);
 	}
+
 }
