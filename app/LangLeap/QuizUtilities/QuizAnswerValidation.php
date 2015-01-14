@@ -13,8 +13,21 @@ use LangLeap\Quizzes\VideoQuestion;
  */
 class QuizAnswerValidation extends InputDecorator {
 	
-	public function response($user_id, $input)
+	/**
+	 * Return an array with the parameters for BaseController::apiResponse in the same order
+	 *
+	 * @param  User  $user
+	 * @param  array $input
+	 * @return array
+	 */
+	public function response(User $user, array $input)
 	{
+		// Ensure that there is a user
+		if (! $user)
+		{
+			return ['error', 'Must be logged in to answer a quiz question', 401];
+		}
+		
 		// Ensure that the Question exists, else return a 404.
 		$videoquestion = null;
 		if (isset($input['videoquestion_id']))
@@ -53,12 +66,12 @@ class QuizAnswerValidation extends InputDecorator {
 		{
 			return ['error', "Quiz {$quiz_id} not found.", 404];
 		}
-		else if ( ($quiz->user_id != $user_id) && ! User::find($user_id)->is_admin )
+		else if ( ($quiz->user_id != $user->id) && ! $user->is_admin )
 		{
 			return ['error', "Not authorized to answer questions for quiz {$quiz_id}", 401];
 		}
 		
-		return parent::response($user_id, $input);
+		return parent::response($user, $input);
 	}
 
 }

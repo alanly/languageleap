@@ -1,6 +1,8 @@
 <?php namespace LangLeap\Quizzes;
 
 use Eloquent;
+use LangLeap\Core\Collection;
+
 /**
  * @author  Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
@@ -12,17 +14,21 @@ class VideoQuestion extends Eloquent {
 
 	public function question()
 	{
-		return $this->belongsTo('LangLeap\Quizzes\Question');
+		return $this->belongsTo('LangLeap\Quizzes\Question', 'question_id');
 	}
-
-	public function results()
+	
+	public function video()
 	{
-		return $this->hasMany('LangLeap\Quizzes\Result');
+		return $this->belongsTo('LangLeap\Videos\Video');
 	}
 	
 	public function quiz()
 	{
-		return $this->belongsToMany('LangLeap\Quizzes\Quiz', 'videoquestion_quiz', 'videoquestion_id', 'quiz_id')->withPivot('is_correct');
+		return $this->belongsToMany(
+		              'LangLeap\Quizzes\Quiz', 'videoquestion_quiz',
+		              'videoquestion_id', 'quiz_id'
+		            )
+		            ->withPivot('is_correct', 'attempted');
 	}
 	
 	public function toResponseArray()
@@ -33,11 +39,14 @@ class VideoQuestion extends Eloquent {
 			'answers'	=> []
 		];
 		
-		foreach($this->question->answers as $a)
+		$answers = new Collection($this->question->answers->all());
+		while($answers->count() > 0)
 		{
+			$a = $answers->pullRandom();
 			array_push($response['answers'], ['id' => $a->id, 'answer' => $a->answer]);
 		}
 		
 		return $response;
 	}
+
 }

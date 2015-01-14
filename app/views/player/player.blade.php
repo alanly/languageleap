@@ -221,11 +221,20 @@
 					'all_words': $('#script span[data-type=word]').map(function() { return $(this).data('id'); }).get()
 				};
 
-				// Store data in the HTML5 Storage schema
-				localStorage.setItem("quizPrerequisites", JSON.stringify(json));
+				
+				
+				$.ajax({
+					url: '/api/quiz/video',
+					type: 'POST',
+					data: json,
+					success: function (data) {
+						// Store data in the HTML5 Storage schema
+						localStorage.setItem("quizPrerequisites", JSON.stringify({'quiz_id': data.data.quiz_id}));
+						
+						window.location = '/quiz';
+					},
+				});
 			}
-
-			window.location = '/quiz';
 		}
 
 		function addNonDefinedTags()
@@ -412,6 +421,7 @@
 			$('.continue').click(function()
 			{
 				loadQuiz();
+				$(this).attr('disabled', 'disabled');
 			});
 
 			// Used to determine how long the mouse is hovered over a word
