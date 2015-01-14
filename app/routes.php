@@ -86,6 +86,7 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
+		Route::patch('shows/update-script/{id}', 'ApiShowController@updateScript');
 		
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');

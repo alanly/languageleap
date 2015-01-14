@@ -93,16 +93,19 @@ function refreshContent()
 $('#info-commercial-radio').on("click", function()
 {
 	$('#info-extra-tab').css("display", "none");
+	$('#info-episodes-tab').css("display", "none");
 });
 
 $('#info-tvshow-radio').on("click", function()
 {
 	$('#info-extra-tab').css("display", "block");
+	$('#info-episodes-tab').css("display", "block");
 });
 
 $('#info-movie-radio').on("click", function()
 {
 	$('#info-extra-tab').css("display", "block");
+	$('#info-episodes-tab').css("display", "none");
 });
 
 /*
@@ -112,6 +115,8 @@ var currentType;
 $("#select-movies").click(function()
 {
 	currentType = "movies";
+	hideShowsFooterTabs();
+	
 	$.getJSON("/api/metadata/movies/", function(data)
 	{
 		buildList(data);
@@ -120,6 +125,8 @@ $("#select-movies").click(function()
 $("#select-commercials").click(function()
 {
 	currentType = "commercials";
+	hideShowsFooterTabs();
+	
 	$.getJSON("/api/metadata/commercials/", function(data)
 	{
 		buildList(data);
@@ -128,11 +135,26 @@ $("#select-commercials").click(function()
 $("#select-shows").click(function()
 {
 	currentType = "shows";
+	showShowsFooterTabs();
+	
 	$.getJSON("/api/metadata/shows/", function(data)
 	{
 		buildList(data);
 	});
 });
+
+function showShowsFooterTabs()
+{
+	$('#footer-seasons').attr("aria-hidden", false);
+	$('#footer-seasons').css("display", "inline-block");
+}
+
+function hideShowsFooterTabs()
+{
+	$('#footer-seasons').attr("aria-hidden", true);
+	$('#footer-seasons').css("display", "none");
+}
+
 
 function buildList(data)
 {
@@ -183,11 +205,101 @@ $('#content').on('click', 'span.media', function(event)
 		$('#media-modal').modal('show');
 		
 		//script view
-		script = data.data.videos[0].script.text;
-		$('#edit-script').empty().append(script);
-		$('#footer-info').trigger( "click" );
+		if (currentType != "shows")
+		{
+			script = data.data.videos[0].script.text;
+			$('#edit-script').empty().append(script);
+			$('#footer-info').trigger( "click" );
+		}
 	});
+	
+	// if tvshow, populate seasons
+	if (currentType == "shows")
+	{
+		populateSeasons();
+	}
+	
 });
+
+/*
+ * populate seasons dropdown
+ */
+
+function populateSeasons()
+{
+	$.getJSON("/api/metadata/" + currentType + "/" + id + "/seasons", function(data)
+	{
+		seasons = data.data.seasons;
+	
+		s = "<option disabled selected>Select a season...</option>";
+		for (i = 0; i < seasons.length; i++)
+		{
+			s += '<option value="' + seasons[i].id + '">' + seasons[i].number + '</option>';
+		}
+	
+		$('#edit-media-info-seasons').empty().append(s);
+
+	});
+}
+
+function populateEpisodes()
+{
+	season_id = $('#edit-media-info-seasons').val();
+		
+	$.getJSON("/api/metadata/" + currentType + "/" + id + "/seasons/" + season_id + "/episodes", function(data)
+	{
+		episodes = data.data.episodes;
+	
+		s = "<option disabled selected>Select an episode...</option>";
+		for (i = 0; i < episodes.length; i++)
+		{
+			s += '<option value="' + episodes[i].id + '">' + episodes[i].number + '</option>';
+		}
+	
+		$('#edit-media-info-episodes').empty().append(s);
+
+	});
+}
+
+/*
+	onchange seasons dropdown
+*/
+$('#edit-media-info-seasons').change(function()
+{
+	$('#add-episode').prop("disabled", false);
+	populateEpisodes();
+	
+});
+
+/*
+	onchange episodes dropdown
+*/
+var currentEpisode = -1;
+$('#edit-media-info-episodes').change(function()
+{
+	
+	episode_id = $('#edit-media-info-episodes').val();
+	currentEpisode = episode_id;
+	video_id = -1;
+	$.getJSON("/api/metadata/" + currentType + "/" + id + "/seasons/" + season_id + "/episodes/" + episode_id, function(data)
+	{
+		name = data.data.episode.name;
+		description = data.data.episode.description;
+		video_id = data.data.videos[0].id;
+
+		$('#edit-media-info-episode-name').val(name);
+		$('#edit-media-info-episode-description').val(description);
+		
+		$.getJSON("/content/scripts/" + video_id, function(data)
+		{
+			script = data.data[0].text;
+			$('#edit-script').empty().append(script);
+		});
+		
+	});
+	
+});
+
 
 /*
 	save edited info
@@ -221,6 +333,86 @@ $('#button-edit-info-save').on("click", function()
 });
 
 /*
+	save edited episode info
+*/
+$('#button-edit-episode-save').on("click", function()
+{
+	$('#button-edit-episode-save').prop("disabled", true);
+	$('#button-edit-episode-save').html("Saving...");
+	
+	$.ajax(
+	{
+		type: "POST",
+		url: "/api/metadata/" + currentType + "/" + id + "/seasons/" + season_id + "/episodes/" + episode_id,
+		data:
+		{
+			name: $('#edit-media-info-episode-name').val(),
+			description: $('#edit-media-info-episode-description').val(),
+			_method: "PATCH"
+		},
+		success: function(data)
+		{
+			console.log(data);
+			$('#edit-script').prop("disabled", false);
+			$('#button-edit-episode-save').prop("disabled", false);
+			$('#button-edit-episode-save').html("Save");
+		}
+	});
+});
+
+/*
+	add new season
+*/
+$('#add-season').on("click", function()
+{
+	$.ajax(
+	{
+		type: "POST",
+		url: "/api/metadata/shows/" + id + "/seasons/",
+		beforeSend: function(request) {
+			return request.setRequestHeader('X-CSRF-Token', $("meta[name='token']").attr('content'));
+		},
+		data:
+		{
+			number: $('#add-new-season').val(),
+		},
+		success: function(data)
+		{
+			populateSeasons();
+		}
+	});
+});
+
+/*
+	add new episode
+*/
+$('#add-episode').on("click", function()
+{
+	season_id = $('#edit-media-info-seasons').val();
+	
+	$.ajax(
+	{
+		type: "POST",
+		url: "/api/metadata/shows/" + id + "/seasons/" + season_id + "/episodes/",
+		data:
+		{
+			number: $('#add-new-episode').val(),
+			name: $('#edit-media-info-episode-name').val(),
+			description: $('#edit-media-info-episode-description').val(),
+			level: 19,
+		},
+		success: function(data)
+		{
+			populateEpisodes();
+		},
+		complete: function(data)
+		{
+			console.log(data);
+		}
+	});
+});
+
+/*
 	save edited script
 */
 $('#button-edit-script-save').on("click", function()
@@ -236,6 +428,7 @@ $('#button-edit-script-save').on("click", function()
 		data:
 		{
 			text: document.getElementById('edit-script').innerHTML,
+			episode: currentEpisode,
 			_method: "PATCH"
 		},
 		success: function(data)
@@ -267,4 +460,33 @@ $('.modal-footer').on('click', 'span', function(event)
 		$('.modal-body.script').attr("aria-hidden", false);
 		$('.modal-body.script').css("display", "block");
 	}
+	else if (id == "footer-seasons")
+	{
+		$('.modal-body.seasons').attr("aria-hidden", false);
+		$('.modal-body.seasons').css("display", "block");
+	}
+});
+
+/*
+ * opt in for popovers
+ */
+$(function()
+{
+	$('[rel=popover]').popover(
+	{ 
+		html : true, 
+		content: function()
+		{
+			return $('#popover-new-season-inner').html();
+		}
+	});
+});
+
+/*
+ * set up csrf protection token
+ */
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
 });

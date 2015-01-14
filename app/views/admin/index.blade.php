@@ -1,9 +1,12 @@
 @extends('admin.master')
+
 @section('head')
 <link rel="stylesheet" href="/css/admin.css">
 <link rel="stylesheet" href="/css/admin-script.css"/>
-	<script type="text/javascript" src="/js/admin-script.js"></script>
+<script type="text/javascript" src="/js/admin-script.js"></script>
+<meta name="csrf-token" content="<?= csrf_token() ?>">
 @stop
+
 @section('content')
 <div class="container-fluid">
 	<!-- pulldown modal for adding new media -->
@@ -74,7 +77,6 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
 				<!-- /step one -->
 				<!-- step two -->
@@ -185,6 +187,55 @@
 				</div>
       </div>
 			<!-- /script -->
+			
+			<!-- seasons and episodes -->
+      <div class="modal-body seasons clearfix" aria-hidden="true" style="display: none;">
+				<div class="row">
+					<div class="col-xs-3">
+						<label>Season</label>
+						<select id="edit-media-info-seasons" name="season_id" class="form-control">
+						</select>
+						<a href="#" id="popover-new-season-outer" rel="popover" data-original-title="">+</a>
+					</div>
+					<div class="col-xs-3">
+						<label>&nbsp;</label>
+						<div id="popover-new-season-inner" style="display: block;">
+							<input id="add-new-season" name="new-season" type="text" class="form-control" placeholder="" style="display: inline-block; width: 50px;" />
+							<button id="add-season" type="button" class="btn btn-primary">Add</button>
+						</div>
+					</div>
+					
+					<div class="col-xs-3">
+						<label>Episode</label>
+						<select id="edit-media-info-episodes" name="episode_id" class="form-control">
+						</select>
+						<a href="#" id="popover-new-episode-outer" rel="popover" data-original-title="">+</a>
+					</div>
+					<div class="col-xs-3">
+						<label>&nbsp;</label>
+						<div id="popover-new-episode-inner" style="display: block;">
+							<input id="add-new-episode" name="new-episode" type="text" class="form-control" placeholder="" style="display: inline-block; width: 50px;" />
+							<button id="add-episode" type="button" class="btn btn-primary" disabled="true">Add</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<label>Name</label>
+						<input id="edit-media-info-episode-name" name="ep_name" type="text" class="form-control" placeholder="" />
+					</div>
+				</div>
+				<div class="row">		
+					<div class="col-xs-4">
+						<label>Description</label>
+						<input id="edit-media-info-episode-description" name="ep_description" type="text" class="form-control" placeholder="" />
+					</div>
+				</div>
+				<div class="row">	
+					<button id="button-edit-episode-save" type="button" class="btn btn-primary pull-right">Save</button>
+				</div>
+      </div>
+			<!-- /seasons and episodes -->
 						
       <div class="modal-body media" aria-hidden="true" style="display: none;">
 				Media goes here
@@ -193,6 +244,7 @@
       <div class="modal-footer">
 		    <div class="row-fluid">
 					<span id="footer-info">Info</span>
+					<span id="footer-seasons" aria-hidden="true" style="display: none;">Seasons</span>
 					<span id="footer-script">Script</span>
 					<span id="footer-media"></span>
 				</div>				

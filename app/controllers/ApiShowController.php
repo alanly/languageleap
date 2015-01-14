@@ -1,5 +1,7 @@
 <?php
 use LangLeap\Videos\Show;
+use LangLeap\Videos\Video;
+use LangLeap\Words\Script;
 
 class ApiShowController extends \BaseController {
 
@@ -139,4 +141,39 @@ class ApiShowController extends \BaseController {
 			200
 		);
 	}
+	
+	/**
+	 * Update the script for this show.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function updateScript($id)
+	{
+		$episode = Video::where('viewable_id', '=', Input::get('episode'))->firstOrFail();		
+		$script = Script::where('video_id', '=', $episode->id)->firstOrFail();
+
+		if (! $script)
+		{
+			return $this->apiResponse('error', "Episode {$id} not found.", 404);
+		}
+		
+		$script->text = Input::get('text');
+
+		if (! $script->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$script->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$script->toArray(),
+			200
+		);
+	}
+	
 }

@@ -86,6 +86,9 @@ h1,h2,h3,h4,h5,h6 {
 #button-edit-script-save {
 	margin-right: 20px;
 }
+#button-edit-episode-save {
+	margin-right: 20px;
+}
 
 .form-script textarea {
 	display: block;
@@ -110,4 +113,27 @@ input.rounded {
 }
 input.rounded:focus {
 	border-color: #666;
+}
+
+#add-season-input {
+	width: 100px;
+}
+#add-episode-input {
+	width: 100px;
+}
+
+#edit-media-info-seasons {
+	width: 150px;
+	display: inline-block;
+}
+#popover-new-season-outer {
+	display: inline-block;
+}
+
+#edit-media-info-episodes {
+	width: 150px;
+	display: inline-block;
+}
+#popover-new-episode-outer {
+	display: inline-block;
 }
