@@ -3,58 +3,51 @@
 use LangLeap\TestCase;
 use App;
 
+/**
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
+ * @author Alan Ly <hello@alan.ly>
+ */
 class QuestionTest extends TestCase {
 
-	/**
-	 * Testing getting all seasons for a particular show.
-	 *
-	 * @return void
-	 */
-	public function testQuizRelation()
+	public function testAnswersRelationshipFunctionWorks()
 	{
-		$question = $this->getQuestionInstance();
-		$quiz = $this->getQuizInstance();
-		$question->question = '';
-		$question->answer = '';
-		$question->quiz_id = $quiz->id;
-		$question->script_word_id = 1;
-		$question->save();
-	
-		$this->assertCount(1, $question->quiz()->get());			
+		// Create a series of answers.
+		$a = [
+			Answer::create(['answer' => 'test answer 1']),
+			Answer::create(['answer' => 'test answer 2']),
+			Answer::create(['answer' => 'test answer 3']),
+		];
+
+		// Create our question.
+		$q = new Question(['question' => 'test question']);
+		$q->answer_id = $a[0]->id;
+		$q->save();
+
+		// Save the associated answers.
+		$q->answers()->saveMany($a);
+
+		$this->assertCount(count($a), $q->answers);
 	}
-	public function testScriptWordRelation()
-	{
-		$question = $this->getQuestionInstance();
-		$script_w = $this->getScriptWordInstance();
-                $question->question = '';
-                $question->answer = '';
-                $question->quiz_id = 1;
-                $question->script_word_id = $script_w->id;
-                $question->save();
-		$this->assertCount(1, $question->script_word()->get());
 
 
-	}
-	protected function getQuizInstance()
+	public function testAnswerRelationshipFunctionReturnsCorrectAnswerInstance()
 	{
-		$quiz = App::make('LangLeap\Quizzes\Quiz');
-		$quiz->user_id = 1; // un-needed id
-                $quiz->video_id = 1; //un-needed id
-                $quiz->save();
-		return $quiz;
+		// Create a series of answers.
+		$a = [
+			Answer::create(['answer' => 'test answer 1']),
+			Answer::create(['answer' => 'test answer 2']),
+			Answer::create(['answer' => 'test answer 3']),
+		];
 
-	}	
-	protected function getQuestionInstance()
-	{
-		return App::make('LangLeap\Quizzes\Question');
+		// Create our question.
+		$q = new Question(['question' => 'test question']);
+		$q->answer_id = $a[0]->id;
+		$q->save();
+
+		// Save the associated answers.
+		$q->answers()->saveMany($a);
+
+		$this->assertSame($a[0]->answer, $q->answer->answer);
 	}
-	protected function getScriptWordInstance()
-	{
-		$script_w = App::make('LangLeap\Words\ScriptWord');
-		$script_w->word_id = 1;
-		$script_w->script_id =1;
-		$script_w->position =1;
-		$script_w->save();
-		return $script_w;
-	}
+
 }

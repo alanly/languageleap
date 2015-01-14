@@ -1,0 +1,81 @@
+#edit-container {
+	line-height: 45px;
+	letter-spacing: 3px;
+	margin: 0 auto;
+	outline: none;
+	width: 800px;
+}
+
+#script {
+	border: 1px solid #000;
+	margin-top: 125px;
+	outline: none;
+	padding: 20px;
+}
+
+/* Important: Keep the -moz-selection and other selections separate for firefox compatibility */
+#script::-moz-selection {
+	color: #cba;
+}
+
+#script::selection {
+	color: #cba;
+}
+
+#script span::-moz-selection {
+	background-color: transparent;
+}
+
+#script span::selection {
+	background-color: transparent;
+}
+
+#script span {
+	cursor: pointer;
+	padding: 10px;
+
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+}
+
+#script span:hover {
+	cursor: pointer;
+}
+
+#save-success {
+	display: none;
+	top: 25px;
+	position: fixed;
+	width: 800px;
+}
+
+[data-type="actor"],
+.actor-button {
+	background-color: #6B6B6B;
+	color: #FFF;
+}
+
+[data-type="word"],
+.word-button {
+	background-color: #CBA;
+}
+
+.radio {
+	padding-left: 5px;
+}
+
+#word-form,
+#actor-form {
+	display: none;
+}
+
+#word-definition textarea {
+	max-width: 568px;
+}
+
+#script .tooltip::selection,
+#script .tooltip-arrow::selection,
+#script .tooltip-inner::selection {
+	background-color: transparent;
+}

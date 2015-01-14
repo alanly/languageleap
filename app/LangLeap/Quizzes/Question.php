@@ -1,28 +1,29 @@
 <?php namespace LangLeap\Quizzes;
 
 use Eloquent;
-class Question extends Eloquent
-{
 
+/**
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
+ * @author Alan Ly <hello@alan.ly>
+ */
+class Question extends Eloquent {
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'questions';
-	public $timestamps = false;
-	/**
-	*	This function returns the quiz that contains this question
-	*
-	*/
-	public function quiz()
-    	{
-        	return $this->belongsTo('LangLeap\Quizzes\Quiz');
-    	}
+	public    $timestamps = false;
+	protected $fillable   = ['answer_id', 'question'];
 
-	public function script_word()
+	public function answer()
 	{
-		return $this->belongsTo('LangLeap\Words\ScriptWord');
+		return $this->belongsTo('LangLeap\Quizzes\Answer');
 	}
+
+	public function answers()
+	{
+		return $this->hasMany('LangLeap\Quizzes\Answer');
+	}
+	
+	public function videoQuestions()
+	{
+		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
+	}
+
 }

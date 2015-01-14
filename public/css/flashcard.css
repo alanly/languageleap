@@ -1,20 +1,41 @@
-div .word
-{
-	text-align: center;
-	font-size: 100px;
-	padding-top: 50px;
+#flashcard .close {
+	padding: 15px;
 }
 
-div .pronounciation
-{
-	text-align: center;
+#scroller {
+	min-height: 250px;
+}
+
+#scroller .carousel-control.left,
+#scroller .carousel-control.right {
+	background-image: none;
+	color: #D0D0D0;
+	width: 5%;
+}
+
+#scroller .carousel-inner .item span {
+	display: inline-block;
+	max-width: 365px;
+}
+
+#scroller .glyphicon {
 	font-size: 50px;
-	padding-top: 75px;
+	height: 50px;
+	margin-top: -28px;
+	width: 50px;
 }
 
-div .definition
-{
-	text-align: center;
-	font-size: 35px;
-	padding-top: 125px;
+#scroller .glyphicon-chevron-right {
+	margin-right: 0;
+}
+
+#scroller .glyphicon-chevron-left {
+	margin-left: 0;
+}
+
+.loading {
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
 }

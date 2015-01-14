@@ -6,8 +6,12 @@ body {
 	font-family: "Open Sans", sans-serif;
 }
 h1,h2,h3,h4,h5,h6 {
-	font-family: "Bree Serif", serif;
+	font-family: "Open Sans", sans-serif;
 	font-weight: 400;
+	margin: 0;
+}
+#button-add-new {
+	padding: 20px;
 }
 #search {
 	padding: 20px;
@@ -40,6 +44,34 @@ h1,h2,h3,h4,h5,h6 {
 }
 .modal-footer div.span2 {
 	cursor: pointer;
+}
+.form label {
+	margin-right: 10px;
+}
+.form input {
+
+}
+
+.radio {
+	display: inline;
+}
+
+.form-script {
+
+}
+#button-add-new-back {
+	float: left;
+}
+#button-add-new-next {
+	float: right;
+}
+.form-script textarea {
+	display: block;
+	vertical-align: text-top;
+	padding: 0 0 180px;
+	width: 100%;
+	height: 200px;
+	margin-bottom: 10px;
 }
 input.rounded {
 	border: 1px solid #ccc;
