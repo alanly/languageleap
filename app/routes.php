@@ -120,6 +120,9 @@ Route::group(['prefix' => 'api'], function()
 	// Registration
 	Route::resource('users','ApiUserController');
 
+	// Cut Video
+	Route::get('cutVideoIntoSegments','ApiCutVideoController@cutIntoSegments');
+
 });
 
 
