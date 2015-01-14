@@ -1,5 +1,6 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use LangLeap\Accounts\User;
 use LangLeap\Core\InputDecorator;
 
 /**
@@ -9,7 +10,14 @@ use LangLeap\Core\InputDecorator;
  */
 class ReminderQuizValidation extends InputDecorator {
 
-	public function response($user, $input)
+	/**
+	 * Return an array with the parameters for BaseController::apiResponse in the same order
+	 *
+	 * @param  User  $user
+	 * @param  array $input
+	 * @return array
+	 */
+	public function response(User $user, array $input)
 	{
 		if (! $user)
 		{
@@ -18,4 +26,5 @@ class ReminderQuizValidation extends InputDecorator {
 		
 		return parent::response($user, $input);
 	}
+
 }

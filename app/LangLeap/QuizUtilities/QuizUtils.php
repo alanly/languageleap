@@ -1,5 +1,7 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use LangLeap\Accounts\User;
+
 class QuizUtils {
 	
 	/**
@@ -9,7 +11,7 @@ class QuizUtils {
 	 *	@param array $input
 	 *	@return [$success, $data, $http_status]
 	 */
-	public static function createVideoQuiz($user, $input)
+	public static function createVideoQuiz(User $user, array $input)
 	{
 		$quizDecorator = new QuizCreationValidation(QuizFactory::getInstance());
 		return $quizDecorator->response($user, $input);
@@ -22,7 +24,7 @@ class QuizUtils {
 	 *	@param array $input
 	 *	@return [$success, $data, $http_status]
 	 */
-	public static function answerQuizQuestion($user, $input)
+	public static function answerQuizQuestion(User $user, array $input)
 	{
 		$answerDecorator = new QuizAnswerValidation(new QuizAnswerUpdate());
 		return $answerDecorator->response($user, $input);
@@ -36,9 +38,10 @@ class QuizUtils {
 	 *	@param array $input
 	 *	@return [$success, $data, $http_status]
 	 */
-	 public static function createReminderQuiz($user, $input)
-	 {
+	public static function createReminderQuiz(User $user, array $input)
+	{
 		$quizDecorator = new ReminderQuizValidation(QuizFactory::getInstance());
 		return $quizDecorator->response($user, $input);
-	 }
+	}
+
 }

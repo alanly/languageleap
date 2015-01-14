@@ -1,10 +1,10 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use LangLeap\Accounts\User;
 use LangLeap\Core\Collection;
 use LangLeap\Core\InputDecorator;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
-
 
 /**
  * Concrete decorator that adds validation behavior to Quiz creation
@@ -13,7 +13,14 @@ use LangLeap\Words\Definition;
  */
 class QuizCreationValidation extends InputDecorator {
 	
-	public function response($user, $input)
+	/**
+	 * Return an array with the parameters for BaseController::apiResponse in the same order
+	 *
+	 * @param  User  $user
+	 * @param  array $input
+	 * @return array
+	 */
+	public function response(User $user, array $input)
 	{
 		if (! $user)
 		{
@@ -84,4 +91,5 @@ class QuizCreationValidation extends InputDecorator {
 		
 		return parent::response($user, $input);
 	}
+
 }

@@ -11,7 +11,11 @@ class Quiz extends Eloquent {
 	
 	public function videoQuestions()
 	{
-		return $this->belongsToMany('LangLeap\Quizzes\VideoQuestion', 'videoquestion_quiz', 'quiz_id', 'videoquestion_id')->withPivot('is_correct', 'attempted');
+		return $this->belongsToMany(
+			            'LangLeap\Quizzes\VideoQuestion',
+			            'videoquestion_quiz', 'quiz_id', 'videoquestion_id'
+			          )
+		            ->withPivot('is_correct', 'attempted');
 	}
 	
 	public function user()
@@ -35,6 +39,8 @@ class Quiz extends Eloquent {
 		{
 			array_push($response['video_questions'], $vq->toResponseArray());
 		}
+		
 		return $response;
 	}
+
 }

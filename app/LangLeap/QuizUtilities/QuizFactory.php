@@ -30,7 +30,14 @@ class QuizFactory implements UserInputResponse {
 		return QuizFactory::$instance;
 	}
 	
-	public function response($user, $input)
+	/**
+	 * Return an array with the parameters for BaseController::apiResponse in the same order
+	 *
+	 * @param  User  $user
+	 * @param  array $input
+	 * @return array
+	 */
+	public function response(User $user, array $input)
 	{
 		if($input) // there is input then create a quiz based on that
 		{
@@ -245,4 +252,5 @@ class QuizFactory implements UserInputResponse {
 		
 		return $question;
 	}
+
 }
