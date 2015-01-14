@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuizTable extends Migration {
+class CreateAnswerTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,10 @@ class CreateQuizTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('quizzes', function($table){
+		Schema::create('answers', function($table){
 			$table->increments('id');
-			$table->integer('user_id')->unsigned();
-			$table->integer('video_id')->unsigned()->nullable();
-			$table->float('score')->default(0);	
+			$table->integer('question_id')->unsigned()->default(0);
+			$table->string('answer');
 		});
 	}
 
@@ -27,7 +26,7 @@ class CreateQuizTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('quizzes');
+		Schema::dropIfExists('answers');
 	}
 
 }

@@ -1,6 +1,8 @@
 <?php
 
+use LangLeap\Videos\Video;
 use LangLeap\Levels\Level;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,6 +13,7 @@ use LangLeap\Levels\Level;
 | and give it the Closure to execute when that URI is requested.
 |
 */
+
 
 // Accordion
 Route::get('/', function()
@@ -64,6 +67,18 @@ Route::group(['prefix' => 'admin'], function()
 		return View::make('admin.script.index');
 	});
 	
+	// new media upload
+	Route::any('add-new-form-submit', 'FileUploadController@saveMedia');
+
+	// store script
+	Route::resource('save-script', 'ApiScriptController@store');
+
+	// Dev quiz interface
+	Route::get('quiz/new', function()
+	{
+		return View::make('admin.quiz.index')->with('videos', Video::All());
+	});
+
 });
 
 
@@ -74,6 +89,7 @@ Route::group(['prefix' => 'api'], function()
 	// Metadata controllers for media resources.
 	Route::group(['prefix' => 'metadata'], function()
 	{
+
 		// Commercials
 		Route::resource('commercials', 'ApiCommercialController');
 		Route::patch('commercials/update-script/{id}', 'ApiCommercialController@updateScript');
@@ -131,16 +147,20 @@ Route::get('/video/play/{id}', function($id)
 });
 
 
-// Flashcard
-Route::controller('flashcard', 'FlashcardController');
-
-
 // Quiz View
-Route::get('quiz', function()
+Route::get('quiz', ['before' => 'auth', function()
 {
 	return View::make('quiz.main');
-});
+}]);
+
+
+// Ranking Process
+Route::controller('rank', 'RankQuizController');
 
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
+
+
+//User Level
+Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserLevelController@showLevel']);

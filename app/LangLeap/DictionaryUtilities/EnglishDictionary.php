@@ -21,7 +21,8 @@ class EnglishDictionary implements IDictionary
 	{
 		//Make requests here
 		$dictionaryDefinition = $this->getWordDefinition($word);
-		$audioUrl = $this->getPronunciation($word);
+		$audioUrl = $this->getAudio($word);
+		$hyphenatedWord = $this->getHyphenatedWord($word);
 
 		if(!$dictionaryDefinition)
 		{
@@ -31,33 +32,70 @@ class EnglishDictionary implements IDictionary
 		$def = new Definition;
 		$def->definition = $dictionaryDefinition;
 		$def->audio_url = $audioUrl;
+		$def->pronunciation = $hyphenatedWord;
 		
 		return $def;
 	}
 
 	/**
-	 * Returns a pronounciation of a word
+	 * Returns the audio of a word
 	 *
 	 * @param  string  $word
-	 * @return String (URL of audio)
+	 * @return string (URL of audio)
 	 */
-	public function getPronunciation($word)
+	public function getAudio($word)
 	{
 		$client = $this->instantiateConnection();
 
-		$pronounciations = $client->wordAudio($word)
+		$audios = $client->wordAudio($word)
 							->limit(1)
 							->useCanonical(true)
 							->get();
 
-		if(!$pronounciations)
+		if (!$audios)
 		{
 			return null;
 		}
 
 		$this->closeConnection($client);
 
-		return $pronounciations[0]->fileUrl;
+		return $audios[0]->fileUrl;
+	}
+
+	/**
+	 * Returns the hyphenated version of a word
+	 *
+	 * @param  string  $word
+	 * @return string
+	 */
+	public function getHyphenatedWord($word)
+	{
+		$client = $this->instantiateConnection();
+
+		$wordSegments = $client->wordHyphenation($word)
+							->limit(20)
+							->useCanonical(true)
+							->get();
+
+		if (!$wordSegments)
+		{
+			return null;
+		}
+
+		$this->closeConnection($client);
+		
+		return $this->parseToHyphenatedString($wordSegments);;
+	}
+
+	private function parseToHyphenatedString($wordSegments)
+	{
+		$result = '';
+		foreach ($wordSegments as $segment)
+		{
+			$result .= $segment->text . '-';
+		}
+
+		return substr($result, 0, -1);
 	}
 
 	private function getWordDefinition($word)

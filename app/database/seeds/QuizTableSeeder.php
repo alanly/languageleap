@@ -1,8 +1,5 @@
 <?php
 
-use LangLeap\Quizzes\Quiz;
-use LangLeap\Videos\Video;
-
 class QuizTableSeeder extends Seeder {
 
 	/**
@@ -15,8 +12,11 @@ class QuizTableSeeder extends Seeder {
 		Eloquent::unguard();
 		DB::table('quizzes')->delete();
 
-		$vid = Video::first();
+		$user_id = \LangLeap\Accounts\User::first()->id;
+		
 		$q = App::make('LangLeap\Quizzes\Quiz');
-		$q->create(["video_id" => $vid->id, "user_id" => 1]);
+		$q->create([
+			'user_id' => $user_id
+		]);
 	}
 }

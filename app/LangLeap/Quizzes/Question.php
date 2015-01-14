@@ -2,27 +2,28 @@
 
 use Eloquent;
 
+/**
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
+ * @author Alan Ly <hello@alan.ly>
+ */
 class Question extends Eloquent {
 
 	public    $timestamps = false;
-	protected $fillable   = ['quiz_id', 'definition_id', 'question'];
+	protected $fillable   = ['answer_id', 'question'];
 
-
-	public function quiz()
+	public function answer()
 	{
-		return $this->belongsTo('LangLeap\Quizzes\Quiz');
+		return $this->belongsTo('LangLeap\Quizzes\Answer');
 	}
 
-
-	public function definition()
+	public function answers()
 	{
-		return $this->belongsTo('LangLeap\Words\Definition');
+		return $this->hasMany('LangLeap\Quizzes\Answer');
 	}
-
-
-	public function scopeUnanswered($query)
+	
+	public function videoQuestions()
 	{
-		return $query->where('selected_id', null);
+		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
 	}
 
 }

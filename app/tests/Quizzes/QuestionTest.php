@@ -3,66 +3,51 @@
 use LangLeap\TestCase;
 use App;
 
-
 /**
-*		@author Thomas Rahn <thomas@rahn.ca>
-*/
+ * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
+ * @author Alan Ly <hello@alan.ly>
+ */
 class QuestionTest extends TestCase {
 
-	/**
-	 * Testing getting all seasons for a particular show.
-	 *
-	 * @return void
-	 */
-	public function testQuizRelation()
+	public function testAnswersRelationshipFunctionWorks()
 	{
-		$question = $this->getQuestionInstance();
-		$quiz = $this->getQuizInstance();
-		$question->question = '';
-		$question->selected_id = 1;
-		$question->quiz_id = $quiz->id;
-		$question->definition_id = 1;
-		$question->save();
-	
-		$this->assertCount(1, $question->quiz()->get());			
-	}
-	
-	public function testDefinitionRelation()
-	{
-		$question = $this->getQuestionInstance();
-		$definition = $this->getDefinitionInstance();
+		// Create a series of answers.
+		$a = [
+			Answer::create(['answer' => 'test answer 1']),
+			Answer::create(['answer' => 'test answer 2']),
+			Answer::create(['answer' => 'test answer 3']),
+		];
 
-		$question->question = 'question';
-		$question->selected_id = 1;
-		$question->quiz_id = 1; //un-needed id;
-		$question->definition_id = $definition->id;
-		$question->save();
+		// Create our question.
+		$q = new Question(['question' => 'test question']);
+		$q->answer_id = $a[0]->id;
+		$q->save();
 
-		$this->assertCount(1, $question->definition()->get());
+		// Save the associated answers.
+		$q->answers()->saveMany($a);
 
-	}
-	protected function getQuizInstance()
-	{
-		$quiz = App::make('LangLeap\Quizzes\Quiz');
-		$quiz->user_id = 1; // un-needed id
-		$quiz->video_id = 1; //un-needed id
-		$quiz->save();
-		return $quiz;
-	}	
-
-	protected function getQuestionInstance()
-	{
-		return App::make('LangLeap\Quizzes\Question');
+		$this->assertCount(count($a), $q->answers);
 	}
 
-	protected function getDefinitionInstance()
+
+	public function testAnswerRelationshipFunctionReturnsCorrectAnswerInstance()
 	{
-		$def = App::make('LangLeap\Words\Definition');
-		$def->word = "Test word";
-		$def->definition = "This is a definition";
-		$def->full_definition = "This is the full definition";
-		$def->pronunciation = "T-est W-ord";
-		$def->save();
-		return $def;
+		// Create a series of answers.
+		$a = [
+			Answer::create(['answer' => 'test answer 1']),
+			Answer::create(['answer' => 'test answer 2']),
+			Answer::create(['answer' => 'test answer 3']),
+		];
+
+		// Create our question.
+		$q = new Question(['question' => 'test question']);
+		$q->answer_id = $a[0]->id;
+		$q->save();
+
+		// Save the associated answers.
+		$q->answers()->saveMany($a);
+
+		$this->assertSame($a[0]->answer, $q->answer->answer);
 	}
+
 }

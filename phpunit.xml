@@ -15,4 +15,10 @@
             <directory>./app/tests/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./app/LangLeap/</directory>
+            <directory suffix=".php">./app/controllers/</directory>
+        </whitelist>
+    </filter>
 </phpunit>
