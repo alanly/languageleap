@@ -83,7 +83,7 @@ class CutVideo implements ICutVideo
 		return FFMpeg\Coordinate\TimeCode::fromSeconds($seconds);
 	}
 
-	private function getEqualCutOffTimes($numberOfSegments)
+	private function getEqualCutoffTimes($numberOfSegments)
 	{
 		$duration = $this->getVideoDuration();
 		$secondsPerVideo = intval($duration/$numberOfSegments);

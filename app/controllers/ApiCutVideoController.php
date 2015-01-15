@@ -74,7 +74,7 @@ class ApiCutVideoController extends BaseController {
 
 	public function postTimes()
 	{
-				$user = Auth::user();
+		$user = Auth::user();
 		if(!$user || !$user->is_admin)
 		{
 			return $this->apiResponse(
@@ -104,16 +104,38 @@ class ApiCutVideoController extends BaseController {
 			);
 		}
 
-		$segments = Input::get("segments");
-		if(!$segments)
+		$times = Input::get("times");
+		if(!$times)
 		{
 			return $this->apiResponse(
 				'error',
-				"Cut into segments value is missing.",
+				"Cut at specified time values are missing.",
 				400
 			);
 		}
 
-		return $this->cutVideoEqually($video, $segments);
+		return $this->cutVideoAtTimes($video, $times);
+	}
+
+	private function cutVideoAtTimes($video, $times)
+	{
+		try
+		{	
+			$videoCutter = new CutVideoAdapter($video);
+			$videoCutter->cutVideoAtSpecifiedTimes($times);
+		}
+		catch(Exception $e)
+		{
+			return $this->apiResponse(
+				'error',
+				"The request to break the video at specified times could not be completed.",
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			[]
+		);
 	}
 }
