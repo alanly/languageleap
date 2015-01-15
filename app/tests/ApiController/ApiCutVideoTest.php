@@ -18,7 +18,7 @@ class ApiCutVideoTest extends TestCase {
 		$this->be($this->getUserInstance(true));
 	}
 
-	public function testCutVideoEqually()
+	/*public function testCutVideoEqually()
 	{
 		$response = $this->action(
 			'POST', 'ApiCutVideoController@postSegments', 
@@ -39,7 +39,7 @@ class ApiCutVideoTest extends TestCase {
 		);
 		
 		$this->assertResponseOk();
-	}
+	}*/
 	
 	public function testCutVideoUnauthorized()
 	{

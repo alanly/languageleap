@@ -22,7 +22,7 @@ class CutVideoAdapter
 
 	public function cutVideoAtSpecifiedTimes($cutOffTimes)
 	{
-		$this->videoCutter->cutVideoAtLocation($numberOfSegments);
+		$this->videoCutter->cutVideoAtSpecifiedTimes($cutOffTimes);
 	}
 }
 
