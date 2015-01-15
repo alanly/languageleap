@@ -58,11 +58,13 @@ class CutVideo implements ICutVideo
 
 	private function getVideoName($counter)
 	{
-		$name = $this->videoFormatter->get("tags")["title"];
+		$lastSlashPosition = strrpos($this->video->path, "\\");
+		$lastDotPosition = strrpos($this->video->path, ".");
+		$fileName = substr($this->video->path, $lastSlashPosition + 1, $lastDotPosition - $lastSlashPosition - 1);
 		$number = sprintf("%03d", $counter);
-		$name = $name . "_" . $number;
+		$fileName = $fileName . "_" . $number;
 
-		return $name . ".mp4";
+		return $fileName . ".mp4";
 	}
 
 	private function createVideoAssociation($path)

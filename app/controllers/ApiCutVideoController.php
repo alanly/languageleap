@@ -52,17 +52,6 @@ class ApiCutVideoController extends BaseController {
 
 	private function cutVideoEqually($video, $segments)
 	{
-		/*
-		$ffmpeg = FFMpeg::create();
-		$ffmpegVideo = $ffmpeg->open("app\\" . $video->path);
-
-		$ffprobe = FFProbe::create();
-		$videoDuration = $ffprobe->format("app\\" . $video->path)->get("duration");
-
-		$ffmpegVideo->filters()->clip(FFMpeg\Coordinate\TimeCode::fromSeconds(1), FFMpeg\Coordinate\TimeCode::fromSeconds(30));
-		$ffmpegVideo
-		->save(new FFMpeg\Format\Video\X264("libvo_aacenc"), 'video1.mp4');
-		*/
 
 		$videoCutter = new CutVideoAdapter($video);
 		$videoCutter->cutVideoIntoSegmets($segments);

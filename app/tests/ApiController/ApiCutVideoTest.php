@@ -18,7 +18,7 @@ class ApiCutVideoTest extends TestCase {
 		$this->be($this->getUserInstance(true));
 	}
 
-	/*public function testCutVideoEqually()
+	public function testCutVideoEqually()
 	{
 		$response = $this->action(
 			'POST', 'ApiCutVideoController@postSegments', 
@@ -114,15 +114,15 @@ class ApiCutVideoTest extends TestCase {
 			]
 		);
 		$this->assertResponseStatus(404);
-	}*/
+	}
 	
 	protected function getVideoInstance()
 	{
 		$video = App::make('LangLeap\Videos\Video');
 		$video->viewable_id = 1;
-		$video->viewable_type = 'LangLeap\Videos\Commercial';
+		$video->viewable_type = 'LangLeap\\Videos\\Commercial';
 		$video->language_id = 1;
-		$video->path = 'storage\media\videos\commercials\test.mp4';
+		$video->path = 'storage\\media\\videos\\commercials\\test.mp4';
 		$video->save();
 
 		return $video;
