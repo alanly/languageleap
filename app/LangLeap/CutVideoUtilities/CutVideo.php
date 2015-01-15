@@ -15,6 +15,7 @@ class CutVideo implements ICutVideo
 	private $video;
 	private $AUDIO_CODEC = "libvo_aacenc";
 	private $NUMBER_OF_ZEROES_VIDEO_NAME = 3;
+	private $MINIMUM_VIDEO_LENGTH = 5;
 
 	function __construct($video)
 	{
@@ -97,6 +98,10 @@ class CutVideo implements ICutVideo
 
 		while($currentTime < $duration)
 		{
+			if(($duration - $currentTime) < $this->MINIMUM_VIDEO_LENGTH)
+			{
+				break;
+			}
 			$timeAndDuration = ["time" => $currentTime, "duration" => $secondsPerVideo];
 			array_push($cutoffTimes, $timeAndDuration);
 			$currentTime += $secondsPerVideo;
