@@ -137,3 +137,13 @@ input.rounded:focus {
 #popover-new-episode-outer {
 	display: inline-block;
 }
+
+.time-field {
+	width: 40px;
+	text-align: center;
+}
+
+#segment-intervals {
+	overflow-y: scroll;
+	height: 80px;
+}

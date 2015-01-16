@@ -194,18 +194,22 @@
 								<label>
 									<input id="user_role_cut_by" name="user[role]" type="radio" value="Cut by">
 					                Cut by: 
-					                <input type="text"> segments
+					                <input type="number" class="time-field" id="segment-amount"> segments
 								</label>
 								<br/>
 								<br/>
-								<label>
+								<label class="interval-inputs">
 									<input id="user_role_cut_at" name="user[role]" type="radio" value="Cut at">
 									Cut from  
-									<input type="text" size="1" style="text-align: right;"> m 
-									<input type="text" size="1" style="text-align: right;"> s to  
-									<input type="text" size="1" style="text-align: right;"> m 
-									<input type="text" size="1" style="text-align: right;"> s</br>
+									<input type="number" class="time-field"> m 
+									<input type="number" class="time-field"> s to  
+									<input type="number" class="time-field"> m 
+									<input type="number" class="time-field"> s</br>
 								</label>
+								<button id="button-edit-info-add" type="button" class="btn btn-success pull-right">Add</button>
+								<br/>
+								<div id="segment-intervals">				
+								</div>
 							</div>
 							{{ Form::close() }}
 						</div>

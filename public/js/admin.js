@@ -496,20 +496,35 @@ $.ajaxSetup({
     }
 });
 
+$('#button-edit-info-add').on("click", function()
+{
+	var inputTextFields = $('.interval-inputs').children();
+
+	var inputText = "From";// 	+ inputTextFields[1].hasClass("time-field").val() + ":" 
+				  			//+ inputTextFields[2].hasClass("time-field").val() + to
+				  			//+ inputTextFields[3].hasClass("time-field").val() + ":";
+				  			//+ inputTextFields[4].hasClass("time-field").val();
+
+	var label = $("<label>").text("inputText");
+
+	$('#segment-intervals').append(label);
+	$('#segment-intervals').append($("<br/>"));
+});
+
 $('#button-edit-info-done').on("click", function()
 {
 	var cutForm = $('#cut-form');
+	var segments;
 
 	if($('#user_role_cut_by').is(':checked'))
 	{
 		cutForm.attr("url", "/api/videos/cut/segments");
+		$intervals = $('#segment-amount').val();
 	}
 	else if($('#user_role_cut_at').is(':checked'))
 	{
 		cutForm.attr("url", "/api/videos/cut/times");
 	}
-
-	console.log(cutForm.attr("url"));
 
 	$.ajax(
 	{
@@ -518,8 +533,8 @@ $('#button-edit-info-done').on("click", function()
 		
 		data:
 		{
-			video_id: ,
-			segments:
+			video_id: id,
+			segments: intervals
 		},
 		success: function(data)
 		{
