@@ -510,4 +510,24 @@ $('#button-edit-info-done').on("click", function()
 	}
 
 	console.log(cutForm.attr("url"));
+
+	$.ajax(
+	{
+		type: "POST",
+		url: cutForm.attr("url"),
+		
+		data:
+		{
+			text: document.getElementById('edit-script').innerHTML,
+			episode: currentEpisode,
+			_method: "PATCH"
+		},
+		success: function(data)
+		{
+			console.log(data);
+			$('#edit-script').css("opacity", 1);
+			$('#button-edit-script-save').prop("disabled", false);
+			$('#button-edit-script-save').html("Save");
+		}
+	});
 });
