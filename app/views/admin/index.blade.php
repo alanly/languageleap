@@ -193,16 +193,18 @@
 								<br/>
 								<label>
 									<input id="user_role_cut_by" name="user[role]" type="radio" value="Cut by">
-					                Cut By 
-					                <input type="text">
+					                Cut by: 
+					                <input type="text"> segments
 								</label>
 								<br/>
 								<br/>
 								<label>
 									<input id="user_role_cut_at" name="user[role]" type="radio" value="Cut at">
-									Cut At 
-									<input type="text" size="10" style="text-align: right;"> for 
-									<input type="text" size="10" style="text-align: right;"> seconds</br>
+									Cut from  
+									<input type="text" size="1" style="text-align: right;"> m 
+									<input type="text" size="1" style="text-align: right;"> s to  
+									<input type="text" size="1" style="text-align: right;"> m 
+									<input type="text" size="1" style="text-align: right;"> s</br>
 								</label>
 							</div>
 							{{ Form::close() }}
