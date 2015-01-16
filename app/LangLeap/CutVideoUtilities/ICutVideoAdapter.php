@@ -1,5 +1,6 @@
 <?php namespace LangLeap\CutVideoUtilities;
 
+use LangLeap\Videos\Video;
 
 /**
  * Define the interface for CutVideo adapter in order to decouple 

@@ -1,141 +1,34 @@
 <?php
 
 use LangLeap\Videos\Video;
-use LangLeap\CutVideoUtilities\CutVideoAdapter;
+use LangLeap\CutVideoUtilities\CutVideoResponse;
+use LangLeap\CutVideoUtilities\CutVideoValidation;
 
 class ApiCutVideoController extends BaseController {
 
+	/**
+	 * Post video_id and integer of amount of segments to cut video by.
+	 * Responds with a JSON of the new videos.
+	 */
 	public function postSegments()
 	{
-		$user = Auth::user();
-		if(!$user || !$user->is_admin)
-		{
-			return $this->apiResponse(
-				'error',
-				'Must be an administrator to edit videos',
-				401
-			);
-		}
-		
-		$video_id = Input::get("video_id");
-		if(!$video_id)
-		{
-			return $this->apiResponse(
-				'error',
-				"Video id is missing.",
-				400
-			);
-		}
-
-		$video = Video::find($video_id);
-		if(!$video)
-		{
-			return $this->apiResponse(
-				'error',
-				"Video {$video_id} is missing.",
-				404
-			);
-		}
-
-		$segments = Input::get("segments");
-		if(!$segments)
-		{
-			return $this->apiResponse(
-				'error',
-				"Cut into segments value is missing.",
-				400
-			);
-		}
-
-		return $this->cutVideoEqually($video, $segments);
-	}
-
-	private function cutVideoEqually($video, $segments)
-	{
-		try
-		{	
-			$videoCutter = new CutVideoAdapter($video);
-			$videoCutter->cutVideoIntoSegmets($segments);
-		}
-		catch(Exception $e)
-		{
-			return $this->apiResponse(
-				'error',
-				"The request to break the video into segments could not be completed.",
-				500
-			);
-		}
-
+		$cutVideo = new CutVideoValidation(new CutVideoResponse());
+		$response = $cutVideo->response(Auth::user(), Input::all());
 		return $this->apiResponse(
-			'success',
-			[]
+			$response[0], $response[1], $response[2]
 		);
 	}
 
+	/**
+	 * Post video_id and array of times and lengths to cut video by.
+	 * Responds with a JSON of the new videos.
+	 */
 	public function postTimes()
 	{
-		$user = Auth::user();
-		if(!$user || !$user->is_admin)
-		{
-			return $this->apiResponse(
-				'error',
-				'Must be an administrator to edit videos',
-				401
-			);
-		}
-		
-		$video_id = Input::get("video_id");
-		if(!$video_id)
-		{
-			return $this->apiResponse(
-				'error',
-				"Video id is missing.",
-				400
-			);
-		}
-
-		$video = Video::find($video_id);
-		if(!$video)
-		{
-			return $this->apiResponse(
-				'error',
-				"Video {$video_id} is missing.",
-				404
-			);
-		}
-
-		$times = Input::get("times");
-		if(!$times)
-		{
-			return $this->apiResponse(
-				'error',
-				"Cut at specified time values are missing.",
-				400
-			);
-		}
-
-		return $this->cutVideoAtTimes($video, $times);
-	}
-
-	private function cutVideoAtTimes($video, $times)
-	{
-		try
-		{	
-			$videoCutter = new CutVideoAdapter($video);
-			$videoCutter->cutVideoAtSpecifiedTimes($times);
-		}
-		catch(Exception $e)
-		{
-			return $this->apiResponse(
-				'error',
-				"The request to break the video at specified times could not be completed.",
-				500
-			);
-		}
-
+		$cutVideo = new CutVideoValidation(new CutVideoResponse());
+		$response = $cutVideo->response(Auth::user(), Input::all());
 		return $this->apiResponse(
-			'success',
-			[]
+			$response[0], $response[1], $response[2]
 		);
 	}
 }

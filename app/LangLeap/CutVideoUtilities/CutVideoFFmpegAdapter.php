@@ -1,72 +1,71 @@
 <?php namespace LangLeap\CutVideoUtilities;
 
-use LangLeap\Core\Collection;
-use LangLeap\CutVideoUtilities\CutVideoFactory;
 use LangLeap\Videos\Video;
-use FFMpeg;
 
 /**
+ * CutVideoAdapter implementation using PHP-FFMpeg library.
+ *
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
 class CutVideoFFmpegAdapter implements ICutVideoAdapter
 {
-	private $cutVideo;
-	private $videoFormatter;
-	private $AUDIO_CODEC = "libvo_aacenc";
+	private $ffmpeg;
+	private $ffprobe;
+	
 	private $NUMBER_OF_ZEROES_VIDEO_NAME = 3;
 	private $MINIMUM_VIDEO_LENGTH = 5;
 
-	function __construct($video)
+	function __construct()
 	{
-		$this->cutVideo = CutVideoFactory::getInstance()->getFFmpeg($video->path);
-		$this->videoFormatter = CutVideoFactory::getInstance()->getFFprobe($video->path);
+		$this->ffmpeg = \FFMpeg\FFMpeg::create();
+		$this->ffprobe = \FFMpeg\FFProbe::create();
 	}
 
-	public function cutVideoIntoSegmets($numberOfSegments)
+	public function cutVideoIntoSegments(Video $video, int $numberOfSegments)
 	{
-		$cutoffTimes = $this->getEqualCutoffTimes($numberOfSegments);
-		$this->cutVideoAtSpecifiedTimes($cutoffTimes);
+		// Get equal time segments and use the cut by times function
+		$duration = intval($this->ffprobe->format($video->path)->get('duration'));
+		$secondsPerVideo = intval($duration/$numberOfSegments);
+		$cutoffTimes = $this->getCutoffTimes($secondsPerVideo, $duration);
+		
+		return $this->cutVideoByTimes($video, $cutoffTimes); 
 	}
 
-	public function cutVideoByTimes($cutOffTimes)
+	public function cutVideoByTimes(Video $video, array $cutOffTimes)
 	{
-		$counter = 1;
-
-		foreach($cutOffTimes as $time)
+		$ffmpeg_video = $this->ffmpeg->open($video->path);
+	
+		$videos = [];
+		for($i = 0; $i < count($cutOffTimes); $i++)
 		{
-			$this->cutAt($time["time"], $time["duration"], $counter++);
+			$path = $this->getVideoPath($video, $i + 1); 
+		
+			$start = FFMpeg\Coordinate\TimeCode::fromSeconds($cutOffTimes[$i]['time']);
+			$duration = FFMpeg\Coordinate\TimeCode::fromSeconds($cutOffTimes[$i]['duration']);
+			
+			$filter = $ffmpeg_video->filters()->clip($start, $duration);
+			$ffmpeg_video->addFilter($filter);
+			$ffmpeg_video->save(new FFMpeg\Format\Video\X264(), $path);
+			array_push($videos, $this->createVideoAssociation($video, $path));
 		}
+		
+		return $videos;
 	}
 
-	private function cutAt($start, $duration, $counter)
-	{	
-		$this->cutVideo->filters()->clip($this->getTimeCode($start), $this->getTimeCode($duration));
-		$videoPath = $this->getVideoPath($counter);
-		$this->cutVideo->save(new FFMpeg\Format\Video\X264($this->AUDIO_CODEC), $videoPath);
-		$this->createVideoAssociation($videoPath);
-	}
-
-	private function getVideoPath($counter)
+	/**
+	 * Create a path to a new video clip by using the original video's name and adding a number at the end.
+	 */
+	private function getVideoPath($video, $counter)
 	{
-		$videoName = $this->getVideoName($counter);
-		$lastSlashPosition = strrpos($this->video->path, "\\");
-		$videoPath = substr($this->video->path, 0, $lastSlashPosition + 1) . $videoName;
-
-		return "app\\" . $videoPath;
-	}
-
-	private function getVideoName($counter)
-	{
-		$lastSlashPosition = strrpos($this->video->path, "\\");
-		$lastDotPosition = strrpos($this->video->path, ".");
-		$fileName = substr($this->video->path, $lastSlashPosition + 1, $lastDotPosition - $lastSlashPosition - 1);
 		$number = sprintf("%03d", $counter);
-		$fileName = $fileName . "_" . $number;
-
-		return $fileName . ".mp4";
+		
+		$lastDotPosition = strrpos($video->path, ".");
+		$videoPath = substr($video->path, 0, $lastDotPosition) . '_' . $number . '.mp4';
+		
+		return $videoPath;
 	}
 
-	private function createVideoAssociation($path)
+	private function createVideoAssociation($video, $path)
 	{
 		$video = new Video;
 		$video->viewable_type = $video->viewable_type;
@@ -74,19 +73,7 @@ class CutVideoFFmpegAdapter implements ICutVideoAdapter
 		$video->language_id = $video->language_id;
 		$video->path = $path;
 		$video->save();
-	}
-
-	private function getTimeCode($seconds)
-	{
-		return FFMpeg\Coordinate\TimeCode::fromSeconds($seconds);
-	}
-
-	private function getEqualCutoffTimes($numberOfSegments)
-	{
-		$duration = $this->getVideoDuration();
-		$secondsPerVideo = intval($duration/$numberOfSegments);
-
-		return $this->getCutoffTimes($secondsPerVideo, $duration);
+		return $video;
 	}
 
 	private function getCutoffTimes($secondsPerVideo, $duration)
@@ -106,11 +93,5 @@ class CutVideoFFmpegAdapter implements ICutVideoAdapter
 		}
 		
 		return $cutoffTimes;
-	}
-
-	private function getVideoDuration()
-	{
-		$duration = $this->videoFormatter->get("duration");
-		return intval($duration);
 	}
 }
