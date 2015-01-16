@@ -518,16 +518,12 @@ $('#button-edit-info-done').on("click", function()
 		
 		data:
 		{
-			text: document.getElementById('edit-script').innerHTML,
-			episode: currentEpisode,
-			_method: "PATCH"
+			video_id: ,
+			segments:
 		},
 		success: function(data)
 		{
-			console.log(data);
-			$('#edit-script').css("opacity", 1);
-			$('#button-edit-script-save').prop("disabled", false);
-			$('#button-edit-script-save').html("Save");
+			
 		}
 	});
 });
