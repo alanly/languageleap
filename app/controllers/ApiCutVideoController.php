@@ -18,17 +18,4 @@ class ApiCutVideoController extends BaseController {
 			$response[0], $response[1], $response[2]
 		);
 	}
-
-	/**
-	 * Post video_id and array of times and lengths to cut video by.
-	 * Responds with a JSON of the new videos.
-	 */
-	public function postTimes()
-	{
-		$cutVideo = new CutVideoValidation(new CutVideoResponse());
-		$response = $cutVideo->response(Auth::user(), Input::all());
-		return $this->apiResponse(
-			$response[0], $response[1], $response[2]
-		);
-	}
 }

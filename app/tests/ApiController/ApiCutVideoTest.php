@@ -18,20 +18,10 @@ class ApiCutVideoTest extends TestCase {
 		$this->be($this->getUserInstance(true));
 	}
 
-	/*public function testCutVideoEqually()
+	/*public function testCutVideoTimes()
 	{
 		$response = $this->action(
-			'POST', 'ApiCutVideoController@postSegments', 
-			[], ["video_id" => $this->video->id, "segments" => 2]
-		);
-		
-		$this->assertResponseOk();
-	}
-	
-	public function testCutVideoTimes()
-	{
-		$response = $this->action(
-			'POST', 'ApiCutVideoController@postTimes',
+			'POST', 'ApiCutVideoController@postSegments',
 			[], [
 				"video_id" => $this->video->id, 
 				"segments" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
@@ -42,16 +32,10 @@ class ApiCutVideoTest extends TestCase {
 	}*/
 	
 	public function testCutVideoUnauthorized()
-	{
+	{	
 		$this->be($this->getUserInstance(false));
 		$response = $this->action(
 			'POST', 'ApiCutVideoController@postSegments', 
-			[], ["video_id" => $this->video->id, "segments" => 5]
-		);
-		$this->assertResponseStatus(401);
-		
-		$response = $this->action(
-			'POST', 'ApiCutVideoController@postTimes', 
 			[], [
 				"video_id" => $this->video->id, 
 				"segments" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
@@ -61,15 +45,9 @@ class ApiCutVideoTest extends TestCase {
 	}
 	
 	public function testCutVideoMissingVideo()
-	{
+	{	
 		$response = $this->action(
 			'POST', 'ApiCutVideoController@postSegments', 
-			[], ["segments" => 5]
-		);
-		$this->assertResponseStatus(400);
-		
-		$response = $this->action(
-			'POST', 'ApiCutVideoController@postTimes', 
 			[], [
 				"segments" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
 			]
@@ -78,30 +56,18 @@ class ApiCutVideoTest extends TestCase {
 	}
 	
 	public function testCutVideoMissingSegments()
-	{
+	{	
 		$response = $this->action(
 			'POST', 'ApiCutVideoController@postSegments', 
-			[], ["video_id" => $this->video->id]
-		);
-		$this->assertResponseStatus(400);
-		
-		$response = $this->action(
-			'POST', 'ApiCutVideoController@postTimes', 
 			[], ["video_id" => $this->video->id]
 		);
 		$this->assertResponseStatus(400);
 	}
 	
 	public function testCutVideoVideoNotFound()
-	{
+	{	
 		$response = $this->action(
 			'POST', 'ApiCutVideoController@postSegments', 
-			[], ["video_id" => -1, "segments" => 5]
-		);
-		$this->assertResponseStatus(404);
-		
-		$response = $this->action(
-			'POST', 'ApiCutVideoController@postTimes', 
 			[], [
 				"video_id" => -1, 
 				"times" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
@@ -111,15 +77,9 @@ class ApiCutVideoTest extends TestCase {
 	}
 	
 	public function testCutVideoMalformedSegments()
-	{
+	{	
 		$response = $this->action(
 			'POST', 'ApiCutVideoController@postSegments', 
-			[], ["segments" => -1, "video_id" => $this->video->id]
-		);
-		$this->assertResponseStatus(400);
-		
-		$response = $this->action(
-			'POST', 'ApiCutVideoController@postTimes', 
 			[], [
 				"video_id" => $this->video->id,
 				"segments" => []
@@ -128,7 +88,7 @@ class ApiCutVideoTest extends TestCase {
 		$this->assertResponseStatus(400);
 		
 		$response = $this->action(
-			'POST', 'ApiCutVideoController@postTimes', 
+			'POST', 'ApiCutVideoController@postSegments', 
 			[], [
 				"video_id" => $this->video->id,
 				"segments" => [['time' => 10, 'duration' => 10], ['time' => 20, 'abc' => -10]]

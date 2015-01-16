@@ -15,37 +15,7 @@ class CutVideoResponse implements UserInputResponse
 		$video_id = $input['video_id'];
 		$segments = $input['segments'];
 		
-		if(is_int($segments))
-		{
-			return cutVideoEqually(Video::find($video_id), $segments);
-		}
-		else
-		{
-			return cutVideoAtTimes(Video::find($video_id), $segments);
-		}
-	}
-	
-	private function cutVideoEqually($video, $segments)
-	{
-		try
-		{	
-			$videoCutter = new CutVideoFFmpegAdapter();
-			$videoCutter->cutVideoIntoSegments($video, $segments);
-		}
-		catch(Exception $e)
-		{
-			return [
-				'error',
-				"The request to break the video into segments could not be completed.",
-				500
-			];
-		}
-
-		return [
-			'success',
-			[],
-			200
-		];
+		return $this->cutVideoAtTimes(Video::find($video_id), $segments);
 	}
 	
 	private function cutVideoAtTimes($video, $times)
@@ -57,18 +27,10 @@ class CutVideoResponse implements UserInputResponse
 		}
 		catch(Exception $e)
 		{
-			return $this->apiResponse(
-				'error',
-				"The request to break the video at specified times could not be completed.",
-				500
-			);
+			return ['error', 'The request to break the video at specified times could not be completed.', 500];
 		}
 
-		return $this->apiResponse(
-			'success',
-			[],
-			200
-		);
+		return ['error', 'Success.', 200];
 	}
 }
 

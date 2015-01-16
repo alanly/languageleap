@@ -16,7 +16,7 @@ class CutVideoValidation extends InputDecorator {
 	{
 		if(!$user || !$user->is_admin)
 		{
-			return ['error',	'Must be an administrator to edit videos',	401];
+			return ['error', 'Must be an administrator to edit videos',	401];
 		}
 		
 		if(!isset($input['video_id']))
@@ -48,13 +48,6 @@ class CutVideoValidation extends InputDecorator {
 				{
 					return ['error', 'Segment entries must contain time and duration', 400];
 				}
-			}
-		}
-		else if(is_int($segments))
-		{
-			if($segments < 1)
-			{
-				return ['error', 'Segments must be a positive value', 400];
 			}
 		}
 		else

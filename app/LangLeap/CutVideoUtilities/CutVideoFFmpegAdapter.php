@@ -1,6 +1,8 @@
 <?php namespace LangLeap\CutVideoUtilities;
 
 use LangLeap\Videos\Video;
+use FFMpeg;
+use FFProbe;
 
 /**
  * CutVideoAdapter implementation using PHP-FFMpeg library.
@@ -11,41 +13,30 @@ class CutVideoFFmpegAdapter implements ICutVideoAdapter
 {
 	private $ffmpeg;
 	private $ffprobe;
-	
 	private $NUMBER_OF_ZEROES_VIDEO_NAME = 3;
-	private $MINIMUM_VIDEO_LENGTH = 5;
+	private $AUDIO_CODEC = "libvo_aacenc";
+	private $VIDEO_PATH_PREFIX = "app\\";
 
 	function __construct()
 	{
-		$this->ffmpeg = \FFMpeg\FFMpeg::create();
-		$this->ffprobe = \FFMpeg\FFProbe::create();
+		$this->ffmpeg = FFMpeg::create();
+		$this->ffprobe = FFProbe::create();
 	}
 
-	public function cutVideoIntoSegments(Video $video, int $numberOfSegments)
+	public function cutVideoByTimes(Video $video, array $segments)
 	{
-		// Get equal time segments and use the cut by times function
-		$duration = intval($this->ffprobe->format($video->path)->get('duration'));
-		$secondsPerVideo = intval($duration/$numberOfSegments);
-		$cutoffTimes = $this->getCutoffTimes($secondsPerVideo, $duration);
-		
-		return $this->cutVideoByTimes($video, $cutoffTimes); 
-	}
-
-	public function cutVideoByTimes(Video $video, array $cutOffTimes)
-	{
-		$ffmpeg_video = $this->ffmpeg->open($video->path);
+		$ffmpeg_video = $this->ffmpeg->open($this->VIDEO_PATH_PREFIX . $video->path);
 	
 		$videos = [];
-		for($i = 0; $i < count($cutOffTimes); $i++)
+		for($i = 0; $i < count($segments); $i++)
 		{
 			$path = $this->getVideoPath($video, $i + 1); 
 		
-			$start = FFMpeg\Coordinate\TimeCode::fromSeconds($cutOffTimes[$i]['time']);
-			$duration = FFMpeg\Coordinate\TimeCode::fromSeconds($cutOffTimes[$i]['duration']);
+			$start = FFMpeg\Coordinate\TimeCode::fromSeconds($segments[$i]['time']);
+			$duration = FFMpeg\Coordinate\TimeCode::fromSeconds($segments[$i]['duration']);
 			
-			$filter = $ffmpeg_video->filters()->clip($start, $duration);
-			$ffmpeg_video->addFilter($filter);
-			$ffmpeg_video->save(new FFMpeg\Format\Video\X264(), $path);
+			$ffmpeg_video->filters()->clip($start, $duration);
+			$ffmpeg_video->save(new FFMpeg\Format\Video\X264($this->AUDIO_CODEC), $path);
 			array_push($videos, $this->createVideoAssociation($video, $path));
 		}
 		
@@ -62,7 +53,7 @@ class CutVideoFFmpegAdapter implements ICutVideoAdapter
 		$lastDotPosition = strrpos($video->path, ".");
 		$videoPath = substr($video->path, 0, $lastDotPosition) . '_' . $number . '.mp4';
 		
-		return $videoPath;
+		return $this->VIDEO_PATH_PREFIX . $videoPath;
 	}
 
 	private function createVideoAssociation($video, $path)
@@ -74,24 +65,5 @@ class CutVideoFFmpegAdapter implements ICutVideoAdapter
 		$video->path = $path;
 		$video->save();
 		return $video;
-	}
-
-	private function getCutoffTimes($secondsPerVideo, $duration)
-	{
-		$currentTime = 0;
-		$cutoffTimes = [];
-
-		while($currentTime < $duration)
-		{
-			if(($duration - $currentTime) < $this->MINIMUM_VIDEO_LENGTH)
-			{
-				break;
-			}
-			$timeAndDuration = ["time" => $currentTime, "duration" => $secondsPerVideo];
-			array_push($cutoffTimes, $timeAndDuration);
-			$currentTime += $secondsPerVideo;
-		}
-		
-		return $cutoffTimes;
 	}
 }
