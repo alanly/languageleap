@@ -140,7 +140,7 @@
 				$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
 					if (data.status == 'success') {
 						$this.tooltip({
-							'container': '#script',
+							'container': 'body',
 							'placement': 'auto top',
 							'title': data.data.definition
 						});
@@ -156,7 +156,7 @@
 
 			$('#script span[data-type=nonDefinedWord]').each(function() {
 				$(this).tooltip({
-						'container': '#script',
+						'container': 'body',
 						'placement': 'auto top',
 						'title': 'Loading definition...'
 				});
