@@ -20,17 +20,24 @@ class CutVideoResponse implements UserInputResponse
 	
 	private function cutVideoAtTimes($video, $times)
 	{
+		$data = [];
 		try
 		{	
 			$videoCutter = new CutVideoFFmpegAdapter();
-			$videoCutter->cutVideoByTimes($video, $times);
+			$videos = $videoCutter->cutVideoByTimes($video, $times);
+			
+			foreach($videos as $video)
+			{
+				array_push($data, $video->toResponseArray());
+			}
+
 		}
 		catch(Exception $e)
 		{
 			return ['error', 'The request to break the video at specified times could not be completed.', 500];
 		}
 
-		return ['error', 'Success.', 200];
+		return ['success', $data, 200];
 	}
 }
 
