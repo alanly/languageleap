@@ -435,6 +435,31 @@
 			});
 		}
 
+		function saveVideoHistory()
+		{
+			var url = '/api/history/';
+			console.log("in");
+			$.ajax({
+				async: false,
+				type: 'POST',
+				url: url,
+				data:
+				{ 
+					current_time: $('#video-player')[0].currentTime,
+					video_id: "{{ $video_id }}",
+					_method: 'PATCH'
+				},
+				success : function(data)
+				{
+					console.log("success");
+				},
+				error : function(data)
+				{
+					console.log("fail");
+				}
+			});
+		}
+
 		$(function()
 		{
 			loadVideo();
@@ -504,9 +529,8 @@
 			$('#video-player').bind('loadeddata', videoLoaded);
 
 			// Handle when the user leaves the page without going to the quiz
-			$(window).unload(function()
-			{
-
+			$(window).unload(function() { 
+				saveVideoHistory(); // Call this from the console to test
 			});
 		});
 	</script>
