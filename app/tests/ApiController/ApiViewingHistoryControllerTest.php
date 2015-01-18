@@ -2,6 +2,7 @@
 
 use LangLeap\TestCase;
 use LangLeap\Accounts\User;
+use LangLeap\Accounts\ViewingHistory;
 use LangLeap\Videos\Video;
 
 /*
@@ -55,5 +56,29 @@ class ApiViewingHistoryControllerTest extends TestCase {
 		$this->assertEquals(0, $data->data->current_time);
 	}
 
+	public function testUpdateViewingHistory()
+	{
+		$user = User::first();
 
+		$this->be($user);
+		$video_id = Video::first()->id;
+
+		$history = $this->createViewingHistory($user->id, $video_id);
+
+		$response = $this->action('PATCH', 'ApiViewingHistoryController@update',[],['video_id' => $video_id, 'current_time' => 5]);
+
+		$this->assertResponseOk();
+	}
+
+	protected function createViewingHistory($user_id, $video_id)
+	{
+		$history = ViewingHistory::create([
+			'user_id' 		=> $user_id,
+			'video_id' 		=> $video_id,
+			'current_time' 	=> 0,
+			'is_finished' 	=> false
+		]);
+
+		return $history;
+	}
 }

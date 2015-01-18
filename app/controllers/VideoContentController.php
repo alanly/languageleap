@@ -2,7 +2,8 @@
 
 use LangLeap\Core\FileInfoFactory;
 use LangLeap\Videos\Video;
-
+use LangLeap\Accounts\ViewingHistory;
+use LangLeap\Accounts\User;
 /**
  * @author  Alan Ly <hello@alan.ly>
  */
@@ -47,6 +48,26 @@ class VideoContentController extends \BaseController {
 
 		// Create the Sendfile headers for this file.
 		$headers = $this->getSendfileHeadersForFile($file);
+
+
+		//Insert into VideoHistory
+		if(Auth::check())
+		{
+			//Get user id from authenticated user
+			$user_id = Auth::user()->id;
+
+			$history = ViewingHistory::where('user_id', $user_id)->where('video_id', $id)->get()->first();
+
+			if(! $history)
+			{
+				ViewingHistory::create([
+					'user_id' 		=> $user_id, 
+					'video_id' 		=> $id, 
+					'is_finished' 	=> false, 
+					'current_time' 	=> 0
+				]);
+			}
+		}
 
 		return Response::download($file, null, $headers);
 	}
