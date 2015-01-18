@@ -409,9 +409,36 @@
 			}
 		}
 
+		function videoLoaded()
+		{
+			var $videoPlayer = $('#video-player');
+			
+			$videoPlayer[0].currentTime = ($videoPlayer.data('history-time')) ? $videoPlayer.data('history-time') : 0;
+		}
+
+		function loadVideoHistory()
+		{
+			var url = '/api/history/';
+
+			$.ajax({
+				type: 'GET',
+				url: url,
+				data: { video_id : "{{ $video_id }}" },
+				success : function(data)
+				{
+					$('#video-player').data('history-time', data.data.current_time);
+				},
+				error : function(data)
+				{
+					$('#video-player').data('history-time', 0);
+				}
+			});
+		}
+
 		$(function()
 		{
 			loadVideo();
+			loadVideoHistory();
 
 			$(".define").click(function()
 			{
@@ -471,6 +498,15 @@
 				
 				var $audio = $('#word-audio');
 				$audio.prop('muted', !$audio.prop('muted'));
+			});
+
+			// Handle when the video is completely loaded
+			$('#video-player').bind('loadeddata', videoLoaded);
+
+			// Handle when the user leaves the page without going to the quiz
+			$(window).unload(function()
+			{
+
 			});
 		});
 	</script>
