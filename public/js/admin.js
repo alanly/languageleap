@@ -528,17 +528,16 @@ $('#button-edit-info-add').on("click", function()
 
 //Removing intervals by clicking the minus
 $(document).on('click', '.remove-interval', function() {
+	cutAtDurations[parseInt($(this).attr("name"))] = null;
     $(this).prev().remove();
     $(this).next().remove();
     $(this).remove();
-    cutAtDurations[parseInt($(this).attr("name"))] = null;
 });
 
 //Submitting video splitting info
 $('#button-edit-info-done').on("click", function()
 {
 	var cutForm = $('#cut-form');
-	var intervals;
 
 	if($('#user_role_cut_by').is(':checked'))
 	{
@@ -562,8 +561,8 @@ $('#button-edit-info-done').on("click", function()
 		
 		data:
 		{
-			video_id: id,
-			segments: cutAtDurations
+			'video_id': id,
+			'segments': cutAtDurations
 		},
 		success: function(data)
 		{
