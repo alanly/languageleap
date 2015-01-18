@@ -497,12 +497,12 @@ $.ajaxSetup({
 });
 
 //Adding cut at intervals
+var cutAtDurations = [];
+var count = 0;
 $('#button-edit-info-add').on("click", function()
 {
 	if($('#user_role_cut_at').is(':checked'))
 	{
-		var inputTextFields = $('.interval-inputs').children();
-
 		var inputText = " From " +  $('#from-min').val() + ":" 
 					  			+ (($('#from-sec').val() < 10) ? "0" : "") 
 					  			+   $('#from-sec').val() + " to "
@@ -510,36 +510,49 @@ $('#button-edit-info-add').on("click", function()
 					  			+ (($('#to-sec').val() < 10) ? "0" : "") 
 					  			+   $('#to-sec').val();
 
+		var fromTime = parseInt($('#from-min').val()) * 60 + parseInt($('#from-sec').val());
+		var toTime = parseInt($('#to-min').val()) * 60 + parseInt($('#to-sec').val());
+		var length = toTime - fromTime;
+
 		var label = $("<label>").text(inputText);
-		var minus = $("<span class=\"glyphicon glyphicon-minus remove-interval\"></span>");
+		var minus = $("<span class=\"glyphicon glyphicon-minus remove-interval\" name=\""+ (count+1) +"\"></span>");
 
 		$('#segment-intervals').append(label);
 		$('#segment-intervals').append(minus);
 		$('#segment-intervals').append($("<br/>"));
+
+		cutAtDurations.push({start: fromTime, duration: length});
+		count++;
 	}
 });
 
 //Removing intervals by clicking the minus
 $(document).on('click', '.remove-interval', function() {
     $(this).prev().remove();
+    $(this).next().remove();
     $(this).remove();
-    $(this).after().remove();
+    cutAtDurations[parseInt($(this).attr("name"))] = null;
 });
 
 //Submitting video splitting info
 $('#button-edit-info-done').on("click", function()
 {
 	var cutForm = $('#cut-form');
-	var segments;
+	var intervals;
 
 	if($('#user_role_cut_by').is(':checked'))
 	{
-		cutForm.attr("url", "/api/videos/cut/segments");
-		$intervals = $('#segment-amount').val();
+		cutAtDurations = $('#segment-amount').val();
 	}
 	else if($('#user_role_cut_at').is(':checked'))
 	{
-		cutForm.attr("url", "/api/videos/cut/times");
+		for(var i = 0; i < cutAtDurations.length; i++)
+		{
+			if(cutAtDurations[i] == null)
+			{
+				cutAtDurations.splice(i,1);
+			}
+		}
 	}
 
 	$.ajax(
@@ -550,7 +563,7 @@ $('#button-edit-info-done').on("click", function()
 		data:
 		{
 			video_id: id,
-			segments: intervals
+			segments: cutAtDurations
 		},
 		success: function(data)
 		{
