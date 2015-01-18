@@ -147,3 +147,15 @@ input.rounded:focus {
 	overflow-y: scroll;
 	height: 80px;
 }
+
+.remove-interval {
+	color: #AF0000;
+	font-size: 20px;
+	padding-left: 5px;
+}
+
+.remove-interval:hover {
+	color: red;
+	font-size: 20px;
+	padding-left: 5px;
+}

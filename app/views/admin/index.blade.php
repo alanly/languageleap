@@ -208,6 +208,7 @@
 								</label>
 								<button id="button-edit-info-add" type="button" class="btn btn-success pull-right">Add</button>
 								<br/>
+								<br/>
 								<div id="segment-intervals">				
 								</div>
 							</div>

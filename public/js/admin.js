@@ -496,26 +496,37 @@ $.ajaxSetup({
     }
 });
 
+//Adding cut at intervals
 $('#button-edit-info-add').on("click", function()
 {
 	if($('#user_role_cut_at').is(':checked'))
 	{
 		var inputTextFields = $('.interval-inputs').children();
 
-		var inputText = "From " + $('#from-min').val() + ":" 
+		var inputText = " From " +  $('#from-min').val() + ":" 
 					  			+ (($('#from-sec').val() < 10) ? "0" : "") 
-					  			+ $('#from-sec').val() + " to "
-					  			+ $('#to-min').val() + ":" 
+					  			+   $('#from-sec').val() + " to "
+					  			+   $('#to-min').val() + ":" 
 					  			+ (($('#to-sec').val() < 10) ? "0" : "") 
-					  			+ $('#to-sec').val();
+					  			+   $('#to-sec').val();
 
 		var label = $("<label>").text(inputText);
+		var minus = $("<span class=\"glyphicon glyphicon-minus remove-interval\"></span>");
 
 		$('#segment-intervals').append(label);
+		$('#segment-intervals').append(minus);
 		$('#segment-intervals').append($("<br/>"));
 	}
 });
 
+//Removing intervals by clicking the minus
+$(document).on('click', '.remove-interval', function() {
+    $(this).prev().remove();
+    $(this).remove();
+    $(this).after().remove();
+});
+
+//Submitting video splitting info
 $('#button-edit-info-done').on("click", function()
 {
 	var cutForm = $('#cut-form');
