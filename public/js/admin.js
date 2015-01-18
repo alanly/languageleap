@@ -498,17 +498,22 @@ $.ajaxSetup({
 
 $('#button-edit-info-add').on("click", function()
 {
-	var inputTextFields = $('.interval-inputs').children();
+	if($('#user_role_cut_at').is(':checked'))
+	{
+		var inputTextFields = $('.interval-inputs').children();
 
-	var inputText = "From";// 	+ inputTextFields[1].hasClass("time-field").val() + ":" 
-				  			//+ inputTextFields[2].hasClass("time-field").val() + to
-				  			//+ inputTextFields[3].hasClass("time-field").val() + ":";
-				  			//+ inputTextFields[4].hasClass("time-field").val();
+		var inputText = "From " + $('#from-min').val() + ":" 
+					  			+ (($('#from-sec').val() < 10) ? "0" : "") 
+					  			+ $('#from-sec').val() + " to "
+					  			+ $('#to-min').val() + ":" 
+					  			+ (($('#to-sec').val() < 10) ? "0" : "") 
+					  			+ $('#to-sec').val();
 
-	var label = $("<label>").text("inputText");
+		var label = $("<label>").text(inputText);
 
-	$('#segment-intervals').append(label);
-	$('#segment-intervals').append($("<br/>"));
+		$('#segment-intervals').append(label);
+		$('#segment-intervals').append($("<br/>"));
+	}
 });
 
 $('#button-edit-info-done').on("click", function()

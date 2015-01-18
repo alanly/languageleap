@@ -192,7 +192,7 @@
 							<div class="radio row">
 								<br/>
 								<label>
-									<input id="user_role_cut_by" name="user[role]" type="radio" value="Cut by">
+									<input id="user_role_cut_by" name="user[role]" type="radio" value="Cut by" checked>
 					                Cut by: 
 					                <input type="number" class="time-field" id="segment-amount"> segments
 								</label>
@@ -201,10 +201,10 @@
 								<label class="interval-inputs">
 									<input id="user_role_cut_at" name="user[role]" type="radio" value="Cut at">
 									Cut from  
-									<input type="number" class="time-field"> m 
-									<input type="number" class="time-field"> s to  
-									<input type="number" class="time-field"> m 
-									<input type="number" class="time-field"> s</br>
+									<input type="number" class="time-field" id="from-min"> m 
+									<input type="number" class="time-field" id="from-sec"> s to  
+									<input type="number" class="time-field" id="to-min"> m 
+									<input type="number" class="time-field" id="to-sec"> s</br>
 								</label>
 								<button id="button-edit-info-add" type="button" class="btn btn-success pull-right">Add</button>
 								<br/>
