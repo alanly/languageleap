@@ -3,6 +3,7 @@
 use LangLeap\Videos\Video;
 use LangLeap\CutVideoUtilities\CutVideoResponse;
 use LangLeap\CutVideoUtilities\CutVideoValidation;
+use LangLeap\CutVideoUtilities\CutVideoLibavAdapter;
 
 class ApiCutVideoController extends BaseController {
 
