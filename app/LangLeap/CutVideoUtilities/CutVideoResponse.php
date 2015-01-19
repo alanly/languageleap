@@ -35,7 +35,6 @@ class CutVideoResponse implements UserInputResponse
 			{
 				array_push($data, $video->toResponseArray());
 			}
-
 		}
 		catch(Exception $e)
 		{

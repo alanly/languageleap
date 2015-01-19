@@ -26,7 +26,8 @@ use LangLeap\Videos\Video;
 			
 			\Queue::push(function($job) use ($start, $end, $video_path, $cut_path)
 			{
-				$cmd = 'avconv -ss ' . $start . ' -i ' . app_path() . DIRECTORY_SEPARATOR . $video_path . ' -t ' . $end . ' -codec copy ' . app_path() . DIRECTORY_SEPARATOR . $cut_path . ' 2>&1';
+				$cmd = 'avconv -ss ' . $start . ' -i ' . app_path() . DIRECTORY_SEPARATOR . $video_path . ' -t ' . $end . ' -codec copy -y ' . app_path() . DIRECTORY_SEPARATOR . $cut_path . ' 2>&1';
+				\Log::info("Running lib av command: \n" . $cmd);
 				exec($cmd, $output, $return_val);
 				
 				$libav_output = '';
