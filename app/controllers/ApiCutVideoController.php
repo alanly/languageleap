@@ -12,7 +12,7 @@ class ApiCutVideoController extends BaseController {
 	 */
 	public function postSegments()
 	{
-		$cutVideo = new CutVideoValidation(new CutVideoResponse());
+		$cutVideo = new CutVideoValidation(new CutVideoResponse(new CutVideoLibavAdapter()));
 		$response = $cutVideo->response(Auth::user(), Input::all());
 		return $this->apiResponse(
 			$response[0], $response[1], $response[2]

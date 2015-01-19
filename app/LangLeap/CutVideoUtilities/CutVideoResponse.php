@@ -10,6 +10,13 @@ use LangLeap\Videos\Video;
  */
 class CutVideoResponse implements UserInputResponse
 {
+	private $cutVideoAdapter;
+	
+	public function __construct(ICutVideoAdapter $cutVideoAdapter)
+	{
+		$this->cutVideoAdapter = $cutVideoAdapter;
+	}
+
 	public function response(User $user, array $input)
 	{
 		$video_id = $input['video_id'];
@@ -22,10 +29,8 @@ class CutVideoResponse implements UserInputResponse
 	{
 		$data = [];
 		try
-		{	
-			$videoCutter = new CutVideoFFmpegAdapter();
-			$videos = $videoCutter->cutVideoByTimes($video, $times);
-			
+		{
+			$videos = $this->cutVideoAdapter->cutVideoByTimes($video, $times);
 			foreach($videos as $video)
 			{
 				array_push($data, $video->toResponseArray());

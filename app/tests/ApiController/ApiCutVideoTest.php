@@ -18,19 +18,6 @@ class ApiCutVideoTest extends TestCase {
 		$this->be($this->getUserInstance(true));
 	}
 
-	/*public function testCutVideoTimes()
-	{
-		$response = $this->action(
-			'POST', 'ApiCutVideoController@postSegments',
-			[], [
-				"video_id" => $this->video->id, 
-				"segments" => [['time' => 10, 'duration' => 10], ['time' => 20, 'duration' => 10]]
-			]
-		);
-		
-		$this->assertResponseOk();
-	}*/
-	
 	public function testCutVideoUnauthorized()
 	{	
 		$this->be($this->getUserInstance(false));
@@ -103,7 +90,7 @@ class ApiCutVideoTest extends TestCase {
 		$video->viewable_id = 1;
 		$video->viewable_type = 'LangLeap\\Videos\\Commercial';
 		$video->language_id = 1;
-		$video->path = 'storage\\media\\videos\\commercials\\test.mp4';
+		$video->path = 'storage' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'videos' . DIRECTORY_SEPARATOR . 'commercials' . DIRECTORY_SEPARATOR . 'test.mp4';
 		$video->save();
 
 		return $video;
