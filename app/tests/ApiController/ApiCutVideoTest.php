@@ -82,6 +82,15 @@ class ApiCutVideoTest extends TestCase {
 			]
 		);
 		$this->assertResponseStatus(400);
+		
+		$response = $this->action(
+			'POST', 'ApiCutVideoController@postSegments', 
+			[], [
+				"video_id" => $this->video->id,
+				"segments" => 3
+			]
+		);
+		$this->assertResponseStatus(400);
 	}
 	
 	protected function getVideoInstance()

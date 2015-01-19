@@ -230,6 +230,59 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertFalse($data->is_correct);
 	}
 	
+	public function testPutCustomQuestion()
+	{
+		$video = Video::first();
+		$question = 'test question';
+		$answers = ['1', '2', '3', '4'];
+		
+		$response = $this->action(
+			'PUT',
+			'ApiQuizController@putCustomQuestion',
+			[], ['video_id' => $video->id, 'question' => $question, 'answer' => $answers]
+		);
+		
+		$this->assertRedirectedTo('admin/quiz/new');
+		
+		$this->assertViewHas('success', true);
+		$this->assertViewHas('message');
+	}
+	
+	public function testPutCustomQuestionInvalidVideo()
+	{
+		$question = 'test question';
+		$answers = ['1', '2', '3', '4'];
+		
+		$response = $this->action(
+			'PUT',
+			'ApiQuizController@putCustomQuestion',
+			[], ['video_id' => -1, 'question' => $question, 'answer' => $answers]
+		);
+		
+		$this->assertRedirectedTo('admin/quiz/new');
+		
+		$this->assertViewHas('success', true);
+		$this->assertViewHas('message');
+	}
+	
+	public function testPutCustomQuestionInvalidAnswers()
+	{
+		$video = Video::first();
+		$question = 'test question';
+		$answers = [];
+		
+		$response = $this->action(
+			'PUT',
+			'ApiQuizController@putCustomQuestion',
+			[], ['video_id' => $video->id, 'question' => $question, 'answer' => $answers]
+		);
+		
+		$this->assertRedirectedTo('admin/quiz/new');
+		
+		$this->assertViewHas('success', true);
+		$this->assertViewHas('message');
+	}
+	
 	public function testQuizScore()
 	{
 		$quiz = Quiz::first();
@@ -245,7 +298,13 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertObjectHasAttribute('score', $data);
 	}
 	
-	public function testQuizUnauthorized()
+	public function testQuizScoreNoQuiz()
+	{
+		$response = $this->call('GET', 'api/quiz/score/-1');
+		$this->assertResponseStatus(404);
+	}
+	
+	public function testQuizScoreUnauthorized()
 	{
 		$user = User::where('is_admin', '=', false)->first();
 		$this->be($user);
