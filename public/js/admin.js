@@ -176,6 +176,9 @@ function buildList(data)
 	when a media title is clicked in the browser, refresh all values in the forms to reflect the clicked media
 */
 var id;
+//Adding cut at intervals
+var cutAtDurations = [];
+var segmentsCount = 0;
 $('#content').on('click', 'span.media', function(event)
 {
 	id = $(this).attr('db-id');
@@ -218,7 +221,8 @@ $('#content').on('click', 'span.media', function(event)
 	{
 		populateSeasons();
 	}
-	
+
+	resetCutVideos();
 });
 
 /*
@@ -496,35 +500,43 @@ $.ajaxSetup({
     }
 });
 
-//Adding cut at intervals
-var cutAtDurations = [];
-var count = 0;
 $('#button-edit-info-add').on("click", function()
 {
 	if($('#user_role_cut_at').is(':checked'))
 	{
-		var inputText = " From " +  $('#from-min').val() + ":" 
-					  			+ (($('#from-sec').val() < 10) ? "0" : "") 
-					  			+   $('#from-sec').val() + " to "
-					  			+   $('#to-min').val() + ":" 
-					  			+ (($('#to-sec').val() < 10) ? "0" : "") 
-					  			+   $('#to-sec').val();
+		var inputText = " From " 	+ pad($('#from-min').val(), 3) + ":"
+									+ pad($('#from-sec').val(), 2) + " To "
+					  				+ pad($('#to-min').val(), 3) + ":"
+									+ pad($('#to-sec').val(), 2);
 
-		var fromTime = parseInt($('#from-min').val()) * 60 + parseInt($('#from-sec').val());
-		var toTime = parseInt($('#to-min').val()) * 60 + parseInt($('#to-sec').val());
+		var fromTime = ($('#from-min').val() != "") ? parseInt($('#from-min').val()) * 60 : 0;
+		fromTime += ($('#from-sec').val() != "") ? parseInt($('#from-sec').val()) : 0;
+		var toTime = ($('#to-min').val() != "") ? parseInt($('#to-min').val()) * 60 : 0;
+		toTime += ($('#to-sec').val() != "") ? parseInt($('#to-sec').val()) : 0;
 		var length = toTime - fromTime;
 
 		var label = $("<label>").text(inputText);
-		var minus = $("<span class=\"glyphicon glyphicon-minus remove-interval\" name=\""+ (count+1) +"\"></span>");
+		var minus = $("<span class=\"glyphicon glyphicon-minus remove-interval\" name=\""+ (segmentsCount+1) +"\"></span>");
 
 		$('#segment-intervals').append(label);
 		$('#segment-intervals').append(minus);
 		$('#segment-intervals').append($("<br/>"));
 
 		cutAtDurations.push({start: fromTime, duration: length});
-		count++;
+		segmentsCount++;
+
+		$('#from-min').val("");
+		$('#from-sec').val("");
+		$('#to-min').val("");
+		$('#to-sec').val("");
 	}
 });
+
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
 
 //Negative values not allowed while cutting
 $('.time-field').attr("min", "0");
@@ -540,16 +552,28 @@ $('#to-sec').attr("max", maxSeconds);
 
 //Removing intervals by clicking the minus
 $(document).on('click', '.remove-interval', function() {
-	cutAtDurations[parseInt($(this).attr("name"))] = null;
+	cutAtDurations[parseInt($(this).attr("name")) - 1] = null;
     $(this).prev().remove();
     $(this).next().remove();
     $(this).remove();
 });
 
+function resetCutVideos()
+{
+	cutAtDurations = [];
+	segmentsCount = 0;
+	$('#from-min').val("");
+	$('#from-sec').val("");
+	$('#to-min').val("");
+	$('#to-sec').val("");
+	$('#segment-intervals').html("");
+}
+
 //Submitting video splitting info
 $('#button-edit-info-done').on("click", function()
 {
 	var cutForm = $('#cut-form');
+	var cutoffTimes = [];
 
 	if($('#user_role_cut_by').is(':checked'))
 	{
@@ -559,9 +583,9 @@ $('#button-edit-info-done').on("click", function()
 	{
 		for(var i = 0; i < cutAtDurations.length; i++)
 		{
-			if(cutAtDurations[i] == null)
+			if(cutAtDurations[i] != null)
 			{
-				cutAtDurations.splice(i,1);
+				cutoffTimes.push(cutAtDurations[i]);
 			}
 		}
 	}
@@ -574,7 +598,7 @@ $('#button-edit-info-done').on("click", function()
 		data:
 		{
 			'video_id': id,
-			'segments': cutAtDurations
+			'segments': cutoffTimes
 		},
 		success: function(data)
 		{
