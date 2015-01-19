@@ -446,8 +446,7 @@
 				data:
 				{ 
 					current_time: $('#video-player')[0].currentTime,
-					video_id: "{{ $video_id }}",
-					_method: 'PATCH'
+					video_id: "{{ $video_id }}"
 				},
 				success : function(data)
 				{
