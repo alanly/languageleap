@@ -526,6 +526,18 @@ $('#button-edit-info-add').on("click", function()
 	}
 });
 
+//Negative values not allowed while cutting
+$('.time-field').attr("min", "0");
+
+//Maximum number of 59 seconds and 999 minutes
+var maxSeconds = 59;
+var maxMinutes = 999;
+
+$('#from-min').attr("max", maxMinutes);
+$('#to-min').attr("max", maxMinutes);
+$('#from-sec').attr("max", maxSeconds);
+$('#to-sec').attr("max", maxSeconds);
+
 //Removing intervals by clicking the minus
 $(document).on('click', '.remove-interval', function() {
 	cutAtDurations[parseInt($(this).attr("name"))] = null;
