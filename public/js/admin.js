@@ -515,20 +515,25 @@ $('#button-edit-info-add').on("click", function()
 		toTime += ($('#to-sec').val() != "") ? parseInt($('#to-sec').val()) : 0;
 		var length = toTime - fromTime;
 
-		var label = $("<label>").text(inputText);
-		var minus = $("<span class=\"glyphicon glyphicon-minus remove-interval\" name=\""+ (segmentsCount+1) +"\"></span>");
+		if(length > 0)
+		{
+			var label = $("<label>").text(inputText);
+			var minus = $("<span class=\"glyphicon glyphicon-minus remove-interval\" name=\""+ (segmentsCount+1) +"\"></span>");
 
-		$('#segment-intervals').append(label);
-		$('#segment-intervals').append(minus);
-		$('#segment-intervals').append($("<br/>"));
+			$('#segment-intervals').append(label);
+			$('#segment-intervals').append(minus);
+			$('#segment-intervals').append($("<br/>"));
 
-		cutAtDurations.push({start: fromTime, duration: length});
-		segmentsCount++;
+			cutAtDurations.push({start: fromTime, duration: length});
+			segmentsCount++;
 
-		$('#from-min').val("");
-		$('#from-sec').val("");
-		$('#to-min').val("");
-		$('#to-sec').val("");
+			$('#from-min').val("");
+			$('#from-sec').val("");
+			$('#to-min').val("");
+			$('#to-sec').val("");
+		}
+		else
+			alert("Please enter a valid interval!");
 	}
 });
 
