@@ -15,7 +15,8 @@ use LangLeap\Videos\Video;
 		$videos = [];
 		for($i = 0; $i < count($times); $i++)
 		{
-			$path = $this->getVideoPath($video, $i + 1); 
+			$cut_path = $this->getVideoPath($video, $i + 1); 
+			$video_path = $video->path;
 			
 			$start = $times[$i]['time'];
 			$start = sprintf('%02d:%02d:%02d', ($start/3600), ($start/60%60), ($start%60));
@@ -23,25 +24,30 @@ use LangLeap\Videos\Video;
 			$end = $times[$i]['duration'];
 			$end = sprintf('%02d:%02d:%02d', ($end/3600), ($end/60%60), ($end%60));
 			
-			$cmd = 'avconv -ss ' . $start . ' -i ' . app_path() . DIRECTORY_SEPARATOR . $video->path . ' -t ' . $end . ' -codec copy ' . app_path() . DIRECTORY_SEPARATOR . $path . ' 2>&1';
-			exec($cmd, $output, $return_val);
-			
-			$libav_output = '';
-			foreach($output as $line)
+			\Queue::push(function($job) use ($start, $end, $video_path, $cut_path)
 			{
-				$libav_output .= $line . "\n";
-			}
+				$cmd = 'avconv -ss ' . $start . ' -i ' . app_path() . DIRECTORY_SEPARATOR . $video_path . ' -t ' . $end . ' -codec copy ' . app_path() . DIRECTORY_SEPARATOR . $cut_path . ' 2>&1';
+				exec($cmd, $output, $return_val);
+				
+				$libav_output = '';
+				foreach($output as $line)
+				{
+					$libav_output .= $line . "\n";
+				}
+				
+				if($return_val == 0)
+				{
+					\Log::info("libav output \n" . $libav_output);
+				}
+				else
+				{
+					\Log::error("libav output \n" . $libav_output);
+				}
+				
+				$job->delete();
+			});
 			
-			if($return_val == 0)
-			{
-				\Log::info("libav output \n" . $libav_output);
-			}
-			else
-			{
-				\Log::error("libav output \n" . $libav_output);
-			}
-			
-			array_push($videos, $this->createVideoAssociation($video, $path));
+			array_push($videos, $this->createVideoAssociation($video, $cut_path));
 		}
 		
 		return $videos;

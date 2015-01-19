@@ -5,9 +5,15 @@ use LangLeap\CutVideoUtilities\CutVideoResponse;
 
 class CutVideoResponseTest extends TestCase {
 
-	private $videoPath = 'storage' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'videos' . DIRECTORY_SEPARATOR . 'commercials' . DIRECTORY_SEPARATOR . 'test.mp4';
-	private $viewableType = 'LangLeap\Videos\Commercial';
+	private $videoPath;
+	private $viewableType;
 
+	public function __construct()
+	{
+		$this->videoPath = 'storage' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'videos' . DIRECTORY_SEPARATOR . 'commercials' . DIRECTORY_SEPARATOR . 'test.mp4';
+		$this->viewableType = 'LangLeap\Videos\Commercial';
+	}
+	
 	public function testResponse()
 	{
 		$cutVideoAdapter = $this->getMockBuilder('LangLeap\CutVideoUtilities\ICutVideoAdapter')->getMock();;
