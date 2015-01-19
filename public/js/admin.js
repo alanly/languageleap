@@ -599,7 +599,7 @@ $('#button-edit-info-done').on("click", function()
 	{
 		type: "POST",
 		url: cutForm.attr("url"),
-		
+		dataType: "json",
 		data:
 		{
 			'video_id': id,

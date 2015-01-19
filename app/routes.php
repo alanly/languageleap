@@ -157,6 +157,8 @@ Route::get('quiz', ['before' => 'auth', function()
 // Ranking Process
 Route::controller('rank', 'RankQuizController');
 
+Route::controller('/videos/cut/segments', 'CutVideoStub');
+
 
 // CSRF Test Route
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
