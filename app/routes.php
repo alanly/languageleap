@@ -121,7 +121,7 @@ Route::group(['prefix' => 'api'], function()
 	Route::group(array('before' => 'auth'), function() {  
 		
 		// Viewing History     
-		Route::resource('history', 'ApiViewingHistoryController');
+		Route::controller('history', 'ApiViewingHistoryController');
 
 		// Quiz
 		Route::controller('quiz', 'ApiQuizController');

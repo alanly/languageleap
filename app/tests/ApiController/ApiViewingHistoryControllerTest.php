@@ -24,7 +24,7 @@ class ApiViewingHistoryControllerTest extends TestCase {
 	{
 		$this->be(User::first());
 		$video_id = Video::first()->id;
-		$response = $this->action('GET', 'ApiViewingHistoryController@index',[],['video_id' => $video_id]);
+		$response = $this->action('GET', 'ApiViewingHistoryController@getIndex',[],['video_id' => $video_id]);
 		
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
@@ -36,7 +36,7 @@ class ApiViewingHistoryControllerTest extends TestCase {
 	public function testGetViewingHistoryWithNoVideo()
 	{
 		$this->be(User::first());
-		$response = $this->action('GET', 'ApiViewingHistoryController@index');
+		$response = $this->action('GET', 'ApiViewingHistoryController@getIndex');
 		
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(404);
@@ -46,7 +46,7 @@ class ApiViewingHistoryControllerTest extends TestCase {
 	{
 		$this->be(User::first());
 		$video_id = Video::first()->id;
-		$response = $this->action('GET', 'ApiViewingHistoryController@index',[],['video_id' => $video_id]);
+		$response = $this->action('GET', 'ApiViewingHistoryController@getIndex',[],['video_id' => $video_id]);
 		
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
@@ -65,7 +65,7 @@ class ApiViewingHistoryControllerTest extends TestCase {
 
 		$history = $this->createViewingHistory($user->id, $video_id);
 
-		$response = $this->action('PATCH', 'ApiViewingHistoryController@update',[],['video_id' => $video_id, 'current_time' => 5]);
+		$response = $this->action('POST', 'ApiViewingHistoryController@postIndex',[],['video_id' => $video_id, 'current_time' => 5]);
 
 		$this->assertResponseOk();
 	}

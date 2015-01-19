@@ -7,7 +7,7 @@ class ApiViewingHistoryController extends \BaseController {
 	/**
 	 * This function will return the current time for the video he is currently watching
 	 */
-	public function index()
+	public function getIndex()
 	{
 		//User should be logged in
 		$user = Auth::user();
@@ -26,7 +26,7 @@ class ApiViewingHistoryController extends \BaseController {
 		return $this->generateResponse($user->id, $video_id);
 	}
 
-	public function update()
+	public function postIndex()
 	{
 		$user = Auth::user();
 
