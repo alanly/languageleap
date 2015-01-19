@@ -540,7 +540,7 @@ function pad(num, size) {
 
 //Removing intervals by clicking the minus
 $(document).on('click', '.remove-interval', function() {
-	cutAtDurations[parseInt($(this).attr("name"))] = null;
+	cutAtDurations[parseInt($(this).attr("name")) - 1] = null;
     $(this).prev().remove();
     $(this).next().remove();
     $(this).remove();
@@ -561,6 +561,7 @@ function resetCutVideos()
 $('#button-edit-info-done').on("click", function()
 {
 	var cutForm = $('#cut-form');
+	var cutoffTimes = [];
 
 	if($('#user_role_cut_by').is(':checked'))
 	{
@@ -570,9 +571,9 @@ $('#button-edit-info-done').on("click", function()
 	{
 		for(var i = 0; i < cutAtDurations.length; i++)
 		{
-			if(cutAtDurations[i] == null)
+			if(cutAtDurations[i] != null)
 			{
-				cutAtDurations.splice(i,1);
+				cutoffTimes.push(cutAtDurations[i]);
 			}
 		}
 	}
@@ -585,7 +586,7 @@ $('#button-edit-info-done').on("click", function()
 		data:
 		{
 			'video_id': id,
-			'segments': cutAtDurations
+			'segments': cutoffTimes
 		},
 		success: function(data)
 		{
