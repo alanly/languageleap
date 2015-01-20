@@ -582,7 +582,20 @@ $('#button-edit-info-done').on("click", function()
 
 	if($('#user_role_cut_by').is(':checked'))
 	{
-		cutAtDurations = $('#segment-amount').val();
+		var videoDuration = Math.round(videoPlayer.get(0).duration);
+		var numberOfSegments = parseInt($('#segment-amount').val());
+		var secondsPerSegment = videoDuration / numberOfSegments;
+
+		var currentTime = 0;
+
+		if(secondsPerSegment > 0)
+		{
+			while(currentTime < videoDuration)
+			{
+				cutoffTimes.push({start: currentTime, duration: secondsPerSegment});
+				currentTime += secondsPerSegment;
+			}		
+		}
 	}
 	else if($('#user_role_cut_at').is(':checked'))
 	{
