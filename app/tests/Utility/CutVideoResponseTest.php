@@ -16,7 +16,7 @@ class CutVideoResponseTest extends TestCase {
 	
 	public function testResponse()
 	{
-		$cutVideoAdapter = $this->getMockBuilder('LangLeap\CutVideoUtilities\ICutVideoAdapter')->getMock();;
+		$cutVideoAdapter = $this->getMockBuilder('LangLeap\CutVideoUtilities\ICutVideoAdapter')->getMock();
 		
 		$videos = [];
 		array_push($videos, $this->getVideoInstance());
@@ -39,6 +39,23 @@ class CutVideoResponseTest extends TestCase {
 		$this->assertEquals(1, $response[1][0]['viewable_id']);
 		$this->assertEquals($this->viewableType, $response[1][0]['viewable_type']);
 		$this->assertArrayHasKey('script', $response[1][0]);
+	}
+	
+	public function testResponseException()
+	{
+		$cutVideoAdapter = $this->getMockBuilder('LangLeap\CutVideoUtilities\ICutVideoAdapter')->getMock();
+		
+		$cutVideoAdapter->method('cutVideoByTimes')->will($this->throwException(new Exception));
+		
+		$videoResponse = new CutVideoResponse($cutVideoAdapter);
+		
+		$response = $videoResponse->response($this->getUserInstance(), ['video_id' => $this->getVideoInstance()->id, 'segments' => [['times' => 10, 'duration' =>10]]]);
+		$this->assertCount(3, $response);
+		$this->assertInternalType('string', $response[0]);
+		$this->assertInternalType('string', $response[1]);
+		$this->assertInternalType('int', $response[2]);
+		
+		$this->assertEquals(500, $response[2]);
 	}
 	
 	protected function getVideoInstance()

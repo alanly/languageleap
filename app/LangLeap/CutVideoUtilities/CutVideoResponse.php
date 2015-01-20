@@ -36,7 +36,7 @@ class CutVideoResponse implements UserInputResponse
 				array_push($data, $video->toResponseArray());
 			}
 		}
-		catch(Exception $e)
+		catch(\Exception $e)
 		{
 			return ['error', 'The request to break the video at specified times could not be completed.', 500];
 		}

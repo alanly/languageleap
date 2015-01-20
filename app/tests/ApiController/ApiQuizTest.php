@@ -244,8 +244,8 @@ class ApiQuizControllerTest extends TestCase {
 		
 		$this->assertRedirectedTo('admin/quiz/new');
 		
-		$this->assertViewHas('success', true);
-		$this->assertViewHas('message');
+		$this->assertSessionHas('success', true);
+		$this->assertSessionHas('message');
 	}
 	
 	public function testPutCustomQuestionInvalidVideo()
@@ -261,8 +261,8 @@ class ApiQuizControllerTest extends TestCase {
 		
 		$this->assertRedirectedTo('admin/quiz/new');
 		
-		$this->assertViewHas('success', true);
-		$this->assertViewHas('message');
+		$this->assertSessionHas('success', false);
+		$this->assertSessionHas('message');
 	}
 	
 	public function testPutCustomQuestionInvalidAnswers()
@@ -279,8 +279,8 @@ class ApiQuizControllerTest extends TestCase {
 		
 		$this->assertRedirectedTo('admin/quiz/new');
 		
-		$this->assertViewHas('success', true);
-		$this->assertViewHas('message');
+		$this->assertSessionHas('success', false);
+		$this->assertSessionHas('message');
 	}
 	
 	public function testQuizScore()
