@@ -194,7 +194,7 @@
 								<label>
 									<input id="user_role_cut_by" name="user[role]" type="radio" value="Cut by" checked>
 					                Cut by: 
-					                <input type="number" class="time-field" id="segment-amount"> segments
+					                <input type="number" class="time-field" id="segment-amount" name="segments"> segments
 								</label>
 								<br/>
 								<br/>
