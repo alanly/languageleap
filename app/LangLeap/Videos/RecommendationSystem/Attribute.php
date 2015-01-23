@@ -31,16 +31,6 @@ class Attribute {
 
 
 	/**
-	 * Create a new Attribute instance.
-	 * @return Attribute The new attribute instance
-	 */
-	public function newInstance()
-	{
-		return new self();
-	}
-
-
-	/**
 	 * Returns the current count of the requested attribute resident. The value
 	 * represents the number of videos the user has seen, in which the attribute
 	 * resident occurs.
@@ -54,6 +44,16 @@ class Attribute {
 		if (! isset($this->residents[$name])) return 0;
 
 		return $this->residents[$name];
+	}
+
+
+	/**
+	 * Create a new Attribute instance.
+	 * @return Attribute The new attribute instance
+	 */
+	public function newInstance()
+	{
+		return new self();
 	}
 
 }
