@@ -1,4 +1,4 @@
-<?php namspace LangLeap\Videos\RecommendationSystem;
+<?php namespace LangLeap\Videos\RecommendationSystem;
 
 /**
  * Model represents the user's viewing preferences. It maintains a count of
