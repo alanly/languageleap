@@ -3,9 +3,7 @@
 */
 $("#button-add-new").click(function()
 {
-  $("#slidedown-add-new").slideToggle("slow", function()
-	{
-  });
+	$("#slidedown-add-new").slideToggle("slow");
 });
 
 /*
@@ -66,15 +64,15 @@ function refreshContent()
 	{
 		if ($('#file').val() != '')
 		{
-		  var p = '';
-		  //p = $('#text').text();
-		  p = getScriptText();
-		  //p =	document.getElementById('add-script').innerHTML,
-		  p = "<input type='text' name='text' value='" + p + "'/>";
+			var p = '';
+			//p = $('#text').text();
+			p = getScriptText();
+			//p =	document.getElementById('add-script').innerHTML,
+			p = "<input type='text' name='text' value='" + p + "'/>";
 
 			// append script to form for post
-		  $('#new-media-form').append(p);
-		  document.getElementById("new-media-form").submit();
+			$('#new-media-form').append(p);
+			document.getElementById("new-media-form").submit();
 
 			// add loading bar here
 			$('#add-new-header').empty().append("<h2>Uploading...</h2>");
@@ -161,13 +159,13 @@ function buildList(data)
 {
 	var s = "";
 	
-  $.each(data.data, function(key, val)
+	$.each(data.data, function(key, val)
 	{
 		var id = val.id;
 		var name = val.name;
 		//console.log(key + " " + id + " " + name);
 		s += '<span class="media" db-id="' + id + '">' + name + '</span>';
-  });
+	});
 	
 	$('#content').empty().append(s);
 	//s.detach();
@@ -487,7 +485,7 @@ $(function()
  * set up csrf protection token
  */
 $.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+	headers: {
+		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	}
 });
