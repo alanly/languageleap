@@ -445,16 +445,8 @@
 				url: url,
 				data:
 				{ 
-					current_time: $('#video-player')[0].currentTime,
+					current_time: Math.floor($('#video-player')[0].currentTime),
 					video_id: "{{ $video_id }}"
-				},
-				success : function(data)
-				{
-					console.log("success");
-				},
-				error : function(data)
-				{
-					console.log("fail");
 				}
 			});
 		}
