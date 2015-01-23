@@ -36,4 +36,17 @@ class Model {
 		return $this->attributes[$name];
 	}
 
+
+	/**
+	 * Magic method for setting a class attribute. This method overrides the
+	 * default behaviour and throws an exception if such an operation is attempted.
+	 * @param string  $name  The name of the attribute
+	 * @param mixed   $value The value of the attribute
+	 */
+	public function __set($name, $value)
+	{
+		throw new \RuntimeException(
+			"Cannot manipulate attribute ".get_class($this)."::{$name} directly.");
+	}
+
 }
