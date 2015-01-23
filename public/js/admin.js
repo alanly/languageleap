@@ -68,7 +68,8 @@ function refreshContent()
 		{
 		  var p = '';
 		  //p = $('#text').text();
-		  p =	document.getElementById('add-script').innerHTML,
+		  p = getScriptText();
+		  //p =	document.getElementById('add-script').innerHTML,
 		  p = "<input type='text' name='text' value='" + p + "'/>";
 
 			// append script to form for post

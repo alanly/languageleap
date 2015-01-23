@@ -294,11 +294,11 @@ function textSelected() {
 }
 
 /**
- * This function should be run before saving the script to the database.
+ * Removes tooltips from the script editor.
  */
-function prepareSpans() {
-	// Remove useless data
+function removeTooltips() {
 	$('.script-editor span').removeAttr('data-original-title').removeAttr('title');
+	$('.script-editor .tooltip').remove();
 }
 
 //////////////////////////////////////////////////////////////
@@ -379,6 +379,17 @@ function isIE() {
 	}
 
 	return false;
+}
+
+/**
+ * Gets the script text that is in the required format for storing in the
+ * database.
+ *
+ * @return {String} The sanitized script text
+ */
+function getScriptText() {
+	removeTooltips();
+	return $('.script-editor').html();
 }
 
 //////////////////////////////////////////////////////////////
@@ -516,7 +527,7 @@ function loadScript(scriptId) {
 
 function saveScript(scriptId) {
 	// Some sanitization before saving to the database
-	prepareSpans();
+	removeTooltips();
 
 	$.ajax({
 		type: 'PUT',
