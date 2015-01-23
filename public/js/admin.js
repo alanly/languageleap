@@ -461,8 +461,8 @@ $('.modal-footer').on('click', 'span', function(event)
 	}
 	else if (id == "footer-split")
 	{
-		$('.modal-body.split').attr("aria-hidden", false);
-		$('.modal-body.split').css("display", "block");
+		$('.modal-body.video-split').attr("aria-hidden", false);
+		$('.modal-body.video-split').css("display", "block");
 	}
 	else if (id == "footer-script")
 	{
@@ -620,7 +620,8 @@ $('#button-edit-info-done').on("click", function()
 		},
 		success: function(data)
 		{
-			
+			$('.modal-body.script-split').attr("aria-hidden", false);
+			$('.modal-body.script-split').css("display", "block");			
 		}
 	});
 });

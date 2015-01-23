@@ -175,8 +175,10 @@
       </div>
 			<!-- /info -->
 
-			<!-- split -->
-		<div class="modal-body split clearfix" aria-hidden="true" style="display: none;">
+		<!-- split -->
+		
+		<!-- video split -->
+		<div class="modal-body video-split clearfix" aria-hidden="true" style="display: none;">
 
 			<div class="row" style="padding-left: 20px;">
 				<div class="col-lg-6">
@@ -219,7 +221,15 @@
 				</div>
 			</div>
 		</div>
-			<!-- /split -->
+		<!-- /video split -->
+
+		<!-- script split -->
+		<div class="modal-body script-split clearfix" aria-hidden="true" style="display: none;">
+			GIANT COCK HERE PLEASE
+		</div>
+		<!-- /script split -->
+
+		<!-- /split -->
 
 			
 			<!-- script -->
