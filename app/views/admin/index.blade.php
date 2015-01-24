@@ -237,7 +237,7 @@
 				<div class="row">
 					<div class="dropdown col-lg-12">
 						<button class="btn btn-default dropdown-toggle" type="button" id="video-segment-dropdown" data-toggle="dropdown" aria-expanded="true">
-							Dropdown
+							Video Segments
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu" id="video-segment-list" role="menu" aria-labelledby="dropdownMenu1">
@@ -245,7 +245,7 @@
 					</div>
 				
 					<div class="col-lg-4">
-						<video controls>
+						<video id="video-segment-player" controls>
 							<source class="source" type="video/mp4">
 							<p>@lang('player.player.error')</p>
 						</video>

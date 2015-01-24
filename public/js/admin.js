@@ -481,9 +481,8 @@ $('.modal-footer').on('click', 'span', function(event)
 				{ 
 					if(data.data.videos[i] != null)
 					{
-						console.log("Hello?");
 						videoSegments.push(data.data.videos[i]);
-						var li = $("<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"#\"></a></li>").text(" Video Segment " + (i+1));
+						var li = $("<li role=\"presentation\" class=\"video-segment-list-item\" name=\"" + (i+1) + "\"><a role=\"menuitem\" tabindex=\"-1\" href=\"#\"></a></li>").text(" Video Segment " + (i+1));
 
 						$('#video-segment-list').append(li);
 					}
@@ -645,4 +644,24 @@ $('#button-edit-info-done').on("click", function()
 			resetCutVideos();
 		}
 	});
+});
+
+$('.video-segment-list-item').on("click", function()
+{
+	var vidId = parseInt($(this).attr("name"));
+
+	var src = videoSegments[vidId].path;
+
+	$('.video-segment-player').attr("src", src);
+
+	$('#edit-script').text(videoSegments[vidId].script);
+
+	$('#video-segment-dropdown').text($(this).text());
+});
+
+$('#button-edit-script-save').on("click", function()
+{
+
+
+
 });
