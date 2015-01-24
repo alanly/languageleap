@@ -477,13 +477,15 @@ $('.modal-footer').on('click', 'span', function(event)
 			dataType: "json",
 			success: function(data)
 			{	
+				alert("test");
 				for(var i = 0; i < data.data.videos.length; i++)
 				{ 
 					if(data.data.videos[i] != null)
 					{
 						videoSegments.push(data.data.videos[i]);
+						$('#video-segment-list').empty();
 						var li = $("<li role=\"presentation\"></li>");
-						var a = $("<a role=\"menuitem\" class=\"video-segment-list-item\" tabindex=\"-1\" href=\"#\" name=\"" + (i+1) + "\"></a>").text(" Video Segment " + (i+1));
+						var a = $('<a role="menuitem" class="video-segment-list-item" tabindex="-1" href="#" name="' + (i+1) + '" onclick="testOnClickMethod();"></a>').text(" Video Segment " + (i+1));
 						li.append(a);
 						$('#video-segment-list').append(li);
 					}
@@ -647,33 +649,6 @@ $('#button-edit-info-done').on("click", function()
 	});
 });
 
-$('.dropdown-menu li a').click( function()
-{
-	console.log("click");
-	var vidId = parseInt($(this).attr("name"));
-
-	var src = videoSegments[vidId].path;
-
-	$('.video-segment-player').attr("src", src);
-
-	$('#edit-script').text(videoSegments[vidId].script);
-
-	$('#video-segment-dropdown').text($(this).text());
-});
-
-$('.dropdown-menu li a').on("click", function()
-{
-	console.log("on");
-	var vidId = parseInt($(this).attr("name"));
-
-	var src = videoSegments[vidId].path;
-
-	$('.video-segment-player').attr("src", src);
-
-	$('#edit-script').text(videoSegments[vidId].script);
-
-	$('#video-segment-dropdown').text($(this).text());
-});
 
 $('#button-edit-script-save').on("click", function()
 {
@@ -681,3 +656,17 @@ $('#button-edit-script-save').on("click", function()
 
 
 });
+
+function testOnClickMethod()
+{
+	alert("BOOYAA!");
+	var vidId = parseInt($(this).attr("name"));
+
+	var src = videoSegments[vidId].path;
+
+	$('.video-segment-player').attr("src", src);
+
+	$('#edit-script').text(videoSegments[vidId].script);
+
+	$('#video-segment-dropdown').text($(this).text());
+}
