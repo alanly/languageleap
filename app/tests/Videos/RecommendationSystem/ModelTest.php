@@ -56,5 +56,59 @@ class ModelTest extends TestCase {
 
 		$m->test = null;
 	}
+
+
+	public function testCountableAndSize()
+	{
+		$a = $this->getAttributeMock();
+		$a->shouldReceive('newInstance')->once()->andReturn($a);
+
+		$m = new Model($a);
+
+		$this->assertInstanceOf('Countable', $m);
+
+		$m->test;
+
+		$this->assertSame(1, $m->size());
+		$this->assertCount(1, $m);
+	}
+
+
+	public function testKeysFetchesAttributeNames()
+	{
+		$a = $this->getAttributeMock();
+		$a->shouldReceive('newInstance')->once()->andReturn($a);
+
+		$m = new Model($a);
+
+		$m->test;
+		$m->foobar;
+
+		$k = $m->keys();
+
+		$this->assertCount(2, $k);
+		$this->assertContains('test', $k);
+		$this->assertContains('foobar', $k);
+	}
+
+
+	public function testArrayable()
+	{
+		$a = $this->getAttributeMock();
+		$a->shouldReceive('newInstance')->once()->andReturn($a);
+
+		$m = new Model($a);
+
+		$this->assertInstanceOf('Illuminate\Support\Contracts\ArrayableInterface', $m);
+
+		$m->test;
+		$m->foobar;
+
+		$arr = $m->toArray();
+
+		$this->assertCount(2, $arr);
+		$this->assertSame($a, $arr['test']);
+		$this->assertSame($a, $arr['foobar']);
+	}
 	
 }

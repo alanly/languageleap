@@ -1,11 +1,14 @@
 <?php namespace LangLeap\Videos\RecommendationSystem;
 
+use Countable;
+use Illuminate\Support\Contracts\ArrayableInterface;
+
 /**
  * Model represents the user's viewing preferences. It maintains a count of
  * commonly occuring attributes from videos that the user has seen.
  * @author Alan Ly <hello@alan.ly>
  */
-class Model {
+class Model implements ArrayableInterface, Countable {
 
 	/**
 	 * @var Attribute
@@ -47,6 +50,46 @@ class Model {
 	{
 		throw new \RuntimeException(
 			"Cannot manipulate attribute ".get_class($this)."::{$name} directly.");
+	}
+
+
+	/**
+	 * Count the number of attributes in the model. Aliases the `size()` method.
+	 * @return int
+	 */
+	public function count()
+	{
+		return $this->size();
+	}
+
+
+	/**
+	 * Get the attribute keys/names that held by the model.
+	 * @return array
+	 */
+	public function keys()
+	{
+		return array_keys($this->attributes);
+	}
+
+
+	/**
+	 * Get the amount of attributes held by the model.
+	 * @return int
+	 */
+	public function size()
+	{
+		return count($this->attributes);
+	}
+
+
+	/**
+	 * Get the instance as an array.
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return $this->attributes;
 	}
 
 }
