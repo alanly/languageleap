@@ -61,8 +61,8 @@ class VideoContentController extends \BaseController {
 			if(! $history)
 			{
 				ViewingHistory::create([
-					'user_id' 		=> $user_id, 
-					'video_id' 		=> $id, 
+					'user_id' 	=> $user_id, 
+					'video_id' 	=> $id, 
 					'is_finished' 	=> false, 
 					'current_time' 	=> 0
 				]);
