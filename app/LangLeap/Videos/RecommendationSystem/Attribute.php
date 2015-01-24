@@ -87,4 +87,14 @@ class Attribute {
 		$this->name = $name;
 	}
 
+
+	/**
+	 * Returns the number of residents held in this attribute.
+	 * @return int The number of residents in this attribute
+	 */
+	public function size()
+	{
+		return count($this->residents);
+	}
+
 }
