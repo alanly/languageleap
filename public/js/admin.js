@@ -431,7 +431,7 @@ $('#button-edit-script-save').on("click", function()
 		url: "/api/metadata/" + currentType + "/update-script/" + id,
 		data:
 		{
-			text: document.getElementById('edit-script').innerHTML,
+			text: $('#edit-script').innerHTML,
 			episode: currentEpisode,
 			_method: "PATCH"
 		},
@@ -443,6 +443,8 @@ $('#button-edit-script-save').on("click", function()
 			$('#button-edit-script-save').html("Save");
 		}
 	});
+
+	loadSegments();
 });
 
 /*
@@ -470,28 +472,7 @@ $('.modal-footer').on('click', 'span', function(event)
 		$('.modal-body.script').attr("aria-hidden", false);
 		$('.modal-body.script').css("display", "block");
 
-		$.ajax(
-		{
-			type: "GET",
-			url: '/api/metadata/movies/' + id,
-			dataType: "json",
-			success: function(data)
-			{	
-				for(var i = 0; i < data.data.videos.length; i++)
-				{ 
-					if(data.data.videos[i] != null)
-					{
-						videoSegments.push(data.data.videos[i]);
-						$('#video-segment-list').empty();
-						var li = $("<li role=\"presentation\"></li>");
-						//var listItemText = ;
-						var a = $('<a role="menuitem" class="video-segment-list-item" tabindex="-1" href="#" onclick="onClickMethod(' + i + ');"></a>').text("Video Segment " + (i+1));
-						li.append(a);
-						$('#video-segment-list').append(li);
-					}
-				}					
-			}
-		});
+		loadSegments();		
 	}
 	else if (tagID == "footer-seasons")
 	{
@@ -499,6 +480,32 @@ $('.modal-footer').on('click', 'span', function(event)
 		$('.modal-body.seasons').css("display", "block");
 	}
 });
+
+function loadSegments()
+{
+	$.ajax(
+	{
+		type: "GET",
+		url: '/api/metadata/movies/' + id,
+		dataType: "json",
+		success: function(data)
+		{	
+			for(var i = 0; i < data.data.videos.length; i++)
+			{ 
+				if(data.data.videos[i] != null)
+				{
+					videoSegments.push(data.data.videos[i]);
+					$('#video-segment-list').empty();
+					var li = $("<li role=\"presentation\"></li>");
+					//var listItemText = ;
+					var a = $('<a role="menuitem" class="video-segment-list-item" tabindex="-1" href="#" onclick="loadScriptSegment(' + i + ');"></a>').text("Video Segment " + (i+1));
+					li.append(a);
+					$('#video-segment-list').append(li);
+				}
+			}					
+		}
+	});
+}
 
 /*
  * opt in for popovers
@@ -649,12 +656,10 @@ $('#button-edit-info-done').on("click", function()
 	});
 });
 
-function onClickMethod(videoId)
+function loadScriptSegment(videoId)
 {
 	var vidId = parseInt(videoId);
 
-	//console.log(videoId);
-	//console.log(videoText);
 	var src = videoSegments[vidId].path;
 
 	$('.video-segment-player').attr("src", src);
