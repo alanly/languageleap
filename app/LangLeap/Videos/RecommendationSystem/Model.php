@@ -30,7 +30,7 @@ class Model {
 	{
 		if (! isset($this->attributes[$name]))
 		{
-			$this->attributes[$name] = $this->attribute->newInstance();
+			$this->attributes[$name] = $this->attribute->newInstance($name);
 		}
 
 		return $this->attributes[$name];

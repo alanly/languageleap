@@ -5,9 +5,14 @@ use Mocker as m;
 
 class AttributeTest extends TestCase {
 
+	protected function getAttributeInstance($name = 'test')
+	{
+		return new Attribute($name);
+	}
+
 	public function testAddingNewResident()
 	{
-		$a = new Attribute;
+		$a = $this->getAttributeInstance();
 
 		$this->assertSame(1, $a->add('resident'));
 	}
@@ -15,7 +20,7 @@ class AttributeTest extends TestCase {
 
 	public function testAddingToExistingResident()
 	{
-		$a = new Attribute;
+		$a = $this->getAttributeInstance();
 		$a->add('resident');
 
 		$this->assertSame(2, $a->add('resident'));
@@ -24,14 +29,14 @@ class AttributeTest extends TestCase {
 
 	public function testCountingNonexistingResident()
 	{
-		$a = new Attribute;
+		$a = $this->getAttributeInstance();
 		$this->assertSame(0, $a->count('test'));
 	}
 
 
 	public function testCountingExistingResident()
 	{
-		$a = new Attribute;
+		$a = $this->getAttributeInstance();
 		$a->add('resident');
 		$this->assertSame(1, $a->count('resident'));
 
@@ -42,12 +47,23 @@ class AttributeTest extends TestCase {
 
 	public function testNewInstanceCreatesANewInstance()
 	{
-		$a = new Attribute;
-		$i = $a->newInstance();
+		$a = $this->getAttributeInstance();
+		$i = $a->newInstance('test');
 
 		$this->assertNotSame($a, $i);
 		$this->assertNotNull($i);
 		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Attribute', $i);
+	}
+
+
+	public function testAttributeNameSetterAndGetter()
+	{
+		$a = $this->getAttributeInstance(null);
+
+		$this->assertNull($a->getName());
+
+		$a->setName('foobar');
+		$this->assertSame('foobar', $a->getName());
 	}
 	
 }

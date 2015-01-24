@@ -9,7 +9,18 @@
  */
 class Attribute {
 
+	private $name;
 	private $residents = [];
+
+
+	/**
+	 * Constructor.
+	 * @param string $name The name of the attribute
+	 */
+	public function __construct($name = null)
+	{
+		$this->name = $name;
+	}
 
 
 	/**
@@ -48,12 +59,32 @@ class Attribute {
 
 
 	/**
+	 * Returns the name of this attribute.
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+
+	/**
 	 * Create a new Attribute instance.
 	 * @return Attribute The new attribute instance
 	 */
-	public function newInstance()
+	public function newInstance($name)
 	{
-		return new self();
+		return new self($name);
+	}
+
+
+	/**
+	 * Set the attribute name.
+	 * @param string $name The name of the attribute
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
 	}
 
 }
