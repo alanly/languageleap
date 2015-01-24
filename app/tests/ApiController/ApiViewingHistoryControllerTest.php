@@ -73,8 +73,8 @@ class ApiViewingHistoryControllerTest extends TestCase {
 	protected function createViewingHistory($user_id, $video_id)
 	{
 		$history = ViewingHistory::create([
-			'user_id' 		=> $user_id,
-			'video_id' 		=> $video_id,
+			'user_id' 	=> $user_id,
+			'video_id' 	=> $video_id,
 			'current_time' 	=> 0,
 			'is_finished' 	=> false
 		]);
