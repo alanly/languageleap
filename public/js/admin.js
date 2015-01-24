@@ -482,8 +482,9 @@ $('.modal-footer').on('click', 'span', function(event)
 					if(data.data.videos[i] != null)
 					{
 						videoSegments.push(data.data.videos[i]);
-						var li = $("<li role=\"presentation\" class=\"video-segment-list-item\" name=\"" + (i+1) + "\"><a role=\"menuitem\" tabindex=\"-1\" href=\"#\"></a></li>").text(" Video Segment " + (i+1));
-
+						var li = $("<li role=\"presentation\"></li>");
+						var a = $("<a role=\"menuitem\" class=\"video-segment-list-item\" tabindex=\"-1\" href=\"#\" name=\"" + (i+1) + "\"></a>").text(" Video Segment " + (i+1));
+						li.append(a);
 						$('#video-segment-list').append(li);
 					}
 				}					
@@ -646,8 +647,23 @@ $('#button-edit-info-done').on("click", function()
 	});
 });
 
-$('.video-segment-list-item').on("click", function()
+$('.dropdown-menu li a').click( function()
 {
+	console.log("click");
+	var vidId = parseInt($(this).attr("name"));
+
+	var src = videoSegments[vidId].path;
+
+	$('.video-segment-player').attr("src", src);
+
+	$('#edit-script').text(videoSegments[vidId].script);
+
+	$('#video-segment-dropdown').text($(this).text());
+});
+
+$('.dropdown-menu li a').on("click", function()
+{
+	console.log("on");
 	var vidId = parseInt($(this).attr("name"));
 
 	var src = videoSegments[vidId].path;
