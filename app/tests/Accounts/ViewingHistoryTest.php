@@ -45,7 +45,7 @@ class ViewingHistoryTest extends TestCase {
 		$history->current_time = 5;
 		$history->save();
 
-		$this->assertCount(1, $history->user()->get());
+		$this->assertCount(1, $history->video()->get());
 
 	}
 	protected function getViewingHistoryInstance()
