@@ -73,5 +73,70 @@ class UtilitiesTest extends TestCase {
 		$this->assertSame('foo', $a[1]);
 		$this->assertSame('foo', $a[2]);
 	}
+
+
+	public function testCreatingModelFromClassifiableAttributesForOneDictionary()
+	{
+		// Create an attribute.
+		$attributes = $this->getCollectionInstance([
+			[
+				'director' => 'M. Night Shyamalan',
+				'actors'   => ['Anna Kendrick', 'Rob Lowe'],
+				'genres'   => ['Drama', 'Action'],
+			],
+		]);
+
+		// Create a model
+		$model = App::make('LangLeap\Videos\RecommendationSystem\Model');
+
+		$u = new Utilities;
+		$return = $u->populateModelFromAttributes($model, $attributes);
+
+		$this->assertSame($model, $return);
+		$this->assertSame($model->size(), $return->size());
+
+		$this->assertCount(3, $model);
+		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Attribute', $model->director);
+		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Attribute', $model->actors);
+		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Attribute', $model->genres);
+
+		$this->assertSame(1, $model->director->size());
+		$this->assertSame(2, $model->actors->size());
+		$this->assertSame(2, $model->genres->size());
+
+		$this->assertSame(1, $model->actors->count('Anna Kendrick'));
+	}
+
+
+	public function testCreatingModelFromAttributesForMultipleDictionaries()
+	{
+		$attributes = $this->getCollectionInstance([
+			[
+				'director' => 'M. Night Shyamalan',
+				'actors'   => ['Anna Kendrick', 'Rob Lowe'],
+				'genres'   => ['Drama', 'Action'],
+			],
+			[
+				'actors' => ['Anna Kendrick', 'Zooey Deschanel', 'Audrey Plaza'],
+				'genres' => ['Comedy', 'Sitcom'],
+				'type'   => 'show',
+			],
+		]);
+
+		$model = App::make('LangLeap\Videos\RecommendationSystem\Model');
+
+		$u = new Utilities;
+		$return = $u->populateModelFromAttributes($model, $attributes);
+
+		$this->assertSame($model, $return);
+		$this->assertSame($model->size(), $return->size());
+
+		$this->assertCount(4, $model);
+
+		$this->assertSame(1, $model->director->size());
+		$this->assertSame(4, $model->actors->size());
+		$this->assertSame(4, $model->genres->size());
+		$this->assertSame(1, $model->type->size());
+	}
 	
 }

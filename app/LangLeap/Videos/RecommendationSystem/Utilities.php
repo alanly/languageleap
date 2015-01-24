@@ -53,13 +53,66 @@ class Utilities {
 
 		// If it's another iterable collection, then fall back to a foreach.
 		$attributes = new Collection;
-		
+
 		foreach ($media as $m)
 		{
 			$attributes->push($m->getClassificationAttributes());
 		}
 
 		return $attributes;
+	}
+
+
+	/**
+	 * Given a model instance and a collection of attributes, this method will
+	 * populate the model instance with the attributes.
+	 * @param  Model      $model      The model to update
+	 * @param  Collection $attributes The collection of attributes to add to the model
+	 * @return Model
+	 */
+	public function populateModelFromAttributes(Model $model, Collection $attributes)
+	{
+		// Iterate through each "attribute" set, which is actually a dictionary.
+		$attributes->each(function($a) use ($model)
+		{
+			// Iterate through the individual attributes in each set
+			foreach($a as $k => $v)
+			{
+				// Update the model.
+				$this->addAttributeToModel($model, $k, $v);
+			}
+		});
+
+		// Return the populated model instance.
+		return $model;
+	}
+
+
+	/**
+	 * Given a model, the name of an attribute, and the resident(s) for that
+	 * attribute, this method will add the attribute to the model. The return value
+	 * is the attribute instance that is being updated.
+	 * @param  Model  $model The model the attribute belongs to
+	 * @param  string $name  The name of the attribute
+	 * @param  mixed  $value The value or array of values
+	 * @return Attribute     The attribute instance
+	 */
+	private function addAttributeToModel(Model $model, $name, $value)
+	{
+		// Get the attribute instance from the model.
+		$attribute = $model->{$name};
+
+		// If the value isn't array, convert it to one so that we can DRY-ly work
+		// with it.
+		if (! is_array($value)) $value = [$value];
+
+		// Add each resident to the attribute.
+		foreach ($value as $v)
+		{
+			$attribute->add($v);
+		}
+
+		return $attribute;
 	}
 	
 }
