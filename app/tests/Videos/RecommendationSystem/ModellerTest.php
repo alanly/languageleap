@@ -35,7 +35,9 @@ class ModellerTest extends TestCase {
 		$modelable->shouldReceive('getViewingHistory')->once()->andReturn(new Collection);
 
 		// Mock the ClassifierUtilities facade.		
-		ClassifierUtilities::shouldReceive('getClassifiableMediaFromHistory');
+		ClassifierUtilities::shouldReceive('getClassifiableMediaFromHistory')->once();
+		ClassifierUtilities::shouldReceive('getClassificationAttributesFromMedia')->once()->andReturn(new Collection);
+		ClassifierUtilities::shouldReceive('populateModelFromAttributes')->once()->andReturn(new Collection);
 
 		$modeller = new Modeller($modelable);
 		$model = $modeller->model();

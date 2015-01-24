@@ -47,13 +47,17 @@ class Modeller {
 		// Get the viewing history collection from the modelable instance.
 		$history = $this->modelable->getViewingHistory();
 
-		// Parse through the history and grab all classifiable media.
+		// Parse through the history and get a collection of classifiable media.
 		$media = ClassifierUtilities::getClassifiableMediaFromHistory($history);
+
+		// Get the classification data from the media and generate the model.
+		$attributes = ClassifierUtilities::getClassificationAttributesFromMedia($media);
 
 		// Get a Model instance.
 		$model = App::make('LangLeap\Videos\RecommendationSystem\Model');
 
-		// @TODO Get the classification data and generate the model.
+		// Populate the model.
+		ClassifierUtilities::populateModelFromAttributes($model, $attributes);
 
 		return $model;
 	}
