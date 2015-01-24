@@ -477,7 +477,6 @@ $('.modal-footer').on('click', 'span', function(event)
 			dataType: "json",
 			success: function(data)
 			{	
-				alert("test");
 				for(var i = 0; i < data.data.videos.length; i++)
 				{ 
 					if(data.data.videos[i] != null)
@@ -485,7 +484,8 @@ $('.modal-footer').on('click', 'span', function(event)
 						videoSegments.push(data.data.videos[i]);
 						$('#video-segment-list').empty();
 						var li = $("<li role=\"presentation\"></li>");
-						var a = $('<a role="menuitem" class="video-segment-list-item" tabindex="-1" href="#" name="' + (i+1) + '" onclick="testOnClickMethod();"></a>').text(" Video Segment " + (i+1));
+						//var listItemText = ;
+						var a = $('<a role="menuitem" class="video-segment-list-item" tabindex="-1" href="#" onclick="onClickMethod(' + i + ');"></a>').text("Video Segment " + (i+1));
 						li.append(a);
 						$('#video-segment-list').append(li);
 					}
@@ -606,7 +606,7 @@ $('#button-edit-info-done').on("click", function()
 
 	if($('#user_role_cut_by').is(':checked'))
 	{
-		var videoDuration = Math.round(videoPlayer.get(0).duration);
+		var videoDuration = Math.round($('#video-segment-player').get(0).duration);
 		var numberOfSegments = parseInt($('#segment-amount').val());
 		var secondsPerSegment = videoDuration / numberOfSegments;
 
@@ -649,24 +649,17 @@ $('#button-edit-info-done').on("click", function()
 	});
 });
 
-
-$('#button-edit-script-save').on("click", function()
+function onClickMethod(videoId)
 {
+	var vidId = parseInt(videoId);
 
-
-
-});
-
-function testOnClickMethod()
-{
-	alert("BOOYAA!");
-	var vidId = parseInt($(this).attr("name"));
-
+	//console.log(videoId);
+	//console.log(videoText);
 	var src = videoSegments[vidId].path;
 
 	$('.video-segment-player').attr("src", src);
 
 	$('#edit-script').text(videoSegments[vidId].script);
 
-	$('#video-segment-dropdown').text($(this).text());
+	$('#video-segment-dropdown').text("Video Segment " + (vidId + 1));
 }

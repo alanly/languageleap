@@ -175,9 +175,8 @@
       </div>
 			<!-- /info -->
 
-		<!-- split -->
 		
-			<!-- video split -->
+		<!-- video split -->
 		<div class="modal-body video-split clearfix" aria-hidden="true" style="display: none;">
 
 			<div class="row" style="padding-left: 20px;">
@@ -221,18 +220,10 @@
 				</div>
 			</div>
 		</div>
-			<!-- /video split -->
-
-			<!-- script split -->
-		<div class="modal-body script-split clearfix" aria-hidden="true" style="display: none;">
-			
-		</div>
-			<!-- /script split -->
-
-		<!-- /split -->
+		<!-- /video split -->
 
 			
-			<!-- script -->
+	<!-- script split -->
       <div class="modal-body script clearfix" aria-hidden="true" style="display: none;">
 				<div class="row">
 					<div class="dropdown col-lg-12">
@@ -259,7 +250,7 @@
 					<button id="button-edit-script-save" type="button" class="btn btn-primary pull-right">Save</button>
 				</div>
       </div>
-			<!-- /script -->
+	<!-- /script split-->
 			
 			<!-- seasons and episodes -->
       <div class="modal-body seasons clearfix" aria-hidden="true" style="display: none;">
