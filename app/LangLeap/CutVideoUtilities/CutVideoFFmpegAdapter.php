@@ -2,7 +2,6 @@
 
 use LangLeap\Videos\Video;
 use FFMpeg;
-use FFProbe;
 
 /**
  * CutVideoAdapter implementation using PHP-FFMpeg library.
@@ -11,33 +10,33 @@ use FFProbe;
  */
 class CutVideoFFmpegAdapter implements ICutVideoAdapter
 {
-	private $ffmpeg;
-	private $ffprobe;
-	private $NUMBER_OF_ZEROES_VIDEO_NAME = 3;
-	private $AUDIO_CODEC = "libvo_aacenc";
-	private $VIDEO_PATH_PREFIX = "app\\";
-
-	function __construct()
-	{
-		$this->ffmpeg = FFMpeg::create();
-		$this->ffprobe = FFProbe::create();
-	}
+	private $AUDIO_CODEC = "libmp3lame";
 
 	public function cutVideoByTimes(Video $video, array $segments)
 	{
-		$ffmpeg_video = $this->ffmpeg->open($this->VIDEO_PATH_PREFIX . $video->path);
+		$uncut_path = $video->path;
+		
 	
 		$videos = [];
 		for($i = 0; $i < count($segments); $i++)
 		{
-			$path = $this->getVideoPath($video, $i + 1); 
-		
+			$cut_path = $this->getVideoPath($video, $i + 1); 
 			$start = FFMpeg\Coordinate\TimeCode::fromSeconds($segments[$i]['time']);
 			$duration = FFMpeg\Coordinate\TimeCode::fromSeconds($segments[$i]['duration']);
+			$codec = $this->AUDIO_CODEC;
 			
-			$ffmpeg_video->filters()->clip($start, $duration);
-			$ffmpeg_video->save(new FFMpeg\Format\Video\X264($this->AUDIO_CODEC), $path);
-			array_push($videos, $this->createVideoAssociation($video, $path));
+			\Queue::push(function($job) use ($start, $duration, $uncut_path, $cut_path, $codec)
+			{
+				$ffmpeg = FFMpeg::create();
+				
+				$ffmpeg_video = $ffmpeg->open(app_path() . DIRECTORY_SEPARATOR . $uncut_path);
+				$ffmpeg_video->filters()->clip($start, $duration);
+				$ffmpeg_video->save(new FFMpeg\Format\Video\X264($codec), app_path() . DIRECTORY_SEPARATOR . $cut_path);
+				
+				$job->delete();
+			});
+		
+			array_push($videos, $this->createVideoAssociation($video, $cut_path));
 		}
 		
 		return $videos;
@@ -53,7 +52,7 @@ class CutVideoFFmpegAdapter implements ICutVideoAdapter
 		$lastDotPosition = strrpos($video->path, ".");
 		$videoPath = substr($video->path, 0, $lastDotPosition) . '_' . $number . '.mp4';
 		
-		return $this->VIDEO_PATH_PREFIX . $videoPath;
+		return $videoPath;
 	}
 
 	private function createVideoAssociation($video, $path)

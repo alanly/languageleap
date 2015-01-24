@@ -3,7 +3,7 @@
 use LangLeap\Videos\Video;
 use LangLeap\CutVideoUtilities\CutVideoResponse;
 use LangLeap\CutVideoUtilities\CutVideoValidation;
-use LangLeap\CutVideoUtilities\CutVideoLibavAdapter;
+use LangLeap\CutVideoUtilities\CutVideoFFmpegAdapter;
 
 class ApiCutVideoController extends BaseController {
 
@@ -13,7 +13,7 @@ class ApiCutVideoController extends BaseController {
 	 */
 	public function postSegments()
 	{
-		$cutVideo = new CutVideoValidation(new CutVideoResponse(new CutVideoLibavAdapter()));
+		$cutVideo = new CutVideoValidation(new CutVideoResponse(new CutVideoFFmpegAdapter()));
 		$response = $cutVideo->response(Auth::user(), Input::all());
 		return $this->apiResponse(
 			$response[0], $response[1], $response[2]
