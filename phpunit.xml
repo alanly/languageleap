@@ -19,9 +19,6 @@
         <whitelist>
             <directory suffix=".php">./app/LangLeap/</directory>
             <directory suffix=".php">./app/controllers/</directory>
-			<exclude>
-				<directory suffix="Adapter.php">./app/LangLeap/CutVideoUtilities/</directory>
-			</exclude>
         </whitelist>
     </filter>
 </phpunit>
