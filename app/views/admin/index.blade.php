@@ -177,7 +177,7 @@
 
 		<!-- split -->
 		
-		<!-- video split -->
+			<!-- video split -->
 		<div class="modal-body video-split clearfix" aria-hidden="true" style="display: none;">
 
 			<div class="row" style="padding-left: 20px;">
@@ -221,13 +221,13 @@
 				</div>
 			</div>
 		</div>
-		<!-- /video split -->
+			<!-- /video split -->
 
-		<!-- script split -->
+			<!-- script split -->
 		<div class="modal-body script-split clearfix" aria-hidden="true" style="display: none;">
-			GIANT COCK HERE PLEASE
+			
 		</div>
-		<!-- /script split -->
+			<!-- /script split -->
 
 		<!-- /split -->
 
@@ -235,7 +235,23 @@
 			<!-- script -->
       <div class="modal-body script clearfix" aria-hidden="true" style="display: none;">
 				<div class="row">
-					<div id="edit-container">
+					<div class="dropdown col-lg-12">
+						<button class="btn btn-default dropdown-toggle" type="button" id="video-segment-dropdown" data-toggle="dropdown" aria-expanded="true">
+							Dropdown
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" id="video-segment-list" role="menu" aria-labelledby="dropdownMenu1">
+						</ul>
+					</div>
+				
+					<div class="col-lg-4">
+						<video controls>
+							<source class="source" type="video/mp4">
+							<p>@lang('player.player.error')</p>
+						</video>
+					</div>
+
+					<div id="edit-container" class="col-lg-4">
 						<div id="edit-script" class="script-editor" contenteditable=true></div>
 					</div>
 				
@@ -302,7 +318,7 @@
 		    <div class="row-fluid">
 					<span id="footer-info">Info</span>
 					<span id="footer-seasons" aria-hidden="true" style="display: none;">Seasons</span>
-					<span id="footer-split">Split</span>
+					<span id="footer-video-split">Split</span>
 					<span id="footer-script">Script</span>
 					<span id="footer-media"></span>
 				</div>				

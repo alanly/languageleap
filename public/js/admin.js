@@ -448,28 +448,50 @@ $('#button-edit-script-save').on("click", function()
 /*
 	footer tab was clicked, switch tabs
 */
+var videoSegments = [];
 $('.modal-footer').on('click', 'span', function(event)
 {
-	var id = $(this).attr('id');
+	var tagID = $(this).attr('id');
 	$('#media-modal .modal-body').attr("aria-hidden", true);
 	$('#media-modal .modal-body').css("display", "none");
 	
-	if (id == "footer-info")
+	if (tagID == "footer-info")
 	{
 		$('.modal-body.info').attr("aria-hidden", false);
 		$('.modal-body.info').css("display", "block");
 	}
-	else if (id == "footer-split")
+	else if (tagID == "footer-video-split")
 	{
 		$('.modal-body.video-split').attr("aria-hidden", false);
 		$('.modal-body.video-split').css("display", "block");
 	}
-	else if (id == "footer-script")
+	else if (tagID == "footer-script")
 	{
 		$('.modal-body.script').attr("aria-hidden", false);
 		$('.modal-body.script').css("display", "block");
+
+		$.ajax(
+		{
+			type: "GET",
+			url: '/api/metadata/movies/' + id,
+			dataType: "json",
+			success: function(data)
+			{	
+				for(var i = 0; i < data.data.videos.length; i++)
+				{ 
+					if(data.data.videos[i] != null)
+					{
+						console.log("Hello?");
+						videoSegments.push(data.data.videos[i]);
+						var li = $("<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"#\"></a></li>").text(" Video Segment " + (i+1));
+
+						$('#video-segment-list').append(li);
+					}
+				}					
+			}
+		});
 	}
-	else if (id == "footer-seasons")
+	else if (tagID == "footer-seasons")
 	{
 		$('.modal-body.seasons').attr("aria-hidden", false);
 		$('.modal-body.seasons').css("display", "block");
@@ -611,7 +633,7 @@ $('#button-edit-info-done').on("click", function()
 	$.ajax(
 	{
 		type: "POST",
-		url: cutForm.attr("url"),
+		url: '/api/videos/cut/segments',
 		dataType: "json",
 		data:
 		{
@@ -619,9 +641,8 @@ $('#button-edit-info-done').on("click", function()
 			'segments': cutoffTimes
 		},
 		success: function(data)
-		{
-			$('.modal-body.script-split').attr("aria-hidden", false);
-			$('.modal-body.script-split').css("display", "block");			
+		{		
+			resetCutVideos();
 		}
 	});
 });
