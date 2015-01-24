@@ -27,5 +27,32 @@ class Utilities {
 
 		return $media;
 	}
+
+
+	/**
+	 * Given either an instance or collection of Classifiable media, this method
+	 * will return a collection consisting of the value given by the
+	 * `getClassificationAttributes()` method from each item.
+	 * @param  mixed  $media  The instance or collection of Classifiable media
+	 * @return Traversable
+	 */
+	public function getClassificationAttributesFromMedia($media)
+	{
+		$attributes = new Collection;
+
+		// If the parameter is a single instance, then just return the attributes from that instance.
+		if ($media instanceof Classifiable) 
+		{
+			$attributes->push($media->getClassificationAttributes());
+			return $attributes;
+		}
+
+		foreach ($media as $m)
+		{
+			$attributes->push($m->getClassificationAttributes());
+		}
+
+		return $attributes;
+	}
 	
 }
