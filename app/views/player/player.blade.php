@@ -438,7 +438,7 @@
 		function saveVideoHistory()
 		{
 			var url = '/api/history/';
-			console.log("in");
+
 			$.ajax({
 				async: false,
 				type: 'POST',
