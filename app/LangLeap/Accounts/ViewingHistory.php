@@ -15,7 +15,7 @@ class ViewingHistory extends Eloquent
 
 	public function video()
 	{
-		return $this->hasOne('LangLeap\Videos\Video');
+		return $this->belongsTo('LangLeap\Videos\Video');
 	}
 
 	public function user()
