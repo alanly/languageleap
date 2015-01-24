@@ -70,41 +70,41 @@ function undoSelectedText($element) {
 /**
  * Sets the 'data-type' attribute to the given type.
  *
- * @param {jQuery Object} context A jQuery object representing a context(ie. 
+ * @param {jQuery Object} $context A jQuery object representing a context(ie. 
  * the span that we want to edit)
  * @param {String}        type    The type of content (ie. word, actor)
  */
-function setTagType(context, type) {
-	context.attr('data-type', type);	
-	context.data('type', type);	
+function setTagType($context, type) {
+	$context.attr('data-type', type);	
+	$context.data('type', type);	
 }
 
 /**
  * Shows the modal form with the proper context because some form elements
  * should only be visible in certain contexts.
  *
- * @param {jQuery Object} context A jQuery object representing the form 
+ * @param {jQuery Object} $context A jQuery object representing the form 
  * context (ie. the span that we want to edit)
  */
-function showModalForm(context) {
-	$('#selected-text').val(context.text());
+function showModalForm($context) {
+	$('#selected-text').val($context.text());
 
 	// Keep the original data before the user starts modifying stuff (just in 
 	// case he wants to click cancel)
-	backupContextData(context);
+	backupContextData($context);
 
 	clearWordForm();
 	clearActorForm();
 
-	switch(context.data('type')) {
+	switch($context.data('type')) {
 		case 'word':
 			showWordForm();
-			fillWordForm(context);
+			fillWordForm($context);
 			hideActorForm();
 			break;
 		case 'actor':
 			showActorForm();
-			fillActorForm(context);
+			fillActorForm($context);
 			hideWordForm();
 			break;
 		default:
@@ -124,18 +124,22 @@ function showWordForm() {
 	$('#word-form').show();
 	$('#word-radio').prop('checked', true);
 	$('#definition textarea').prop('required', true);
+	$('#full-definition textarea').prop('required', true);
+	$('#pronunciation input').prop('required', true);
+	$('#synonyms input').prop('required', true);
 }
 
 /**
  * Fills the form associated with a word using the data from the context.
  *
- * @param {jQuery Object} context A jQuery object representing the form 
+ * @param {jQuery Object} $context A jQuery object representing the form 
  * context (ie. the span that we want to edit)
  */
-function fillWordForm(context) {
-	$('#definition textarea').val(context.data('definition'));
-	$('#full-definition textarea').val(context.data('full-definition'));
-	$('#pronunciation input').val(context.data('pronunciation'));	
+function fillWordForm($context) {
+	$('#definition textarea').val($context.data('definition'));
+	$('#full-definition textarea').val($context.data('full-definition'));
+	$('#pronunciation input').val($context.data('pronunciation'));	
+	$('#synonyms input').val($context.data('synonyms'));
 }
 
 /**
@@ -144,6 +148,9 @@ function fillWordForm(context) {
 function hideWordForm() {
 	$('#word-form').hide();
 	$('#definition textarea').prop('required', false);
+	$('#full-definition textarea').prop('required', false);
+	$('#pronunciation input').prop('required', false);
+	$('#synonyms input').prop('required', false);
 }
 
 /**
@@ -153,6 +160,7 @@ function clearWordForm() {
 	$('#definition textarea').val('');
 	$('#full-definition textarea').val('');
 	$('#pronunciation input').val('');
+	$('#synonyms input').val('');
 }
 
 /**
@@ -167,11 +175,11 @@ function showActorForm() {
 /**
  * Fills the form associated with an actor using the data from the context.
  *
- * @param {jQuery Object} context A jQuery object representing the form 
+ * @param {jQuery Object} $context A jQuery object representing the form 
  * context (ie. the span that we want to edit)
  */
-function fillActorForm(context) {
-	$('#timestamp input').val(context.data('timestamp'));
+function fillActorForm($context) {
+	$('#timestamp input').val($context.data('timestamp'));
 }
 
 /**
@@ -200,24 +208,25 @@ function showNoTagForm() {
  * Saves the form values for the given context as data belonging to the 
  * context.
  *
- * @param {jQuery Object} context A jQuery object representing the form 
+ * @param {jQuery Object} $context A jQuery object representing the form 
  * context (ie. the span that we want to edit)
  */
-function saveContextData(context) {
-	context.text($('#selected-text').val());
+function saveContextData($context) {
+	$context.text($('#selected-text').val());
 
 	if (
 		$('#selected-text').val().trim() == '' 
-		|| context.data('type') == '' 
-		|| typeof context.data('type') == 'undefined'
+		|| $context.data('type') == '' 
+		|| typeof $context.data('type') == 'undefined'
 	) {
-		undoSelectedText(context);
-	} else if (context.data('type') == 'word') {
-		context.data('definition', $('#definition textarea').val());
-		context.data('full-definition', $('#full-definition textarea').val());
-		context.data('pronunciation', $('#pronunciation input').val());
-	} else if (context.data('type') == 'actor') {
-		context.attr('data-timestamp', $('#timestamp input').val());
+		undoSelectedText($context);
+	} else if ($context.data('type') == 'word') {
+		$context.data('definition', $('#definition textarea').val());
+		$context.data('full-definition', $('#full-definition textarea').val());
+		$context.data('pronunciation', $('#pronunciation input').val());
+		$context.data('synonyms', $('#synonyms input').val());
+	} else if ($context.data('type') == 'actor') {
+		$context.attr('data-timestamp', $('#timestamp input').val());
 	}
 }
 
@@ -225,38 +234,40 @@ function saveContextData(context) {
  * Backs-up the data stored on the given context so that it can later be 
  * restored if the user cancels the edit.
  *
- * @param {jQuery Object} context A jQuery object representing the form 
+ * @param {jQuery Object} $context A jQuery object representing the form 
  * context (ie. the span that we want to edit)
  */
-function backupContextData(context) {
-	context.data('old-type', context.data('type'));
+function backupContextData($context) {
+	$context.data('old-type', $context.data('type'));
 
-	if (context.data('type') == 'word') {
-		context.data('old-definition', context.data('definition'));
-		context.data('old-full-definition', context.data('full-definition'));
-		context.data('old-pronunciation', context.data('pronunciation'));
-	} else if (context.data('type') == 'actor') {
-		context.data('old-timestamp', context.data('timestamp'));
+	if ($context.data('type') == 'word') {
+		$context.data('old-definition', $context.data('definition'));
+		$context.data('old-full-definition', $context.data('full-definition'));
+		$context.data('old-pronunciation', $context.data('pronunciation'));
+		$context.data('old-synonyms', $context.data('synonyms'));
+	} else if ($context.data('type') == 'actor') {
+		$context.data('old-timestamp', $context.data('timestamp'));
 	}
 }
 
 /**
  * Restores the given context to the data values that were backed-up.
  *
- * @param {jQuery Object} context A jQuery object representing the form 
+ * @param {jQuery Object} $context A jQuery object representing the form 
  * context (ie. the span that we want to edit)
  */
-function restoreContextData(context) {
-	setTagType(context, context.data('old-type'));
+function restoreContextData($context) {
+	setTagType($context, $context.data('old-type'));
 
-	if (context.data('old-type') == 'word') {
-		context.data('definition', context.data('old-definition'));
-		context.data('full-definition', context.data('old-full-definition'));
-		context.data('pronunciation', context.data('old-pronunciation'));
-	} else if (context.data('old-type') == 'actor') {
-		context.attr('data-timestamp', context.data('old-timestamp'));
+	if ($context.data('old-type') == 'word') {
+		$context.data('definition', $context.data('old-definition'));
+		$context.data('full-definition', $context.data('old-full-definition'));
+		$context.data('pronunciation', $context.data('old-pronunciation'));
+		$context.data('synonyms', $context.data('old-synonyms'));
+	} else if ($context.data('old-type') == 'actor') {
+		$context.attr('data-timestamp', $context.data('old-timestamp'));
 	} else {
-		undoSelectedText(context);
+		undoSelectedText($context);
 	}
 }
 
@@ -558,6 +569,7 @@ function loadDefinitions() {
 				$this.data('definition', data.data.definition);
 				$this.data('full-definition', data.data.full_definition);
 				$this.data('pronunciation', data.data.pronunciation);
+				$this.data('synonyms', data.data.synonym);
 			} else {
 				// Handle failure
 			}
@@ -577,7 +589,8 @@ function saveDefinitions(scriptId) {
 			'word': $this.text(),
 			'definition': $this.data('definition'),
 			'full_definition': $this.data('full-definition'),
-			'pronunciation': $this.data('pronunciation')
+			'pronunciation': $this.data('pronunciation'),
+			'synonym': $this.data('synonyms')
 		};
 
 		if ($this.data('id')) {

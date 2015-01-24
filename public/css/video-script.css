@@ -20,7 +20,7 @@
 	width: 590px;
 }
 
-#script span {
+#script > span {
 	background-color: #E4E4E4;
 	padding: 10px;
 }
@@ -54,19 +54,19 @@
 	background-color: #5CB85C !important;
 }
 
-#mute-audio {
-	background-size: 32px;
+.play-pronunciation {
+	background: none;
 	border: 0;
-	float: right;
-	height: 32px;
-	margin: 10px 20px 0 0;
-	width: 32px;
+	color: #000;
+	font-size: 25px !important;
+	height: 25px !important;
+	margin-left: 10px !important;
+	padding: 0 !important;
+	top: 5px;
+	vertical-align: text-bottom;
+	width: 25px !important;
 }
 
-.pronunciations-on {
-	background: url(http://cdn.flaticon.com/png/64/498.png) no-repeat center;
-}
-
-.pronunciations-off {
-	background: url(http://cdn.flaticon.com/png/64/60750.png) no-repeat center;
+.not-available {
+	color: grey;
 }

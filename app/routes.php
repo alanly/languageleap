@@ -1,7 +1,7 @@
 <?php
 
-use LangLeap\Videos\Video;
 use LangLeap\Levels\Level;
+use LangLeap\Videos\Video;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +78,6 @@ Route::group(['prefix' => 'admin'], function()
 	{
 		return View::make('admin.quiz.index')->with('videos', Video::All());
 	});
-
 });
 
 

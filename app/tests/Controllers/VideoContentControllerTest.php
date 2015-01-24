@@ -54,6 +54,7 @@ class VideoContentControllerTest extends TestCase {
 
 		Config::set('media.paths.xsendfile.server', null);
 		$response = $this->action('GET', 'VideoContentController@getVideo', [$video->id]);
+
 		$this->assertCount($numberOfHeaderValuesWithSendfile - 1, $response->headers->all());
 	}
 
