@@ -160,16 +160,14 @@ function buildList(data)
 {
 	var s = "";
 	
-  $.each(data.data, function(key, val)
+	$.each(data.data, function(key, val)
 	{
 		var id = val.id;
 		var name = val.name;
-		//console.log(key + " " + id + " " + name);
 		s += '<span class="media" db-id="' + id + '">' + name + '</span>';
-  });
+	});
 	
 	$('#content').empty().append(s);
-	//s.detach();
 }
 
 /*
@@ -535,10 +533,10 @@ $('#button-edit-info-add').on("click", function()
 {
 	if($('#user_role_cut_at').is(':checked'))
 	{
-		var inputText = " From " 	+ pad($('#from-min').val(), 3) + ":"
-									+ pad($('#from-sec').val(), 2) + " To "
-					  				+ pad($('#to-min').val(), 3) + ":"
-									+ pad($('#to-sec').val(), 2);
+		var inputText = " From " + pad($('#from-min').val(), 3) + ":"
+					+ pad($('#from-sec').val(), 2) + " To "
+					+ pad($('#to-min').val(), 3) + ":"
+					+ pad($('#to-sec').val(), 2);
 
 		var fromTime = ($('#from-min').val() != "") ? parseInt($('#from-min').val()) * 60 : 0;
 		fromTime += ($('#from-sec').val() != "") ? parseInt($('#from-sec').val()) : 0;
@@ -589,9 +587,9 @@ $('#to-sec').attr("max", maxSeconds);
 //Removing intervals by clicking the minus
 $(document).on('click', '.remove-interval', function() {
 	cutAtDurations[parseInt($(this).attr("name")) - 1] = null;
-    $(this).prev().remove();
-    $(this).next().remove();
-    $(this).remove();
+	$(this).prev().remove();
+	$(this).next().remove();
+	$(this).remove();
 });
 
 function resetCutVideos()
