@@ -656,12 +656,12 @@ $('#button-edit-info-done').on("click", function()
 	});
 });
 
-function loadScriptSegment(videoId)
+function loadScriptSegment(segmentId)
 {
-	var vidId = parseInt(videoId);
+	var vidId = parseInt(segmentId);
 
 	var src = videoSegments[vidId].path;
-
+	
 	$('.video-segment-player').attr("src", src);
 
 	$('#edit-script').text(videoSegments[vidId].script);
