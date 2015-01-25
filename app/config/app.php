@@ -164,6 +164,8 @@ return array(
 		'DB'                => 'Illuminate\Support\Facades\DB',
 		'Eloquent'          => 'Illuminate\Database\Eloquent\Model',
 		'Event'             => 'Illuminate\Support\Facades\Event',
+		'FFMpeg'	    => 'FFMpeg\FFMpeg',
+		'FFProbe'	    => 'FFMpeg\FFProbe',
 		'File'              => 'Illuminate\Support\Facades\File',
 		'Form'              => 'Illuminate\Support\Facades\Form',
 		'Hash'              => 'Illuminate\Support\Facades\Hash',

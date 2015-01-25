@@ -110,7 +110,8 @@ Route::group(['prefix' => 'api'], function()
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
-	
+	Route::controller('videos/cut', 'ApiCutVideoController');
+
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 
@@ -160,3 +161,8 @@ Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
 //User Level
 Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserLevelController@showLevel']);
+
+Route::any('queue/recieve', function()
+{
+	return Queue::marshal();
+});
