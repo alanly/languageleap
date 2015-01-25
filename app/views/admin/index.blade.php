@@ -44,11 +44,11 @@
 					
 						<div id="info-default-form-name" class="form-group">
 							<label>Name</label>
-							<input id="info-commercial-form-name-input" name="name" type="text" class="form-control" placeholder="" />
+							<input id="info-commercial-form-name-input" name="name" type="text" class="form-control" placeholder="" required aria-required=”true” />
 						</div>
 						<div id="info-default-form-description" class="form-group">
 							<label>Description</label>
-							<input id="info-default-form-description-input" name="description" type="text" class="form-control" placeholder="" />
+							<input id="info-default-form-description-input" name="description" type="text" class="form-control" placeholder="" required aria-required=”true” />
 						</div>
 						<div id="info-default-form-level" class="form-group">
 							<label>Level</label>

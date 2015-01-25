@@ -12,13 +12,24 @@ $("#button-add-new").click(function()
 var step = 0;
 $('#button-add-new-back').on("click", function()
 {
-	step--;
-	refreshContent();
+	if (step >= 0)
+	{
+		step--;
+		refreshContent();
+	}
 });
 $('#button-add-new-next').on("click", function()
 {
-	step++;
-	refreshContent();
+	if ($('#new-media-form')[0].checkValidity())
+	{
+		step++;
+		refreshContent();
+	}
+	else
+	{
+		$('<input type="submit">').hide().appendTo('#new-media-form').click().remove();
+	}
+
 });
 
 function refreshContent()
