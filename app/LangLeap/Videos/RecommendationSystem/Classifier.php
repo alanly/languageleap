@@ -7,10 +7,9 @@
 interface Classifier {
 
 	/**
-	 * Determines the likelihood that a historable user will enjoy a classifiable
-	 * media. The likelihood is represented as a float value, the higher of which
-	 * means the greater the possibility that the user will like the video.
-	 * @return float The likelihood that the user will enjoy the media.
+	 * Determines the probability that the classifiable instance will meet the
+	 * expectations outlined by the reference model.
+	 * @return float The likelihood that we will meet expectations
 	 */
 	public function classify();
 
