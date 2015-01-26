@@ -9,7 +9,7 @@ class ModellerUtilitiesServiceProvider extends ServiceProvider {
 	{
 		$this->app->bind('modeller.utilities', function()
 		{
-			return App::make('LangLeap\Videos\RecommendationSystem\ModellerUtilities');
+			return App::make('LangLeap\Videos\RecommendationSystem\Utilities\ModellerUtilities');
 		});
 	}
 	

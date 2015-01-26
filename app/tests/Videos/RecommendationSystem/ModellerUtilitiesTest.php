@@ -1,4 +1,4 @@
-<?php namespace LangLeap\Videos\RecommendationSystem;
+<?php namespace LangLeap\Videos\RecommendationSystem\Utilities;
 
 use App;
 use LangLeap\TestCase;
