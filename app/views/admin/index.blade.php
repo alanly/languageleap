@@ -58,6 +58,14 @@
 								@endforeach
 							</select>
 						</div>
+						<div id="info-default-form-language" class="form-group">
+							<label>Language</label>
+							<select id="info-default-form-language-select" name="language_id" class="form-control">
+								@foreach($languages as $language)
+	  								<option value="{{ $language->id }}">{{ $language->description }}</option>
+								@endforeach
+							</select>
+						</div>
 					</div>
 
 					<div id="info-extra-tab" aria-hidden="true" style="display: none;">
