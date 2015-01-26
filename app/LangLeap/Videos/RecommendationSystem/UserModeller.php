@@ -29,7 +29,7 @@ class UserModeller implements Modeller {
 	/**
 	 * Creates a new modeller for a given historable instance.
 	 * @param  Historable $historable The historable instance
-	 * @return Modeller             A new modeller
+	 * @return UserModeller           A new modeller
 	 */
 	public static function create(Historable $historable)
 	{
