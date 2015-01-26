@@ -1,5 +1,7 @@
 <?php
 
+use LangLeap\Accounts\User;
+use LangLeap\Accounts\ViewingHistory;
 use LangLeap\Core\FileInfoFactory;
 use LangLeap\Videos\Video;
 
@@ -10,15 +12,19 @@ class VideoContentController extends \BaseController {
 
 	protected $videos;
 	protected $fileInfoFactory;
+	protected $viewingHistories;
 
 
-	public function __construct(Video $videos, FileInfoFactory $fileInfoFactory)
+	public function __construct(Video $videos, FileInfoFactory $fileInfoFactory, ViewingHistory $viewingHistories)
 	{
 		// Get reference for the database repository instance.
 		$this->videos = $videos;
 
 		// Get a reference to the FileInfo factory.
 		$this->fileInfoFactory = $fileInfoFactory;
+
+		// Get a reference to the viewing history repository.
+		$this->viewingHistories = $viewingHistories;
 	}
 
 
@@ -48,7 +54,38 @@ class VideoContentController extends \BaseController {
 		// Create the Sendfile headers for this file.
 		$headers = $this->getSendfileHeadersForFile($file);
 
+		// Insert a viewing history record for the logged in user.
+		if (Auth::check())
+		{
+			$this->addViewingHistoryRecord(Auth::user(), $video);
+		}
+
 		return Response::download($file, null, $headers);
+	}
+
+	
+	/**
+	 * Inserts the viewing history record for the given video to the given user.
+	 * @param  User  $user  The user that's viewing the video
+	 * @param  Video $video The video that's being viewed
+	 * @return ViewingHistory
+	 * @author Thomas Rahn <thomas@rahn.ca>
+	 */
+	protected function addViewingHistoryRecord(User $user, Video $video)
+	{
+		$history = $this->viewingHistories->where('user_id', $user->id)
+		                                  ->where('video_id', $video->id)
+		                                  ->get()
+		                                  ->first();
+
+		if ($history) return $history;
+
+		return $this->viewingHistories->create([
+			'user_id'      => $user->id,
+			'video_id'     => $video->id,
+			'is_finished'  => false,
+			'current_time' => 0
+		]);
 	}
 
 

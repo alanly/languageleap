@@ -6,7 +6,7 @@ use App;
 class UserTest extends TestCase {
 
 	/**
-	 * Testing getting all seasons for a particular show.
+	 * Testing getting invoices for a particular user.
 	 *
 	 * @return void
 	 */

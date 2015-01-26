@@ -115,11 +115,18 @@ Route::group(['prefix' => 'api'], function()
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 
-	// Quiz
-	Route::controller('quiz', 'ApiQuizController');
-
 	// Registration
 	Route::resource('users','ApiUserController');
+
+	//Api routes with auth filter
+	Route::group(array('before' => 'auth'), function() {  
+		
+		// Viewing History     
+		Route::controller('history', 'ApiViewingHistoryController');
+
+		// Quiz
+		Route::controller('quiz', 'ApiQuizController');
+	});
 
 });
 
