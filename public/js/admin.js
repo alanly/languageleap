@@ -125,6 +125,9 @@ function refreshContent()
 	return false;
 }
 
+/*
+ * handles ajax file upload progress
+ */
 function uploadProgressHandler(e)
 {
      if (! e.lengthComputable) return;
@@ -172,6 +175,7 @@ $("#select-movies").click(function()
 		buildList(data);
 	});
 });
+
 $("#select-commercials").click(function()
 {
 	currentType = "commercials";
@@ -182,6 +186,7 @@ $("#select-commercials").click(function()
 		buildList(data);
 	});
 });
+
 $("#select-shows").click(function()
 {
 	currentType = "shows";
@@ -193,18 +198,27 @@ $("#select-shows").click(function()
 	});
 });
 
+/*
+ * shows the footer tabs
+ */
 function showShowsFooterTabs()
 {
 	$('#footer-seasons').attr("aria-hidden", false);
 	$('#footer-seasons').css("display", "inline-block");
 }
 
+/*
+ * hides the footer tabs
+ */
 function hideShowsFooterTabs()
 {
 	$('#footer-seasons').attr("aria-hidden", true);
 	$('#footer-seasons').css("display", "none");
 }
 
+/*
+ * builds a list of all media given a specific array of data
+ */
 function buildList(data)
 {
 	var s = "";
@@ -273,7 +287,6 @@ $('#content').on('click', 'span.media', function(event)
 /*
  * populate seasons dropdown
  */
-
 function populateSeasons()
 {
 	$.getJSON("/api/metadata/" + currentType + "/" + id + "/seasons", function(data)
@@ -291,6 +304,9 @@ function populateSeasons()
 	});
 }
 
+/*
+ * populate episodes dropdown
+ */
 function populateEpisodes()
 {
 	season_id = $('#edit-media-info-seasons').val();
@@ -348,7 +364,6 @@ $('#edit-media-info-episodes').change(function()
 	});
 	
 });
-
 
 /*
 	save edited info
