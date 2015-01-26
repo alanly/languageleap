@@ -31,12 +31,7 @@ class Model implements ArrayableInterface, Countable {
 	 */
 	public function __get($name)
 	{
-		if (! isset($this->attributes[$name]))
-		{
-			$this->attributes[$name] = $this->attribute->newInstance($name);
-		}
-
-		return $this->attributes[$name];
+		return $this->get($name);
 	}
 
 
@@ -60,6 +55,22 @@ class Model implements ArrayableInterface, Countable {
 	public function count()
 	{
 		return $this->size();
+	}
+
+
+	/**
+	 * Get a particular attribute.
+	 * @param  string  $name  The name of the attribute
+	 * @return Attribute
+	 */
+	public function get($name)
+	{
+		if (! isset($this->attributes[$name]))
+		{
+			$this->attributes[$name] = $this->attribute->newInstance($name);
+		}
+
+		return $this->attributes[$name];
 	}
 
 
