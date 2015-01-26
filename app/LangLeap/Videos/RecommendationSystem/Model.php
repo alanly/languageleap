@@ -4,8 +4,8 @@ use Countable;
 use Illuminate\Support\Contracts\ArrayableInterface;
 
 /**
- * Model represents the user's viewing preferences. It maintains a count of
- * commonly occuring attributes from videos that the user has seen.
+ * Model represents either the preferred attributes of a User or the attributes
+ * of a Classifiable media.
  * @author Alan Ly <hello@alan.ly>
  */
 class Model implements ArrayableInterface, Countable {
