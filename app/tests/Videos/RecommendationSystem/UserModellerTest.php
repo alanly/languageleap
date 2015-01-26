@@ -9,7 +9,7 @@ use Mockery as m;
 /**
  * @author Alan Ly <hello@alan.ly>
  */
-class ModellerTest extends TestCase {
+class UserModellerTest extends TestCase {
 
 	protected function getModelableMock()
 	{
@@ -22,8 +22,8 @@ class ModellerTest extends TestCase {
 		$modelable = $this->getModelableMock();
 
 		$this->assertInstanceOf(
-			'LangLeap\Videos\RecommendationSystem\Modeller',
-			Modeller::create($modelable)
+			'LangLeap\Videos\RecommendationSystem\UserModeller',
+			UserModeller::create($modelable)
 		);
 	}
 
@@ -39,7 +39,7 @@ class ModellerTest extends TestCase {
 		ModellerUtilities::shouldReceive('getClassificationAttributesFromMedia')->once()->andReturn(new Collection);
 		ModellerUtilities::shouldReceive('populateModelFromAttributes')->once()->andReturn(new Collection);
 
-		$modeller = new Modeller($modelable);
+		$modeller = new UserModeller($modelable);
 		$model = $modeller->model();
 
 		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Model', $model);
