@@ -4,35 +4,36 @@ use App;
 use LangLeap\Videos\RecommendationSystem\Facades\ModellerUtilities;
 
 /**
- * UserModeller builds attribute preference models for a modelable user.
+ * UserModeller builds attribute preference models for a historable user.
  * @author Alan Ly <hello@alan.ly>
  */
 class UserModeller implements Modeller {
 
 	/**
-	 * @var Modelable
+	 * Instance of the historable user that we'll be modelling.
+	 * @var Historable
 	 */
-	private $modelable;
+	private $historable;
 
 
 	/**
 	 * Constructs a new instance.
-	 * @param Modelable $modelable The modelable instance
+	 * @param Historable $historable The historable instance
 	 */
-	public function __construct(Modelable $modelable)
+	public function __construct(Historable $historable)
 	{
-		$this->modelable = $modelable;
+		$this->historable = $historable;
 	}
 
 
 	/**
-	 * Creates a new modeller for a given modelable instance.
-	 * @param  Modelable $modelable The modelable instance
+	 * Creates a new modeller for a given historable instance.
+	 * @param  Historable $historable The historable instance
 	 * @return Modeller             A new modeller
 	 */
-	public static function create(Modelable $modelable)
+	public static function create(Historable $historable)
 	{
-		return new static($modelable);
+		return new static($historable);
 	}
 
 
@@ -42,8 +43,8 @@ class UserModeller implements Modeller {
 	 */
 	public function model()
 	{
-		// Get the viewing history collection from the modelable instance.
-		$history = $this->modelable->getViewingHistory();
+		// Get the viewing history collection from the historable instance.
+		$history = $this->historable->getViewingHistory();
 
 		// Parse through the history and get a collection of classifiable media.
 		$media = ModellerUtilities::getClassifiableMediaFromHistory($history);

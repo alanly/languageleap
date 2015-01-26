@@ -1,11 +1,11 @@
 <?php namespace LangLeap\Videos\RecommendationSystem;
 
 /**
- * Defines the interface for a user that can be modelled by the recommendation
- * system.
+ * Defines the interface for a user that can maintain a history of the videos
+ * that it has viewed.
  * @author Alan Ly <hello@alan.ly>
  */
-interface Modelable {
+interface Historable {
 
 	/**
 	 * Retrieves a collection of the user's viewing history.

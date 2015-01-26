@@ -11,35 +11,35 @@ use Mockery as m;
  */
 class UserModellerTest extends TestCase {
 
-	protected function getModelableMock()
+	protected function getHistorableMock()
 	{
-		return m::mock('LangLeap\Videos\RecommendationSystem\Modelable');
+		return m::mock('LangLeap\Videos\RecommendationSystem\Historable');
 	}
 	
 
 	public function testStaticCreateMethodCreatesModellerInstance()
 	{
-		$modelable = $this->getModelableMock();
+		$historable = $this->getHistorableMock();
 
 		$this->assertInstanceOf(
 			'LangLeap\Videos\RecommendationSystem\UserModeller',
-			UserModeller::create($modelable)
+			UserModeller::create($historable)
 		);
 	}
 
 
 	public function testModelMethodReturnsModelInstance()
 	{
-		// Mock the modelable instance.
-		$modelable = $this->getModelableMock();
-		$modelable->shouldReceive('getViewingHistory')->once()->andReturn(new Collection);
+		// Mock the historable instance.
+		$historable = $this->getHistorableMock();
+		$historable->shouldReceive('getViewingHistory')->once()->andReturn(new Collection);
 
 		// Mock the ClassifierUtilities facade.		
 		ModellerUtilities::shouldReceive('getClassifiableMediaFromHistory')->once();
 		ModellerUtilities::shouldReceive('getClassificationAttributesFromMedia')->once()->andReturn(new Collection);
 		ModellerUtilities::shouldReceive('populateModelFromAttributes')->once()->andReturn(new Collection);
 
-		$modeller = new UserModeller($modelable);
+		$modeller = new UserModeller($historable);
 		$model = $modeller->model();
 
 		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Model', $model);
