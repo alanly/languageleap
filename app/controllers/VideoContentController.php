@@ -1,9 +1,10 @@
 <?php
 
+use LangLeap\Accounts\User;
+use LangLeap\Accounts\ViewingHistory;
 use LangLeap\Core\FileInfoFactory;
 use LangLeap\Videos\Video;
-use LangLeap\Accounts\ViewingHistory;
-use LangLeap\Accounts\User;
+
 /**
  * @author  Alan Ly <hello@alan.ly>
  */
@@ -11,15 +12,19 @@ class VideoContentController extends \BaseController {
 
 	protected $videos;
 	protected $fileInfoFactory;
+	protected $viewingHistories;
 
 
-	public function __construct(Video $videos, FileInfoFactory $fileInfoFactory)
+	public function __construct(Video $videos, FileInfoFactory $fileInfoFactory, ViewingHistory $viewingHistories)
 	{
 		// Get reference for the database repository instance.
 		$this->videos = $videos;
 
 		// Get a reference to the FileInfo factory.
 		$this->fileInfoFactory = $fileInfoFactory;
+
+		// Get a reference to the viewing history repository.
+		$this->viewingHistories = $viewingHistories;
 	}
 
 
