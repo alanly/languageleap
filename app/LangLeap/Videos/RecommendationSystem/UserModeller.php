@@ -1,8 +1,7 @@
 <?php namespace LangLeap\Videos\RecommendationSystem;
 
-use LangLeap\Core\Collection;
-use LangLeap\Videos\RecommendationSystem\Facades\ModellerUtilities;
 use App;
+use LangLeap\Videos\RecommendationSystem\Facades\ModellerUtilities;
 
 /**
  * UserModeller builds attribute preference models for a modelable user.
