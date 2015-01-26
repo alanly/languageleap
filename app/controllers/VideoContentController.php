@@ -54,27 +54,38 @@ class VideoContentController extends \BaseController {
 		// Create the Sendfile headers for this file.
 		$headers = $this->getSendfileHeadersForFile($file);
 
-
-		//Insert into VideoHistory
-		if(Auth::check())
+		// Insert a viewing history record for the logged in user.
+		if (Auth::check())
 		{
-			//Get user id from authenticated user
-			$user_id = Auth::user()->id;
-
-			$history = ViewingHistory::where('user_id', $user_id)->where('video_id', $id)->get()->first();
-
-			if(! $history)
-			{
-				ViewingHistory::create([
-					'user_id' 	=> $user_id, 
-					'video_id' 	=> $id, 
-					'is_finished' 	=> false, 
-					'current_time' 	=> 0
-				]);
-			}
+			$this->addViewingHistoryRecord(Auth::user(), $video);
 		}
 
 		return Response::download($file, null, $headers);
+	}
+
+	
+	/**
+	 * Inserts the viewing history record for the given video to the given user.
+	 * @param  User  $user  The user that's viewing the video
+	 * @param  Video $video The video that's being viewed
+	 * @return ViewingHistory
+	 * @author Thomas Rahn <thomas@rahn.ca>
+	 */
+	protected function addViewingHistoryRecord(User $user, Video $video)
+	{
+		$history = $this->viewingHistories->where('user_id', $user->id)
+		                                  ->where('video_id', $video->id)
+		                                  ->get()
+		                                  ->first();
+
+		if ($history) return $history;
+
+		return $this->viewingHistories->create([
+			'user_id'      => $user->id,
+			'video_id'     => $video->id,
+			'is_finished'  => false,
+			'current_time' => 0
+		]);
 	}
 
 
