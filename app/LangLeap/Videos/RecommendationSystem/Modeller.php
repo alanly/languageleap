@@ -1,7 +1,7 @@
 <?php namespace LangLeap\Videos\RecommendationSystem;
 
 use LangLeap\Core\Collection;
-use LangLeap\Videos\RecommendationSystem\Facades\ClassifierUtilities;
+use LangLeap\Videos\RecommendationSystem\Facades\ModellerUtilities;
 use App;
 
 /**
@@ -48,16 +48,16 @@ class Modeller {
 		$history = $this->modelable->getViewingHistory();
 
 		// Parse through the history and get a collection of classifiable media.
-		$media = ClassifierUtilities::getClassifiableMediaFromHistory($history);
+		$media = ModellerUtilities::getClassifiableMediaFromHistory($history);
 
 		// Get the classification data from the media and generate the model.
-		$attributes = ClassifierUtilities::getClassificationAttributesFromMedia($media);
+		$attributes = ModellerUtilities::getClassificationAttributesFromMedia($media);
 
 		// Get a Model instance.
 		$model = App::make('LangLeap\Videos\RecommendationSystem\Model');
 
 		// Populate the model.
-		ClassifierUtilities::populateModelFromAttributes($model, $attributes);
+		ModellerUtilities::populateModelFromAttributes($model, $attributes);
 
 		return $model;
 	}

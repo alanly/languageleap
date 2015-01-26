@@ -3,7 +3,7 @@
 use App;
 use LangLeap\TestCase;
 use LangLeap\Core\Collection;
-use LangLeap\Videos\RecommendationSystem\Facades\ClassifierUtilities;
+use LangLeap\Videos\RecommendationSystem\Facades\ModellerUtilities;
 use Mockery as m;
 
 /**
@@ -35,9 +35,9 @@ class ModellerTest extends TestCase {
 		$modelable->shouldReceive('getViewingHistory')->once()->andReturn(new Collection);
 
 		// Mock the ClassifierUtilities facade.		
-		ClassifierUtilities::shouldReceive('getClassifiableMediaFromHistory')->once();
-		ClassifierUtilities::shouldReceive('getClassificationAttributesFromMedia')->once()->andReturn(new Collection);
-		ClassifierUtilities::shouldReceive('populateModelFromAttributes')->once()->andReturn(new Collection);
+		ModellerUtilities::shouldReceive('getClassifiableMediaFromHistory')->once();
+		ModellerUtilities::shouldReceive('getClassificationAttributesFromMedia')->once()->andReturn(new Collection);
+		ModellerUtilities::shouldReceive('populateModelFromAttributes')->once()->andReturn(new Collection);
 
 		$modeller = new Modeller($modelable);
 		$model = $modeller->model();

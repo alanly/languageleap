@@ -121,7 +121,7 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-		'LangLeap\Videos\RecommendationSystem\Providers\UtilitiesServiceProvider',
+		'LangLeap\Videos\RecommendationSystem\Providers\ModellerUtilitiesServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
 
 	),

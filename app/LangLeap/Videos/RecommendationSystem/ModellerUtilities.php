@@ -2,7 +2,7 @@
 
 use LangLeap\Core\Collection;
 
-class Utilities {
+class ModellerUtilities {
 
 	/**
 	 * Given a traversable collection of viewing history, this method will return

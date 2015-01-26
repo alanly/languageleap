@@ -4,7 +4,7 @@ use App;
 use LangLeap\TestCase;
 use Mockery as m;
 
-class UtilitiesTest extends TestCase {
+class ModellerUtilitiesTest extends TestCase {
 
 	protected function getCollectionInstance($items = [])
 	{
@@ -16,7 +16,7 @@ class UtilitiesTest extends TestCase {
 
 	public function testGetClassifiableMediaFromHistoryReturnsACollection()
 	{
-		$u = new Utilities;
+		$u = new ModellerUtilities;
 		$c = $this->getCollectionInstance();
 
 		$this->assertInstanceOf(
@@ -31,7 +31,7 @@ class UtilitiesTest extends TestCase {
 		$c = m::mock('LangLeap\Videos\RecommendationSystem\Classifiable');
 		$c->shouldReceive('getClassificationAttributes')->once()->andReturn('foo');
 
-		$u = new Utilities;
+		$u = new ModellerUtilities;
 		$a = $u->getClassificationAttributesFromMedia($c);
 
 		$this->assertInstanceOf('Traversable', $a);
@@ -46,7 +46,7 @@ class UtilitiesTest extends TestCase {
 
 		$collection = $this->getCollectionInstance([$classifiable, $classifiable, $classifiable]);
 
-		$u = new Utilities;
+		$u = new ModellerUtilities;
 		$a = $u->getClassificationAttributesFromMedia($collection);
 
 		$this->assertCount(3, $a);
@@ -64,7 +64,7 @@ class UtilitiesTest extends TestCase {
 
 		$array = [$classifiable, $classifiable, $classifiable];
 
-		$u = new Utilities;
+		$u = new ModellerUtilities;
 		$a = $u->getClassificationAttributesFromMedia($array);
 
 		$this->assertCount(3, $a);
@@ -89,7 +89,7 @@ class UtilitiesTest extends TestCase {
 		// Create a model
 		$model = App::make('LangLeap\Videos\RecommendationSystem\Model');
 
-		$u = new Utilities;
+		$u = new ModellerUtilities;
 		$return = $u->populateModelFromAttributes($model, $attributes);
 
 		$this->assertSame($model, $return);
@@ -125,7 +125,7 @@ class UtilitiesTest extends TestCase {
 
 		$model = App::make('LangLeap\Videos\RecommendationSystem\Model');
 
-		$u = new Utilities;
+		$u = new ModellerUtilities;
 		$return = $u->populateModelFromAttributes($model, $attributes);
 
 		$this->assertSame($model, $return);
