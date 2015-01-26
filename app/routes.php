@@ -1,6 +1,7 @@
 <?php
 
 use LangLeap\Levels\Level;
+use LangLeap\Core\Language;
 use LangLeap\Videos\Video;
 
 /*
@@ -46,7 +47,7 @@ Route::group(['prefix' => 'admin'], function()
 	// Interface index
 	Route::get('/', function()
 	{
-		return View::make('admin.index')->with('levels', Level::all());
+		return View::make('admin.index')->with('levels', Level::all())->with('languages', Language::all());
 	});
 
 	// Video interface
