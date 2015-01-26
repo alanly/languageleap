@@ -75,18 +75,43 @@ function refreshContent()
 	{
 		if ($('#file').val() != '')
 		{
-			var p = '';
-			//p = $('#text').text();
+			var p = "";
 			p = getScriptText();
-			//p =	document.getElementById('add-script').innerHTML,
-			p = "<input type='text' name='text' value='" + p + "'/>";
-
+			p = "<input type='text' name='text' value='" + p + "' style='display: none;'/>";
 			// append script to form for post
 			$('#new-media-form').append(p);
-			document.getElementById("new-media-form").submit();
+			//document.getElementById("new-media-form").submit();
+	
+	    var xhr = null;
+      var form = $("#new-media-form");
+      var formData = new FormData(form[0]);
+      xhr = $.ajax({
+          type: "POST",
+          url: "/api/videos/",
+          data: formData,
+          cache: false,
+          processData: false,
+          contentType: false,
+          xhr: function() {
+              myXhr = $.ajaxSettings.xhr();
+              if (myXhr.upload) myXhr.upload.addEventListener('progress', uploadProgressHandler, false);
+              return myXhr;
+          }
+      }).done(function(data, status, xhr) {
+          $("#add-new-body-upload").html(
+						"Upload complete! Redirecting..."
+          );
+          ($("#new-media-form")[0]).reset();
+					setTimeout("location.href = './admin';", 4000);
+      }).fail(function(xhr, status, error) {
+          $("#add-new-body-upload").html(
+              "Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>"
+          );
+					setTimeout("location.href = './admin';", 4000);
+      });
 
-			// add loading bar here
 			$('#add-new-header').empty().append("<h2>Uploading...</h2>");
+			$('#button-add-new-back').attr('disabled', 'disabled');
 			$('#button-add-new-next').attr('disabled', 'disabled');
 		
 			// hide and show relevant panes
@@ -96,6 +121,20 @@ function refreshContent()
 	}
 	return false;
 }
+
+function uploadProgressHandler(e)
+{
+     if (! e.lengthComputable) return;
+     var loaded          = e.loaded,
+         total           = e.total,
+         percentComplete = parseInt((loaded / total) * 100),
+         cssWidth        = percentComplete + "%";
+     if (percentComplete > 89) {
+         $("#cancel-upload-button").attr("disabled", "disabled");
+     }
+     $(".upload-progress-bar").css("width", cssWidth);
+     $(".upload-progress-bar").html(cssWidth);
+ }
 
 /*
 	show/hide form based on which media type is checked

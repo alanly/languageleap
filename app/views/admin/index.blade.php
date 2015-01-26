@@ -65,15 +65,15 @@
 						<div id="info-tvshow-form" style="width: 500px;">
 							<div id="info-tvshow-form-director" class="form-group">
 								<label>Director</label>
-								<input name="director" type="text" class="form-control" placeholder="" />
+								<input id="director-input" name="director" type="text" class="form-control" placeholder="" />
 							</div>
 							<div id="info-tvshow-form-actor" class="form-group">
 								<label>Actor</label>
-								<input name="actor" type="text" class="form-control" placeholder="" />
+								<input id="actor-input" name="actor" type="text" class="form-control" placeholder="" />
 							</div>
 							<div id="info-tvshow-form-genre" class="form-group">
 								<label>Genre</label>
-								<input name="genre" type="text" class="form-control" placeholder="" />
+								<input id="genre-input" name="genre" type="text" class="form-control" placeholder="" />
 							</div>
 						</div>
 					</div>
@@ -89,11 +89,11 @@
 				<!-- step three -->
 				<div id="add-new-body-media" class="modal-body clearfix" aria-hidden="true" style="display: none;">
 				  {{ Form::label('file', 'File', array('id'=>'', 'class'=>'')) }}
-				  {{ Form::file('file', '', array('id'=>'', 'class'=>'')) }}
+				  {{ Form::file('file', '', array('id'=>'file', 'class'=>'')) }}
 				</div>
 				<!-- /step three -->
-				<div id="add-new-body-upload" class="modal-body clearfix" aria-hidden="true" style="display: none;">
-					upload progress ajax stuff goes here
+				<div id="add-new-body-upload" class="modal-body text-center clearfix" aria-hidden="true" style="display: none;">
+					Uploading media, please wait...
 				</div>
 				<div class="modal-footer">
 					<button id="button-add-new-back" type="button" class="btn btn-primary" style="display: none;">Back</button>

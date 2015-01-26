@@ -217,7 +217,7 @@ class ApiVideoController extends \BaseController {
 			$video_file = $file->move($path, $new_name);
 		}
 		$video->save();
-		return $video->first();
+		return $video;
 	}
 
 }
