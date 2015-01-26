@@ -14,11 +14,11 @@ class ApiViewingHistoryController extends \BaseController {
 
 		$video_id = Input::get("video_id");
 
-		if(! $video_id)
+		if (! $video_id)
 		{
 			return $this->apiResponse(
 				'error',
-				"Video { $video_id } does not exists",
+				"Video {$video_id} does not exists",
 				404
 			);
 		}
@@ -32,21 +32,25 @@ class ApiViewingHistoryController extends \BaseController {
 
 		$video_id = Input::get("video_id");
 
-		if(! $video_id)
+		if (! $video_id)
 		{
 			return $this->apiResponse(
 				'error',
-				"Video { $video_id } does not exists",
+				"Video {$video_id} does not exists",
 				404
 			);
 		}
 
 		$current_time = Input::get('current_time');
 
-		$history = ViewingHistory::where('user_id', $user->id)->where('video_id', $video_id)->get()->first();
+		$history = ViewingHistory::where('user_id', $user->id)
+		                         ->where('video_id', $video_id)
+		                         ->get()
+		                         ->first();
+
 		$history->fill(Input::get());
 
-		if(! $history->save())
+		if (! $history->save())
 		{
 			return $this->apiResponse('error', $history->getErrors(), 400);
 		}
@@ -69,7 +73,7 @@ class ApiViewingHistoryController extends \BaseController {
 	{
 		$history = ViewingHistory::where('user_id', $user_id)->where('video_id', $video_id)->get()->first();
 
-		if(! $history)
+		if (! $history)
 		{
 			//There is no history of this user viewing this video, current time = 0
 			return $this->apiResponse(
@@ -85,4 +89,5 @@ class ApiViewingHistoryController extends \BaseController {
 			200
 		);
 	}
+
 }

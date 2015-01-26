@@ -1,11 +1,10 @@
 <?php namespace LangLeap\Accounts;
 
-use Eloquent;
+use LangLeap\Core\ValidatedModel;
 
-class ViewingHistory extends Eloquent
-{
-	public $timestamps = true;
+class ViewingHistory extends ValidatedModel {
 
+	public    $timestamps = true;
 	protected $table = "viewing_history";
 	protected $fillable   = ['user_id', 'video_id', 'is_finished', 'current_time'];
 	protected $rules = [
@@ -22,5 +21,5 @@ class ViewingHistory extends Eloquent
 	{
 		return $this->belongsTo('LangLeap\Accounts\User');
 	}
-}
 
+}

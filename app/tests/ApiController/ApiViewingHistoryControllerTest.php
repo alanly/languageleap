@@ -17,6 +17,7 @@ class ApiViewingHistoryControllerTest extends TestCase {
 		parent::setUp();
 		$this->seed();
 	}
+
 	/*
 	 * This test will test that you are able to access the viewing history API.
 	 */
@@ -81,4 +82,5 @@ class ApiViewingHistoryControllerTest extends TestCase {
 
 		return $history;
 	}
+
 }

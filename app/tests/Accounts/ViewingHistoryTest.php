@@ -4,11 +4,9 @@ use LangLeap\TestCase;
 use LangLeap\Videos\Video;
 use App;
 
-
-/*
- * @author Thomas Rahn <thomas@rahn.ca>
- *
+/**
  * This class is used to test the relations between ViewingHistory and User/Video
+ * @author Thomas Rahn <thomas@rahn.ca>
  */
 class ViewingHistoryTest extends TestCase {
 	
@@ -34,6 +32,7 @@ class ViewingHistoryTest extends TestCase {
 
 	}
 
+
 	public function testVideoRelation()
 	{
 		$history = $this->getViewingHistoryInstance();
@@ -46,10 +45,12 @@ class ViewingHistoryTest extends TestCase {
 		$history->save();
 
 		$this->assertCount(1, $history->video()->get());
-
 	}
+
+
 	protected function getViewingHistoryInstance()
 	{
 		return App::make('LangLeap\Accounts\ViewingHistory');
 	}
+
 }
