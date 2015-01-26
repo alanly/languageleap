@@ -46,8 +46,7 @@ class ApiVideoController extends \BaseController {
 		$file = Input::file('file');
 		$type = Input::get('info-radio');
 		
-		// TODO replace with language id from post
-		$lang = Language::where('code' , '=', 'en')->first();
+		$lang = Language::where('id' , '=', Input::get('language_id'))->first();
 		$video = $this->setVideo($file, $type, null, $lang);
 		$this->setScript($script_text, $video->id);
 		
