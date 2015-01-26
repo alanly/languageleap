@@ -69,6 +69,16 @@ class Attribute {
 
 
 	/**
+	 * Get the name of the residents of this attribute.
+	 * @return array
+	 */
+	public function keys()
+	{
+		return array_keys($this->residents);
+	}
+
+
+	/**
 	 * Create a new Attribute instance.
 	 * @return Attribute The new attribute instance
 	 */
