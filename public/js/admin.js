@@ -32,6 +32,9 @@ $('#button-add-new-next').on("click", function()
 
 });
 
+/*
+ * refreshes content in add media pane
+ */
 function refreshContent()
 {
 	if (step == 0)
@@ -81,9 +84,9 @@ function refreshContent()
 			// append script to form for post
 			$('#new-media-form').append(p);
 			//document.getElementById("new-media-form").submit();
-	
-	    var xhr = null;
-      var form = $("#new-media-form");
+			
+			var xhr = null;
+			var form = $("#new-media-form");
       var formData = new FormData(form[0]);
       xhr = $.ajax({
           type: "POST",
