@@ -94,5 +94,18 @@ class AttributeTest extends TestCase {
 		$this->assertCount(1, $a->keys());
 		$this->assertSame(['foobar'], $a->keys());
 	}
+
+
+	public function testWeight()
+	{
+		$a = $this->getAttributeInstance();
+		$this->assertSame(0, $a->weight());
+		$a->add('foobar');
+		$this->assertSame(1, $a->weight());
+		$a->add('foobar');
+		$this->assertSame(2, $a->weight());
+		$a->add('foofoo');
+		$this->assertSame(3, $a->weight());
+	}
 	
 }

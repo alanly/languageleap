@@ -107,4 +107,20 @@ class Attribute {
 		return count($this->residents);
 	}
 
+
+	/**
+	 * Produces a sum of the counts for all residents.
+	 * @return int
+	 */
+	public function weight()
+	{
+		if (count($this->residents) === 0) return 0;
+		
+		return array_reduce($this->residents, function($carry, $item)
+		{
+			$carry += $item;
+			return $carry;
+		});
+	}
+
 }
