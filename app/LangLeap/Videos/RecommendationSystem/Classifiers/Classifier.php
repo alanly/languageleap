@@ -1,4 +1,4 @@
-<?php namespace LangLeap\Videos\RecommendationSystem;
+<?php namespace LangLeap\Videos\RecommendationSystem\Classifiers;
 
 /**
  * Defines the interface for a classifier engine.
