@@ -132,11 +132,9 @@ function uploadProgressHandler(e)
          total           = e.total,
          percentComplete = parseInt((loaded / total) * 100),
          cssWidth        = percentComplete + "%";
-     if (percentComplete > 89) {
-         $("#cancel-upload-button").attr("disabled", "disabled");
-     }
-     $(".upload-progress-bar").css("width", cssWidth);
-     $(".upload-progress-bar").html(cssWidth);
+				 
+     $("#add-new-body-upload").css("width", cssWidth);
+     $("#add-new-body-upload").html(cssWidth);
  }
 
 /*
@@ -206,7 +204,6 @@ function hideShowsFooterTabs()
 	$('#footer-seasons').attr("aria-hidden", true);
 	$('#footer-seasons').css("display", "none");
 }
-
 
 function buildList(data)
 {
