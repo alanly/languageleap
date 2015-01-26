@@ -1,7 +1,7 @@
 <?php namespace LangLeap\Videos\RecommendationSystem;
 
 /**
- * Defines the interface for a media classifier.
+ * Defines the interface for a classifier engine.
  * @author Alan Ly <hello@alan.ly>
  */
 interface Classifier {
