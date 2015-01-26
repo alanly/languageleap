@@ -93,12 +93,12 @@ Route::filter('guest', function()
 Route::filter('csrf', function()
 {
 	// Fetch token from input fields; if null, fetch token from request header.
-	//$token = Input::get('_token', Request::header('X-CSRF-TOKEN'));
+	$token = Input::get('_token', Request::header('X-CSRF-TOKEN'));
 
-	//if (Session::token() !== $token)
-	//{
-	//	throw new Illuminate\Session\TokenMismatchException;
-	//}
+	if (Session::token() !== $token)
+	{
+		throw new Illuminate\Session\TokenMismatchException;
+	}
 });
 
 /*
