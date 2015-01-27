@@ -17,12 +17,23 @@ class ModellerUtilitiesTest extends TestCase {
 	public function testGetClassifiableMediaFromHistoryReturnsACollection()
 	{
 		$u = new ModellerUtilities;
-		$c = $this->getCollectionInstance();
+
+		$media = m::mock('LangLeap\Videos\Media, LangLeap\Videos\RecommendationSystem\Classifiable');
+
+		$video = m::mock('LangLeap\Videos\Video');
+		$video->shouldReceive('getAttribute')->with('viewable')->andReturn($media);
+
+		$history = m::mock('LangLeap\Core\ValidatedModel');
+		$history->shouldReceive('getAttribute')->with('video')->andReturn($video);
+
+		$c = $this->getCollectionInstance([$history]);
 
 		$this->assertInstanceOf(
 			'LangLeap\Core\Collection',
 			$u->getClassifiableMediaFromHistory($c)
 		);
+
+		$this->assertSame($media, $u->getClassifiableMediaFromHistory($c)->first());
 	}
 
 
