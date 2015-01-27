@@ -1,4 +1,4 @@
-<?php namespace LangLeap\Videos\RecommendationSystem;
+<?php namespace LangLeap\Videos\RecommendationSystem\Modellers;
 
 use App;
 use LangLeap\TestCase;
@@ -22,7 +22,7 @@ class UserModellerTest extends TestCase {
 		$historable = $this->getHistorableMock();
 
 		$this->assertInstanceOf(
-			'LangLeap\Videos\RecommendationSystem\UserModeller',
+			'LangLeap\Videos\RecommendationSystem\Modellers\UserModeller',
 			UserModeller::create($historable)
 		);
 	}

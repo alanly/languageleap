@@ -1,4 +1,4 @@
-<?php namespace LangLeap\Videos\RecommendationSystem;
+<?php namespace LangLeap\Videos\RecommendationSystem\Modellers;
 
 /**
  * Modeller builds attribute preference models for objects.

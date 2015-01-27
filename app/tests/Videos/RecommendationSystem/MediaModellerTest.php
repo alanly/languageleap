@@ -1,4 +1,4 @@
-<?php namespace LangLeap\Videos\RecommendationSystem;
+<?php namespace LangLeap\Videos\RecommendationSystem\Modellers;
 
 use App;
 use LangLeap\TestCase;
@@ -21,7 +21,7 @@ class MediaModellerTest extends TestCase {
 		$classifiable = $this->getClassifiableMock();
 
 		$this->assertInstanceOf(
-			'LangLeap\Videos\RecommendationSystem\MediaModeller',
+			'LangLeap\Videos\RecommendationSystem\Modellers\MediaModeller',
 			MediaModeller::create($classifiable)
 		);
 	}

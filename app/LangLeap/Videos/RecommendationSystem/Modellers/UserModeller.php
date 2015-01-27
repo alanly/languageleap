@@ -1,6 +1,7 @@
-<?php namespace LangLeap\Videos\RecommendationSystem;
+<?php namespace LangLeap\Videos\RecommendationSystem\Modellers;
 
 use App;
+use LangLeap\Videos\RecommendationSystem\Historable;
 use LangLeap\Videos\RecommendationSystem\Facades\ModellerUtilities;
 
 /**
