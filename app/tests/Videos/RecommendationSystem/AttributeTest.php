@@ -1,7 +1,6 @@
 <?php namespace LangLeap\Videos\RecommendationSystem;
 
 use LangLeap\TestCase;
-use Mocker as m;
 
 class AttributeTest extends TestCase {
 

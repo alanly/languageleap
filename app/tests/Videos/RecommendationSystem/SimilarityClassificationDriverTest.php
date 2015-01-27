@@ -12,8 +12,9 @@ class SimilarityClassificationDriverTest extends TestCase {
 	public function tearDown()
 	{
 		parent::tearDown();
-		Mockery::close();
+		m::close();
 	}
+	
 
 	public function testEngineGetsCalledWithAppropriateParameters()
 	{

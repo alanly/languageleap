@@ -6,6 +6,13 @@ use Mockery as m;
 
 class ModellerUtilitiesTest extends TestCase {
 
+	public function tearDown()
+	{
+		parent::tearDown();
+		m::close();
+	}
+	
+
 	protected function getCollectionInstance($items = [])
 	{
 		// Collection's and Traversable's are kind of hairy to mock, so we'll

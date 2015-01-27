@@ -8,6 +8,13 @@ use Mockery as m;
  */
 class ModelTest extends TestCase {
 
+	public function tearDown()
+	{
+		parent::tearDown();
+		m::close();
+	}
+	
+
 	protected function getAttributeMock()
 	{
 		return m::mock('LangLeap\Videos\RecommendationSystem\Attribute');
@@ -31,13 +38,11 @@ class ModelTest extends TestCase {
 	{
 		// Create the attribute class
 		$a = $this->getAttributeMock();
-		$a->shouldReceive('newInstance')->once()->andReturn($a);
+		$a->shouldReceive('newInstance')->twice()->andReturn($a, null);
 
 		$m = new Model($a);
 
 		$this->assertSame($a, $m->test);
-
-		$a->shouldReceive('newInstance')->andReturn(null);
 
 		$this->assertSame($a, $m->test);
 		$this->assertNull($m->shouldReturnNull);
@@ -50,7 +55,7 @@ class ModelTest extends TestCase {
 	public function testFailsWhenAttemptingToSetAttributeDirectly()
 	{
 		$a = $this->getAttributeMock();
-		$a->shouldReceive('newInstance')->once()->andReturn($a);
+		$a->shouldReceive('newInstance')->never();
 
 		$m = new Model($a);
 
@@ -77,7 +82,7 @@ class ModelTest extends TestCase {
 	public function testKeysFetchesAttributeNames()
 	{
 		$a = $this->getAttributeMock();
-		$a->shouldReceive('newInstance')->once()->andReturn($a);
+		$a->shouldReceive('newInstance')->twice()->andReturn($a);
 
 		$m = new Model($a);
 
@@ -95,7 +100,7 @@ class ModelTest extends TestCase {
 	public function testArrayable()
 	{
 		$a = $this->getAttributeMock();
-		$a->shouldReceive('newInstance')->once()->andReturn($a);
+		$a->shouldReceive('newInstance')->twice()->andReturn($a);
 
 		$m = new Model($a);
 

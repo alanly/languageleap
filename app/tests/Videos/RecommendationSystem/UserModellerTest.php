@@ -11,6 +11,13 @@ use Mockery as m;
  */
 class UserModellerTest extends TestCase {
 
+	public function tearDown()
+	{
+		parent::tearDown();
+		m::close();
+	}
+
+
 	protected function getHistorableMock()
 	{
 		return m::mock('LangLeap\Videos\RecommendationSystem\Historable');
