@@ -3,6 +3,9 @@
 use App;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * @author Alan Ly <hello@alan.ly>
+ */
 class ModellerUtilitiesServiceProvider extends ServiceProvider {
 
 	public function register()
