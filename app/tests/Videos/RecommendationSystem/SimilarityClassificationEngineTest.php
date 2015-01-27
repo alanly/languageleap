@@ -18,20 +18,9 @@ class SimilarityClassificationEngineTest extends TestCase {
 	}
 
 
-	protected function getEngineInstance(Model $reference, Model $subject)
+	protected function getEngineInstance()
 	{
-		return new SimilarityClassificationEngine($reference, $subject);
-	}
-
-
-	public function testCreateReturnsNewInstance()
-	{
-		$model = $this->getModelMock();
-
-		$this->assertInstanceOf(
-			'LangLeap\Videos\RecommendationSystem\ClassificationEngines\SimilarityClassificationEngine',
-			SimilarityClassificationEngine::create($model, $model)
-		);
+		return new SimilarityClassificationEngine;
 	}
 
 
@@ -48,12 +37,13 @@ class SimilarityClassificationEngineTest extends TestCase {
 		$model = m::mock($model);
 		$model->shouldReceive('toArray')->andReturn(['foobar' => $attribute]);
 
-		$classifier = $this->getEngineInstance($model, $model);
+		$classifier = $this->getEngineInstance();
 
-		$result = $classifier->classify();
+		$result = $classifier->classify($model, $model);
 
 		$this->assertSame(1.0, round($result));
 	}
+
 
 	public function testClassifyingTwoDifferentModelsReturnsAnAppropriateResult()
 	{
@@ -74,9 +64,9 @@ class SimilarityClassificationEngineTest extends TestCase {
 		$model2 = m::mock($model2);
 		$model2->shouldReceive('toArray')->once()->andReturn(['foobar' => $attr2]);
 
-		$classifier = $this->getEngineInstance($model1, $model2);
+		$classifier = $this->getEngineInstance();
 
-		$result = $classifier->classify();
+		$result = $classifier->classify($model1, $model2);
 
 		$this->assertNotSame(1.0, round($result));
 	}
@@ -101,9 +91,9 @@ class SimilarityClassificationEngineTest extends TestCase {
 		$model2 = m::mock($model2);
 		$model2->shouldReceive('toArray')->once()->andReturn(['foobar' => $attr2]);
 
-		$classifier = $this->getEngineInstance($model1, $model2);
+		$classifier = $this->getEngineInstance();
 
-		$result = $classifier->classify();
+		$result = $classifier->classify($model1, $model2);
 
 		$this->assertSame(0, $result);
 	}

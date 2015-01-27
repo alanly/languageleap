@@ -10,49 +10,22 @@ use LangLeap\Videos\RecommendationSystem\Model;
  */
 class SimilarityClassificationEngine implements ClassificationEngine {
 
-	private $referenceModel;
-	private $classifyModel;
-
-
-	/**
-	 * Constructs a new instance.
-	 * @param Model $referenceModel The reference model to compare against
-	 * @param Model $classifyModel  The model that we want to classify
-	 */
-	public function __construct(Model $referenceModel, Model $classifyModel)
-	{
-		$this->referenceModel = $referenceModel;
-		$this->classifyModel = $classifyModel;
-	}
-
-
-	/**
-	 * Create a new classifier engine to classify the given model against the
-	 * reference model.
-	 * @param  Model $referenceModel The reference model to compare against
-	 * @param  Model $classifyModel  The model that we want to classify
-	 * @return SimilarityClassificationEngine
-	 */
-	public static function create(Model $referenceModel, Model $classifyModel)
-	{
-		return new static($referenceModel, $classifyModel);
-	}
-
-
 	/**
 	 * Determines the probability that the classifiable instance will meet the
 	 * expectations outlined by the reference model.
+	 * @param Model $referenceModel The reference model to compare against
+	 * @param Model $classifyModel  The model that we want to classify
 	 * @return float The likelihood that we will meet expectations
 	 */
-	public function classify()
+	public function classify(Model $referenceModel, Model $classifyModel)
 	{
-		$classifyAttributes = $this->classifyModel->toArray();
+		$classifyAttributes = $classifyModel->toArray();
 		$totalWeight = 0;
 		$weight = 0;
 
 		foreach ($classifyAttributes as $a)
 		{
-			$refAttr = $this->referenceModel->{$a->getName()};
+			$refAttr = $referenceModel->{$a->getName()};
 			$totalWeight += $refAttr->weight();
 
 			foreach ($a->keys() as $name)
