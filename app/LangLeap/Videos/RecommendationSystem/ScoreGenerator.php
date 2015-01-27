@@ -5,6 +5,12 @@ use LangLeap\Videos\Video;
 use LangLeap\Videos\RecommendationSystem\ScoredMedia;
 use LangLeap\Videos\RecommendationSystem\ClassificationDrivers\ClassificationDriver;
 
+/**
+ * ScoreGenerator is responsible for retrieving a collection of media instances
+ * and scoring them against the user, thus determining the suitability of each
+ * video based on the user's profile.
+ * @author Alan Ly <hello@alan.ly>
+ */
 class ScoreGenerator {
 
 	/**
@@ -14,6 +20,10 @@ class ScoreGenerator {
 	 */
 	private $driver;
 
+	/**
+	 * The videos repository instance.
+	 * @var Video
+	 */
 	private $videos;
 
 
@@ -24,6 +34,7 @@ class ScoreGenerator {
 	public function __construct(ClassificationDriver $driver, Video $videos)
 	{
 		$this->driver = $driver;
+		$this->videos = $videos;
 	}
 
 
@@ -38,7 +49,13 @@ class ScoreGenerator {
 		// Get all the media instances in the system.
 		$media = $this->assembleMediaCollection();
 
-		// @TODO Iterate through the media collection and get the score for each.
+		// Iterate through the media collection and get the score for each.
+		$scores = $media->map(function($m) use ($user)
+		{
+			return $this->scoreMediaForUser($user, $m);
+		});
+
+		return $scores;
 	}
 
 
