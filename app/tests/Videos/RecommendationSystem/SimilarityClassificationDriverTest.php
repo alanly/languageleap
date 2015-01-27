@@ -9,13 +9,6 @@ use Mockery as m;
  */
 class SimilarityClassificationDriverTest extends TestCase {
 
-	public function tearDown()
-	{
-		parent::tearDown();
-		m::close();
-	}
-	
-
 	public function testEngineGetsCalledWithAppropriateParameters()
 	{
 		// Mock the historable and classifiable instances.

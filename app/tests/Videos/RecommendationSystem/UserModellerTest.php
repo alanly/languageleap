@@ -11,12 +11,6 @@ use Mockery as m;
  */
 class UserModellerTest extends TestCase {
 
-	public function tearDown()
-	{
-		parent::tearDown();
-		m::close();
-	}
-
 
 	protected function getHistorableMock()
 	{

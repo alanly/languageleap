@@ -10,12 +10,6 @@ use Mockery as m;
  */
 class MediaModellerTest extends TestCase {
 
-	public function tearDown()
-	{
-		parent::tearDown();
-		m::close();
-	}
-
 	protected function getClassifiableMock()
 	{
 		return m::mock('LangLeap\Videos\RecommendationSystem\Classifiable');

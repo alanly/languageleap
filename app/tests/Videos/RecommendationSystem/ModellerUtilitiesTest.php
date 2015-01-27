@@ -4,14 +4,7 @@ use App;
 use LangLeap\TestCase;
 use Mockery as m;
 
-class ModellerUtilitiesTest extends TestCase {
-
-	public function tearDown()
-	{
-		parent::tearDown();
-		m::close();
-	}
-	
+class ModellerUtilitiesTest extends TestCase {	
 
 	protected function getCollectionInstance($items = [])
 	{

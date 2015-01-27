@@ -6,13 +6,6 @@ use Mockery as m;
 
 class SimilarityClassificationEngineTest extends TestCase {
 
-	public function tearDown()
-	{
-		parent::tearDown();
-		m::close();
-	}
-	
-
 	protected function getModelMock()
 	{
 		return m::mock('LangLeap\Videos\RecommendationSystem\Model');

@@ -6,14 +6,7 @@ use Mockery as m;
 /**
  * @author Alan Ly <hello@alan.ly>
  */
-class ModelTest extends TestCase {
-
-	public function tearDown()
-	{
-		parent::tearDown();
-		m::close();
-	}
-	
+class ModelTest extends TestCase {	
 
 	protected function getAttributeMock()
 	{
