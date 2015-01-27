@@ -1,10 +1,10 @@
-<?php namespace LangLeap\Videos\RecommendationSystem\Classifiers;
+<?php namespace LangLeap\Videos\RecommendationSystem\ClassificationEngines;
 
 /**
  * Defines the interface for a classifier engine.
  * @author Alan Ly <hello@alan.ly>
  */
-interface Classifier {
+interface ClassificationEngine {
 
 	/**
 	 * Determines the probability that the classifiable instance will meet the

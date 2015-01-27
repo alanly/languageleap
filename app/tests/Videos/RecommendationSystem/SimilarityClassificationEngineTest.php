@@ -1,10 +1,10 @@
-<?php namespace LangLeap\Videos\RecommendationSystem\Classifiers;
+<?php namespace LangLeap\Videos\RecommendationSystem\ClassificationEngines;
 
 use LangLeap\TestCase;
 use LangLeap\Videos\RecommendationSystem\Model;
 use Mockery as m;
 
-class SimilarityClassifierTest extends TestCase {
+class SimilarityClassificationEngineTest extends TestCase {
 
 	protected function getModelMock()
 	{
@@ -18,13 +18,19 @@ class SimilarityClassifierTest extends TestCase {
 	}
 
 
+	protected function getEngineInstance(Model $reference, Model $subject)
+	{
+		return new SimilarityClassificationEngine($reference, $subject);
+	}
+
+
 	public function testCreateReturnsNewInstance()
 	{
 		$model = $this->getModelMock();
 
 		$this->assertInstanceOf(
-			'LangLeap\Videos\RecommendationSystem\Classifiers\SimilarityClassifier',
-			SimilarityClassifier::create($model, $model)
+			'LangLeap\Videos\RecommendationSystem\ClassificationEngines\SimilarityClassificationEngine',
+			SimilarityClassificationEngine::create($model, $model)
 		);
 	}
 
@@ -42,7 +48,7 @@ class SimilarityClassifierTest extends TestCase {
 		$model = m::mock($model);
 		$model->shouldReceive('toArray')->andReturn(['foobar' => $attribute]);
 
-		$classifier = SimilarityClassifier::create($model, $model);
+		$classifier = $this->getEngineInstance($model, $model);
 
 		$result = $classifier->classify();
 
@@ -68,7 +74,7 @@ class SimilarityClassifierTest extends TestCase {
 		$model2 = m::mock($model2);
 		$model2->shouldReceive('toArray')->once()->andReturn(['foobar' => $attr2]);
 
-		$classifier = SimilarityClassifier::create($model1, $model2);
+		$classifier = $this->getEngineInstance($model1, $model2);
 
 		$result = $classifier->classify();
 
@@ -95,7 +101,7 @@ class SimilarityClassifierTest extends TestCase {
 		$model2 = m::mock($model2);
 		$model2->shouldReceive('toArray')->once()->andReturn(['foobar' => $attr2]);
 
-		$classifier = SimilarityClassifier::create($model1, $model2);
+		$classifier = $this->getEngineInstance($model1, $model2);
 
 		$result = $classifier->classify();
 

@@ -1,14 +1,14 @@
-<?php namespace LangLeap\Videos\RecommendationSystem\Classifiers;
+<?php namespace LangLeap\Videos\RecommendationSystem\ClassificationEngines;
 
 use LangLeap\Videos\RecommendationSystem\Model;
 
 /**
- * The SimilarityClassifier is a simple classification engine that determines
+ * The SimilarityClassificationEngine is a simple classification engine that determines
  * whether the classifiable instance's attributes are similar to those
  * defined by the reference model's.
  * @author Alan Ly <hello@alan.ly>
  */
-class SimilarityClassifier implements Classifier {
+class SimilarityClassificationEngine implements ClassificationEngine {
 
 	private $referenceModel;
 	private $classifyModel;
@@ -31,7 +31,7 @@ class SimilarityClassifier implements Classifier {
 	 * reference model.
 	 * @param  Model $referenceModel The reference model to compare against
 	 * @param  Model $classifyModel  The model that we want to classify
-	 * @return SimilarityClassifier
+	 * @return SimilarityClassificationEngine
 	 */
 	public static function create(Model $referenceModel, Model $classifyModel)
 	{
