@@ -10,7 +10,8 @@ use LangLeap\Videos\RecommendationSystem\Recommendation;
 interface RecommendationRepository {
 
 	/**
-	 * Adds a recommendation to the store.
+	 * Adds a recommendation to the store. Duplicate recommendations will not be
+	 * added as the database is treated as a set.
 	 * @param  User           $user           The owner of the store
 	 * @param  Recommendation $recommendation The recommendation to be saved
 	 * @return bool                           Success state of the transaction
