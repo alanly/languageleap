@@ -33,7 +33,7 @@ interface RecommendationRepository {
 	 * @param  User   $user The owner of the store
 	 * @return bool         The success state of the transaction
 	 */
-	public function empty(User $user);
+	public function removeAll(User $user);
 
 
 	/**
