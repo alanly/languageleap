@@ -48,8 +48,8 @@ interface RecommendationRepository {
 	 * Get the number of recommendations, between the given range of scores, in
 	 * the store.
 	 * @param  User   $user The owner of the store
-	 * @param  int    $min  The minimum score in the range
-	 * @param  int    $max  The maximum score in the range
+	 * @param  float  $min  The minimum score in the range
+	 * @param  float  $max  The maximum score in the range
 	 * @return int          The number of recommendations with a score between `$min` and `$max`
 	 */
 	public function countBetweenScores(User $user, $min, $max);
