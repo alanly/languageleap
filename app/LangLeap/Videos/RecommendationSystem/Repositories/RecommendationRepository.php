@@ -52,7 +52,7 @@ interface RecommendationRepository {
 	 * @param  int    $max  The maximum score in the range
 	 * @return int          The number of recommendations with a score between `$min` and `$max`
 	 */
-	public function countInScores(User $user, $min, $max);
+	public function countBetweenScores(User $user, $min, $max);
 
 
 	/**
