@@ -2,7 +2,7 @@
 
 use LangLeap\Core\Collection;
 use LangLeap\Videos\Video;
-use LangLeap\Videos\RecommendationSystem\ScoredMedia;
+use LangLeap\Videos\RecommendationSystem\Recommendation;
 use LangLeap\Videos\RecommendationSystem\ClassificationDrivers\ClassificationDriver;
 
 /**
@@ -106,7 +106,7 @@ class ScoreGenerator {
 	{
 		$score = $this->driver->classify($user, $media);
 
-		return new ScoredMedia($media, $score);
+		return new Recommendation($media, $score);
 	}
 	
 }

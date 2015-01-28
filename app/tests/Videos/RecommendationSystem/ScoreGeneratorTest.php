@@ -65,7 +65,7 @@ class ScoreGeneratorTest extends TestCase {
 
 		$this->assertCount(3, $scored);
 		$this->assertInstanceOf('LangLeap\Core\Collection', $scored);
-		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\ScoredMedia', $scored->first());
+		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Recommendation', $scored->first());
 		$this->assertSame($media, $scored->first()->getMedia());
 		$this->assertSame(1, $scored->first()->getScore());
 	}
@@ -103,7 +103,7 @@ class ScoreGeneratorTest extends TestCase {
 
 		$this->assertCount(2, $scored);
 		$this->assertInstanceOf('LangLeap\Core\Collection', $scored);
-		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\ScoredMedia', $scored->first());
+		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Recommendation', $scored->first());
 		$this->assertSame($media, $scored->first()->getMedia());
 		$this->assertSame(1, $scored->first()->getScore());
 	}

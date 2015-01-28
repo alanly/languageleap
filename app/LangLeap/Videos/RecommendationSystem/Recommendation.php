@@ -3,11 +3,11 @@
 use LangLeap\Videos\Media;
 
 /**
- * ScoredMedia is a basic structure that contains a media instance and its
+ * Recommendation is a basic structure that contains a media instance and its
  * associated score.
  * @author Alan Ly <hello@alan.ly>
  */
-class ScoredMedia {
+class Recommendation {
 
 	private $media;
 	private $score;
