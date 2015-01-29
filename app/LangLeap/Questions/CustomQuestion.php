@@ -10,7 +10,7 @@ class CustomQuestion extends Eloquent {
 	public    $timestamps = false;
 	protected $fillable   = ['question' => 'string|required', 'answer_id' => 'integer|required'];
 
-	public function question()
+	public function questionType()
 	{
 		return $this->morphMany('LangLeap\Questions\Question','question');
 	}

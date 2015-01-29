@@ -10,7 +10,7 @@ class DbDefinitionQuestion extends Eloquent {
 	public    $timestamps = false;
 	protected $fillable   = ['question' => 'string|required', 'definition_id' => 'integer|required'];
 
-	public function question()
+	public function questionType()
 	{
 		return $this->morphMany('LangLeap\Questions\Question','question');
 	}

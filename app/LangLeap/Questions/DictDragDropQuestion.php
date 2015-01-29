@@ -10,7 +10,7 @@ class DictDragDropQuestion extends Eloquent {
 	public    $timestamps = false;
 	protected $fillable   = ['question' => 'string|required', 'word' => 'string|required'];
 
-	public function question()
+	public function questionType()
 	{
 		return $this->morphMany('LangLeap\Questions\Question','question');
 	}
