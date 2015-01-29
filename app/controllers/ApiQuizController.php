@@ -1,7 +1,7 @@
 <?php
 
 use LangLeap\Quizzes\Answer;
-use LangLeap\Quizzes\Question;
+use LangLeap\Questions\Question;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\QuizUtilities\QuizUtils;

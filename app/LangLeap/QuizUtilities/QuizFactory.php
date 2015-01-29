@@ -4,7 +4,7 @@ use LangLeap\Accounts\User;
 use LangLeap\Core\Collection;
 use LangLeap\Core\UserInputResponse;
 use LangLeap\Quizzes\Answer;
-use LangLeap\Quizzes\Question;
+use LangLeap\Questions\Question;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Result;
 use LangLeap\Quizzes\VideoQuestion;
