@@ -1,5 +1,6 @@
 <?php namespace LangLeap\Videos\RecommendationSystem;
 
+use LangLeap\Core\Collection;
 use LangLeap\Videos\RecommendationSystem\Repositories\RecommendationRepository;
 
 class Recommendatore {
@@ -31,16 +32,22 @@ class Recommendatore {
 
 	/**
 	 * Given a historable user, will freshly generate recommendations for the user.
+	 * This is an intensive operation and should not be called each time a
+	 * recommendation is needed. Rather, it should be called at intervals in order
+	 * to create a fresh data set of recommendations to be used.
 	 * @param  Historable $user The user to generate recommendations for
 	 * @return Collection       The recommendations, sorted in descending order of score
 	 */
 	public function generate(Historable $user)
 	{
-		// @TODO Get a collection of Recommendation instances.
+		// Generate and get a collection of Recommendation instances.
+		$scored = $this->generator->score($user);
 		
-		// @TODO Clear the repository for the user.
+		// Replace the existing dataset in the repository with the fresh data.
+		$this->replaceRecommendations($user, $scored);
 		
-		// @TODO Save those Recommendations into the repository.
+		// Return the collectio of recommendations.
+		return $scored;
 	}
 
 
@@ -58,7 +65,28 @@ class Recommendatore {
 	 */
 	public function fetch(Historable $user, $take, $desc = true)
 	{
-		// @TODO Alias the repository getTop method.
+		// Alias the repository getTop method.
+		return $this->recommendations->getTop($user, $take, $desc);
+	}
+
+
+	/**
+	 * Given a user instance and a collection of recommendations, this method will
+	 * replace all existing recommendations in the repository for the user with
+	 * those given by the collection.
+	 * @param  Historable $user   The owner of the recommendations
+	 * @param  Collection $scored The collection of recommendations to store
+	 * @return bool               The success state of the operation
+	 */
+	private function replaceRecommendations(Historable $user, Collection $scored)
+	{
+		// Empty the repository if it's populated.
+		if ($this->recommendations->count($user) > 0)
+		{
+			$this->recommendations->removeAll($user);
+		}
+
+		return $this->recommendations->multiAdd($user, $scored);
 	}
 	
 }

@@ -463,16 +463,30 @@ class RedisRecommendationRepositoryTest extends TestCase {
 		// Create the user mock
 		$user = $this->getUserMock();
 
+		// Mock a recommendation
+		$m = $this->getMediaMock();
+		$recom = $this->getRecommendationMock($m);
+
 		// Mock the Redis client and connection
 		$connection = $this->getConnectionMock();
-		$connection->shouldReceive('pipeline')->once()->andReturn([1]);
+		$connection->shouldReceive('pipeline')
+		           ->once()
+		           ->with(m::on(function($pipe)
+		           	{
+		           		$p = m::mock('\Predis\Pipeline\Pipeline');
+		           		$p->shouldReceive('zadd')->once();
+		           		$pipe($p);
+
+		           		return true;
+		           	}))
+		           ->andReturn([1]);
 
 		$client = RedisClient::shouldReceive('connection')->once()->andReturn($connection)->getMock();
 
 		// Instantiate the repository with our mock client.
 		$repo = new RedisRecommendationRepository($client);
 
-		$result = $repo->multiAdd($user, new Collection(['foo']));
+		$result = $repo->multiAdd($user, new Collection([$recom]));
 
 		$this->assertTrue($result);
 	}
