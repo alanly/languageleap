@@ -3,6 +3,7 @@
 use App;
 use Illuminate\Support\Facades\Redis as RedisClient;
 use LangLeap\TestCase;
+use LangLeap\Core\Collection;
 use Mockery as m;
 
 class RedisRecommendationRepositoryTest extends TestCase {
@@ -454,6 +455,26 @@ class RedisRecommendationRepositoryTest extends TestCase {
 
 		$this->assertInstanceOf('LangLeap\Core\Collection', $result);
 		$this->assertCount(2, $result);
+	}
+
+
+	public function testMultiAddCreatesARedisTransaction()
+	{
+		// Create the user mock
+		$user = $this->getUserMock();
+
+		// Mock the Redis client and connection
+		$connection = $this->getConnectionMock();
+		$connection->shouldReceive('pipeline')->once()->andReturn([1]);
+
+		$client = RedisClient::shouldReceive('connection')->once()->andReturn($connection)->getMock();
+
+		// Instantiate the repository with our mock client.
+		$repo = new RedisRecommendationRepository($client);
+
+		$result = $repo->multiAdd($user, new Collection(['foo']));
+
+		$this->assertTrue($result);
 	}
 
 }

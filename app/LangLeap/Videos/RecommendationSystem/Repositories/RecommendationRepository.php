@@ -1,6 +1,7 @@
 <?php namespace LangLeap\Videos\RecommendationSystem\Repositories;
 
 use LangLeap\Accounts\User;
+use LangLeap\Core\Collection;
 use LangLeap\Videos\RecommendationSystem\Recommendation;
 
 /**
@@ -11,12 +12,24 @@ interface RecommendationRepository {
 
 	/**
 	 * Adds a recommendation to the store. Duplicate recommendations will not be
-	 * added as the database is treated as a set.
+	 * added as the datastore is treated as a set.
 	 * @param  User           $user           The owner of the store
 	 * @param  Recommendation $recommendation The recommendation to be saved
 	 * @return bool                           Success state of the transaction
 	 */
 	public function add(User $user, Recommendation $recommendation);
+
+
+	/**
+	 * Adds a collection of recommendations to the store. Duplicate recommendations
+	 * will not be added as the datastore is treated as a set. The return value
+	 * is true if and only if every item in the given collection has been added
+	 * to the store.
+	 * @param  User       $user            The owner of the store
+	 * @param  Collection $recommendations The set of recommendations to be added
+	 * @return bool                        Success state of the transaction
+	 */
+	public function multiAdd(User $user, Collection $recommendations);
 
 
 	/**

@@ -34,7 +34,7 @@ class RedisRecommendationRepository implements RecommendationRepository {
 
 	/**
 	 * Adds a recommendation to the store. Duplicate recommendations will not be
-	 * added as the database is treated as a set.
+	 * added as the datastore is treated as a set.
 	 * @param  User           $user           The owner of the store
 	 * @param  Recommendation $recommendation The recommendation to be saved
 	 * @return bool                           Success state of the transaction
@@ -52,6 +52,39 @@ class RedisRecommendationRepository implements RecommendationRepository {
 		$result = $this->redis->zadd($key, $score, $value);
 
 		return $result === 1;
+	}
+
+
+	/**
+	 * Adds a collection of recommendations to the store. Duplicate recommendations
+	 * will not be added as the datastore is treated as a set. The return value
+	 * is true if and only if every item in the given collection has been added
+	 * to the store.
+	 * @param  User       $user            The owner of the store
+	 * @param  Collection $recommendations The set of recommendations to be added
+	 * @return bool                        Success state of the transaction
+	 */
+	public function multiAdd(User $user, Collection $recommendations)
+	{
+		// Get the key for the set
+		$key = $this->generateSetKey($user);
+
+		// Use a pipeline to run our inserts
+		$result = $this->redis->pipeline(function($pipe) use ($key, $recommendations)
+		{
+			foreach ($recommendations as $r)
+			{
+				// Get the recommendation values
+				$score = $r->getScore();
+				$value = $this->generateMediaValue($r->getMedia());
+
+				// Add the value to the store
+				$pipe->zadd($key, $score, $value);
+			}
+		});
+
+		// Check to see if the result size is the same as the collection size
+		return count($result) === count($recommendations);
 	}
 
 
