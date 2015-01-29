@@ -301,6 +301,50 @@ class RedisRecommendationRepositoryTest extends TestCase {
 	}
 
 
+	public function testGetRangeInAscCallsWithCorrectParamsAndReturnsProperInstances()
+	{
+		// Mock the user instance
+		$user = $this->getUserMock();
+
+		// Mock our media types
+		$commercial = m::mock('LangLeap\Videos\Commercial');
+		$commercial->shouldReceive('find')->with('7')->once()->andReturn($commercial);
+
+		$show = m::mock('LangLeap\Videos\Show');
+		$show->shouldReceive('find')->with('4')->once()->andReturn($commercial);
+
+		App::instance('LangLeap\Videos\Commercial', $commercial);
+		App::instance('LangLeap\Videos\Show', $show);
+		
+		// Mock the Redis client and connection
+		$connection = $this->getConnectionMock();
+		$connection->shouldReceive('zrevrange')
+		           ->with('user:1000.recommendations', 3, 4, 'withscores')
+		           ->once()
+		           ->andReturn([
+		           		['LangLeap\Videos\Commercial:7', '0.7'],
+		           		['LangLeap\Videos\Show:4', '0.65']
+		           	]);
+
+		$client = RedisClient::shouldReceive('connection')->once()->andReturn($connection)->getMock();
+
+		// Instantiate the repository with our mock client.
+		$repo = new RedisRecommendationRepository($client);
+
+		// Add the recommendation
+		$result = $repo->getRange($user, 3, 4, false);
+
+		$this->assertInstanceOf('LangLeap\Core\Collection', $result);
+		$this->assertCount(2, $result);
+
+		$recommendation = $result->get(0);
+
+		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Recommendation', $recommendation);
+		$this->assertEquals(0.7, $recommendation->getScore());
+		$this->assertInstanceOf('LangLeap\Videos\Commercial', $recommendation->getMedia());
+	}
+
+
 	public function testGetRangeWillRemoveDeprecatedMember()
 	{
 		// Mock the user instance
