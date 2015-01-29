@@ -4,9 +4,8 @@ use Eloquent;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
- * @author Alan Ly <hello@alan.ly>
  */
-class CustomQuestion extends Eloquent {
+class DbDefinitionQuestion extends Eloquent {
 
 	public    $timestamps = false;
 	protected $fillable   = ['question' => 'string|required', 'definition_id' => 'integer|required'];

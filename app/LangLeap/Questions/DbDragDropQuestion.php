@@ -5,18 +5,18 @@ use Eloquent;
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
-class CustomQuestion extends Eloquent {
+class DbDragDropQuestion extends Eloquent {
 
 	public    $timestamps = false;
-	protected $fillable   = ['question' => 'string|required', 'answer_id' => 'integer|required'];
+	protected $fillable   = ['question' => 'string|required', 'definition_id' => 'integer|required'];
 
 	public function question()
 	{
 		return $this->morphMany('LangLeap\Questions\Question','question');
 	}
 
-	public function answer()
+	public function definition()
 	{
-		return $this->hasOne('LangLeap\Quizzes\Answer');
+		return $this->hasOne('LangLeap\Words\Definition');
 	}
 }
