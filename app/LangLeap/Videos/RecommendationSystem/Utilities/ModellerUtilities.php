@@ -1,8 +1,10 @@
-<?php namespace LangLeap\Videos\RecommendationSystem;
+<?php namespace LangLeap\Videos\RecommendationSystem\Utilities;
 
 use LangLeap\Core\Collection;
+use LangLeap\Videos\RecommendationSystem\Classifiable;
+use LangLeap\Videos\RecommendationSystem\Model;
 
-class Utilities {
+class ModellerUtilities {
 
 	/**
 	 * Given a traversable collection of viewing history, this method will return

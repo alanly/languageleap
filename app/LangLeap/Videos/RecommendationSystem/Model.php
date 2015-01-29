@@ -4,8 +4,8 @@ use Countable;
 use Illuminate\Support\Contracts\ArrayableInterface;
 
 /**
- * Model represents the user's viewing preferences. It maintains a count of
- * commonly occuring attributes from videos that the user has seen.
+ * Model represents either the preferred attributes of a User or the attributes
+ * of a Classifiable media.
  * @author Alan Ly <hello@alan.ly>
  */
 class Model implements ArrayableInterface, Countable {
@@ -31,12 +31,7 @@ class Model implements ArrayableInterface, Countable {
 	 */
 	public function __get($name)
 	{
-		if (! isset($this->attributes[$name]))
-		{
-			$this->attributes[$name] = $this->attribute->newInstance($name);
-		}
-
-		return $this->attributes[$name];
+		return $this->get($name);
 	}
 
 
@@ -60,6 +55,22 @@ class Model implements ArrayableInterface, Countable {
 	public function count()
 	{
 		return $this->size();
+	}
+
+
+	/**
+	 * Get a particular attribute.
+	 * @param  string  $name  The name of the attribute
+	 * @return Attribute
+	 */
+	public function get($name)
+	{
+		if (! isset($this->attributes[$name]))
+		{
+			$this->attributes[$name] = $this->attribute->newInstance($name);
+		}
+
+		return $this->attributes[$name];
 	}
 
 
