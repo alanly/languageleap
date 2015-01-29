@@ -20,7 +20,8 @@ class Recommendatore {
 
 	/**
 	 * Constructs a new instance.
-	 * @param ScoreGenerator $generator The generator instance to use
+	 * @param ScoreGenerator           $generator       The generator instance to use
+	 * @param RecommendationRepository $recommendations The repository for recommendation instances
 	 */
 	public function __construct(
 		ScoreGenerator $generator, RecommendationRepository $recommendations)
@@ -46,7 +47,7 @@ class Recommendatore {
 		// Replace the existing dataset in the repository with the fresh data.
 		$this->replaceRecommendations($user, $scored);
 		
-		// Return the collectio of recommendations.
+		// Return the collection of recommendations.
 		return $scored;
 	}
 
