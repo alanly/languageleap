@@ -39,7 +39,7 @@ class ScoreGenerator {
 
 
 	/**
-	 * Scores media for the given user. Returned is a collection of `ScoredMedia`
+	 * Scores media for the given user. Returned is a collection of `Recommendation`
 	 * instances, each of which contain the media and its associated score.
 	 * @param  Historable $user The historable user instance
 	 * @return Collection
@@ -97,10 +97,10 @@ class ScoreGenerator {
 
 	/**
 	 * Given a historable user instance and a classifiable media instance, scores
-	 * the media, and returns the ScoredMedia instance.
+	 * the media, and returns the Recommendation instance.
 	 * @param  Historable   $user  The historable user
 	 * @param  Classifiable $media The classifiable media
-	 * @return ScoredMedia
+	 * @return Recommendation
 	 */
 	private function scoreMediaForUser(Historable $user, Classifiable $media)
 	{
