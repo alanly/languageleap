@@ -1,5 +1,7 @@
 <?php namespace LangLeap\Videos\RecommendationSystem;
 
+use LangLeap\Videos\RecommendationSystem\Repositories\RecommendationRepository;
+
 class Recommendatore {
 
 	/**
@@ -8,14 +10,22 @@ class Recommendatore {
 	 */
 	private $generator;
 
+	/**
+	 * The repository store for recommendation instances.
+	 * @var RecommendationRepository
+	 */
+	private $recommendations;
+
 
 	/**
 	 * Constructs a new instance.
 	 * @param ScoreGenerator $generator The generator instance to use
 	 */
-	public function __construct(ScoreGenerator $generator)
+	public function __construct(
+		ScoreGenerator $generator, RecommendationRepository $recommendations)
 	{
 		$this->generator = $generator;
+		$this->recommendations = $recommendations;
 	}
 
 
@@ -26,7 +36,11 @@ class Recommendatore {
 	 */
 	public function generate(Historable $user)
 	{
-
+		// @TODO Get a collection of Recommendation instances.
+		
+		// @TODO Clear the repository for the user.
+		
+		// @TODO Save those Recommendations into the repository.
 	}
 
 
@@ -39,12 +53,12 @@ class Recommendatore {
 	 * parameter defaults to descending (i.e. highly to lowly recommended)
 	 * @param  Historable $user  The user to retrieve recommendations for
 	 * @param  int        $take  The number of recommendations to retrieve
-	 * @param  string     $order The ordering of the recommendations set (either 'asc' or 'desc', default is 'desc')
+	 * @param  bool       $desc  Order the recommendations set in descending order (default)
 	 * @return Collection        The recommendations in sorted order of score
 	 */
-	public function fetch(Historable $user, $take, $order = 'desc')
+	public function fetch(Historable $user, $take, $desc = true)
 	{
-
+		// @TODO Alias the repository getTop method.
 	}
 	
 }
