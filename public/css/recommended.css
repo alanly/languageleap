@@ -1,0 +1,10 @@
+#recommended-scroller img {
+	height: 150px;
+	margin-bottom: 10px;
+	width: 225px;
+}
+
+#recommended-scroller span {
+	display: inline-block;
+	width: 70%;
+}

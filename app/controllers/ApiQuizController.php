@@ -79,38 +79,41 @@ class ApiQuizController extends \BaseController {
 			$message = 'Fields not filled in properly';
 		}
 
-		$question = Question::create([
-			'question'  => $question,
-			'answer_id' => -1
-		]);
-		
-		// Shuffle the answers
-		$answer_id = -1;
-		while (count($answers) > 0)
+		if($success) // Create the question if the input is correct
 		{
-			$answer_key = array_rand($answers);
-
-			$answer = Answer::create([
-				'answer'      => $answers[$answer_key],
-				'question_id' => $question->id
+			$question = Question::create([
+				'question'  => $question,
+				'answer_id' => -1
 			]);
-
-			if ($answer_key == 0)
+			
+			// Shuffle the answers
+			$answer_id = -1;
+			while (count($answers) > 0)
 			{
-				$answer_id = $answer->id;
-			}
+				$answer_key = array_rand($answers);
 
-			unset($answers[$answer_key]);
+				$answer = Answer::create([
+					'answer'      => $answers[$answer_key],
+					'question_id' => $question->id
+				]);
+
+				if ($answer_key == 0)
+				{
+					$answer_id = $answer->id;
+				}
+
+				unset($answers[$answer_key]);
+			}
+			
+			$question->answer_id = $answer_id;
+			$question->save();
+			
+			$vq = VideoQuestion::create([
+				'video_id'    => $video_id,
+				'question_id' => $question->id,
+				'is_custom'   => true
+			]);
 		}
-		
-		$question->answer_id = $answer_id;
-		$question->save();
-		
-		$vq = VideoQuestion::create([
-			'video_id'    => $video_id,
-			'question_id' => $question->id,
-			'is_custom'   => true
-		]);
 		
 		return Redirect::to('admin/quiz/new')
 		               ->with('success', $success)
