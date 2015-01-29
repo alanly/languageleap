@@ -14,7 +14,7 @@ class VideoQuestion extends Eloquent {
 
 	public function question()
 	{
-		return $this->belongsTo('LangLeap\Quizzes\Question', 'question_id');
+		return $this->belongsTo('LangLeap\Questions\Question', 'question_id');
 	}
 	
 	public function video()

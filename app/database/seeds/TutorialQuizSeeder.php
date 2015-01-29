@@ -1,6 +1,6 @@
 <?php
 
-use LangLeap\Quizzes\Question;
+use LangLeap\Questions\Question;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Videos\Commercial;
@@ -20,9 +20,9 @@ class TutorialQuizSeeder extends Seeder {
 	
 	private function createQuestions()
 	{
-		$question = App::make('LangLeap\Quizzes\Question');
-		
-		$q1 = $question->create(["question" => "What does Language Leap teach?", "answer_id" => 0]);
+		$question = App::make('LangLeap\Questions\Question');
+		//TODO
+		/*$q1 = $question->create(["question" => "What does Language Leap teach?", "answer_id" => 0]);
 		$q2 = $question->create(["question" => "What do you see beside the video?", "answer_id" => 0]);
 		$q3 = $question->create(["question" => "What can you gain by spending more time on Language Leap?", "answer_id" => 0]);
 		$q4 = $question->create(["question" => "How do you learn new words?", "answer_id" => 0]);
@@ -33,15 +33,6 @@ class TutorialQuizSeeder extends Seeder {
 			'path' => '/path/to/tutorial/video.mkv',
 			'language_id' => $language->id
 		]);
-		
-		
-		/*$vq1 = $videoquestion->create(["question_id" => 1, "video_id" => $video->id, "is_custom" => true])->id;
-		$vq2 = $videoquestion->create(["question_id" => 2, "video_id" => $video->id, "is_custom" => true])->id;
-		$vq3 = $videoquestion->create(["question_id" => 3, "video_id" => $video->id, "is_custom" => true])->id;
-		$vq4 = $videoquestion->create(["question_id" => 4, "video_id" => $video->id, "is_custom" => true])->id;
-		$vq5 = $videoquestion->create(["question_id" => 5, "video_id" => $video->id, "is_custom" => true])->id;
-		
-		$quiz->videoQuestions()->attach([$vq1, $vq2, $vq3, $vq4, $vq5]);*/
 
 		$answer = App::make('LangLeap\Quizzes\Answer');
 		$answer->create(["answer" => "French", 'question_id' => $q1->id]);
@@ -109,6 +100,6 @@ class TutorialQuizSeeder extends Seeder {
 			'video_id' => $video->id,
 			'question_id' => $q5->id,
 			'is_custom' => true
-		]);
+		]);*/
 	}
 }

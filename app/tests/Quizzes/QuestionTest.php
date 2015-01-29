@@ -9,7 +9,7 @@ use App;
  */
 class QuestionTest extends TestCase {
 
-	public function testAnswersRelationshipFunctionWorks()
+	/*public function testAnswersRelationshipFunctionWorks()
 	{
 		// Create a series of answers.
 		$a = [
@@ -48,6 +48,6 @@ class QuestionTest extends TestCase {
 		$q->answers()->saveMany($a);
 
 		$this->assertSame($a[0]->answer, $q->answer->answer);
-	}
+	}*/
 
 }
