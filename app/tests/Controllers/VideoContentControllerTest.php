@@ -104,8 +104,6 @@ class VideoContentControllerTest extends TestCase {
 		$fileInfo = $this->getMockFileInstance();
 		$fileInfo->shouldReceive('isFile')->once()->andReturn(true);
 		$fileInfo->shouldReceive('isReadable')->once()->andReturn(true);
-		$fileInfo->shouldReceive('getRealPath')->once()->andReturn($path);
-		$fileInfo->shouldReceive('getFilename')->once()->andReturn('1.mkv');
 		$fileInfo->shouldReceive('getPathname')->once()->andReturn($path);
 
 		// Mock the FileInfoFactory
