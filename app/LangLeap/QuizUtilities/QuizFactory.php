@@ -152,6 +152,7 @@ class QuizFactory implements UserInputResponse {
 		
 		$quiz->save();
 
+
 		return $quiz;
 	}
 	
