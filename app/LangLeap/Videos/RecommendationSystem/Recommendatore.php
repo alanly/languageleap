@@ -3,6 +3,14 @@
 use LangLeap\Core\Collection;
 use LangLeap\Videos\RecommendationSystem\Repositories\RecommendationRepository;
 
+/**
+ * Recommendatore is the recommendation system helper class that can be used by
+ * clients to either generate (and store) recommendations or retrieve stored
+ * recommendations from the datastore. It is suggested that users implement this
+ * class rather than attempting to work with the individual underlying classes
+ * directly.
+ * @author Alan Ly <hello@alan.ly>
+ */
 class Recommendatore {
 
 	/**
