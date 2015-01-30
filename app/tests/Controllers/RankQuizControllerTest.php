@@ -10,7 +10,7 @@ use LangLeap\Core\Language;
  * @author Thomas Rahn <thomas@rahn.ca>
  * @author David Siekut <david.siekut@gmail.com>
  */
-class RankQuizTest extends TestCase {
+class RankQuizControllerTest extends TestCase {
 
 	public function setUp()
 	{
