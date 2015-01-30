@@ -166,6 +166,7 @@ class RankQuizControllerTest extends TestCase {
 		$this->assertEquals(4, $level->id);
 	}
 	
+
 	public function testSkipRankUnranked()
 	{
 		$this->be($this->createUser(1));
@@ -175,6 +176,7 @@ class RankQuizControllerTest extends TestCase {
 		$this->assertResponseStatus(302);
 	}
 	
+
 	public function testSkipRankAlreadyRanked()
 	{
 		$this->be($this->createUser(2));
@@ -183,6 +185,7 @@ class RankQuizControllerTest extends TestCase {
 		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseStatus(400);
 	}
+
 
 	protected function createUser(
  		$level_id,
@@ -205,4 +208,5 @@ class RankQuizControllerTest extends TestCase {
  			'level_id'	 => $level_id,
  		]);
  	}
+ 	
 }
