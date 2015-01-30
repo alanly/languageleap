@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDbdefinitionquestionTable extends Migration {
+class CreateDraganddropquestionTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,9 @@ class CreateDbdefinitionquestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('dbdefinitionquestions', function($table){
+		Schema::create('draganddropquestions', function($table){
 			$table->increments('id');
-			$table->string('question');
-			$table->integer('definition_id')->unsigned();
+			$table->string('sentence');
 		});
 	}
 
@@ -26,7 +25,7 @@ class CreateDbdefinitionquestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('dbdefinitionquestions');
+		Schema::dropIfExists('draganddropquestions');
 	}
 
 }
