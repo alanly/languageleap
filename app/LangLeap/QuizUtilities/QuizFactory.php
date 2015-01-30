@@ -13,7 +13,6 @@ use LangLeap\Words\Definition;
 use LangLeap\WordUtilities\WordInformation;
 use LangLeap\Words\Script;
 
-
 /**
  * Factory that creates quizzes based on selected words in a script
  *
@@ -115,6 +114,9 @@ class QuizFactory implements UserInputResponse {
 		// Ensure the user exists
 		if (User::find($user_id) == null) return null;
 		
+		// Ensure the video exists
+		if (Video::find($video_id) == null) return null;
+		
 		// Create a new quiz
 		$quiz = Quiz::create(['user_id'	=> $user_id]);
 		
@@ -124,7 +126,7 @@ class QuizFactory implements UserInputResponse {
 		foreach ($wordsInformation as $word)
 		{
 			// Create a video question if none exists
-			$question = $this->createDefinitionQuestion($questionPrepend, $word, 4);
+			$question = $this->createDefinitionQuestion($questionPrepend, $word, 4, $video_id);
 
 			$videoQuestion = VideoQuestion::create([
 				'question_id' => $question->id,
@@ -206,7 +208,7 @@ class QuizFactory implements UserInputResponse {
 	 * @param  int         $videoId
 	 * @return Question
 	 */
-	protected function createDefinitionQuestion($questionPrepend, $wordInformation, $numAnswers)
+	protected function createDefinitionQuestion($questionPrepend, $wordInformation, $numAnswers, $videoId)
 	{
 		$question = QuestionFactory::getInstance()->getDefinitionQuestion($questionPrepend, $wordInformation);
 
@@ -219,12 +221,13 @@ class QuizFactory implements UserInputResponse {
 		$question->answer_id = $correctAnswer->id;
 		$question->save();
 
-		$randomWords = $this->getRandomWords($wordInformation->getWord(), $numAnswers);
+		$randomWords = $this->getRandomWords($wordInformation->getWord(), $numAnswers, $videoId);
+
 		foreach($randomWords as $randomWord)
 		{
 			$answer = Answer::create([
 				'question_id' => $question->id,
-				'answer'      => $randomWord->definition
+				'answer'      => $randomWord->getDefinition()
 			]);
 			$question->answers->add($answer);
 		}
@@ -238,12 +241,17 @@ class QuizFactory implements UserInputResponse {
 	 * @param  int         $numAnswers
 	 * @return array
 	 */
-	private function getRandomWords($correctWord, $numAnswers)
+	private function getRandomWords($correctWord, $numAnswers, $videoId)
 	{
-		$randomScript = Script::orderByRaw("RAND()")->get();
+		// Get a random script
+		$numberOfScripts = Script::count();
+		$randomNumber = rand(1, $numberOfScripts);
+
+		$randomScript = Script::find($randomNumber);
+		$wordsInScript = $randomScript->text;
 
 		// Remove all the tags from the script (e.g <span data="speaker">word</span>), replace with a whitespace
-		$wordsInScript = trim(preg_replace('\s*\<[^>]*\>\s*', ' ', $wordsInScript));
+		$wordsInScript = trim(preg_replace('/\s*\<[^>]*\>\s*/', ' ', $wordsInScript));
 
 		// Get all words, shuffle them around
 		$words = str_word_count($wordsInScript, 1);
@@ -253,11 +261,11 @@ class QuizFactory implements UserInputResponse {
 		// Get 3 words with length > 3 which are different than the word in the question
 		foreach($words as $word)
 		{
-			if($correctWord !== $word && strlen($word) > 3)
+			if($correctWord != $word && strlen($word) > 3)
 			{
 				// Get the definition of the word, if successful push into the array
-				$wordInformation = new WordInformation($word, null, null);
-				if($wordInformation->definition)
+				$wordInformation = new WordInformation($word, '', '', $videoId);
+				if(strlen($wordInformation->getDefinition()) > 1) 
 				{
 					array_push($randomWords, $wordInformation);
 				}
