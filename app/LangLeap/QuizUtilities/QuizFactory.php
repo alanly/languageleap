@@ -10,11 +10,17 @@ use LangLeap\Quizzes\Result;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
+use LangLeap\DictionaryUtilities\DictionaryFactory;
+use LangLeap\Core\Language;
+use LangLeap\WordUtilities\WordInformation;
+use LangLeap\Words\Script;
+
 
 /**
  * Factory that creates quizzes based on selected words in a script
  *
- * @author Quang Tran <tran.quang@live.com>
+ * @author Quang Tran 	<tran.quang@live.com>
+ * @author Dror Ozgaon 	<dror.ozgaon@gmail.com>
  */
 class QuizFactory implements UserInputResponse {
  
@@ -45,18 +51,34 @@ class QuizFactory implements UserInputResponse {
 			{
 				return null;
 			}
-			
-			// Retrieve a collection of all definitions in the script.
-			$scriptDefinitions = Definition::whereIn('id', $input['all_words'])->get();
 
-			// Use the overriden Collection class.
-			$scriptDefinitions = new Collection($scriptDefinitions->all());
+			// Ensure the video exists
+			if (Video::find($input['video_id']) == null) return null;
+			
+			// Retrieve the word, its associated definition, and the sentence it is in.
+			$json = json_decode($input['all_words']);
+			$wordsInformation = array();
+
+			foreach($json as $obj)
+			{
+				// Ensure word exists.
+				$word = $obj->word;
+				if(!$word) return null;
+
+				// Ensure sentence the word is in exists.
+				$sentence = $obj->sentence;
+				if(!$sentence) return null;
+
+				// If the definition doesn't exist, the WordInformation class will fetch the definition.
+				$wordInformation = new WordInformation($obj->word, $obj->definition, $obj->sentence, $input['video_id']);
+
+				array_push($wordsInformation, $wordInformation);
+			}
 			
 			$quiz = $this->getDefinitionQuiz(
 				$user->id,
 				$input['video_id'],
-				$scriptDefinitions,
-				$input['selected_words']
+				$wordsInformation
 			);
 
 			return ['success', ['quiz_id' => $quiz->id], 200];
@@ -76,26 +98,18 @@ class QuizFactory implements UserInputResponse {
 	}
 	
 	/**
-	 *  This function will generate a new Quiz instance based on the supplied
-	 * collection of Definition instances associated with the script, and an array
-	 * of Definition IDs that have been chosen by the user to be in the quiz.
+	 * This function will generate a new Quiz instance based on the supplied
+	 * array of words selected from the script.
 	 * 
 	 * @param  int         $user_id
 	 * @param  int         $video_id
-	 * @param  Collection  $scriptDefinitions
-	 * @param  array       $selectedDefinitions
+	 * @param  array       $wordsInformation
 	 * @return Quiz
 	 */
-	public function getDefinitionQuiz($user_id, $video_id, Collection $scriptDefinitions, $selectedDefinitions)
+	public function getDefinitionQuiz($user_id, $video_id, $wordsInformation)
 	{
-		// Ensure that $scriptDefinitions is not empty.
-		if ($scriptDefinitions->isEmpty()) return null;
-
-		// Ensure that $selectedDefinitions is not empty.
-		if (count($selectedDefinitions) < 1) return null;
-	
-		// Ensure the video exists
-		if (Video::find($video_id) == null) return null;
+		// Ensure that $selectedWords is not empty.
+		if (count($wordsInformation) < 1) return null;
 		
 		// Ensure the user exists
 		if (User::find($user_id) == null) return null;
@@ -103,43 +117,21 @@ class QuizFactory implements UserInputResponse {
 		// Create a new quiz
 		$quiz = Quiz::create(['user_id'	=> $user_id]);
 		
-		// Make a copy of the definitions collection.
-		$scriptDefinitions = new Collection($scriptDefinitions->all());
 		$questionPrepend = 'What is the definition of ';
 		
 		// Check for questions for each selected definition
-		foreach ($selectedDefinitions as $definitionId)
+		foreach ($wordsInformation as $word)
 		{
-			// Pull the Definition instance from the collection.
-			$definition = $scriptDefinitions->pull($definitionId);
-			if (! $definition) return null;
-			
-			// Try to find the video question for that word for re-use
-			$videoQuestion = null;	
-			$videoQuestions = VideoQuestion::select('videoquestions.*')->join('questions', 'questions.id', '=', 'videoquestions.question_id')
-			                               ->where('questions.question', 'like', '%' . $definition->word . '%')->where('videoquestions.video_id', '=', $video_id)->get();
+			// Create a video question if none exists
+			$question = $this->createQuestion($questionPrepend, $word, 4);
 
-			foreach($videoQuestions as $vq)
-			{
-				$indexOfWord = strripos($vq->question->question, $definition->word);
-				if ( ($indexOfWord !== false) && ($indexOfWord > strlen($questionPrepend) - 1) ) // Check index in case word appears in question (e.g.: "what")
-				{
-					$videoQuestion = $vq;
-				}
-			}
-			
-			if (! $videoQuestion) // Create a video question if none exists
-			{
-				$question = $this->createQuestion($questionPrepend, $definition, 4);
+			$videoQuestion = VideoQuestion::create([
+				'question_id' => $question->id,
+				'video_id'		=> $video_id,
+				'is_custom'		=> false // TODO Might not be required later on
+			]);
 
-				$videoQuestion = VideoQuestion::create([
-					'question_id' => $question->id,
-					'video_id'		=> $video_id,
-					'is_custom'		=> false
-				]);
-
-				$videoQuestion->save();
-			}
+			$videoQuestion->save();
 			
 			// Add an entry to the pivot table
 			$quiz->videoQuestions()->attach($videoQuestion->id);
@@ -208,44 +200,34 @@ class QuizFactory implements UserInputResponse {
 	 * Creates a new question with a set amount of answers
 	 *
 	 * @param  string      $questionPrepend
-	 * @param  Definition  $definition
+	 * @param  string  	   $definition
 	 * @param  int         $numAnswers
+	 * @param  int         $videoId
 	 * @return Question
 	 */
-	protected function createQuestion($questionPrepend, $definition, $numAnswers)
+	protected function createQuestion($questionPrepend, $wordInformation, $numAnswers)
 	{
 		// Create a new Question instance
 		$question = Question::create([
 			'answer_id' => -1, // Will be changed after the answer is generated
-			'question'  => $questionPrepend.$definition->word.'?',
+			'question'  => $wordInformation->getWord() .'?',
 		]);
 		
 		$correctAnswer = Answer::create([
 			'question_id' => $question->id,
-			'answer'      => $definition->full_definition
+			'answer'      => $wordInformation->getDefinition()
 		]);
 		$correctAnswer->save();
 
 		$question->answer_id = $correctAnswer->id;
 		$question->save();
-		
-		// Take some close definitions to put as answers
-		$other_defs = Definition::where('id', '<', $definition->id)
-		                        ->orderBy('id', 'desc')->take(5)->get();
-		$other_defs = $other_defs->merge(
-			Definition::where('id', '>', $definition->id)
-			          ->orderBy('id', 'asc')
-			          ->take(5)
-			          ->get()
-		);
-		$other_defs = new Collection($other_defs->all());
-		
-		// Give the question four answers
-		while ($question->answers->count() < $numAnswers)
+
+		$randomWords = $this->getRandomWords($wordInformation->word, $numAnswers);
+		foreach($randomWords as $randomWord)
 		{
 			$answer = Answer::create([
 				'question_id' => $question->id,
-				'answer'      => $other_defs->pullRandom()->full_definition
+				'answer'      => $randomWord->definition
 			]);
 			$question->answers->add($answer);
 		}
@@ -253,4 +235,39 @@ class QuizFactory implements UserInputResponse {
 		return $question;
 	}
 
+	/**
+	 * Creates an array of random words to put as incorrect answers
+	 *
+	 * @param  int         $numAnswers
+	 * @return array
+	 */
+	private function getRandomWords($correctWord, $numAnswers)
+	{
+		$randomScript = Script::orderByRaw("RAND()")->get();
+
+		// Remove all the tags from the script (e.g <span data="speaker">word</span>), replace with a whitespace
+		$wordsInScript = trim(preg_replace('\s*\<[^>]*\>\s*', ' ', $wordsInScript));
+
+		// Get all words, shuffle them around
+		$words = str_word_count($wordsInScript, 1);
+		shuffle($words);
+		$randomWords = array();
+
+		// Get 3 words with length > 3 which are different than the word in the question
+		foreach($words as $word)
+		{
+			if($correctWord !== $word && strlen($word) > 3)
+			{
+				// Get the definition of the word, if successful push into the array
+				$wordInformation = new WordInformation($word, null, null);
+				if($wordInformation->definition)
+				{
+					array_push($randomWords, $wordInformation);
+				}
+			}
+
+			if(count($randomWords) > $numAnswers - 1) return $randomWords;
+		}
+
+	}
 }
