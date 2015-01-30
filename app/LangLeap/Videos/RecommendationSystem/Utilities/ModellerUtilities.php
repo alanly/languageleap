@@ -4,6 +4,10 @@ use LangLeap\Core\Collection;
 use LangLeap\Videos\RecommendationSystem\Classifiable;
 use LangLeap\Videos\RecommendationSystem\Model;
 
+/**
+ * A group of utility functions that are primarily used by modeller classes.
+ * @author Alan Ly <hello@alan.ly>
+ */
 class ModellerUtilities {
 
 	/**
