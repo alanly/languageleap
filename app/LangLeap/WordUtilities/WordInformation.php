@@ -1,5 +1,9 @@
 <?php namespace LangLeap\WordUtilities;
 
+use LangLeap\Videos\Video;
+use LangLeap\Core\Language;
+use LangLeap\DictionaryUtilities\DictionaryFactory;
+
 /**
 *	@author Dror Ozgaon <dror.ozgaon@gmail.com>
 *
@@ -8,23 +12,25 @@
 class WordInformation
 {
 	private $word 		= "";
-	private $defintion 	= "";
+	private $definition = "";
 	private $sentence 	= "";
+	private $BLANK		= "**BLANK**";
 
-	public function __construct($word, $definition, $sentence, $video_id)
+	public function __construct($word, $definition, $sentence, $videoId)
 	{
 		$this->word = $word;
 
 		// Definition does not exist, fetch it.
-		if(!definition)
+		if(strlen($definition) < 1)
 		{
-			$this->defintion = $this->getWordDefinition($word, $video_id)
+			$this->definition = $this->getWordDefinition($word, $videoId);
 		}
 		else
 		{
 			$this->definition = $definition;
 		}
-		$this->sentence = $sentence;
+
+		$this->sentence = str_replace(" ".$word." ", $this->BLANK, $sentence);
 	}
 
 	public function getWord()
@@ -45,26 +51,26 @@ class WordInformation
 	private function getWordDefinition($word, $videoId)
 	{
 		$videoLanguage = $this->getVideoLanguage($videoId);
-		if(!$videoLanguage) return null;
+		if(!$videoLanguage) return '';
 
 		$dictionary = DictionaryFactory::getInstance()->getDictionary($videoLanguage);
-		if(!$dictionary) return null;
+		if(!$dictionary) return '';
 
 		$definition = $dictionary->getDefinition($word);
-		if(!$definition) return null;
+		if(!$definition) return '';
 
-		return $definition->text;
+		return $definition->definition;
 	}
 
 	private function getVideoLanguage($id)
 	{
 		$video = Video::find($id);
 
-		if(!$video) return null;
+		if(!$video) return '';
 
 		$language = Language::find($video->language_id);
 
-		if(!$language) return null;
+		if(!$language) return '';
 
 		return strtoupper($language->code);
 

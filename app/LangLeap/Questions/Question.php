@@ -16,7 +16,7 @@ class Question extends Eloquent {
 	];
 
 
-	public function question()
+	public function questionType()
 	{
 		return $this->morphTo();
 	}

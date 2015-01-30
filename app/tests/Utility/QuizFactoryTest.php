@@ -6,6 +6,7 @@ use LangLeap\Words\Definition;
 use LangLeap\QuizUtilities\QuizFactory;
 use LangLeap\Videos\Video;
 use LangLeap\Accounts\User;
+use LangLeap\WordUtilities\WordInformation;
 
 class QuizFactoryTest extends TestCase {
 
@@ -20,11 +21,14 @@ class QuizFactoryTest extends TestCase {
 
 	public function testQuestionReturned()
 	{
-		$all_words = new Collection(Definition::all()->all());
-		$selected_words = array(Definition::first()->id);
 		$video_id = Video::first()->id;
+		$wordsInformation = [
+			new WordInformation('cat', 'vicious, animal', 'the cat is annoying', $video_id),
+			new WordInformation('dog', 'barking animal', 'the dog is cute', $video_id),
+			new WordInformation('elephant', 'large land animal', 'the elephany is huge', $video_id),
+		];
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $wordsInformation);
 
 		$this->assertNotEmpty($quiz->videoQuestions);
 
@@ -36,7 +40,7 @@ class QuizFactoryTest extends TestCase {
 		}
 	}
 	
-	public function testNullReturnedWhenWordsAreNotSelected()
+	/*public function testNullReturnedWhenWordsAreNotSelected()
 	{
 		$all_words = new Collection(Definition::all()->all());
 		$selected_words = array();
@@ -93,5 +97,5 @@ class QuizFactoryTest extends TestCase {
 		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
 
 		$this->assertNull($quiz);
-	}
+	}*/
 }

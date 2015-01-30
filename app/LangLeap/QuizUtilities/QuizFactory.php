@@ -4,14 +4,12 @@ use LangLeap\Accounts\User;
 use LangLeap\Core\Collection;
 use LangLeap\Core\UserInputResponse;
 use LangLeap\Quizzes\Answer;
-use LangLeap\Questions\Question;
+use LangLeap\QuestionUtilities\QuestionFactory;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\Result;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
-use LangLeap\DictionaryUtilities\DictionaryFactory;
-use LangLeap\Core\Language;
 use LangLeap\WordUtilities\WordInformation;
 use LangLeap\Words\Script;
 
@@ -53,24 +51,27 @@ class QuizFactory implements UserInputResponse {
 			}
 
 			// Ensure the video exists
-			if (Video::find($input['video_id']) == null) return null;
+			$videoId = $input['video_id'];
+			if (Video::find($videoId) == null) return null;
 			
 			// Retrieve the word, its associated definition, and the sentence it is in.
-			$json = json_decode($input['all_words']);
+			$allWords = $input['all_words'];
 			$wordsInformation = array();
 
-			foreach($json as $obj)
+			for($i = 0; $i < count($allWords); $i++)
 			{
 				// Ensure word exists.
-				$word = $obj->word;
+				$word = $allWords[$i]['word'];
 				if(!$word) return null;
 
 				// Ensure sentence the word is in exists.
-				$sentence = $obj->sentence;
+				$sentence = $allWords[$i]['sentence'];
 				if(!$sentence) return null;
 
 				// If the definition doesn't exist, the WordInformation class will fetch the definition.
-				$wordInformation = new WordInformation($obj->word, $obj->definition, $obj->sentence, $input['video_id']);
+				$wordInformation = new WordInformation($word, $allWords[$i]['definition'], $sentence, $videoId);
+
+				if(strlen($wordInformation->getDefinition()) < 1) return null;
 
 				array_push($wordsInformation, $wordInformation);
 			}
@@ -123,7 +124,7 @@ class QuizFactory implements UserInputResponse {
 		foreach ($wordsInformation as $word)
 		{
 			// Create a video question if none exists
-			$question = $this->createQuestion($questionPrepend, $word, 4);
+			$question = $this->createDefinitionQuestion($questionPrepend, $word, 4);
 
 			$videoQuestion = VideoQuestion::create([
 				'question_id' => $question->id,
@@ -197,7 +198,7 @@ class QuizFactory implements UserInputResponse {
 	}
 	
 	/**
-	 * Creates a new question with a set amount of answers
+	 * Creates a new definition question with a set amount of answers
 	 *
 	 * @param  string      $questionPrepend
 	 * @param  string  	   $definition
@@ -205,14 +206,10 @@ class QuizFactory implements UserInputResponse {
 	 * @param  int         $videoId
 	 * @return Question
 	 */
-	protected function createQuestion($questionPrepend, $wordInformation, $numAnswers)
+	protected function createDefinitionQuestion($questionPrepend, $wordInformation, $numAnswers)
 	{
-		// Create a new Question instance
-		$question = Question::create([
-			'answer_id' => -1, // Will be changed after the answer is generated
-			'question'  => $wordInformation->getWord() .'?',
-		]);
-		
+		$question = QuestionFactory::getInstance()->getDefinitionQuestion($questionPrepend, $wordInformation);
+
 		$correctAnswer = Answer::create([
 			'question_id' => $question->id,
 			'answer'      => $wordInformation->getDefinition()
@@ -222,7 +219,7 @@ class QuizFactory implements UserInputResponse {
 		$question->answer_id = $correctAnswer->id;
 		$question->save();
 
-		$randomWords = $this->getRandomWords($wordInformation->word, $numAnswers);
+		$randomWords = $this->getRandomWords($wordInformation->getWord(), $numAnswers);
 		foreach($randomWords as $randomWord)
 		{
 			$answer = Answer::create([
