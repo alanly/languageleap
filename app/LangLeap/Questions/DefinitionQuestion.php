@@ -7,8 +7,10 @@ use Eloquent;
  */
 class DefinitionQuestion extends Eloquent {
 
-	public    $timestamps = false;
-	protected $fillable   = ['question' => 'string|required'];
+	public    $timestamps 	= false;
+	protected $table 		= 'definitionquestions';
+	protected $fillable 	= ['question'];
+	protected $rules 		= ['question' => 'required'];
 
 	public function questionType()
 	{

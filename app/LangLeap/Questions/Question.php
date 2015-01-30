@@ -9,16 +9,30 @@ use Eloquent;
 class Question extends Eloquent {
 
 	public    $timestamps = false;
-	protected $fillable   = ['question_id' => 'required|integer', 'question_type' => 'required', 'answer_id' => 'integer'];
+	protected $fillable   = ['answer_id' => 'integer'];
+	protected $rules      = [
+		'question_id'   => 'required|integer',
+		'question_type' => 'required'
+	];
+
 
 	public function question()
 	{
 		return $this->morphTo();
 	}
 
-	public function answer()
+	public function answers()
 	{
-		return $this->hasOne('LangLeap\Quizzes\Answer');
+		return $this->hasMany('LangLeap\Quizzes\Answer');
 	}	
 
+	public function answer()
+	{
+		return $this->belongsTo('LangLeap\Quizzes\Answer');
+	}	
+
+	public function videoQuestions()
+	{
+		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
+	}
 }

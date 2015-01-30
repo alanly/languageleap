@@ -15,7 +15,6 @@ class CreateCustomquestionTable extends Migration {
 		Schema::create('customquestions', function($table){
 			$table->increments('id');
 			$table->string('question');
-			$table->integer('answer_id')->unsigned();
 		});
 	}
 

@@ -14,6 +14,7 @@ class CreateQuestionTable extends Migration {
 	{
 		Schema::create('questions', function($table){
 			$table->increments('id');
+			$table->integer('answer_id');
 			$table->morphs('question');
 		});
 	}
