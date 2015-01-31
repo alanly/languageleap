@@ -32,8 +32,11 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 
 	// Get the video information from the local storage.
 	var quizInfo = $scope.videoInfo = JSON.parse(localStorage.getItem("quizPrerequisites"));
+
+	//Get the redirect link for after the quiz
+	var redirect = $scope.redirect = JSON.parse(localStorage.getItem("redirect"));
 	
-	console.log(quizInfo);
+	console.log(redirect);
 
 	/**
 	 * Load questions from the API on boot.
@@ -157,7 +160,7 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			resolve: {
 				correctQuestionsCount: function() { return $scope.correctQuestionsCount; },
 				questionsCount: function() { return $scope.questions.length; },
-				redirect: function() { return 'https://www.reddit.com/'; }
+				redirect: function() { return $scope.redirect.redirect; }
 			}
 		});
 	};

@@ -229,6 +229,7 @@
 					success: function (data) {
 						// Store data in the HTML5 Storage schema
 						localStorage.setItem("quizPrerequisites", JSON.stringify({'quiz_id': data.data.quiz_id}));
+						localStorage.setItem("redirect", JSON.stringify({'redirect': data.data.redirect}));
 						
 						window.location = '/quiz';
 					},
