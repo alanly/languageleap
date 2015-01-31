@@ -110,7 +110,6 @@
 
 		function loadVideo()
 		{
-			loadScript();
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
