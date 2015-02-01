@@ -5,7 +5,7 @@ use Eloquent;
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
-class DefinitionQuestion extends Eloquent {
+class DefinitionQuestion extends QuestionType {
 
 	public    $timestamps 	= false;
 	protected $table 		= 'definitionquestions';

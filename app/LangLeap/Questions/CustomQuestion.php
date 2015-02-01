@@ -5,7 +5,7 @@ use Eloquent;
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
-class CustomQuestion extends Eloquent {
+class CustomQuestion extends QuestionType {
 
 	public    $timestamps 		= false;
 	protected $table 			= 'customquestions';

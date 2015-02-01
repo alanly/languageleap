@@ -5,7 +5,7 @@ use Eloquent;
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
-class DragAndDropQuestion extends Eloquent {
+class DragAndDropQuestion extends QuestionType {
 
 	public    $timestamps 	= false;
 	protected $table 		= 'draganddropquestions';
