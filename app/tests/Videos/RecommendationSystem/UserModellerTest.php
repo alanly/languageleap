@@ -2,7 +2,7 @@
 
 use App;
 use LangLeap\TestCase;
-use LangLeap\Core\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use LangLeap\Videos\RecommendationSystem\Facades\ModellerUtilities;
 use Mockery as m;
 

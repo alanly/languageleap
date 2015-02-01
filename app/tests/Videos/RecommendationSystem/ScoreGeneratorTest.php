@@ -1,7 +1,7 @@
 <?php namespace LangLeap\Videos\RecommendationSystem;
 
 use LangLeap\TestCase;
-use LangLeap\Core\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Mockery as m;
 
 /**
@@ -64,7 +64,7 @@ class ScoreGeneratorTest extends TestCase {
 		$scored = $generator->score($user);
 
 		$this->assertCount(3, $scored);
-		$this->assertInstanceOf('LangLeap\Core\Collection', $scored);
+		$this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $scored);
 		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Recommendation', $scored->first());
 		$this->assertSame($media, $scored->first()->getMedia());
 		$this->assertSame(1, $scored->first()->getScore());
@@ -102,7 +102,7 @@ class ScoreGeneratorTest extends TestCase {
 		$scored = $generator->score($user);
 
 		$this->assertCount(2, $scored);
-		$this->assertInstanceOf('LangLeap\Core\Collection', $scored);
+		$this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $scored);
 		$this->assertInstanceOf('LangLeap\Videos\RecommendationSystem\Recommendation', $scored->first());
 		$this->assertSame($media, $scored->first()->getMedia());
 		$this->assertSame(1, $scored->first()->getScore());

@@ -3,7 +3,7 @@
 use App;
 use Illuminate\Redis\Database as RedisClient;
 use LangLeap\Accounts\User;
-use LangLeap\Core\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Langleap\Videos\Media;
 use LangLeap\Videos\RecommendationSystem\Recommendation;
 use LangLeap\Videos\RecommendationSystem\Exceptions\RecommendedModelNotFoundException;
@@ -167,7 +167,7 @@ class RedisRecommendationRepository implements RecommendationRepository {
 	 * @param  int    $start The starting index in the range
 	 * @param  int    $stop  The ending index in the range
 	 * @param  bool   $desc  Get recommendations from the store in descending order by score
-	 * @return LangLeap\Core\Collection
+	 * @return Illuminate\Database\Eloquent\Collection
 	 */
 	public function getRange(User $user, $start, $stop, $desc = true)
 	{
@@ -215,7 +215,7 @@ class RedisRecommendationRepository implements RecommendationRepository {
 	 * @param  User   $user  The owner of the store
 	 * @param  int    $take  The size of the range to take
 	 * @param  bool   $desc  Get recommendations from the store in descending order by score
-	 * @return LangLeap\Core\Collection
+	 * @return Illuminate\Database\Eloquent\Collection
 	 */
 	public function getTop(User $user, $take, $desc)
 	{
