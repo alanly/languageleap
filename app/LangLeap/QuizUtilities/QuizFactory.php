@@ -44,7 +44,7 @@ class QuizFactory implements UserInputResponse {
 	{
 		if($input) // there is input then create a quiz based on that
 		{
-			if (! $input['all_words'] || count($input['all_words']) < 1)
+			if (! $input['selected_words'] || count($input['selected_words']) < 1)
 			{
 				return null;
 			}
@@ -54,21 +54,21 @@ class QuizFactory implements UserInputResponse {
 			if (Video::find($videoId) == null) return null;
 			
 			// Retrieve the word, its associated definition, and the sentence it is in.
-			$allWords = $input['all_words'];
+			$selectedWords = $input['selected_words'];
 			$wordsInformation = array();
 
-			for($i = 0; $i < count($allWords); $i++)
+			for($i = 0; $i < count($selectedWords); $i++)
 			{
 				// Ensure word exists.
-				$word = $allWords[$i]['word'];
+				$word = $selectedWords[$i]['word'];
 				if(!$word) return null;
 
 				// Ensure sentence the word is in exists.
-				$sentence = $allWords[$i]['sentence'];
+				$sentence = $selectedWords[$i]['sentence'];
 				if(!$sentence) return null;
 
 				// If the definition doesn't exist, the WordInformation class will fetch the definition.
-				$wordInformation = new WordInformation($word, $allWords[$i]['definition'], $sentence, $videoId);
+				$wordInformation = new WordInformation($word, $selectedWords[$i]['definition'], $sentence, $videoId);
 
 				if(strlen($wordInformation->getDefinition()) < 1) return null;
 
@@ -125,19 +125,29 @@ class QuizFactory implements UserInputResponse {
 		// Check for questions for each selected definition
 		foreach ($wordsInformation as $word)
 		{
-			// Create a video question if none exists
-			$question = $this->createDefinitionQuestion($questionPrepend, $word, 4, $video_id);
+			// Create a video definition question if none exists
+			$definitionQuestion = $this->createDefinitionQuestion($questionPrepend, $word, 4, $video_id);
+			// Create a video drag and drop question if none exists
+			$dragAndDropQuestion = $this->createDragAndDropQuestion($word, 4, $video_id);			
 
-			$videoQuestion = VideoQuestion::create([
-				'question_id' => $question->id,
+			$videoQuestionDefinition = VideoQuestion::create([
+				'question_id' => $definitionQuestion->id,
 				'video_id'		=> $video_id,
 				'is_custom'		=> false // TODO Might not be required later on
 			]);
 
-			$videoQuestion->save();
+			$videoQuestionDragAndDrop = VideoQuestion::create([
+				'question_id' => $dragAndDropQuestion->id,
+				'video_id'		=> $video_id,
+				'is_custom'		=> false // TODO Might not be required later on
+			]);
+
+			$videoQuestionDefinition->save();
+			$videoQuestionDragAndDrop->save();
 			
 			// Add an entry to the pivot table
-			$quiz->videoQuestions()->attach($videoQuestion->id);
+			$quiz->videoQuestions()->attach($videoQuestionDefinition->id);
+			$quiz->videoQuestions()->attach($videoQuestionDragAndDrop->id);
 		}
 		
 		// Attach all of the custom questions to the quiz
@@ -151,7 +161,6 @@ class QuizFactory implements UserInputResponse {
 		}
 		
 		$quiz->save();
-
 
 		return $quiz;
 	}
@@ -222,7 +231,7 @@ class QuizFactory implements UserInputResponse {
 		$question->answer_id = $correctAnswer->id;
 		$question->save();
 
-		$randomWords = $this->getRandomWords($wordInformation->getWord(), $numAnswers, $videoId);
+		$randomWords = $this->getRandomWordsWithDefinition($wordInformation->getWord(), $numAnswers, $videoId);
 
 		foreach($randomWords as $randomWord)
 		{
@@ -236,13 +245,48 @@ class QuizFactory implements UserInputResponse {
 		return $question;
 	}
 
+		/**
+	 * Creates a new drag and drop question with a set amount of answers
+	 *
+	 * @param  string  	   $definition
+	 * @param  int         $numAnswers
+	 * @param  int         $videoId
+	 * @return Question
+	 */
+	protected function createDragAndDropQuestion($wordInformation, $numAnswers, $videoId)
+	{
+		$question = QuestionFactory::getInstance()->getDragAndDropQuestion($wordInformation);
+
+		$correctAnswer = Answer::create([
+			'question_id' => $question->id,
+			'answer'      => $wordInformation->getWord()
+		]);
+		$correctAnswer->save();
+
+		$question->answer_id = $correctAnswer->id;
+		$question->save();
+
+		$randomWords = $this->getRandomWords($wordInformation->getWord(), $numAnswers, $videoId);
+
+		foreach($randomWords as $randomWord)
+		{
+			$answer = Answer::create([
+				'question_id' => $question->id,
+				'answer'      => $randomWord
+			]);
+			$question->answers->add($answer);
+		}
+		
+		return $question;
+	}
+
 	/**
 	 * Creates an array of random words to put as incorrect answers
 	 *
 	 * @param  int         $numAnswers
 	 * @return array
 	 */
-	private function getRandomWords($correctWord, $numAnswers, $videoId)
+	private function getRandomWordsWithDefinition($correctWord, $numAnswers, $videoId)
 	{
 		// Get a random script
 		$numberOfScripts = Script::count();
@@ -274,6 +318,40 @@ class QuizFactory implements UserInputResponse {
 
 			if(count($randomWords) > $numAnswers - 1) return $randomWords;
 		}
+	}
 
+	/**
+	 * Creates an array of random words to put as incorrect answers
+	 *
+	 * @param  int         $numAnswers
+	 * @return array
+	 */
+	private function getRandomWords($correctWord, $numAnswers, $videoId)
+	{
+		// Get a random script
+		$numberOfScripts = Script::count();
+		$randomNumber = rand(1, $numberOfScripts);
+
+		$randomScript = Script::find($randomNumber);
+		$wordsInScript = $randomScript->text;
+
+		// Remove all the tags from the script (e.g <span data="speaker">word</span>), replace with a whitespace
+		$wordsInScript = trim(preg_replace('/\s*\<[^>]*\>\s*/', ' ', $wordsInScript));
+
+		// Get all words, shuffle them around
+		$words = str_word_count($wordsInScript, 1);
+		shuffle($words);
+		$randomWords = array();
+
+		// Get 3 words with length > 3 which are different than the word in the question
+		foreach($words as $word)
+		{
+			if($correctWord != $word && strlen($word) > 3)
+			{
+				array_push($randomWords, $word);
+			}
+
+			if(count($randomWords) > $numAnswers - 1) return $randomWords;
+		}
 	}
 }

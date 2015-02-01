@@ -2,6 +2,7 @@
 
 use LangLeap\Quizzes\Answer;
 use LangLeap\Questions\Question;
+use LangLeap\Questions\CustomQuestion;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\QuizUtilities\QuizUtils;
@@ -81,9 +82,14 @@ class ApiQuizController extends \BaseController {
 
 		if($success) // Create the question if the input is correct
 		{
+			$customQuestion = CustomQuestion::create([
+				'question' => $question
+				]);
+
 			$question = Question::create([
-				'question'  => $question,
-				'answer_id' => -1
+				'question_type'  	=> 'LangLeap\Questions\CustomQuestion',
+				'question_id'		=> $customQuestion->id,
+				'answer_id' 		=> -1
 			]);
 			
 			// Shuffle the answers

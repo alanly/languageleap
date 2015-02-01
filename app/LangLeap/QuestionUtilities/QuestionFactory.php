@@ -69,7 +69,7 @@ class QuestionFactory
 		// Create a new Question instance
 		$question = Question::create([
 			'answer_id' 		=> -1, // Will be changed after the answer is generated
-			'question_type'  	=> 'LangLeap\Questions\DefinitionQuestion',
+			'question_type'  	=> 'LangLeap\Questions\DragAndDropQuestion',
 			'question_id'		=> $definitionQuestion->id,
 		]);
 
