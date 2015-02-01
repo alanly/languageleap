@@ -29,10 +29,23 @@ class ApiRecommendedVideosController extends \BaseController {
 		}
 
 		$this->recommendatore->generate(Auth::user());
-		//$recommendations = $this->recommendatore->fetch(Auth::user(), 10);
+		$recommendations = $this->recommendatore->fetch(Auth::user(), 10);
 
-		//dd($recommendations);
+		return $this->apiResponse(
+			'success',
+			$this->generateResponseData($recommendations)
+		);		
+	}
 
+	public function generateResponseData($recommendations)
+	{
+		$responseData = array();
+		foreach ($recommendations as $recommendation)
+		{
+			array_push($responseData, $recommendation->getMedia()->toResponseArray());
+		}
+		
+		return $responseData;
 	}
 
 }
