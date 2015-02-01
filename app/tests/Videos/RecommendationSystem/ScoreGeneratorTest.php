@@ -50,7 +50,7 @@ class ScoreGeneratorTest extends TestCase {
 
 		// Define our video mock expectations.
 		$video->shouldReceive('with')->once()->andReturn($video);
-		$video->shouldReceive('all')->once()->andReturn($videos);
+		$video->shouldReceive('get')->once()->andReturn($videos);
 		$video->shouldReceive('getAttribute')->times(3)->with('viewable')->andReturn($media);
 		
 		// Define our classification driver mock.
@@ -88,7 +88,7 @@ class ScoreGeneratorTest extends TestCase {
 
 		// Define our video mock expectations.
 		$video->shouldReceive('with')->once()->andReturn($video);
-		$video->shouldReceive('all')->once()->andReturn($videos);
+		$video->shouldReceive('get')->once()->andReturn($videos);
 		$video->shouldReceive('getAttribute')->times(3)->with('viewable')->andReturn($media);
 		
 		// Define our classification driver mock.
