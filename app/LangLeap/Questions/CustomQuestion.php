@@ -16,4 +16,9 @@ class CustomQuestion extends Eloquent {
 	{
 		return $this->morphMany('LangLeap\Questions\Question','question');
 	}
+
+	public function question()
+	{
+		return $this->question;
+	}
 }

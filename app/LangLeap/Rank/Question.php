@@ -39,7 +39,7 @@ class Question {
 
 		// Map the instance values.
 		$question->id = $videoQuestion->id;
-		$question->text = $videoQuestion->question();
+		$question->text = $videoQuestion->questionType->question();
 
 		// Gather the possible answers for the question.
 		$videoAnswers = $videoQuestion->answers;

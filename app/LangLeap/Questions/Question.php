@@ -19,7 +19,7 @@ class Question extends Eloquent {
 
 	public function questionType()
 	{
-		return $this->morphTo();
+		return $this->morphTo('question', 'question_type', 'question_id');
 	}
 
 	public function answers()
@@ -35,11 +35,5 @@ class Question extends Eloquent {
 	public function videoQuestions()
 	{
 		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
-	}
-
-	public function question()
-	{
-		$q = App::make($this->question_type)->find($this->question_id);
-		return (is_a($q, "LangLeap\Questions\DragAndDropQuestion")) ? $q->sentence : $q->question;
 	}
 }
