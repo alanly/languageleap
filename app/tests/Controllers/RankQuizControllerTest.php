@@ -143,7 +143,7 @@ class RankQuizControllerTest extends TestCase {
 		for ($i = 0; $i < count($questions); ++$i)
 		{
 			$q = $questions[$i];
-			$q = App::make('LangLeap\Quizzes\Question')->find($q->id);
+			$q = App::make('LangLeap\Questions\Question')->find($q->id);
 			$a = $q->answer;
 
 			$questions[$i]->selected = intval($a->id);
