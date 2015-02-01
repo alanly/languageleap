@@ -35,7 +35,7 @@ class VideoQuestion extends Eloquent {
 	{
 		$response = [
 			'id'	=> $this->id,
-			'question'	=> $this->question->question,
+			'question'	=> $this->question->question(),
 			'answers'	=> []
 		];
 		

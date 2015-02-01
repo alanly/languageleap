@@ -1,6 +1,7 @@
 <?php namespace LangLeap\Questions;
 
 use Eloquent;
+use App;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
@@ -34,5 +35,11 @@ class Question extends Eloquent {
 	public function videoQuestions()
 	{
 		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
+	}
+
+	public function question()
+	{
+		$q = App::make($this->question_type)->find($this->question_id);
+		return (is_a($q, "LangLeap\Questions\DragAndDropQuestion")) ? $q->sentence : $q->question;
 	}
 }
