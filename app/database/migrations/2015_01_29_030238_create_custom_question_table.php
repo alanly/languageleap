@@ -12,7 +12,7 @@ class CreateCustomquestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('customquestions', function($table){
+		Schema::create('custom_questions', function($table){
 			$table->increments('id');
 			$table->string('question');
 		});
@@ -25,7 +25,7 @@ class CreateCustomquestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('customquestions');
+		Schema::dropIfExists('custom_questions');
 	}
 
 }

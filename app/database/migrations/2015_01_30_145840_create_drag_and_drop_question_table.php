@@ -12,7 +12,7 @@ class CreateDraganddropquestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('draganddropquestions', function($table){
+		Schema::create('drag_and_drop_questions', function($table){
 			$table->increments('id');
 			$table->string('sentence');
 		});
@@ -25,7 +25,7 @@ class CreateDraganddropquestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('draganddropquestions');
+		Schema::dropIfExists('drag_and_drop_questions');
 	}
 
 }

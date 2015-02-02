@@ -8,7 +8,7 @@ use Eloquent;
 class DefinitionQuestion extends QuestionType {
 
 	public    $timestamps 	= false;
-	protected $table 		= 'definitionquestions';
+	protected $table 		= 'definition_questions';
 	protected $fillable 	= ['question'];
 	protected $rules 		= ['question' => 'required'];
 

@@ -12,7 +12,7 @@ class CreateDefinitionquestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('definitionquestions', function($table){
+		Schema::create('definition_questions', function($table){
 			$table->increments('id');
 			$table->string('question');
 		});
@@ -25,7 +25,7 @@ class CreateDefinitionquestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('definitionquestions');
+		Schema::dropIfExists('definition_questions');
 	}
 
 }

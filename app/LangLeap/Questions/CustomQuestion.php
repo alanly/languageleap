@@ -8,7 +8,7 @@ use Eloquent;
 class CustomQuestion extends QuestionType {
 
 	public    $timestamps 		= false;
-	protected $table 		= 'customquestions';
+	protected $table 		= 'custom_questions';
 	protected $fillable 		= ['question'];
 	protected $rules		= ['question' => 'required'];
 
