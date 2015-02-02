@@ -13,7 +13,6 @@ use LangLeap\Videos\Video;
 |
 */
 
-
 // Accordion
 Route::get('/', function()
 {
@@ -104,7 +103,7 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('definitions', 'ApiDefinitionController');
 
 		// Recommendations
-		Route::resource('recommendations', 'ApiRecommendedVideosController');
+		Route::resource('recommended', 'ApiRecommendedVideosController');
 	});
 
 	// Query the definition API for a definition
@@ -159,6 +158,11 @@ Route::get('quiz', ['before' => 'auth', function()
 	return View::make('quiz.main');
 }]);
 
+// Recommended Videos View
+Route::get('/recommended', function()
+{
+	return View::make('recommended');
+});
 
 // Ranking Process
 Route::controller('rank', 'RankQuizController');
