@@ -24,15 +24,15 @@ class VideoContentControllerTest extends TestCase {
 
 		// Get a mock SplFileInfo instance
 		$fileInfo = $this->getMockFileInstance();
-		$fileInfo->shouldReceive('isFile')->once()->andReturn(true);
-		$fileInfo->shouldReceive('isReadable')->once()->andReturn(true);
-		$fileInfo->shouldReceive('getRealPath')->once()->andReturn($path);
-		$fileInfo->shouldReceive('getFilename')->once()->andReturn('1.mkv');
-		$fileInfo->shouldReceive('getPathname')->once()->andReturn($path);
+		$fileInfo->shouldReceive('isFile')->atLeast()->times(4)->andReturn(true);
+		$fileInfo->shouldReceive('isReadable')->atLeast()->times(4)->andReturn(true);
+		$fileInfo->shouldReceive('getRealPath')->atLeast()->times(4)->andReturn($path);
+		$fileInfo->shouldReceive('getFilename')->andReturn('1.mkv');
+		$fileInfo->shouldReceive('getPathname')->atLeast()->times(4)->andReturn($path);
 
 		// Mock the FileInfoFactory
 		$fileInfoFactory = m::mock('LangLeap\Core\FileInfoFactory');
-		$fileInfoFactory->shouldReceive('makeInstance')->once()->andReturn($fileInfo);
+		$fileInfoFactory->shouldReceive('makeInstance')->times(4)->andReturn($fileInfo);
 		App::instance('LangLeap\Core\FileInfoFactory', $fileInfoFactory);
 
 		// Set the appropriate server and call route.
@@ -74,7 +74,6 @@ class VideoContentControllerTest extends TestCase {
 		// Get a mock SplFileInfo instance
 		$fileInfo = $this->getMockFileInstance();
 		$fileInfo->shouldReceive('isFile')->once()->andReturn(false);
-		$fileInfo->shouldReceive('isReadable')->once()->andReturn(true);
 
 		// Mock the FileInfoFactory
 		$fileInfoFactory = m::mock('LangLeap\Core\FileInfoFactory');
@@ -105,8 +104,6 @@ class VideoContentControllerTest extends TestCase {
 		$fileInfo = $this->getMockFileInstance();
 		$fileInfo->shouldReceive('isFile')->once()->andReturn(true);
 		$fileInfo->shouldReceive('isReadable')->once()->andReturn(true);
-		$fileInfo->shouldReceive('getRealPath')->once()->andReturn($path);
-		$fileInfo->shouldReceive('getFilename')->once()->andReturn('1.mkv');
 		$fileInfo->shouldReceive('getPathname')->once()->andReturn($path);
 
 		// Mock the FileInfoFactory
