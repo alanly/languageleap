@@ -35,8 +35,6 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 
 	//Get the redirect link for after the quiz
 	var redirect = $scope.redirect = JSON.parse(localStorage.getItem("redirect"));
-	
-	console.log(redirect);
 
 	/**
 	 * Load questions from the API on boot.
