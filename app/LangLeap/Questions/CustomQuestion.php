@@ -8,9 +8,9 @@ use Eloquent;
 class CustomQuestion extends QuestionType {
 
 	public    $timestamps 		= false;
-	protected $table 			= 'customquestions';
+	protected $table 		= 'customquestions';
 	protected $fillable 		= ['question'];
-	protected $rules			= ['question' => 'required'];
+	protected $rules		= ['question' => 'required'];
 
 	public function questionType()
 	{
