@@ -8,7 +8,7 @@ use Eloquent;
 class DragAndDropQuestion extends QuestionType {
 
 	public    $timestamps 	= false;
-	protected $table 		= 'draganddropquestions';
+	protected $table 	= 'draganddropquestions';
 	protected $fillable 	= ['sentence'];
 	protected $rules    	= ['sentence' => 'required'];
 
