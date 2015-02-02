@@ -24,6 +24,6 @@ class DefinitionQuestion extends QuestionType {
 
 	public function type()
 	{
-		return "multipleChoice";
+		return QuestionTypes::MultipleChoice;
 	}
 }

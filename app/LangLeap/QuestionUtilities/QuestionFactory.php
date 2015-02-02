@@ -75,16 +75,4 @@ class QuestionFactory
 
 		return $question;
 	}
-
-	/**
-	 * Return a DragAndDropQuestion
-	 *
-	 * @param  User  $user
-	 * @param  array $input
-	 * @return array
-	 */
-	private function getQuestion($type)
-	{
-
-	}
 }

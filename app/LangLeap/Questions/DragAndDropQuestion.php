@@ -24,6 +24,6 @@ class DragAndDropQuestion extends QuestionType {
 
 	public function type()
 	{
-		return "dragAndDrop";
+		return QuestionTypes::DragAndDrop;
 	}
 }
