@@ -21,4 +21,9 @@ class DragAndDropQuestion extends QuestionType {
 	{
 		return $this->sentence;
 	}
+
+	public function type()
+	{
+		return "dragAndDrop";
+	}
 }

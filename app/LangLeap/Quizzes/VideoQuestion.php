@@ -34,8 +34,9 @@ class VideoQuestion extends Eloquent {
 	public function toResponseArray()
 	{
 		$response = [
-			'id'	=> $this->id,
+			'id'		=> $this->id,
 			'question'	=> $this->question->questionType->question(),
+			'type'		=> $this->question->questionType->type(),
 			'answers'	=> []
 		];
 		

@@ -21,4 +21,9 @@ class DefinitionQuestion extends QuestionType {
 	{
 		return $this->question;
 	}
+
+	public function type()
+	{
+		return "multipleChoice";
+	}
 }
