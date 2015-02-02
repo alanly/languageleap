@@ -1,6 +1,6 @@
 <?php namespace LangLeap\Videos\RecommendationSystem\Utilities;
 
-use LangLeap\Core\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use LangLeap\Videos\RecommendationSystem\Classifiable;
 use LangLeap\Videos\RecommendationSystem\Model;
 

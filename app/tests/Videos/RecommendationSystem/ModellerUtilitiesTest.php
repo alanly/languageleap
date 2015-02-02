@@ -10,7 +10,7 @@ class ModellerUtilitiesTest extends TestCase {
 	{
 		// Collection's and Traversable's are kind of hairy to mock, so we'll
 		// just instantiate a Collection.
-		return App::make('LangLeap\Core\Collection', [$items]);
+		return App::make('Illuminate\Database\Eloquent\Collection', [$items]);
 	}
 
 
@@ -29,7 +29,7 @@ class ModellerUtilitiesTest extends TestCase {
 		$c = $this->getCollectionInstance([$history]);
 
 		$this->assertInstanceOf(
-			'LangLeap\Core\Collection',
+			'Illuminate\Database\Eloquent\Collection',
 			$u->getClassifiableMediaFromHistory($c)
 		);
 
