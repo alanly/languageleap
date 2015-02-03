@@ -5,14 +5,14 @@ use LangLeap\Core\Language;
 use LangLeap\DictionaryUtilities\DictionaryFactory;
 
 /**
-*	@author Dror Ozgaon <dror.ozgaon@gmail.com>
-*
-*	This class will contain a word, its definition and the sentence the word can be found in.
-*/
+ * This class will contain a word, its definition and the sentence the word can be found in. 
+ * 
+ * @author Dror Ozgaon <dror.ozgaon@gmail.com>
+ */
 class WordInformation
 {
 	private $word 		= "";
-	private $definition = "";
+	private $definition 	= "";
 	private $sentence 	= "";
 	private $BLANK		= "**BLANK**";
 
@@ -75,9 +75,4 @@ class WordInformation
 		return strtoupper($language->code);
 
 	}
-
-
 }
-
-
-
