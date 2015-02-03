@@ -3,5 +3,5 @@
 abstract class QuestionTypes
 {
 	const MultipleChoice 	= "multipleChoice";
-	const DragAndDrop		= "dragAndDrop";
+	const DragAndDrop	= "dragAndDrop";
 }
