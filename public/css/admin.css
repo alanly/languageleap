@@ -137,3 +137,7 @@ input.rounded:focus {
 #popover-new-episode-outer {
 	display: inline-block;
 }
+
+#timestamp-list li {
+	display: block;
+}

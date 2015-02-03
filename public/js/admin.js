@@ -559,3 +559,26 @@ $.ajaxSetup({
 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	}
 });
+
+
+/*
+	
+*/
+var timestamp_id = 2;
+$('#timestamp-add').on("click", function()
+{
+	$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '">' + '<input id="timestamp-from-' + timestamp_id + '" name="timestamp-from-' + timestamp_id + '" type="text" class="" placeholder="" style="width: 100px;" /> : <input id="timestamp-to-' + timestamp_id + '" name="timestamp-to-' + timestamp_id + '" type="text" class="" placeholder="" style="width: 100px;" /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
+	
+	timestamp_id++;
+});
+
+$(document).on("click", '.timestamp-close', function(event)
+{
+	var id = event.target.getAttribute('data-id');
+	$('#timestamp-row-' + id).remove();
+});
+
+
+
+
+

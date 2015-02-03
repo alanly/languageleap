@@ -246,7 +246,18 @@
 			<!-- /seasons and episodes -->
 						
       <div class="modal-body media" aria-hidden="true" style="display: none;">
-				Media goes here
+				Video goes here <br />
+				
+				Timestamps
+				<ul id="timestamp-list" class="list-inline">
+					<li id="timestamp-row-1">
+						<input id="timestamp-from-1" name="timestamp-from-1" type="text" class="" placeholder="" style="width: 100px;" /> : 
+						<input id="timestamp-to-1" name="timestamp-to-1" type="text" class="" placeholder="" style="width: 100px;" /> <i data-id="1" class="fa fa-times timestamp-close"></i>
+					</li>
+					
+				</ul>
+				<i id="timestamp-add" class="fa fa-plus"></i>
+				
 			</div>
 			
       <div class="modal-footer">
