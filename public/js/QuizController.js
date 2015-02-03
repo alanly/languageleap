@@ -94,7 +94,7 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			{
 				'quiz_id': $scope.quizID,
 				'videoquestion_id': currentQuestion.id,
-				'selected_id': selection.definition_id
+				'selected_id': selection.answer_id
 			}
 		).
 			success(function(data, status, headers, config)
@@ -108,7 +108,7 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 				}
 
 				// Highlight the selection appropriately.
-				$('#radio-selection-id-'+currentQuestion.id+'-'+selection.definition_id).
+				$('#radio-selection-id-'+currentQuestion.id+'-'+selection.answer_id).
 					addClass('has-' + (isCorrect === true ? 'success' : 'error'));
 
 				// Disable the form's radio buttons.

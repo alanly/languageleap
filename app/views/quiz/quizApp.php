@@ -4,15 +4,29 @@
 			<div class="quiz-container" ng-controller="QuizController">
 				<carousel interval="-1">
 					<slide ng-repeat="question in questions" active="question.active">
-						<h3>{{ question.question }}</h3>
 
 						<form id="form-question-id-{{ question.id }}" class="question-form" role="form">
-							<div class="radio-group">
-								<div class="radio" id="radio-selection-id-{{ question.id }}-{{ definition.id }}" ng-repeat="definition in question.answers">
-									<label>
-										<input type="radio" name="definition" ng-model="selection.definition_id" value="{{ definition.id }}" ng-click="submit(selection)">
-										{{ definition.answer }}
-									</label>
+							<h3>{{ question.question }}</h3>
+							
+							<div ng-switch="{{ question.type }}">
+								<div ng-switch-when="multipleChoice" class="radio-group">
+									<div class="radio" id="radio-selection-id-{{ question.id }}-{{ definition.id }}" ng-repeat="definition in question.answers">
+										<label>
+											<input type="radio" name="definition" ng-model="selection.answer_id" value="{{ definition.id }}" ng-click="submit(selection)">
+											{{ definition.answer }}
+										</label>
+									</div>
+								</div>
+								
+								<div ng-switch-when="dragAndDrop">
+									<div class="droppable">
+										DROP
+										<input type="hidden" name="word" ng-model="selection.answer_id" value="-1"/>
+									</div>
+									
+									<div class="draggable col-md-3 btn btn-default" ng-repeat="word in question.answers" data-word-id="{{ word.id }}">
+										{{ word.answer }}
+									</div>
 								</div>
 							</div>
 
@@ -20,6 +34,7 @@
 								{{ currentQuestionIndex == (questions.length - 1) ? 'Finish Quiz' : 'Next Question' }}
 							</button>
 						</form>
+						
 					</slide>
 				</carousel>
 			</div>
@@ -41,5 +56,17 @@
 		<div class="modal-footer">
 			<a href="{{ redirect }}" class="btn btn-primary">Continue</a>
 		</div>
+	</script>
+	
+	<script type="text/JavaScript">
+		$(function() {
+			$(".draggable").draggable({ revert: "invalid" });
+			
+			$("#droppable").droppable({
+				drop: function( event, ui ) {
+					$(this).find("input").val(ui.draggable.word-id);
+				}
+			});
+		});
 	</script>
 </div>
