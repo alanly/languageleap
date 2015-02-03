@@ -293,19 +293,8 @@ class QuizFactory implements UserInputResponse {
 	 */
 	private function getRandomWordsWithDefinition($correctWord, $numAnswers, $videoId)
 	{
-		// Get a random script
-		$numberOfScripts = Script::count();
-		$randomNumber = rand(1, $numberOfScripts);
+		$words = $this->getWordsFromRandomScript();
 
-		$randomScript = Script::find($randomNumber);
-		$wordsInScript = $randomScript->text;
-
-		// Remove all the tags from the script (e.g <span data="speaker">word</span>), replace with a whitespace
-		$wordsInScript = trim(preg_replace('/\s*\<[^>]*\>\s*/', ' ', $wordsInScript));
-
-		// Get all words, shuffle them around
-		$words = str_word_count($wordsInScript, 1);
-		shuffle($words);
 		$randomWords = array();
 
 		// Get 3 words with length > 3 which are different than the word in the question
@@ -333,6 +322,27 @@ class QuizFactory implements UserInputResponse {
 	 */
 	private function getRandomWords($correctWord, $numAnswers, $videoId)
 	{
+		
+		$words = $this->getWordsFromRandomScript();
+
+		$randomWords = array();
+		// Get 3 words with length > 3 which are different than the word in the question
+		foreach($words as $word)
+		{
+			if($correctWord != $word && strlen($word) > 3)
+			{
+				array_push($randomWords, $word);
+			}
+
+			if(count($randomWords) > $numAnswers - 1) return $randomWords;
+		}
+	}
+
+	/**
+	 * This function will get one script, and gather the words from that script.
+	 */
+	private function getWordsFromRandomScript()
+	{
 		// Get a random script
 		$numberOfScripts = Script::count();
 		$randomNumber = rand(1, $numberOfScripts);
@@ -346,18 +356,8 @@ class QuizFactory implements UserInputResponse {
 		// Get all words, shuffle them around
 		$words = str_word_count($wordsInScript, 1);
 		shuffle($words);
-		$randomWords = array();
 
-		// Get 3 words with length > 3 which are different than the word in the question
-		foreach($words as $word)
-		{
-			if($correctWord != $word && strlen($word) > 3)
-			{
-				array_push($randomWords, $word);
-			}
-
-			if(count($randomWords) > $numAnswers - 1) return $randomWords;
-		}
+		return $words;
 	}
 
 	/**
