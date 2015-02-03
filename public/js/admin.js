@@ -524,6 +524,11 @@ $('.modal-footer').on('click', 'span', function(event)
 		$('.modal-body.script').attr("aria-hidden", false);
 		$('.modal-body.script').css("display", "block");
 	}
+	else if (id == "footer-media")
+	{
+		$('.modal-body.media').attr("aria-hidden", false);
+		$('.modal-body.media').css("display", "block");
+	}
 	else if (id == "footer-seasons")
 	{
 		$('.modal-body.seasons').attr("aria-hidden", false);

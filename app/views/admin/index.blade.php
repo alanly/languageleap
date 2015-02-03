@@ -254,7 +254,7 @@
 					<span id="footer-info">Info</span>
 					<span id="footer-seasons" aria-hidden="true" style="display: none;">Seasons</span>
 					<span id="footer-script">Script</span>
-					<span id="footer-media"></span>
+					<span id="footer-media">Media</span>
 				</div>				
       </div>
 		</div>
