@@ -68,16 +68,6 @@ class ApiUserController extends \BaseController {
 		
 		$currentPassword = Input::get('current_password');
 		
-		if (strlen($newFirstName) <= 0 || strlen($newLastName) <= 0)
-		{
-			return $this->apiResponse('error', 'You must put your first and last name.', 400);
-		}
-		
-		if (strlen($newEmail) <= 0)
-		{
-			return $this->apiResponse('error', 'Please enter an email.', 400);
-		}
-		
 		if (!Hash::check($currentPassword, $user->password))
 		{
 			return $this->apiResponse('error', 'Please enter your password to have your changes take effect.', 400);
