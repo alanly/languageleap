@@ -19,6 +19,11 @@ Route::get('/', function()
 	return View::make('index');
 });
 
+Route::get('/layout', function()
+{
+	return View::make('layout');
+});
+
 
 // Route for setting the language.
 Route::get('/language/{lang}', 'LanguageController@setLanguage');
