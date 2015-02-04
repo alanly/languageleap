@@ -1,8 +1,9 @@
 <?php namespace LangLeap\Videos;
 
 use LangLeap\Payments\Billable;
+use LangLeap\Videos\RecommendationSystem\Classifiable;
 
-class Movie extends Media implements Billable {
+class Movie extends Media implements Billable, Classifiable {
 
 	public $timestamps = false;
 
@@ -43,6 +44,15 @@ class Movie extends Media implements Billable {
 			'genre'       => $this->genre,
 			'level'       => $this->level->description,
 			'videos'      => $videos,
+		];
+	}
+
+	public function getClassificationAttributes()
+	{
+		return [
+			'director'	=> explode(',', $this->director),
+			'actor'		=> explode(',', $this->actor),
+			'genre'		=> $this->genre,
 		];
 	}
 

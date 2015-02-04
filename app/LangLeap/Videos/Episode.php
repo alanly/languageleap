@@ -1,13 +1,14 @@
 <?php namespace LangLeap\Videos;
 
 use LangLeap\Payments\Billable;
+use LangLeap\Videos\RecommendationSystem\Classifiable;
 
 /**
  * @author  Thomas Rahn <thomas@rahn.ca>
  * @author  Alan Ly <hello@alan.ly>
  * @author  Dror Ozgaon <dror.ozgaon@gmail.com>
  */
-class Episode extends Media implements Billable {
+class Episode extends Media implements Billable, Classifiable {
 
 	public $timestamps = false;
 
@@ -64,6 +65,13 @@ class Episode extends Media implements Billable {
 			'description' => $this->description,
 			'show_id'     => $this->season->show_id,
 			'level'       => $this->level->description,
+		];
+	}
+
+	public function getClassificationAttributes()
+	{
+		return [
+			'director'	=> explode(',', $this->season->show->director),
 		];
 	}
 

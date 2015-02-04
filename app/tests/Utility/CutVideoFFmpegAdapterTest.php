@@ -10,8 +10,7 @@ class CutVideoFFmpegAdapterTest extends TestCase {
 	
 	public function testCutVideoByTimes()
 	{
-		Queue::shouldReceive('connected')->once()->andReturn(true);
-		Queue::shouldReceive('push')->once();
+		Queue::shouldReceive('push')->twice();
 		
 		$video = $this->getVideoInstance();
 		$cutAdapter = new CutVideoFFmpegAdapter();
