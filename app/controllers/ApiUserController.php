@@ -3,18 +3,30 @@
 use LangLeap\Accounts\User;
 
 class ApiUserController extends \BaseController {
-
-	protected $user;
 	
 	public function postUpdatePassword() {
-		
+				
 		$user = Auth::user();
 		
+		if (!$user)
+		{
+			$this->apiResponse('error', 'You must be logged in to send this request.', 400);
+		}
+		
 		$newPassword = Input::get('new_password');
+		$newPasswordAgain = Input::get('new_password_again');
 		
 		if (strlen($newpassword) > 0 && !Hash::check($newPassword, $user->password))
 		{
-			return $this->apiResponse('error', 'You may not enter the same password as your current one!', 400);
+			return $this->apiResponse('error', 'You may not enter the same password as your current one.', 400);
+		}
+		
+		if (strlen($newPassword) > 0)
+		{
+			if ($newPassword != $newPasswordAgain)
+			{
+				return $this->apiResponse('error', 'Your new password and confirm password MUST be the same.', 400);
+			}
 		}
 		
 		$user->password = Hash::make($newPassword);
@@ -26,6 +38,11 @@ class ApiUserController extends \BaseController {
 	public function postUpdateUserInfo() {
 		
 		$user = Auth::user();
+		
+		if (!$user)
+		{
+			$this->apiResponse('error', 'You must be logged in to send this request.', 400);
+		}
 		
 		$currentFirstName = $user->first_name;
 		$newFirstName = Input::get('first_name');
