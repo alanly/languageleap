@@ -66,7 +66,7 @@ class ScoreGenerator {
 	private function assembleMediaCollection()
 	{
 		// Retrieve all the videos in the database.
-		$videos = $this->videos->with('viewable')->all();
+		$videos = $this->videos->with('viewable')->get();
 
 		// In order to maintain a set of the associated media, we will create a
 		// hashmap via a dictionary, wherein the keys are hashvalues unique to each

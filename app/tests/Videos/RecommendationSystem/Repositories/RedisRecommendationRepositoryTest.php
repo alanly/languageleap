@@ -3,7 +3,7 @@
 use App;
 use Illuminate\Support\Facades\Redis as RedisClient;
 use LangLeap\TestCase;
-use LangLeap\Core\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Mockery as m;
 
 class RedisRecommendationRepositoryTest extends TestCase {
@@ -291,7 +291,7 @@ class RedisRecommendationRepositoryTest extends TestCase {
 		// Add the recommendation
 		$result = $repo->getRange($user, 3, 4, true);
 
-		$this->assertInstanceOf('LangLeap\Core\Collection', $result);
+		$this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $result);
 		$this->assertCount(2, $result);
 
 		$recommendation = $result->get(0);
@@ -335,7 +335,7 @@ class RedisRecommendationRepositoryTest extends TestCase {
 		// Add the recommendation
 		$result = $repo->getRange($user, 3, 4, false);
 
-		$this->assertInstanceOf('LangLeap\Core\Collection', $result);
+		$this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $result);
 		$this->assertCount(2, $result);
 
 		$recommendation = $result->get(0);
@@ -383,7 +383,7 @@ class RedisRecommendationRepositoryTest extends TestCase {
 		// Add the recommendation
 		$result = $repo->getRange($user, 3, 4, true);
 
-		$this->assertInstanceOf('LangLeap\Core\Collection', $result);
+		$this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $result);
 		$this->assertCount(1, $result);
 	}
 
@@ -419,7 +419,7 @@ class RedisRecommendationRepositoryTest extends TestCase {
 		// Add the recommendation
 		$result = $repo->getRange($user, 3, 4, true);
 
-		$this->assertInstanceOf('LangLeap\Core\Collection', $result);
+		$this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $result);
 		$this->assertCount(0, $result);
 	}
 
@@ -453,7 +453,7 @@ class RedisRecommendationRepositoryTest extends TestCase {
 		// Add the recommendation
 		$result = $repo->getTop($user, 2, true);
 
-		$this->assertInstanceOf('LangLeap\Core\Collection', $result);
+		$this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $result);
 		$this->assertCount(2, $result);
 	}
 

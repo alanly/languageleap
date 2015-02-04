@@ -59,7 +59,12 @@ class QuizFactory implements UserInputResponse {
 				$input['selected_words']
 			);
 
-			return ['success', ['quiz_id' => $quiz->id], 200];
+			return ['success', 
+			[
+				'quiz_id' => $quiz->id,
+				'redirect' => $this->getNextVideoPath($input['video_id'])
+			],
+			200];
 		}
 		else // Create a quiz from questions that are wrong
 		{
@@ -253,4 +258,32 @@ class QuizFactory implements UserInputResponse {
 		return $question;
 	}
 
+	/**
+	 *
+	 * @param  int 		$video_id
+	 * @return string 	
+	 *
+	 */
+	protected function getNextVideoPath($video_id)
+	{
+		$video = Video::find($video_id);
+
+		if(! $video)
+		{
+			return "/";
+		}
+		else
+		{
+			//Get the next video in the sequence
+			$next_video = $video->nextVideo();
+
+			if(! $next_video)
+			{
+				return "/";
+			}
+
+			return "/video/play/" . $next_video->id;
+		}
+
+	}
 }
