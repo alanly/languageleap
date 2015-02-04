@@ -31,7 +31,7 @@ class ApiUserController extends \BaseController {
 			}
 		}
 		
-		if (!Hash::check($confirmOldPassword, $user->password))
+		if (strlen($newPassword) > 0 && !Hash::check($confirmOldPassword, $user->password))
 		{
 			return $this->apiResponse('error', 'Please enter your current password to make the changes.', 400);
 		}

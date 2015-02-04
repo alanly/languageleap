@@ -102,7 +102,6 @@ Route::group(['prefix' => 'api'], function()
 		
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');
-
 	});
 
 	// Query the definition API for a definition
@@ -115,8 +114,8 @@ Route::group(['prefix' => 'api'], function()
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 
-	// Registration
-	Route::resource('users','ApiUserController');
+	// Update user info
+	Route::controller('users','ApiUserController');
 
 	//Api routes with auth filter
 	Route::group(array('before' => 'auth'), function() {  

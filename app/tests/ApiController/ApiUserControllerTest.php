@@ -1,5 +1,6 @@
 <?php
 
+use LangLeap\TestCase;
 use LangLeap\Accounts\User;
 
 class ApiUserControllerTest extends TestCase {
@@ -9,13 +10,15 @@ class ApiUserControllerTest extends TestCase {
 	public function setUp() {
 		
 		parent::setUp();
-		$this->be($this->getUserInstance());
-		$this->be($user);
+		$this->user = $this->getUserInstance();
+		$this->be($this->user);
 	}
 	
 	//Tests for updating password
 	public function testUpdatePasswordWithProperInputs() {
 	
+		//dd($this->user->id);
+		
 		$response = $this->action (
 			'POST',
 			'ApiUserController@postUpdatePassword',
@@ -27,10 +30,11 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseOk();
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		dd(User::find($this->user->id)->password);
+		$this->assertTrue(Hash::check('abc', User::find($this->user->id)->password));
 		
-		$this->assertTrue(Hash::check('abc', User::find($user->id)->password));
+		$this->assertResponseOk();
 	}
 	
 	public function testUpdatePasswordWithDifferentOldPassword() {
@@ -46,8 +50,8 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
-		$this->assertTrue(Hash::check('abc', User::find($user->id)->password));
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertFalse(Hash::check('abc', User::find($this->user->id)->password));
 		
 		$this->assertResponseStatus(400);
 	}
@@ -65,8 +69,8 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
-		$this->assertTrue(Hash::check('abc', User::find($user->id)->password));
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertFalse(Hash::check('abc', User::find($this->user->id)->password));
 		
 		$this->assertResponseStatus(400);
 	}
@@ -84,8 +88,8 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
-		$this->assertTrue(Hash::check('abc', User::find($user->id)->password));
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertFalse(Hash::check('abc', User::find($this->user->id)->password));
 		
 		$this->assertResponseStatus(400);
 	}
@@ -95,7 +99,7 @@ class ApiUserControllerTest extends TestCase {
 		
 		$response = $this->action (
 			'POST',
-			'ApiUserConctroller@postUpdateUserInfo',
+			'ApiUserController@postUpdateUserInfo',
 			[],
 			[
 				'first_name' => 'Tom',
@@ -106,15 +110,34 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 	}
 	
-	public function testUpdateFirstNameAndLastNameWithCorrectPassword() {
+	public function testUpdateUserInfoWithProperInputsAndIncorrectPassword() {
+	
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => 'Tom',
+				'last_name' => 'Five',
+				'new_email' => 'user@newemail.com',
+				'language_id' => 2,
+				'current_password' => 'different',
+			]
+		);
+			
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	/*public function testUpdateFirstNameAndLastNameWithCorrectPassword() {
 		
 		$response = $this->action (
 			'POST',
-			'ApiUserConctroller@postUpdateUserInfo',
+			'ApiUserController@postUpdateUserInfo',
 			[],
 			[
 				'first_name' => 'Tom',
@@ -123,7 +146,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 	}
 	
@@ -140,7 +163,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -157,7 +180,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -174,7 +197,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -191,7 +214,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -208,7 +231,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -225,7 +248,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -242,7 +265,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -258,7 +281,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 	}
 	
@@ -274,7 +297,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -290,7 +313,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -306,7 +329,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -317,12 +340,12 @@ class ApiUserControllerTest extends TestCase {
 			'ApiUserController@postUpdateUserInfo',
 			[],
 			[
-				'language_id' => 2,
+				'language_id' => 1,
 				'current_password' => 'password'
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 	}
 	
@@ -338,7 +361,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -354,7 +377,7 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
@@ -370,9 +393,9 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
-		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
-	}
+	}*/
 	
 	protected function getUserInstance() {
 		
