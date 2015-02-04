@@ -17,7 +17,7 @@ class ApiUserController extends \BaseController {
 		$newPasswordAgain = Input::get('new_password_again');
 		
 		$confirmOldPassword = Input::get('confirm_old_password');
-		
+
 		if (strlen($newPassword) > 0 && Hash::check($newPassword, $user->password))
 		{
 			return $this->apiResponse('error', 'You may not enter the same password as your current one.', 400);
@@ -29,11 +29,11 @@ class ApiUserController extends \BaseController {
 			{
 				return $this->apiResponse('error', 'Your new password and confirm password MUST be the same.', 400);
 			}
-		}
-		
-		if (strlen($newPassword) > 0 && !Hash::check($confirmOldPassword, $user->password))
-		{
-			return $this->apiResponse('error', 'Please enter your current password to make the changes.', 400);
+
+			if(!Hash::check($confirmOldPassword ,$user->password))
+			{
+				return $this->apiResponse('error', 'Please enter your current password to make the changes.', 400);
+			}
 		}
 		
 		$user->password = Hash::make($newPassword);
@@ -51,7 +51,7 @@ class ApiUserController extends \BaseController {
 			$this->apiResponse('error', 'You must be logged in to send this request.', 400);
 		}
 		
-		$validEmail = "/[a-zA-Z0-9_-.+]+@[a-zA-Z0-9-]+.[a-zA-Z]+/";
+		$validEmail = '/[a-zA-Z0-9_-.+]+@[a-zA-Z0-9-]+.[a-zA-Z]+/';
 		
 		$currentFirstName = $user->first_name;
 		$newFirstName = Input::get('first_name');
@@ -76,17 +76,13 @@ class ApiUserController extends \BaseController {
 			return $this->apiResponse('error', 'Please enter an email.', 400);
 		}
 		
-		if (!preg_match($validEmail, $newEmail))
-		{
-			return $this->apiResponse('error', 'Please enter a valid email.', 400);
-		}
-		
 		if (!Hash::check($currentPassword, $user->password))
 		{
 			return $this->apiResponse('error', 'Please enter your password to have your changes take effect.', 400);
 		}
+
 		
-		$user->fill(array('first_name' => $newFirstName, 'last_name' => $newLastname, 'email' => $newEmail, 'language_id' => $newUserLanguage));
+		$user->fill(array('first_name' => $newFirstName, 'last_name' => $newLastName, 'email' => $newEmail, 'language_id' => $newUserLanguage));
 		$user->save();
 		
 		return $this->apiResponse('success', 'You have successfully updated your profile.', 200);

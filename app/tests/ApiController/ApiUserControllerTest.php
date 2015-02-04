@@ -15,10 +15,9 @@ class ApiUserControllerTest extends TestCase {
 	}
 	
 	//Tests for updating password
-	public function testUpdatePasswordWithProperInputs() {
+	public function testUpdatePasswordWithProperInputs() 
+	{
 	
-		//dd($this->user->id);
-		
 		$response = $this->action (
 			'POST',
 			'ApiUserController@postUpdatePassword',
@@ -30,8 +29,9 @@ class ApiUserControllerTest extends TestCase {
 			]
 		);
 		
+		
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		dd(User::find($this->user->id)->password);
+		
 		$this->assertTrue(Hash::check('abc', User::find($this->user->id)->password));
 		
 		$this->assertResponseOk();
@@ -109,7 +109,6 @@ class ApiUserControllerTest extends TestCase {
 				'current_password' => 'password',
 			]
 		);
-		
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 	}
@@ -402,7 +401,7 @@ class ApiUserControllerTest extends TestCase {
 		$user = App::make('LangLeap\Accounts\User');
 		$user->username = 'username';
 		$user->email = 'username@email.com';
-		$user->password = 'password';
+		$user->password = Hash::make('password');
 		$user->first_name = 'John';
 		$user->last_name = 'Doe';
 		$user->language_id = 1;
