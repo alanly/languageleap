@@ -37,7 +37,11 @@ class ApiUserController extends \BaseController {
 		}
 		
 		$user->password = Hash::make($newPassword);
-		$user->save();
+		
+		if (!$user->save())
+		{
+			return $this->apiResponse('error', $user->getErrors(), 400);
+		}
 		
 		return $this->apiResponse('success', 'You have successfully changed your password.', 200);
 	}
@@ -50,8 +54,6 @@ class ApiUserController extends \BaseController {
 		{
 			$this->apiResponse('error', 'You must be logged in to send this request.', 400);
 		}
-		
-		$validEmail = '/[a-zA-Z0-9_-.+]+@[a-zA-Z0-9-]+.[a-zA-Z]+/';
 		
 		$currentFirstName = $user->first_name;
 		$newFirstName = Input::get('first_name');
@@ -81,9 +83,12 @@ class ApiUserController extends \BaseController {
 			return $this->apiResponse('error', 'Please enter your password to have your changes take effect.', 400);
 		}
 
-		
 		$user->fill(array('first_name' => $newFirstName, 'last_name' => $newLastName, 'email' => $newEmail, 'language_id' => $newUserLanguage));
-		$user->save();
+		
+		if (!$user->save())
+		{
+			return $this->apiResponse('error', $user->getErrors(), 400);
+		}
 		
 		return $this->apiResponse('success', 'You have successfully updated your profile.', 200);
 	}
