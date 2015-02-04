@@ -13,6 +13,7 @@ class ApiUserControllerTest extends TestCase {
 		$this->be($user);
 	}
 	
+	//Tests for updating password
 	public function testUpdatePasswordWithProperInputs() {
 	
 		$response = $this->action (
@@ -30,13 +31,11 @@ class ApiUserControllerTest extends TestCase {
 		$this->assertResponseOk();
 		
 		$this->assertTrue(Hash::check('abc', User::find($user->id)->password));
-		
-		//$this->assertResponseStatus(404);
 	}
 	
 	public function testUpdatePasswordWithDifferentOldPassword() {
 		
-		$response = $this->action 
+		$response = $this->action (
 			'POST',
 			'ApiUserController@postUpdatePassword',
 			[],
@@ -48,8 +47,6 @@ class ApiUserControllerTest extends TestCase {
 		);
 		
 		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
-		//$this->assertResponseOk();
-		
 		$this->assertTrue(Hash::check('abc', User::find($user->id)->password));
 		
 		$this->assertResponseStatus(400);
@@ -57,7 +54,7 @@ class ApiUserControllerTest extends TestCase {
 	
 	public function testUpdatePasswordWithDifferentNewPasswordAgain() {
 		
-		$response = $this->action 
+		$response = $this->action (
 			'POST',
 			'ApiUserController@postUpdatePassword',
 			[],
@@ -69,16 +66,14 @@ class ApiUserControllerTest extends TestCase {
 		);
 		
 		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
-		//$this->assertResponseOk();
-		
 		$this->assertTrue(Hash::check('abc', User::find($user->id)->password));
 		
 		$this->assertResponseStatus(400);
 	}
 	
-	public function testUpdatePasswordWithDifferentNewAgainAndOldPassword() {
+	public function testUpdatePasswordWithDifferentNewPasswordAgainAndOldPassword() {
 		
-		$response = $this->action 
+		$response = $this->action (
 			'POST',
 			'ApiUserController@postUpdatePassword',
 			[],
@@ -90,10 +85,292 @@ class ApiUserControllerTest extends TestCase {
 		);
 		
 		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
-		//$this->assertResponseOk();
-		
 		$this->assertTrue(Hash::check('abc', User::find($user->id)->password));
 		
+		$this->assertResponseStatus(400);
+	}
+	
+	//Tests for updating user info
+	public function testUpdateUserInfoWithProperInputs() {
+		
+		$response = $this->action (
+			'POST',
+			'ApiUserConctroller@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => 'Tom',
+				'last_name' => 'Five',
+				'new_email' => 'user@newemail.com',
+				'language_id' => 2,
+				'current_password' => 'password',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+	}
+	
+	public function testUpdateFirstNameAndLastNameWithCorrectPassword() {
+		
+		$response = $this->action (
+			'POST',
+			'ApiUserConctroller@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => 'Tom',
+				'last_name' => 'Five',
+				'current_password' => 'password',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+	}
+	
+	public function testUpdateFirstNameAndLastNameWithIncorrectPassword() {
+		
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => 'Tom',
+				'last_name' => 'Five',
+				'current_password' => 'different',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateFirstNameAndEmptyLastNameWithCorrectPassword() {
+		
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => 'Tom',
+				'last_name' => '',
+				'current_password' => 'password',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateFirstNameAndEmptyLastNameWithIncorrectPassword() {
+		
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => 'Tom',
+				'last_name' => '',
+				'current_password' => 'different',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateEmptyFirstNameAndLastNameWithCorrectPassword() {
+		
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => '',
+				'last_name' => 'Five',
+				'current_password' => 'password',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateEmptyFirstNameAndLastNameWithIncorrectPassword() {
+		
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => '',
+				'last_name' => 'Five',
+				'current_password' => 'different',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateEmptyFirstNameAndEmptyLastNameWithCorrectPassword() {
+		
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => '',
+				'last_name' => '',
+				'current_password' => 'password',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateEmptyFirstNameAndEmptyLastNameWithIncorrectPassword() {
+		
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'first_name' => '',
+				'last_name' => '',
+				'current_password' => 'different',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateEmailWithProperEmailAndCorrectPassword() {
+	
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'new_email' => 'username@newemail.com',
+				'current_password' => 'password',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+	}
+	
+	public function testUpdateEmailWithProperEmailAndIncorrectPassword() {
+	
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'new_email' => 'username@newemail.com',
+				'current_password' => 'different',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateEmailWithImproperEmailAndCorrectPassword() {
+	
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'new_email' => 'username.com',
+				'current_password' => 'password',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateEmailWithImproperEmailAndIncorrectPassword() {
+	
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'new_email' => 'username.com',
+				'current_password' => 'different',
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateLanguageIDWithCorrectPassword() {
+	
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'language_id' => 2,
+				'current_password' => 'password'
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+	}
+	
+	public function testUpdateLanguageIDWithIncorrectPassword() {
+	
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'language_id' => 2,
+				'current_password' => 'different'
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateLanguageIDWithInvalidLanguageIDAndCorrectPassword() {
+	
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'language_id' => 0,
+				'current_password' => 'password'
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testUpdateLanguageIDWithInvalidLanguageIDAndIncorrectPassword() {
+	
+		$response = $this->action (
+			'POST',
+			'ApiUserController@postUpdateUserInfo',
+			[],
+			[
+				'language_id' => 0,
+				'current_password' => 'different'
+			]
+		);
+		
+		$this->assertInstance('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
 	
