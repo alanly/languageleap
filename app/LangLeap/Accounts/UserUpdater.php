@@ -32,7 +32,7 @@ class UserUpdater {
 		);
 
 		// Handle invalid input values.
-		if ($validator->fails()) return $validator->getErrors();
+		if ($validator->fails()) return $validator->errors();
 
 		// Handle invalid password.
 		if (! Hash::check($data['password'], $user->password))
