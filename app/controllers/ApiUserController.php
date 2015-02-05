@@ -11,40 +11,40 @@ class ApiUserController extends \BaseController {
 
 	public function postUpdatePassword()
 	{
-				
+		// Get the authenticated user instance.				
 		$user = Auth::user();
-		
-		$newPassword = Input::get('new_password');
-		$newPasswordAgain = Input::get('new_password_again');
-		
-		$confirmOldPassword = Input::get('confirm_old_password');
 
-		if (strlen($newPassword) > 0 && Hash::check($newPassword, $user->password))
+		// Create a validator for our input.
+		$validator = Validator::make(
+			Input::all(),
+			[
+				'new_password' => 'required|confirmed|min:6',
+				'password'     => 'required',
+			]
+		);
+
+		// Handle failed input validation.
+		if ($validator->fails())
 		{
-			return $this->apiResponse('error', 'You may not enter the same password as your current one.', 400);
+			return $this->apiResponse('error', $validator->messages(), 400);
 		}
 		
-		if (strlen($newPassword) > 0)
+		// Handle invalid password.
+		if (! Hash::check(Input::get('password'), $user->password))
 		{
-			if ($newPassword != $newPasswordAgain)
-			{
-				return $this->apiResponse('error', 'Your new password and confirm password MUST be the same.', 400);
-			}
-
-			if(!Hash::check($confirmOldPassword ,$user->password))
-			{
-				return $this->apiResponse('error', 'Please enter your current password to make the changes.', 400);
-			}
+			return $this->apiResponse('error', 'Invalid password.', 401);
 		}
+
+		// Update the password field for the user account.		
+		$user->password = Hash::make(Input::get('new_password'));
 		
-		$user->password = Hash::make($newPassword);
-		
-		if (!$user->save())
+		// Attempt to update the user model.
+		if (! $user->save())
 		{
 			return $this->apiResponse('error', $user->getErrors(), 400);
 		}
 		
-		return $this->apiResponse('success', 'You have successfully changed your password.', 200);
+		return $this->apiResponse('success', $user, 200);
 	}
 	
 
