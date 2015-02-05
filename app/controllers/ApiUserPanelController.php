@@ -21,7 +21,7 @@ class ApiUserPanelController extends \BaseController {
 	{
 		$user = Auth::user();
 	
-		$data = ['fname' => $user->first_name, 'lname' => $user->last_name, 'lang' => $user->language_id, 'email' => $user->email];
+		$data = ['fname' => $user->first_name, 'lname' => $user->last_name, 'lang' => $user->language_id, 'email' => $user->email, 'password' => $user->password];
 
 		$langs = Language::all();
 
