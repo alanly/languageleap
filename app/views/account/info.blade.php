@@ -132,6 +132,7 @@ function updateSelected(lang, id)
 
 $('#submit').on("click", function()
 {
+
 	$.ajax({
 		type: 'POST',
 		url : '/api/user/update-user-info',
