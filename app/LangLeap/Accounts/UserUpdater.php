@@ -11,7 +11,7 @@ class UserUpdater {
 	public function update(User $user, array $data, UserUpdaterListener $listener)
 	{
 		// Check our local validator.
-		if (! ($errors = $this->validateData($data, $user)))
+		if (($errors = $this->validateData($data, $user)))
 		{
 			return $listener->userValidationError($errors);
 		}
