@@ -215,9 +215,40 @@
 			if ($selectedWords.length > 0) {
 				// This data needs to be sent to the quiz page
 				var json = {
-					'video_id': {{ $video_id }},
-					'selected_words': $selectedWords.map(function() { return $(this).data('id'); }).get(),
-					'all_words': $('#script span[data-type=word]').map(function() { return $(this).data('id'); }).get()
+					'selected_words': $selectedWords.map(function() { 
+						var word = $(this). text();
+						var def = $(this).attr('data-type') == 'word' ? $(this).tooltip().data().fullDefinition : null;
+						
+						var node = $(this);
+						var sentence = [];
+						
+						// Traverse to the beginning of the sentence
+						while(node.prev().length > 0 && node.prev().attr("data-type") != "actor")
+						{
+							node = node.prev();
+						}
+						
+						// Traverse to the end of the actor's line and build the sentence
+						do
+						{
+							if(node.is($(this)))
+							{
+								sentence.push('_____________');
+							}
+							else
+							{
+								sentence.push(node.text());
+							}
+							node = node.next();
+						}while(node.next().length > 0 && node.next().attr("data-type") != "actor");
+						
+						sentence = sentence.join(' ');
+						sentence += '.';
+						
+						return {'word':word, 'definition':def, 'sentence':sentence};
+						
+					}).get(),
+					'video_id': {{ $video_id }}
 				};
 
 				
@@ -308,7 +339,7 @@
 		{
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
 		}
-
+		
 		function loadDefinition($word)
 		{
 			var url = '/api/dictionaryDefinitions/';

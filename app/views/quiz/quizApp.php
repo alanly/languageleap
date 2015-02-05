@@ -20,7 +20,7 @@
 								
 								<div ng-switch-when="dragAndDrop">
 								
-									<div class="droppable jumbotron" style="{ width: 150px; height: 150px; padding: 0.5em; float: left; margin: 10px; }">
+									<div class="droppable jumbotron">
 										Drag answer here.
 										<input type="hidden" name="word" ng-model="selection.answer_id" value="-1" ng-change="drag(selection)"/>
 									</div>

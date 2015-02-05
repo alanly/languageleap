@@ -109,7 +109,7 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 
 			// Highlight the selection appropriately.
 			$('#selection-id-'+currentQuestion.id+'-'+selection.answer_id).find('.draggable').
-				addClass('btn-' + (isCorrect === true ? 'success' : 'error')).removeClass('btn-default');
+				addClass('btn-' + (isCorrect === true ? 'success' : 'danger')).removeClass('btn-default');
 
 			// Enable the "Next Question" button and modify its colouring
 			$('#btn-next-'+currentQuestion.id).addClass('btn-success');
