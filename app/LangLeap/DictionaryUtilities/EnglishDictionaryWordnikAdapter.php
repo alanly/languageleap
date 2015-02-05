@@ -6,7 +6,7 @@ use Picnik;
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
  */
-class EnglishDictionary implements IDictionary
+class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 {
 	private $API_KEY = '0d275e6214609368a960d06d0d40810e58033359378726f83';
 	private $DICTIONARY_SOURCE = 'wiktionary';
