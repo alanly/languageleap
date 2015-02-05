@@ -56,7 +56,7 @@ class DictionaryFactory
 		switch($language)
 		{
 			case "EN":
-				$dictionary = new EnglishDictionary;
+				$dictionary = new EnglishDictionaryWordnikAdapter;
 				break;
 			default:
 				$dictionary = null;
