@@ -64,7 +64,15 @@
 	
 	<script type="text/JavaScript">
 		$(function() {
-			$(".draggable").draggable({ revert: "invalid" });
+			$(".draggable").draggable({ 
+				revert: "invalid",
+				start: function(event, ui) {
+					$('.droppable').css('outline', '2px solid blue');
+				},
+				stop: function(event, ui) {
+					$('.droppable').css('outline', 'none');
+				}
+			});
 			
 			$(".droppable").droppable({
 				drop: function( event, ui ) {
