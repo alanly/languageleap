@@ -112,7 +112,7 @@ class ApiUserControllerTest extends TestCase {
 		$response = $this->action('PUT', 'ApiUserController@putUser', [],
 			[
 				'password' => 'edward',
-				'new_password' => 'foobarsoup',
+				'new_password' => 'fo',
 				'new_password_confirmation' => 'foobarsoup',
 			]);
 
@@ -135,7 +135,7 @@ class ApiUserControllerTest extends TestCase {
 
 		$data = $response->getData()->data;
 
-		$this->assertCount(2, $data->new_password);
+		$this->assertCount(2, $data);
 	}
 
 	public function testFailedModelValidationReturnsErrorMessage()
