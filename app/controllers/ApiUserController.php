@@ -3,15 +3,16 @@
 use LangLeap\Accounts\User;
 
 class ApiUserController extends \BaseController {
+
+	public function __construct()
+	{
+		// Add the auth filter controller-wide.
+		$this->beforeFilter('auth');
+	}
 	
 	public function postUpdatePassword() {
 				
 		$user = Auth::user();
-		
-		if (!$user)
-		{
-			$this->apiResponse('error', 'You must be logged in to send this request.', 400);
-		}
 		
 		$newPassword = Input::get('new_password');
 		$newPasswordAgain = Input::get('new_password_again');
@@ -49,11 +50,6 @@ class ApiUserController extends \BaseController {
 	public function postUpdateUserInfo() {
 		
 		$user = Auth::user();
-		
-		if (!$user)
-		{
-			$this->apiResponse('error', 'You must be logged in to send this request.', 400);
-		}
 		
 		$currentFirstName = $user->first_name;
 		$newFirstName = Input::get('first_name');
