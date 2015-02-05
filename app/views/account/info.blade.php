@@ -129,11 +129,12 @@
 				$('#alert').attr('class','alert alert-danger');
 				
 				var errors = "";
-				//Get all the errors sent back.
-				for(property in data.responseJSON.data){
-					errors += data.responseJSON.data[property] + "<br/>";
-				}
 				
+				//Get all the errors sent back.
+				for(var i = 0; i< data.responseJSON.data.length; i++){
+					errors += data.responseJSON.data[i] + "<br/>";
+				}
+
 				$('#alert-text').html(errors);
 				
 				$('#alert-glyph').attr('class','glyphicon glyphicon-exclamation-sign');				
