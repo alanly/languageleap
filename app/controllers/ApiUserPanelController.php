@@ -24,12 +24,7 @@ class ApiUserPanelController extends \BaseController {
 		$data = ['fname' => $user->first_name, 'lname' => $user->last_name, 'lang' => $user->language_id, 'email' => $user->email, 'password' => $user->password];
 
 		$langs = Language::all();
-
-		foreach($langs as $lang)
-		{
-			$data[$lang->code] = ['language' => $lang->description];
-		}
-
+		
 		return View::make('account.info')->with('data', $data)->with('langs', $langs);
 	}
 }

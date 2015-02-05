@@ -115,16 +115,20 @@ $(document).ready( function()
 {
 	$.each({{$langs}}, function( index, language ) 
 	{
-		var anchor = $("<a role=\"menuitem\" tabindex=\"-1\" href=\"#\"></a>").text(language["description"]);
+		var anchor = $("<a role=\"menuitem\" tabindex=\"-1\" href=\"#\");></a>").text(language["description"]);
+		anchor.attr("onclick", "updateSelected(\"" + anchor.text() + "\", " + language["id"] + ")");
 		var lang = $("<li role=\"presentation\"></li>");
 
 		lang.append(anchor);
-		$('.language-drop').append(lang);
-
-	
+		$('.language-drop').append(lang);	
 	});
 });
 
+function updateSelected(lang, id)
+{
+	$('#langDropdownMenu').text(lang);
+	$('#langDropdownMenu').attr('name', id)
+}
 
 $('#submit').on("click", function()
 {
@@ -138,7 +142,7 @@ $('#submit').on("click", function()
 			'first_name': $('#InputFirstName').attr('value'),
 			'last_name': $('#InputLastName').attr('value'),
 			'new_email': $('#InputEmail').attr('value'),
-			'language_id': lang,
+			'language_id': $('#langDropdownMenu').attr('name'),
 			'current_password': $('#ConfirmPassword').attr('value')
 		},
 		success: function(data)
@@ -179,8 +183,6 @@ $('#submit').on("click", function()
 			$('#alert-glyph').attr('class','glyphicon glyphicon-exclamation-sign');				
 		}
 	});
-
-
 });
 
 </script>
