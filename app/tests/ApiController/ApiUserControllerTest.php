@@ -2,214 +2,19 @@
 
 use LangLeap\TestCase;
 use LangLeap\Accounts\User;
+use Mockery as m;
 
 class ApiUserControllerTest extends TestCase {
 	
 	private $user;
 	
-	public function setUp() {
-		
+	public function setUp()
+	{	
 		parent::setUp();
-		$this->user = $this->getUserInstance();
-		$this->be($this->user);
+		Route::enableFilters();
 	}
-	
-	//Tests for updating password
-	public function testUpdatePasswordWithProperInputs() 
-	{
-	
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdatePassword',
-			[],
-			[
-				'new_password' => 'abc',
-				'new_password_again' => 'abc',
-				'confirm_old_password' => 'password',
-			]
-		);
-		
-		
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertTrue(Hash::check('abc', User::find($this->user->id)->password));
-		
-		$this->assertResponseOk();
-	}
-	
-	public function testUpdatePasswordWithDifferentOldPassword() {
-		
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdatePassword',
-			[],
-			[
-				'new_password' => 'abc',
-				'new_password_again' => 'abc',
-				'confirm_old_password' => 'different',
-			]
-		);
-		
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertFalse(Hash::check('abc', User::find($this->user->id)->password));
-		
-		$this->assertResponseStatus(400);
-	}
-	
-	public function testUpdatePasswordWithDifferentNewPasswordAgain() {
-		
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdatePassword',
-			[],
-			[
-				'new_password' => 'abc',
-				'new_password_again' => 'different',
-				'confirm_old_password' => 'password',
-			]
-		);
-		
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertFalse(Hash::check('abc', User::find($this->user->id)->password));
-		
-		$this->assertResponseStatus(400);
-	}
-	
-	public function testUpdatePasswordWithDifferentNewPasswordAgainAndOldPassword() {
-		
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdatePassword',
-			[],
-			[
-				'new_password' => 'abc',
-				'new_password_again' => 'different',
-				'confirm_old_password' => 'different',
-			]
-		);
-		
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertFalse(Hash::check('abc', User::find($this->user->id)->password));
-		
-		$this->assertResponseStatus(400);
-	}
-	
-	//Tests for updating user info
-	public function testUpdateUserInfoWithAllProperInputs() {
-		
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdateUserInfo',
-			[],
-			[
-				'first_name' => 'Tom',
-				'last_name' => 'Five',
-				'new_email' => 'user@newemail.com',
-				'language_id' => 1,
-				'current_password' => 'password',
-			]
-		);
-		
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseOk();
-	}
-	
-	public function testUpdateUserInfoWithProperInputsAndIncorrectPassword() {
-	
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdateUserInfo',
-			[],
-			[
-				'first_name' => 'Tom',
-				'last_name' => 'Five',
-				'new_email' => 'user@newemail.com',
-				'language_id' => 1,
-				'current_password' => 'different',
-			]
-		);
-			
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(400);
-	}
-	
-	public function testUpdateUserInfoWithEmptyFirstNameAndOtherProperInputs() {
-	
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdateUserInfo',
-			[],
-			[
-				'first_name' => '',
-				'last_name' => 'Five',
-				'new_email' => 'user@newemail.com',
-				'language_id' => 1,
-				'current_password' => 'password',
-			]
-		);
-			
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(400);
-	}
-	
-	public function testUpdateUserInfoWithEmptyLastNameAndOtherProperInputs() {
-	
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdateUserInfo',
-			[],
-			[
-				'first_name' => 'Tom',
-				'last_name' => '',
-				'new_email' => 'user@newemail.com',
-				'language_id' => 1,
-				'current_password' => 'password',
-			]
-		);
-			
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(400);
-	}
-	
-	public function testUpdateUserInfoWithEmptyEmailAndOtherProperInputs() {
-	
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdateUserInfo',
-			[],
-			[
-				'first_name' => 'Tom',
-				'last_name' => 'Five',
-				'new_email' => '',
-				'language_id' => 1,
-				'current_password' => 'password',
-			]
-		);
-			
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(400);
-	}
-	
-	public function testUpdateUserInfoWithEmptyPassword() {
-	
-		$response = $this->action (
-			'POST',
-			'ApiUserController@postUpdateUserInfo',
-			[],
-			[
-				'first_name' => 'Tom',
-				'last_name' => 'Five',
-				'new_email' => 'user@newemail.com',
-				'language_id' => 1,
-				'current_password' => '',
-			]
-		);
-			
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(400);
-	}
-	
+
 	protected function getUserInstance() {
-		
 		$user = App::make('LangLeap\Accounts\User');
 		$user->username = 'username';
 		$user->email = 'username@email.com';
@@ -218,8 +23,114 @@ class ApiUserControllerTest extends TestCase {
 		$user->last_name = 'Doe';
 		$user->language_id = 1;
 		$user->is_admin = false;
-		$user-> save();
-		
-		return $user;
+
+		return m::mock($user);
 	}
+
+	public function testOnlyUpdatingPasswordWillNotAffectOtherModelValues()
+	{
+		$user = $this->getUserInstance();
+		$user->shouldReceive('fill')->once()->with(m::hasKey('password'));
+
+		$this->be($user);
+
+		$response = $this->action('PUT', 'ApiUserController@putUser', [],
+			[
+				'password' => 'password',
+				'new_password' => 'foobarsoup',
+				'new_password_confirmation' => 'foobarsoup',
+			]);
+
+		$this->assertResponseOk();
+
+		$data = $response->getData()->data;
+
+		$this->assertSame($user->username, $data->username);
+		$this->assertSame($user->email, $data->email);
+		$this->assertSame($user->first_name, $data->first_name);
+		$this->assertSame($user->last_name, $data->last_name);
+		$this->assertSame($user->language_id, $data->language_id);
+		$this->assertSame($user->is_admin, $data->is_admin);
+	}
+
+	public function testUpdatingJsonableModelAttribute()
+	{
+		$user = $this->getUserInstance();
+
+		$this->be($user);
+
+		$response = $this->action('PUT', 'ApiUserController@putUser', [],
+			[
+				'password' => 'password',
+				'first_name' => 'Shamalamadindong',
+			]);
+
+		$this->assertResponseOk();
+
+		$data = $response->getData()->data;
+
+		$this->assertSame($user->username, $data->username);
+		$this->assertSame($user->email, $data->email);
+		$this->assertSame($user->last_name, $data->last_name);
+		$this->assertSame($user->language_id, $data->language_id);
+		$this->assertSame($user->is_admin, $data->is_admin);
+
+		$this->assertSame('Shamalamadindong', $data->first_name);
+	}
+
+	public function testAttemptingToUpdateWithInvalidPasswordFails()
+	{
+		$user = $this->getUserInstance();
+		$this->be($user);
+
+		$response = $this->action('PUT', 'ApiUserController@putUser', [],
+			[
+				'password' => 'edward',
+				'new_password' => 'foobarsoup',
+				'new_password_confirmation' => 'foobarsoup',
+			]);
+
+		$this->assertResponseStatus(400);
+	}
+
+	public function testFailedUpdaterValidationReturnsErrorMessage()
+	{
+		$user = $this->getUserInstance();
+		$this->be($user);
+
+		$response = $this->action('PUT', 'ApiUserController@putUser', [],
+			[
+				'password' => 'password',
+				'new_password' => 'abc',
+				'new_password_confirmation' => '123',
+			]);
+
+		$this->assertResponseStatus(400);
+
+		$data = $response->getData()->data;
+
+		$this->assertCount(2, $data->new_password);
+	}
+
+	public function testFailedModelValidationReturnsErrorMessage()
+	{
+		$user = $this->getUserInstance();
+		$user->shouldReceive('save')->andReturn(false);
+		$user->shouldReceive('getErrors')->andReturn('foobar');
+
+		$this->be($user);
+
+		$response = $this->action('PUT', 'ApiUserController@putUser', [],
+			[
+				'password' => 'password',
+				'abc' => '123'
+			]);
+
+		$this->assertResponseStatus(400);
+
+		$data = $response->getData()->data;
+
+		$this->assertSame('foobar', $data);
+	}
+
 }
