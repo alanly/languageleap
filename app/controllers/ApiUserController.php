@@ -8,7 +8,9 @@ class ApiUserController extends \BaseController {
 		$this->beforeFilter('auth');
 	}
 	
-	public function postUpdatePassword() {
+
+	public function postUpdatePassword()
+	{
 				
 		$user = Auth::user();
 		
@@ -45,7 +47,9 @@ class ApiUserController extends \BaseController {
 		return $this->apiResponse('success', 'You have successfully changed your password.', 200);
 	}
 	
-	public function postUpdateUserInfo() {
+
+	public function postUpdateUserInfo()
+	{
 		
 		$user = Auth::user();
 		
@@ -76,4 +80,5 @@ class ApiUserController extends \BaseController {
 		
 		return $this->apiResponse('success', 'You have successfully updated your profile.', 200);
 	}
+
 }
