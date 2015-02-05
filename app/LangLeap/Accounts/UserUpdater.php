@@ -1,6 +1,7 @@
 <?php namespace LangLeap\Accounts;
 
 use Hash, Validator;
+use Illuminate\Support\MessageBag;
 
 /**
  * Inspired and modified from `LaravelIO/laravel.io`.
@@ -37,7 +38,7 @@ class UserUpdater {
 		// Handle invalid password.
 		if (! Hash::check($data['password'], $user->password))
 		{
-			return ['password' => "Invalid password for user {$user->id}."];
+			return new MessageBag(['password' => "Invalid password for user {$user->id}."]);
 		}
 
 		return null;
