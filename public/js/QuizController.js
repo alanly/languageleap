@@ -70,60 +70,53 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			return console.error(data);
 		});
 
-	$scope.submit = function(selection)
+	$scope.multiplechoice = function(selection)
 	{
-		// Retrieve the actual form selection.
-		selection = angular.copy(selection);
-
-		if (! selection)
+		putAnswer(selection, function(data, status, headers, config)
 		{
-			return console.error('Form was submitted without selection.');
-		}
+			var isCorrect = data.data.is_correct;
 
-		// Reference the current question.
-		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
-
-		if (currentQuestion.active !== true)
-		{
-			return console.error('Form was submitted against an inactive question.');
-		}
-
-		// Send the request to the API and fetch the result.
-		$http.put(
-			'/api/quiz',
+			if (isCorrect === true)
 			{
-				'quiz_id': $scope.quizID,
-				'videoquestion_id': currentQuestion.id,
-				'selected_id': selection.answer_id
+				// Increment our counter.
+				$scope.correctQuestionsCount++;
 			}
-		).
-			success(function(data, status, headers, config)
-			{
-				var isCorrect = data.data.is_correct;
 
-				if (isCorrect === true)
-				{
-					// Increment our counter.
-					$scope.correctQuestionsCount++;
-				}
+			// Highlight the selection appropriately.
+			$('#selection-id-'+currentQuestion.id+'-'+selection.answer_id).
+				addClass('has-' + (isCorrect === true ? 'success' : 'error'));
 
-				// Highlight the selection appropriately.
-				$('#radio-selection-id-'+currentQuestion.id+'-'+selection.answer_id).
-					addClass('has-' + (isCorrect === true ? 'success' : 'error'));
+			// Disable the form's radio buttons.
+			$('#form-question-id-'+currentQuestion.id+' input').prop('disabled', true);
 
-				// Disable the form's radio buttons.
-				$('#form-question-id-'+currentQuestion.id+' input').prop('disabled', true);
-
-				// Enable the "Next Question" button and modify its colouring
-				$('#btn-next-'+currentQuestion.id).addClass('btn-success');
-				$('#btn-next-'+currentQuestion.id).prop('disabled', false);
-			}).
-			error(function(data, status, headers, config)
-			{
-				return console.error(data);
-			});
+			// Enable the "Next Question" button and modify its colouring
+			$('#btn-next-'+currentQuestion.id).addClass('btn-success');
+			$('#btn-next-'+currentQuestion.id).prop('disabled', false);
+		});
 	};
 
+	$scope.drag = function(selection)
+	{
+		putAnswer(selection, function(data, status, headers, config)
+		{
+			var isCorrect = data.data.is_correct;
+
+			if (isCorrect === true)
+			{
+				// Increment our counter.
+				$scope.correctQuestionsCount++;
+			}
+
+			// Highlight the selection appropriately.
+			$('#selection-id-'+currentQuestion.id+'-'+selection.answer_id).find('.draggable').
+				addClass('btn-' + (isCorrect === true ? 'success' : 'error')).removeClass('btn-default');
+
+			// Enable the "Next Question" button and modify its colouring
+			$('#btn-next-'+currentQuestion.id).addClass('btn-success');
+			$('#btn-next-'+currentQuestion.id).prop('disabled', false);
+		});
+	};
+	
 	/**
 	 * Load the proceeding question.
 	 * @return void
@@ -163,6 +156,39 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 		});
 	};
 	
+	function putAnswer(selection, success)
+	{
+		// Retrieve the actual form selection.
+		selection = angular.copy(selection);
+
+		if (! selection)
+		{
+			return console.error('Form was submitted without selection.');
+		}
+		
+		// Reference the current question.
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+	
+		// Send the request to the API and fetch the result.
+		$http.put(
+			'/api/quiz',
+			{
+				'quiz_id': $scope.quizID,
+				'videoquestion_id': currentQuestion.id,
+				'selected_id': selection.answer_id
+			}
+		).
+			success().
+			error(function(data, status, headers, config)
+			{
+				return console.error(data);
+			});
+			
+		if (currentQuestion.active !== true)
+		{
+			return console.error('Form was submitted against an inactive question.');
+		}
+	}
 });
 
 /**
