@@ -50,8 +50,9 @@ class UserUpdater {
 		// overwrite the existing hash.
 		unset($data['password']);
 
-		// Handle a new password update.
-		if (isset($data['new_password']))
+		// Handle a new password update by determining the existence of a
+		// 'new_password' parameter and that said parameter is not empty.
+		if (isset($data['new_password']) && $data['new_password'] !== '')
 		{
 			$data['password'] = Hash::make($data['new_password']);
 		}

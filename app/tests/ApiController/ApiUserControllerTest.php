@@ -53,6 +53,32 @@ class ApiUserControllerTest extends TestCase {
 		$this->assertSame($user->is_admin, $data->is_admin);
 	}
 
+	public function testSendingEmptyNewPasswordValuesWillNotChangeTheUserPassword()
+	{
+		$user = $this->getUserInstance();
+		$user->shouldReceive('fill')->with(m::on(function($data)
+			{
+				return ! array_key_exists('password', $data);
+			}));
+
+		$this->be($user);
+
+		$response = $this->action('PUT', 'ApiUserController@putUser', [],
+			[
+				'password' => 'password',
+				'new_password' => '',
+				'new_password_confirmation' => '',
+			]);
+
+		$this->assertResponseOk();
+
+		$data = $response->getData()->data;
+
+		$updatedUser = User::find($data->id);
+
+		$this->assertTrue(Hash::check('password', $updatedUser->password));
+	}
+
 	public function testUpdatingJsonableModelAttribute()
 	{
 		$user = $this->getUserInstance();
