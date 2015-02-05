@@ -1,7 +1,5 @@
 <?php
 
-use LangLeap\Accounts\User;
-
 class ApiUserController extends \BaseController {
 
 	public function __construct()
