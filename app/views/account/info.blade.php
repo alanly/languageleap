@@ -126,13 +126,15 @@
 			},
 			error: function(data)
 			{  	
-				
 				$('#alert').attr('class','alert alert-danger');
 				
+				var errors = "";
 				//Get all the errors sent back.
 				for(property in data.responseJSON.data){
-					$('#alert-text').append(data.responseJSON.data[property] + "<br/>");
+					errors += data.responseJSON.data[property] + "<br/>";
 				}
+				
+				$('#alert-text').html(errors);
 				
 				$('#alert-glyph').attr('class','glyphicon glyphicon-exclamation-sign');				
 			}
