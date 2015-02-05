@@ -30,6 +30,6 @@ class ApiUserPanelController extends \BaseController {
 			$data[$lang->code] = ['language' => $lang->description];
 		}
 
-		return View::make('account.info', $data);
+		return View::make('account.info')->with('data', $data);
 	}
 }

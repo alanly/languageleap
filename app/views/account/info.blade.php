@@ -37,50 +37,44 @@
                     <div class="col-md-6 col-lg-6">
 	                    <label for="InputName">First Name</label>
 	                    <div class="input-group">
-	                        <input type="text" class="form-control" name="InputName" id="InputName" placeholder="Enter First Name" required="" style="background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
-	                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+	                        <input value="{{ $data['fname'] }}" type="text" class="form-control" name="InputName" id="InputName" placeholder="Enter First Name" required="" style="background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
 	                    </div>
 	                </div>
                     <div class="col-md-6 col-lg-6">
 	                    <label for="InputName">Last Name</label>
 	                    <div class="input-group">
-	                        <input type="text" class="form-control" name="InputName" id="InputName" placeholder="Enter Last Name" required="" style="background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
-	                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+	                        <input value="{{ $data['lname'] }}"  type="text" class="form-control" name="InputName" id="InputName" placeholder="Enter Last Name" required="" style="background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
 	                    </div>
 	                </div>
                 </div>
                 <div class="form-group">
                     <label for="InputEmail">Enter New Email</label>
                     <div class="input-group">
-                        <input type="email" class="form-control" id="InputEmailFirst" name="InputEmail" placeholder="Enter New Email" required="">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <input value="{{ $data['email'] }}"  type="email" class="form-control" id="InputEmail" name="InputEmail" placeholder="Enter New Email" required="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="InputEmail">Confirm New Email</label>
                     <div class="input-group">
-                        <input type="email" class="form-control" id="InputEmailSecond" name="InputEmail" placeholder="Confirm New Email" required="">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <input type="email" class="form-control" id="InputEmailConfirm" name="InputEmail" placeholder="Confirm New Email" required="">
                     </div>
                 </div>                
                 <div class="form-group">
                     <label for="InputEmail">Enter New Password</label>
                     <div class="input-group">
-                        <input type="email" class="form-control" id="InputEmailSecond" name="InputEmail" placeholder="Enter New Password" required="">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <input type="password" class="form-control" id="InputPassword" name="InputPassword" placeholder="Enter New Password" required="">
                     </div>
                 </div>                
                 <div class="form-group">
                     <label for="InputEmail">Confirm New Password</label>
                     <div class="input-group">
-                        <input type="email" class="form-control" id="InputEmailSecond" name="InputEmail" placeholder="Confirm New Password" required="">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <input type="password" class="form-control" id="InputPasswordConfirm" name="InputPassword" placeholder="Confirm New Password" required="">
                     </div>
                 </div>                
                 <div class="form-group">
                     <label for="InputEmail">Enter your current password to confirm changes</label>
                     <div class="input-group">
-                        <input type="email" class="form-control" id="InputEmailSecond" name="InputEmail" placeholder="Confirm Email" required="">
+                        <input type="email" class="form-control" id="InputEmailSecond" name="InputEmail" placeholder="Enter current password" required="">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                     </div>
                 </div>
