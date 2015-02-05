@@ -17,7 +17,7 @@ class ApiUserLevelControllerTest extends TestCase {
 		$this->seed();
 		$this->be($this->createUser());
 
-		$response = $this->action('GET', 'ApiUserLevelController@showLevel');
+		$response = $this->action('GET', 'ApiUserPanelController@showLevel');
 		$this->assertResponseOk();		
 		$this->assertViewHas('level');
 	}
