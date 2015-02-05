@@ -1,6 +1,6 @@
 <?php namespace LangLeap\Accounts;
 
-use Illuminate\Validation\Validator;
+use Hash, Validator;
 
 /**
  * Inspired and modified from `LaravelIO/laravel.io`.
@@ -8,16 +8,10 @@ use Illuminate\Validation\Validator;
  */
 class UserUpdater {
 
-	public function update(User $user, array $data, UserUpdaterListener $listener, Validator $validator = null)
+	public function update(User $user, array $data, UserUpdaterListener $listener)
 	{
-		// Check the provided validator.
-		if ($validator && $validator->fails())
-		{
-			return $listener->userValidationError($validator->getErrors());
-		}
-
 		// Check our local validator.
-		if (! ($errors = $this->validateData($data)))
+		if (! ($errors = $this->validateData($data, $user)))
 		{
 			return $listener->userValidationError($errors);
 		}
