@@ -116,8 +116,8 @@ Route::group(['prefix' => 'api'], function()
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 
-	// Registration
-	Route::resource('users','ApiUserController');
+	// Update user info
+	Route::controller('users','ApiUserController');
 
 	//Api routes with auth filter
 	Route::group(array('before' => 'auth'), function() {  
