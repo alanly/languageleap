@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>-->
-        
+
         <div class="clearfix">
             <div class="col-md-12">
                 <h1>Personal Information <small><br/>Review and Change your personal information.</small></h1>
@@ -151,7 +151,7 @@ $('#submit').on("click", function()
 	
 	$.ajax({
 		type: 'POST',
-		url : '/api/user/{{ $video_id }}',
+		url : '/api/user/',
 
 		dataType: "json",
 		data:
