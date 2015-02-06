@@ -11,6 +11,6 @@ class Answer extends Eloquent {
 
 	public function question()
 	{
-		return $this->belongsTo('LangLeap\Quizzes\Question');
+		return $this->belongsTo('LangLeap\Questions\Question');
 	}
 }

@@ -47,45 +47,17 @@ class QuizCreationValidation extends InputDecorator {
 			];
 		}
 
-		// Get all the words in the script; if empty, return 400 (client-side error).
-		$scriptWords = $input["all_words"];
-		
-		if (! $scriptWords || count($scriptWords) < 1)
+		foreach($selectedWords as $selectedWord)
 		{
-			return [
-				'error',
-				"Empty script supplied for video {$videoId}.",
-				400
-			];
-		}
+			$word = $selectedWord['word'];
+			if(strlen($word) < 1) return ['error', "The selected word was not found.", 404];
 
-		// Retrieve a collection of all definitions in the script.
-		$scriptDefinitions = Definition::whereIn('id', $scriptWords)->get();
+			$sentence = $selectedWord['sentence'];
+			if(strlen($sentence) < 1) return ['error', "The selected word was not associated to a sentence.", 404];
 
-		// Use the overriden Collection class.
-		$scriptDefinitions = new Collection($scriptDefinitions->all());
-
-		// If words are missing, then return a 404.
-		if ($scriptDefinitions->count() != count($scriptWords))
-		{
-			return [
-				'error',
-				'Only '.$scriptDefinitions->count().' definitions found for '.count($scriptWords).' words.',
-				404
-			];
-		}
-
-		// Ensure that the _selected_ words are within the realm of the script.
-		foreach ($selectedWords as $definitionId)
-		{
-			// If a selected word is not in the script, return 404.
-			if (! $scriptDefinitions->contains($definitionId))
+			if(stripos($sentence, $word) === FALSE)
 			{
-				return [
-					'error',
-					"Selected definition {$definitionId} is not in video {$videoId}.",
-					404
-				];
+				return ['error', "The selected word was not found in the provided sentence.", 404];
 			}
 		}
 		
