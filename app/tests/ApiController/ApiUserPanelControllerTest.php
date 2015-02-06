@@ -35,6 +35,7 @@ class ApiUserPanelControllerTest extends TestCase {
 		$response = $this->action('GET', 'ApiUserPanelController@showInfo');
 		$this->assertResponseOk();		
 		$this->assertViewHas('langs');
+		$this->assertViewHas('data');
 	}
 
 	protected function makeUserInstance()
