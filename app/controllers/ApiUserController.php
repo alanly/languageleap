@@ -32,6 +32,9 @@ class ApiUserController extends \BaseController implements UserUpdaterListener {
 
 	public function userValidationError($errors)
 	{
+		if ($errors instanceof Illuminate\Support\MessageBag)
+			$errors = $errors->all();
+
 		return $this->apiResponse('error', $errors, 400);
 	}
 
