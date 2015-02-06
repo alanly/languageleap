@@ -231,16 +231,9 @@
 						// Traverse to the end of the actor's line and build the sentence
 						do
 						{
-							if(node.is($(this)))
-							{
-								sentence.push('_____________');
-							}
-							else
-							{
-								sentence.push(node.text());
-							}
+							sentence.push(node.text());
 							node = node.next();
-						}while(node.next().length > 0 && node.next().attr("data-type") != "actor");
+						}while(node.length > 0 && node.next().attr("data-type") != "actor");
 						
 						sentence = sentence.join(' ');
 						sentence += '.';
