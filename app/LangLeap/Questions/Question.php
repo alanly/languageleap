@@ -11,11 +11,6 @@ class Question extends Eloquent {
 
 	public    $timestamps = false;
 	protected $fillable   = ['answer_id' => 'integer'];
-	protected $rules      = [
-		'question_id'   => 'required|integer',
-		'question_type' => 'required'
-	];
-
 
 	public function questionType()
 	{
@@ -36,4 +31,5 @@ class Question extends Eloquent {
 	{
 		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
 	}
+
 }
