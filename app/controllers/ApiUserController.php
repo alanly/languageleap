@@ -15,7 +15,7 @@ class ApiUserController extends \BaseController implements UserUpdaterListener {
 	{
 		// Get the authenticated user.
 		$user = Auth::user();
-
+		
 		// Create a user updater instance.
 		$userUpdater = App::make('LangLeap\Accounts\UserUpdater');
 

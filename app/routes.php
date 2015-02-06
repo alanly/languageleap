@@ -172,8 +172,16 @@ Route::controller('rank', 'RankQuizController');
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
 
-//User Level
-Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserLevelController@showLevel']);
+// Routes for user panel controllers
+Route::group(['prefix' => 'user'], function()
+{
+
+	//User Level
+	Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showLevel']);
+
+	//User Info
+	Route::get('info', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showInfo']);
+});
 
 Route::any('queue/recieve', function()
 {
