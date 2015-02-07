@@ -74,6 +74,9 @@ Route::group(['prefix' => 'admin'], function()
 	// store script
 	Route::resource('save-script', 'ApiScriptController@store');
 
+	// store timestamps
+	Route::resource('save-timestamps', 'ApiVideoController@saveTimestamps');
+
 	// Dev quiz interface
 	Route::get('quiz/new', function()
 	{

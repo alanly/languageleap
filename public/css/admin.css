@@ -89,6 +89,9 @@ h1,h2,h3,h4,h5,h6 {
 #button-edit-episode-save {
 	margin-right: 20px;
 }
+#button-edit-timestamp-save {
+	margin-right: 20px;
+}
 
 .form-script textarea {
 	display: block;

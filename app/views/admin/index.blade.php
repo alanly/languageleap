@@ -246,18 +246,22 @@
 			<!-- /seasons and episodes -->
 						
       <div class="modal-body media" aria-hidden="true" style="display: none;">
-				Video goes here <br />
+				<div class="row">	
+					Video goes here <br />
 				
-				Timestamps
-				<ul id="timestamp-list" class="list-inline">
-					<li id="timestamp-row-1">
-						<input id="timestamp-from-1" name="timestamp-from-1" type="text" class="" placeholder="" style="width: 100px;" /> : 
-						<input id="timestamp-to-1" name="timestamp-to-1" type="text" class="" placeholder="" style="width: 100px;" /> <i data-id="1" class="fa fa-times timestamp-close"></i>
-					</li>
+					Timestamps
+					<ul id="timestamp-list" class="list-inline">
+						<li id="timestamp-row">
+							<input type="text" class="" placeholder="" style="width: 100px;" /> &#8594; 
+							<input type="text" class="" placeholder="" style="width: 100px;" />
+						</li>
 					
-				</ul>
-				<i id="timestamp-add" class="fa fa-plus"></i>
-				
+					</ul>
+					<i id="timestamp-add" class="fa fa-plus"></i>
+				</div>
+				<div class="row">	
+					<button id="button-edit-timestamp-save" type="button" class="btn btn-primary pull-right">Save</button>
+				</div>
 			</div>
 			
       <div class="modal-footer">

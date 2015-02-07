@@ -562,12 +562,12 @@ $.ajaxSetup({
 
 
 /*
-	
+	add and edit timestamps
 */
 var timestamp_id = 2;
 $('#timestamp-add').on("click", function()
 {
-	$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '">' + '<input id="timestamp-from-' + timestamp_id + '" name="timestamp-from-' + timestamp_id + '" type="text" class="" placeholder="" style="width: 100px;" /> : <input id="timestamp-to-' + timestamp_id + '" name="timestamp-to-' + timestamp_id + '" type="text" class="" placeholder="" style="width: 100px;" /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
+	$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '"><input type="text" class="" placeholder="" style="width: 100px;" /> &#8594; <input type="text" class="" placeholder="" style="width: 100px;" /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
 	
 	timestamp_id++;
 });
@@ -578,7 +578,49 @@ $(document).on("click", '.timestamp-close', function(event)
 	$('#timestamp-row-' + id).remove();
 });
 
+$(document).on("click", '#button-edit-timestamp-save', function(event)
+{
+	saveTimestamps();
+});
+/*
+ * save timestamps
+ */
+function saveTimestamps()
+{
+	var spans = $('#timestamp-list input[type=text]');
 
+	var json = '[';
+	var i = 0;
+	spans.each(function()
+	{
+		if (i % 2 == 0)
+	    json += '{"from":"' + $(this).val() + '"},';
+		else
+			json += '{"to":"' + $(this).val() + '"},';
+		
+		i++;
+	});
+	json = json.substring(0, json.length - 1);
+	json += ']';
+	//console.log(JSON.parse(json));
 
-
-
+	
+	$.ajax({
+		type: 'POST',
+		url: '/admin/save-timestamps/' + id,
+		data: {
+			text: json,
+			_method: "PATCH"
+		},
+		success: function(data) {
+			if (data.status == 'success') {
+				console.log('script saved');
+				$('#save-success').fadeIn(500).delay(2000).fadeOut(500);
+			}
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) { 
+		        console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
+		}
+	});
+	
+}
