@@ -582,6 +582,7 @@ $(document).on("click", '#button-edit-timestamp-save', function(event)
 {
 	saveTimestamps();
 });
+
 /*
  * save timestamps
  */
@@ -604,22 +605,20 @@ function saveTimestamps()
 	json += ']';
 	//console.log(JSON.parse(json));
 
-	
-	$.ajax({
+	$.ajax(
+	{
 		type: 'POST',
 		url: '/admin/save-timestamps/' + id,
 		data: {
 			text: json,
 			_method: "PATCH"
 		},
-		success: function(data) {
-			if (data.status == 'success') {
-				console.log('script saved');
-				$('#save-success').fadeIn(500).delay(2000).fadeOut(500);
+		success: function(data)
+		{
+			if (data.status == 'success')
+			{
+				console.log('Timestamps saved.');
 			}
-		},
-		error: function(XMLHttpRequest, textStatus, errorThrown) { 
-		        console.log("Status: " + textStatus); console.log("Error: " + errorThrown); 
 		}
 	});
 	

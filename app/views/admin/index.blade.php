@@ -247,17 +247,20 @@
 						
       <div class="modal-body media" aria-hidden="true" style="display: none;">
 				<div class="row">	
-					Video goes here <br />
-				
-					Timestamps
-					<ul id="timestamp-list" class="list-inline">
-						<li id="timestamp-row">
-							<input type="text" class="" placeholder="" style="width: 100px;" /> &#8594; 
-							<input type="text" class="" placeholder="" style="width: 100px;" />
-						</li>
+					Video goes here
+				</div>
+				<div class="row">
+					<div class="col-xs-4 col-xs-offset-4">
+						Timestamps
+						<ul id="timestamp-list" class="list-inline">
+							<li id="timestamp-row">
+								<input type="text" class="" placeholder="" style="width: 100px;" /> &#8594; 
+								<input type="text" class="" placeholder="" style="width: 100px;" />
+							</li>
 					
-					</ul>
-					<i id="timestamp-add" class="fa fa-plus"></i>
+						</ul>
+						<i id="timestamp-add" class="fa fa-plus"></i>
+					</div>
 				</div>
 				<div class="row">	
 					<button id="button-edit-timestamp-save" type="button" class="btn btn-primary pull-right">Save</button>

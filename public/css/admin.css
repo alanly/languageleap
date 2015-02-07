@@ -143,4 +143,5 @@ input.rounded:focus {
 
 #timestamp-list li {
 	display: block;
+	padding-bottom: 2px;
 }
