@@ -5,7 +5,7 @@ use LangLeap\TestCase;
 /**
  * @author Thomas Rahn <Thomas@rahn.ca>
  */
-class ApiUserLevelControllerTest extends TestCase {
+class ApiUserPanelControllerTest extends TestCase {
 
 	/**
 	 * Test geting Users level.
@@ -17,9 +17,25 @@ class ApiUserLevelControllerTest extends TestCase {
 		$this->seed();
 		$this->be($this->createUser());
 
-		$response = $this->action('GET', 'ApiUserLevelController@showLevel');
+		$response = $this->action('GET', 'ApiUserPanelController@showLevel');
 		$this->assertResponseOk();		
 		$this->assertViewHas('level');
+	}
+
+	/**
+	 * Test geting Users information.
+	 *
+	 * @return void
+	 */
+	public function testShowInfo()
+	{
+		$this->seed();
+		$this->be($this->createUser());
+
+		$response = $this->action('GET', 'ApiUserPanelController@showInfo');
+		$this->assertResponseOk();		
+		$this->assertViewHas('langs');
+		$this->assertViewHas('data');
 	}
 
 	protected function makeUserInstance()
