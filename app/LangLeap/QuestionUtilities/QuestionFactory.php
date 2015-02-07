@@ -63,7 +63,7 @@ class QuestionFactory
 	public function getDragAndDropQuestion($wordInformation)
 	{
 		$definitionQuestion = DragAndDropQuestion::create([
-			'sentence' => $wordInformation->getSentence(),
+			'sentence' => $wordInformation->getSentence()
 		]);
 
 		// Create a new Question instance

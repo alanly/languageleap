@@ -8,7 +8,8 @@
 						<form id="form-question-id-{{ question.id }}" class="question-form" role="form">
 							<h3>{{ question.question }}</h3>
 							
-							<div ng-switch="{{ question.type }}">
+							<div ng-switch="question.type">
+							
 								<div ng-switch-when="multipleChoice" class="radio-group">
 									<div class="radio" id="selection-id-{{ question.id }}-{{ definition.id }}" ng-repeat="definition in question.answers">
 										<label>
@@ -20,18 +21,22 @@
 								
 								<div ng-switch-when="dragAndDrop">
 								
-									<div class="droppable jumbotron">
-										Drag answer here.
-										<input type="hidden" name="word" ng-model="selection.answer_id" value="-1" ng-change="drag(selection)"/>
+									<div class="thumbnail" data-drop="true"  jqyoui-droppable="{ onDrop: 'drag'}" style='height:50px;'>
+										Drop answer here.
 									</div>
 									
-									<div id="selection-id-{{ question.id }}-{{ definition.id }}" ng-repeat="word in question.answers">
-										<div class="draggable col-md-3 btn btn-default"   data-word-id="{{ word.id }}">
-											{{ word.answer }}
+									<div class="btn-group" style="padding-bottom:10px">
+									
+										<div id="selection-id-{{ question.id }}-{{ word.id }}" class="pull-left" ng-repeat="word in question.answers" style="padding:5px">
+											<div class="btn btn-primary"  data-word-id="{{ word.id }}" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{animate:true}">
+												{{ word.answer }}
+											</div>
 										</div>
+										
 									</div>
 									
 								</div>
+								
 							</div>
 
 							<button type="button" id="btn-next-{{ question.id }}" class="btn btn-next" ng-click="nextQuestion()" disabled="disabled">
@@ -41,6 +46,7 @@
 						
 					</slide>
 				</carousel>
+
 			</div>
 		</div>
 	</div>
@@ -62,23 +68,6 @@
 		</div>
 	</script>
 	
-	<script type="text/JavaScript">
-		$(function() {
-			$(".draggable").draggable({ 
-				revert: "invalid",
-				start: function(event, ui) {
-					$('.droppable').css('outline', '2px solid blue');
-				},
-				stop: function(event, ui) {
-					$('.droppable').css('outline', 'none');
-				}
-			});
-			
-			$(".droppable").droppable({
-				drop: function( event, ui ) {
-					$(this).find("input").val(ui.draggable.attr("data-word-id"));
-				}
-			});
-		});
-	</script>
+	
+	
 </div>

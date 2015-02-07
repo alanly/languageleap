@@ -1,7 +1,7 @@
 /**
  * Instantiate the QuizApp instance.
  */
-var quizApp = angular.module('quizApp', ['ui.bootstrap']);
+var quizApp = angular.module('quizApp', ['ui.bootstrap', 'ngDragDrop']);
 
 /**
  * Setup our CSRF-handling values.
@@ -58,8 +58,6 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 				return console.error(data);
 			}
 
-			console.log(data);
-
 			// Activate the first question in the array.
 			$scope.questions[0].active = true;
 			$scope.currentQuestionIndex = 0;
@@ -69,10 +67,23 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			$window.alert('An error occured while attempting to load the quiz. Please return and try again.');
 			return console.error(data);
 		});
-
+		
+	
+	
 	$scope.multiplechoice = function(selection)
 	{
-		putAnswer(selection, function(data, status, headers, config)
+		// Retrieve the actual form selection.
+		selection = angular.copy(selection);
+
+		if (! selection)
+		{
+			return console.error('Form was submitted without selection.');
+		}
+		
+		// Reference the current question.
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+		
+		putAnswer(selection.answer_id, function(data, status, headers, config)
 		{
 			var isCorrect = data.data.is_correct;
 
@@ -95,9 +106,13 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 		});
 	};
 
-	$scope.drag = function(selection)
+	$scope.drag = function(event, ui)
 	{
-		putAnswer(selection, function(data, status, headers, config)
+		// Reference the current question.
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+		var answer_id = ui.draggable.attr("data-word-id");
+		
+		putAnswer(answer_id, function(data, status, headers, config)
 		{
 			var isCorrect = data.data.is_correct;
 
@@ -108,8 +123,8 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			}
 
 			// Highlight the selection appropriately.
-			$('#selection-id-'+currentQuestion.id+'-'+selection.answer_id).find('.draggable').
-				addClass('btn-' + (isCorrect === true ? 'success' : 'danger')).removeClass('btn-default');
+			$('#selection-id-'+currentQuestion.id+'-'+answer_id).find('.btn').
+				addClass('btn-' + (isCorrect === true ? 'success' : 'danger')).removeClass('btn-primary');
 
 			// Enable the "Next Question" button and modify its colouring
 			$('#btn-next-'+currentQuestion.id).addClass('btn-success');
@@ -134,7 +149,9 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 
 		// Increment to the next question.
 		$scope.currentQuestionIndex++;
-		$scope.questions[$scope.currentQuestionIndex].active = true;
+		
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+		currentQuestion.active = true;
 	};
 
 	/**
@@ -156,16 +173,8 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 		});
 	};
 	
-	function putAnswer(selection, success)
+	function putAnswer(answer_id, success)
 	{
-		// Retrieve the actual form selection.
-		selection = angular.copy(selection);
-
-		if (! selection)
-		{
-			return console.error('Form was submitted without selection.');
-		}
-		
 		// Reference the current question.
 		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
 	
@@ -175,10 +184,10 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			{
 				'quiz_id': $scope.quizID,
 				'videoquestion_id': currentQuestion.id,
-				'selected_id': selection.answer_id
+				'selected_id': answer_id
 			}
 		).
-			success().
+			success(success).
 			error(function(data, status, headers, config)
 			{
 				return console.error(data);
