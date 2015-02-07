@@ -21,9 +21,7 @@
 								
 								<div ng-switch-when="dragAndDrop">
 								
-									<div class="thumbnail" data-drop="true"  jqyoui-droppable="{ onDrop: 'drag'}" style='height:50px;'>
-										Drop answer here.
-									</div>
+									<span class="droppable label label-default" data-drop="true"  jqyoui-droppable="{ onDrop: 'drag'}">_______</span>
 									
 									<div class="btn-group" style="padding-bottom:10px">
 									

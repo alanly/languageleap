@@ -61,6 +61,11 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			// Activate the first question in the array.
 			$scope.questions[0].active = true;
 			$scope.currentQuestionIndex = 0;
+			
+			if($scope.questions[0].type == "dragAndDrop")
+			{
+				formatDragAndDrop();
+			}
 		}).
 		error(function(data, status, headers, config)
 		{
@@ -152,6 +157,11 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 		
 		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
 		currentQuestion.active = true;
+		
+		if(currentQuestion.type == "dragAndDrop")
+		{
+			formatDragAndDrop();
+		}
 	};
 
 	/**
@@ -197,6 +207,18 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 		{
 			return console.error('Form was submitted against an inactive question.');
 		}
+	}
+	
+	function formatDragAndDrop()
+	{
+		// Reference the current question.
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+		
+		var header = $("#form-question-id-" + currentQuestion.id).find("h3");
+		var text = header.text().replace("**BLANK**", '<div></div>');
+		header.html(text);
+		
+		$("#form-question-id-" + currentQuestion.id).find(".droppable").detach().appendTo(header.find("div")).unwrap();
 	}
 });
 
