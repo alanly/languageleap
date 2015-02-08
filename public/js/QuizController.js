@@ -62,17 +62,19 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			$scope.questions[0].active = true;
 			$scope.currentQuestionIndex = 0;
 			
-			if($scope.questions[0].type == "dragAndDrop")
+			setTimeout(function()
 			{
-				formatDragAndDrop();
-			}
+				if($scope.questions[0].type == "dragAndDrop")
+				{
+					formatDragAndDrop();
+				}
+			}, 100);
 		}).
 		error(function(data, status, headers, config)
 		{
 			$window.alert('An error occured while attempting to load the quiz. Please return and try again.');
 			return console.error(data);
 		});
-		
 	
 	
 	$scope.multiplechoice = function(selection)
