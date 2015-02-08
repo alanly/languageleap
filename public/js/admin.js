@@ -280,7 +280,7 @@ $('#content').on('click', 'span.media', function(event)
 			$('#timestamp-list').empty();
 			for (i = 0; i < timestamps.length; i++)
 			{
-				s = '<li id="timestamp-row-' + i + '"><input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}"  class="" placeholder="" style="width: 100px;" value="' + timestamps[i].from + '" required /> &#8594; <input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}"  class="" placeholder="" style="width: 100px;" value="' + timestamps[i+1].to + '" required />';
+				s = '<li id="timestamp-row-' + i + '"><input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}"  class="" placeholder="0:00" style="width: 100px;" value="' + timestamps[i].from + '" required /> &#8594; <input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}"  class="" placeholder="0:00" style="width: 100px;" value="' + timestamps[i+1].to + '" required />';
 				
 				if (i > 0)
 				{
@@ -588,7 +588,7 @@ $.ajaxSetup({
 var timestamp_id = 2;
 $('#timestamp-add').on("click", function()
 {
-	$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '"><input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}" class="" placeholder="" style="width: 100px;" required /> &#8594; <input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}" class="" placeholder="" style="width: 100px;" required /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
+	$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '"><input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}" class="" placeholder="0:00" style="width: 100px;" required /> &#8594; <input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}" class="" placeholder="0:00" style="width: 100px;" required /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
 	
 	timestamp_id++;
 });
@@ -641,7 +641,8 @@ function saveTimestamps()
 			{
 				//console.log('Timestamps saved.');
 			}
-		},error: function(data)
+		},
+		error: function(data)
 		{
 				//console.log(data);
 		},
