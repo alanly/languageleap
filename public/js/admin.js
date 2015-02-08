@@ -280,7 +280,7 @@ $('#content').on('click', 'span.media', function(event)
 			$('#timestamp-list').empty();
 			for (i = 0; i < timestamps.length; i++)
 			{
-				s = '<li id="timestamp-row-' + i + '"><input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}"  class="" placeholder="0:00" style="width: 100px;" value="' + timestamps[i].from + '" required /> &#8594; <input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}"  class="" placeholder="0:00" style="width: 100px;" value="' + timestamps[i+1].to + '" required />';
+				s = '<li id="timestamp-row-' + i + '"><input type="text" pattern="([0-9]+):[0-5]{1}[0-9]{1}"  class="" placeholder="0:00" style="width: 100px;" value="' + formatSeconds(timestamps[i].from) + '" required /> &#8594; <input type="text" pattern="([0-9]+):[0-5]{1}[0-9]{1}"  class="" placeholder="0:00" style="width: 100px;" value="' + formatSeconds(timestamps[i+1].to) + '" required />';
 				
 				if (i > 0)
 				{
@@ -288,7 +288,6 @@ $('#content').on('click', 'span.media', function(event)
 				}
 				
 				$('#timestamp-list').append(s);
-			
 				i++;
 			}
 		}		
@@ -304,6 +303,32 @@ $('#content').on('click', 'span.media', function(event)
 	}
 	
 });
+
+
+/*
+ * formats seconds to mm:ss format
+ */
+function formatSeconds(sec)
+{
+  var min = Math.floor(sec / 60); // minutes
+  sec -= min * 60; // seconds
+  return min + ":" + (sec < 10 ? '0' + sec : sec);
+}
+
+/*
+ * formats mm:ss back to seconds
+ */
+function backToSeconds(str)
+{
+	// 1:04
+	var a = str.split(':');
+	// a[0]=1
+	// a[1]=04
+	//console.log(a[0]);
+	//console.log(a[1]);
+	//console.log((parseInt(a[0]) * 60 + parseInt(a[1])));
+	return (parseInt(a[0]) * 60 + parseInt(a[1])); 
+}
 
 /*
  * populate seasons dropdown
@@ -588,7 +613,7 @@ $.ajaxSetup({
 var timestamp_id = 2;
 $('#timestamp-add').on("click", function()
 {
-	$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '"><input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}" class="" placeholder="0:00" style="width: 100px;" required /> &#8594; <input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}" class="" placeholder="0:00" style="width: 100px;" required /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
+	$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '"><input type="text" pattern="([0-9]+):[0-5]{1}[0-9]{1}" class="" placeholder="0:00" style="width: 100px;" required /> &#8594; <input type="text" pattern="([0-9]+):[0-5]{1}[0-9]{1}" class="" placeholder="0:00" style="width: 100px;" required /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
 	
 	timestamp_id++;
 });
@@ -602,7 +627,9 @@ $(document).on("click", '.timestamp-close', function(event)
 $(document).on("click", '#button-edit-timestamp-save', function(event)
 {
 	if ($('#edit-timestamps-form')[0].checkValidity())
+	{
 		saveTimestamps();
+	}
 });
 
 /*
@@ -617,9 +644,9 @@ function saveTimestamps()
 	spans.each(function()
 	{
 		if (i % 2 == 0)
-	    json += '{"from":"' + $(this).val() + '"},';
+	    json += '{"from":"' + backToSeconds($(this).val()) + '"},';
 		else
-			json += '{"to":"' + $(this).val() + '"},';
+			json += '{"to":"' + backToSeconds($(this).val()) + '"},';
 		
 		i++;
 	});
@@ -639,12 +666,12 @@ function saveTimestamps()
 		{
 			if (data.status == 'success')
 			{
-				//console.log('Timestamps saved.');
+				console.log('Timestamps saved.');
 			}
 		},
 		error: function(data)
 		{
-				//console.log(data);
+				console.log(data);
 		},
 	});
 	
