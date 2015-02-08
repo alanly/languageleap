@@ -215,6 +215,9 @@ class ApiVideoController extends \BaseController {
 		if (!App::environment('testing')) {
 			$video_file = $file->move($path, $new_name);
 		}
+		
+		// sets default timestamp to 1 -> 2 seconds
+		$video->timestamps_json = '[{"from":"1"},{"to":"2"}]';
 				
 		$video->save();
 		
