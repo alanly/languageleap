@@ -628,9 +628,32 @@ $(document).on("click", '#button-edit-timestamp-save', function(event)
 {
 	if ($('#edit-timestamps-form')[0].checkValidity())
 	{
-		saveTimestamps();
+		if (validateTimestamps())
+		{
+			saveTimestamps();
+		}
 	}
 });
+
+
+/*
+ * validates timestamp lengths
+ */
+function validateTimestamps()
+{
+	var spans = $('#timestamp-list input[type=text]');
+	for (i = 0; i < spans.length; i++)
+	{
+		if (backToSeconds(spans[i].value) > backToSeconds(spans[i+1].value))
+		{
+			console.log("Timestamp length mismatch");
+			return false;
+		}
+		i++;
+	}
+	return true;
+}
+
 
 /*
  * save timestamps
