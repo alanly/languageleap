@@ -105,12 +105,12 @@ function refreshContent()
 						"Upload complete! Redirecting..."
           );
           ($("#new-media-form")[0]).reset();
-					setTimeout("location.href = './admin';", 4000);
+					setTimeout("location.href = '/admin';", 4000);
       }).fail(function(xhr, status, error) {
           $("#add-new-body-upload").html(
               "Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>"
           );
-					setTimeout("location.href = './admin';", 4000);
+					setTimeout("location.href = '/admin';", 4000);
       });
 
 			$('#add-new-header').empty().append("<h2>Uploading...</h2>");
