@@ -1,17 +1,7 @@
 @extends('master')
 
-@section('javascript')
-	<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.slick/1.3.15/slick.min.js"></script>
-@stop
-
 @section('css')
-	<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/jquery.slick/1.3.15/slick.css"/>
-
 	<style>
-		.element {
-			padding: 15px;
-		}
-
 		.cover {
 			height: 240px;
 			width: 180px;
@@ -22,182 +12,271 @@
 			box-shadow: 0px 0px 5px 6px rgba(209,209,209,1);
 		}
 
+		.element {
+			padding: 15px;
+			display: inline-block;
+		}
+
 		.element:hover {
 		  opacity: 0.4;
 		}
 
-		.clear {
-			clear:both;
+		.filters-toggle {
+			border-right: 1px solid #DDD;
+			border-bottom: 1px solid #DDD;
+			border-top: 1px solid #DDD;
+			cursor: pointer;
+			height: 40px;
+			padding: 10px;
+
+			margin-bottom: 15px;
 		}
 
-		.prev, .next {
-			color: #CFCFCF;
-			font-size: 40px;
-			margin-top: -20px;
-			padding: 0;
-			position: absolute;
-			top: 50%;
+		.nav-pills {
+			margin-bottom: 15px;
+			margin-right: 15px;
 		}
 
-		.next {
-			right: -45px;
+		.hide-filters-text span {
+			display: inline-block;
+			width: 85px;
 		}
 
-		.prev {
-			left: -45px;
+		.hide-filters-text {
+			display: inline-block;
+			padding-left: 20px;
 		}
 
-		.grid {
-			padding: 25px 0 0 0;
+		.filters-toggle .glyphicon {
+			top: 2px;
 		}
 
-		.fluid-container{
-			max-width: 70% !important;
-			margin: 0 auto;
+		#genres .checkbox {
+			display: inline-block;
+			max-width: 200px;
+			width: 100%;
 		}
 	</style>
 @stop
 
 @section('content')
-	<div class="fluid-container">
+	<div class="container-fluid">
 		<div class="row">
-			<div class="grid">
-				<div class="section movies">
-					<h2 class="section-title">Movies</h2>
-					<hr>
-					<div class="elements">
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+			<ul class="nav nav-pills navbar-right" role="tablist">
+				<li role="presentation" class="active"><a href=".movies" aria-controls="movies" role="tab" data-toggle="tab">Movies</a></li>
+				<li role="presentation"><a href=".shows" aria-controls="shows" role="tab" data-toggle="tab">TV Shows</a></li>
+				<li role="presentation"><a href=".commercials" aria-controls="commercials" role="tab" data-toggle="tab">Commercials</a></li>
+			</ul>
+			<div class="filters-toggle pull-left">
+				<span class="hide-filters-text">
+					<span>Hide filters</span>
+				</span>
+				<span class="glyphicon glyphicon-chevron-left pull-right"></span>
+				<span class="glyphicon glyphicon-chevron-right pull-right hide"></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="filters col-md-2">
+				<div class="panel panel-default">
+					<div class="panel-heading" data-toggle="collapse" data-target="#search">Search</div>
+					<div id="search" class="panel-body collapse in">
+						<input type="text" class="form-control" placeholder="Search for...">
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" data-toggle="collapse" data-target="#genres">Genres</div>
+					<div id="genres" class="panel-body collapse in">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Action
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Animated
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Family
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Comedy
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Crime
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Documentary
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Drama
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Holidays
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Horror
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="">
+								Music
+							</label>
 						</div>
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+					</div>
+				</div>				
+			</div>
+			<div role="tabpanel" class="content">
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active section movies">
+						<div class="elements">
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+						</div>
+					</div>
+					<div role="tabpanel" class="tab-pane section shows">
+						<div class="elements">
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+						</div>
+					</div>
+					<div role="tabpanel" class="tab-pane section commercials">
+						<div class="elements">
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+							</div>
+							<div class="element">
+								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="clear"></div>
-				<div class="section shows">
-					<h2 class="section-title">TV Shows</h2>
-					<hr>
-					<div class="elements">
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
-						</div>
-					</div>
-				</div>
-
-				<div class="section commercials">
-					<h2 class="section-title">Commercials</h2>
-					<hr>
-					<div class="elements">
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
-						</div>
-						<div class="element">
-							<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
-						</div>
-					</div>
-				</div>
-				<div class="clear"></div>
 			</div>
 		</div>
 	</div>
 
 	<script type="text/javascript">
 
+		function toggleFilters() {
+			$('.filters').animate({ width: 'toggle' }, 350);
+			$('.hide-filters-text').animate({ width: 'toggle' }, 350);
+			$('.filters-toggle .glyphicon').toggleClass('hide');
+		}
+
 		$(document).ready(function() {
-			$('.elements').slick({
-				centerMode: true,
-				infinite: true,
-				variableWidth: true,
-				slidesToShow: 7,
-				arrows: true,
-				prevArrow : "<span class='button prev glyphicon glyphicon-chevron-left'></span>",
-				nextArrow : "<span class='button next glyphicon glyphicon-chevron-right'></span>"
-			});
+			$('.filters-toggle').click(toggleFilters);
 		});
 			
 	</script>
