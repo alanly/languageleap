@@ -209,13 +209,15 @@ class ApiVideoController extends \BaseController {
 		$video->save();
 		
 		//set the path
-		$new_name = $video->id . "." . $ext;
+		$new_name = $video->viewable_id . "." . $ext;
 		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
 
 		if (!App::environment('testing')) {
 			$video_file = $file->move($path, $new_name);
 		}
+				
 		$video->save();
+		
 		return $video;
 	}
 	
