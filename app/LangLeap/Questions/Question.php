@@ -1,6 +1,7 @@
-<?php namespace LangLeap\Quizzes;
+<?php namespace LangLeap\Questions;
 
 use Eloquent;
+use App;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
@@ -9,18 +10,23 @@ use Eloquent;
 class Question extends Eloquent {
 
 	public    $timestamps = false;
-	protected $fillable   = ['answer_id', 'question'];
+	protected $fillable   = ['answer_id' => 'integer'];
 
-	public function answer()
+	public function questionType()
 	{
-		return $this->belongsTo('LangLeap\Quizzes\Answer');
+		return $this->morphTo('question', 'question_type', 'question_id');
 	}
 
 	public function answers()
 	{
 		return $this->hasMany('LangLeap\Quizzes\Answer');
-	}
-	
+	}	
+
+	public function answer()
+	{
+		return $this->belongsTo('LangLeap\Quizzes\Answer');
+	}	
+
 	public function videoQuestions()
 	{
 		return $this->hasMany('LangLeap\Quizzes\VideoQuestion');
