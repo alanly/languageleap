@@ -19,6 +19,27 @@ Route::get('/', function()
 	return View::make('index');
 });
 
+Route::get('/commercial', function()
+{
+	return View::make('commercial');
+});
+
+Route::get('/movie', function()
+{
+	return View::make('movie');
+});
+
+Route::get('/episode', function()
+{
+	return View::make('episode');
+});
+
+Route::get('/show', function()
+{
+	return View::make('show');
+});
+
+// TODO set this to be the index route
 Route::get('/layout', function()
 {
 	return View::make('layout');

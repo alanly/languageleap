@@ -2,18 +2,14 @@
 
 @section('css')
 	<style>
-		.cover {
+		.cover img {
+			margin-bottom: 0;
 			height: 240px;
 			width: 180px;
-			vertical-align: center;
-
-			-webkit-box-shadow: 0px 0px 5px 6px rgba(209,209,209,1);
-			-moz-box-shadow: 0px 0px 5px 6px rgba(209,209,209,1);
-			box-shadow: 0px 0px 5px 6px rgba(209,209,209,1);
 		}
 
 		.element {
-			padding: 15px;
+			padding: 5px;
 			display: inline-block;
 		}
 
@@ -154,111 +150,177 @@
 					<div role="tabpanel" class="tab-pane active section movies">
 						<div class="elements">
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 						</div>
 					</div>
 					<div role="tabpanel" class="tab-pane section shows">
 						<div class="elements">
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 						</div>
 					</div>
 					<div role="tabpanel" class="tab-pane section commercials">
 						<div class="elements">
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
+								</a>
 							</div>
 							<div class="element">
-								<img class="cover" src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/><br/>
+								<a href="#" class="thumbnail cover">
+									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
+								</a>
 							</div>
 						</div>
 					</div>
