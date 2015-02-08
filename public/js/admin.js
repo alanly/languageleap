@@ -291,11 +291,9 @@ $('#content').on('click', 'span.media', function(event)
 			
 				i++;
 			}
-		}
-		
-		console.log(timestamps);
-		
-		
+		}		
+		//console.log(timestamps);
+
 		// should update the video being displayed here
 	});
 	
@@ -411,7 +409,7 @@ $('#button-edit-info-save').on("click", function()
 		},
 		success: function(data)
 		{
-			console.log(data);
+			//console.log(data);
 			$('#edit-script').prop("disabled", false);
 			$('#button-edit-info-save').prop("disabled", false);
 			$('#button-edit-info-save').html("Save");
@@ -439,7 +437,7 @@ $('#button-edit-episode-save').on("click", function()
 		},
 		success: function(data)
 		{
-			console.log(data);
+			//console.log(data);
 			$('#edit-script').prop("disabled", false);
 			$('#button-edit-episode-save').prop("disabled", false);
 			$('#button-edit-episode-save').html("Save");
