@@ -244,19 +244,20 @@
 				</div>
       </div>
 			<!-- /seasons and episodes -->
-						
+			
+			{{ Form::open(array('url'=>'', 'id' => 'edit-timestamps-form')) }}			
       <div class="modal-body media" aria-hidden="true" style="display: none;">
-				<div class="row text-center">	
-					Video goes here
+				<div class="row">
+					<div class="row">
+						<div class="col-xs-4 col-xs-offset-4">
+							Whoever did the player should prolly embed it here. <br /><br />
+						</div>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-4 col-xs-offset-4">
-						Timestamps
+						<h3>Timestamps</h3>
 						<ul id="timestamp-list" class="list-inline">
-							<li id="timestamp-row">
-								<input type="text" class="" placeholder="" style="width: 100px;" /> &#8594; 
-								<input type="text" class="" placeholder="" style="width: 100px;" />
-							</li>
 						</ul>
 						<i id="timestamp-add" class="fa fa-plus"></i>
 					</div>
@@ -275,6 +276,7 @@
 				</div>				
       </div>
 		</div>
+	  {{ Form::close() }}
 	</div>
 </div>
 

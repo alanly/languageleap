@@ -280,7 +280,14 @@ $('#content').on('click', 'span.media', function(event)
 			$('#timestamp-list').empty();
 			for (i = 0; i < timestamps.length; i++)
 			{
-				$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '"><input type="text" class="" placeholder="" style="width: 100px;" value="' + timestamps[i].from + '" /> &#8594; <input type="text" class="" placeholder="" style="width: 100px;" value="' + timestamps[i+1].to + '" /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
+				s = '<li id="timestamp-row-' + i + '"><input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}"  class="" placeholder="" style="width: 100px;" value="' + timestamps[i].from + '" required /> &#8594; <input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}"  class="" placeholder="" style="width: 100px;" value="' + timestamps[i+1].to + '" required />';
+				
+				if (i > 0)
+				{
+					s += ' <i data-id="' + i + '" class="fa fa-times timestamp-close"></i></li>';
+				}
+				
+				$('#timestamp-list').append(s);
 			
 				i++;
 			}
@@ -583,7 +590,7 @@ $.ajaxSetup({
 var timestamp_id = 2;
 $('#timestamp-add').on("click", function()
 {
-	$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '"><input type="text" class="" placeholder="" style="width: 100px;" /> &#8594; <input type="text" class="" placeholder="" style="width: 100px;" /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
+	$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '"><input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}" class="" placeholder="" style="width: 100px;" required /> &#8594; <input type="text" pattern="([0-9]{1}):[0-5]{1}[0-9]{1}" class="" placeholder="" style="width: 100px;" required /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
 	
 	timestamp_id++;
 });
@@ -596,7 +603,8 @@ $(document).on("click", '.timestamp-close', function(event)
 
 $(document).on("click", '#button-edit-timestamp-save', function(event)
 {
-	saveTimestamps();
+	if ($('#edit-timestamps-form')[0].checkValidity())
+		saveTimestamps();
 });
 
 /*
