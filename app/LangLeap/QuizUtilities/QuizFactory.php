@@ -75,7 +75,7 @@ class QuizFactory implements UserInputResponse {
 				array_push($wordsInformation, $wordInformation);
 			}
 			
-			$quiz = $this->getDefinitionQuiz(
+			$quiz = $this->getQuiz(
 				$user->id,
 				$input['video_id'],
 				$wordsInformation
@@ -111,7 +111,7 @@ class QuizFactory implements UserInputResponse {
 	 * @param  array       $wordsInformation
 	 * @return Quiz
 	 */
-	public function getDefinitionQuiz($user_id, $video_id, $wordsInformation)
+	public function getQuiz($user_id, $video_id, $wordsInformation)
 	{
 		// Ensure that $selectedWords is not empty.
 		if (count($wordsInformation) < 1) return null;
@@ -132,8 +132,9 @@ class QuizFactory implements UserInputResponse {
 		{
 			// Create a video definition question if none exists
 			$definitionQuestion = $this->createDefinitionQuestion($questionPrepend, $word, 4, $video_id);
+
 			// Create a video drag and drop question if none exists
-			$dragAndDropQuestion = $this->createDragAndDropQuestion($word, 4, $video_id);			
+			$dragAndDropQuestion = $this->createDragAndDropQuestion($word, 4, $video_id);
 
 			$videoQuestionDefinition = VideoQuestion::create([
 				'question_id' => $definitionQuestion->id,
@@ -225,6 +226,7 @@ class QuizFactory implements UserInputResponse {
 	 */
 	protected function createDefinitionQuestion($questionPrepend, $wordInformation, $numAnswers, $videoId)
 	{
+		$randomWords = $this->getRandomWordsWithDefinition($wordInformation->getWord(), $numAnswers, $videoId);
 		$question = QuestionFactory::getInstance()->getDefinitionQuestion($questionPrepend, $wordInformation);
 
 		$correctAnswer = Answer::create([
@@ -235,8 +237,6 @@ class QuizFactory implements UserInputResponse {
 
 		$question->answer_id = $correctAnswer->id;
 		$question->save();
-
-		$randomWords = $this->getRandomWordsWithDefinition($wordInformation->getWord(), $numAnswers, $videoId);
 
 		foreach($randomWords as $randomWord)
 		{
@@ -260,6 +260,7 @@ class QuizFactory implements UserInputResponse {
 	 */
 	protected function createDragAndDropQuestion($wordInformation, $numAnswers, $videoId)
 	{
+		$randomWords = $this->getRandomWords($wordInformation->getWord(), $numAnswers, $videoId);
 		$question = QuestionFactory::getInstance()->getDragAndDropQuestion($wordInformation);
 
 		$correctAnswer = Answer::create([
@@ -270,8 +271,6 @@ class QuizFactory implements UserInputResponse {
 
 		$question->answer_id = $correctAnswer->id;
 		$question->save();
-
-		$randomWords = $this->getRandomWords($wordInformation->getWord(), $numAnswers, $videoId);
 
 		foreach($randomWords as $randomWord)
 		{
@@ -312,6 +311,8 @@ class QuizFactory implements UserInputResponse {
 
 			if(count($randomWords) > $numAnswers - 1) return $randomWords;
 		}
+
+		return $randomWords;
 	}
 
 	/**
@@ -336,6 +337,8 @@ class QuizFactory implements UserInputResponse {
 
 			if(count($randomWords) > $numAnswers - 1) return $randomWords;
 		}
+
+		return $randomWords;
 	}
 
 	/**

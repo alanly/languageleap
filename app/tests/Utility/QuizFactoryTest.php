@@ -28,7 +28,7 @@ class QuizFactoryTest extends TestCase {
 			new WordInformation('elephant', 'large land animal', 'the elephany is huge', $video_id),
 		];
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $wordsInformation);
+		$quiz = QuizFactory::getInstance()->getQuiz(Auth::user()->id, $video_id, $wordsInformation);
 
 		$this->assertNotEmpty($quiz->videoQuestions);
 
@@ -46,7 +46,7 @@ class QuizFactoryTest extends TestCase {
 		$wordsInformation = [];
 		$video_id = Video::first()->id;
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $wordsInformation);
+		$quiz = QuizFactory::getInstance()->getQuiz(Auth::user()->id, $video_id, $wordsInformation);
 
 		$this->assertNull($quiz);
 	}
@@ -59,7 +59,7 @@ class QuizFactoryTest extends TestCase {
 		];
 		
 		
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $wordsInformation);
+		$quiz = QuizFactory::getInstance()->getQuiz(Auth::user()->id, $video_id, $wordsInformation);
 		
 		$this->assertNull($quiz);
 	}
@@ -77,7 +77,7 @@ class QuizFactoryTest extends TestCase {
 		];
 		
 		
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $wordsInformation);
+		$quiz = QuizFactory::getInstance()->getQuiz(Auth::user()->id, $video_id, $wordsInformation);
 
 		$this->assertNull($quiz);
 	}
