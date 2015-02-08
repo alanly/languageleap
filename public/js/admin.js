@@ -624,7 +624,7 @@ function saveTimestamps()
 	$.ajax(
 	{
 		type: 'POST',
-		url: '/admin/save-timestamps/' + id,
+		url: "/api/metadata/" + currentType + "/save-timestamps/" + id,
 		data: {
 			text: json,
 			_method: "PATCH"
@@ -635,7 +635,12 @@ function saveTimestamps()
 			{
 				console.log('Timestamps saved.');
 			}
-		}
+		},error: function(data)
+		{
+
+				console.log(data);
+
+		},
 	});
 	
 }

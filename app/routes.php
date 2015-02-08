@@ -74,9 +74,6 @@ Route::group(['prefix' => 'admin'], function()
 	// store script
 	Route::resource('save-script', 'ApiScriptController@store');
 
-	// store timestamps
-	Route::resource('save-timestamps', 'ApiVideoController@saveTimestamps');
-
 	// Dev quiz interface
 	Route::get('quiz/new', function()
 	{
@@ -96,16 +93,19 @@ Route::group(['prefix' => 'api'], function()
 		// Commercials
 		Route::resource('commercials', 'ApiCommercialController');
 		Route::patch('commercials/update-script/{id}', 'ApiCommercialController@updateScript');
+		Route::patch('commercials/save-timestamps/{id}', 'ApiCommercialController@saveTimestamps');
 
 		// Movies
 		Route::resource('movies', 'ApiMovieController');
 		Route::patch('movies/update-script/{id}', 'ApiMovieController@updateScript');
+		Route::patch('movies/save-timestamps/{id}', 'ApiMovieController@saveTimestamps');
 
 		// Shows (and Seasons and Episodes)
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
 		Route::patch('shows/update-script/{id}', 'ApiShowController@updateScript');
+		Route::patch('shows/save-timestamps/{id}', 'ApiShowController@saveTimestamps');
 		
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');

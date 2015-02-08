@@ -153,5 +153,30 @@ class ApiMovieController extends \BaseController {
 			200
 		);
 	}
+	
+	
+	/**
+	*	This method updates timestamps for this video.
+	*
+	*	@param int $video_id 
+	*/
+	public function saveTimestamps($id)
+	{
+		$movie = Movie::find($id);
+		$video = $movie->videos()->first();
 
+		if (!$video)
+		{
+			return $this->apiResponse(
+				'error',
+				"Video {$id} not found.",
+				404
+			);
+		}
+		
+		$video->timestamps_json = Input::get('text');
+		$video->save();
+		return $this->apiResponse("success", $video->toResponseArray());
+	}
+	
 }

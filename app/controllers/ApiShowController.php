@@ -176,4 +176,28 @@ class ApiShowController extends \BaseController {
 		);
 	}
 	
+	/**
+	*	This method updates timestamps for this video.
+	*
+	*	@param int $video_id 
+	*/
+	public function saveTimestamps($id)
+	{
+		$episode = Video::where('viewable_id', '=', Input::get('episode'))->firstOrFail();		
+		$video = $episode->videos()->first();
+
+		if (!$video)
+		{
+			return $this->apiResponse(
+				'error',
+				"Video {$id} not found.",
+				404
+			);
+		}
+		
+		$video->timestamps_json = Input::get('text');
+		$video->save();
+		return $this->apiResponse("success", $video->toResponseArray());
+	}
+	
 }
