@@ -492,7 +492,7 @@ $('#add-episode').on("click", function()
 		},
 		complete: function(data)
 		{
-			console.log(data);
+			//console.log(data);
 		}
 	});
 });
@@ -518,7 +518,7 @@ $('#button-edit-script-save').on("click", function()
 		},
 		success: function(data)
 		{
-			console.log(data);
+			//console.log(data);
 			$('#edit-script').css("opacity", 1);
 			$('#button-edit-script-save').prop("disabled", false);
 			$('#button-edit-script-save').html("Save");
@@ -639,13 +639,11 @@ function saveTimestamps()
 		{
 			if (data.status == 'success')
 			{
-				console.log('Timestamps saved.');
+				//console.log('Timestamps saved.');
 			}
 		},error: function(data)
 		{
-
-				console.log(data);
-
+				//console.log(data);
 		},
 	});
 	
