@@ -174,7 +174,13 @@
 		  								<option value="{{ $level->id }}">{{ $level->description }}</option>
 									@endforeach
 								</select>
-							
+								
+								<label>Language</label>
+								<select id="edit-media-info-language" name="language_id" class="form-control">
+									@foreach($languages as $language)
+		  								<option value="{{ $language->id }}">{{ $language->description }}</option>
+									@endforeach
+								</select>
 							</div>
 		        </div>
 						<button id="button-edit-info-save" type="button" class="btn btn-primary pull-right">Save</button>
