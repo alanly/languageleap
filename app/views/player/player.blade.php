@@ -72,6 +72,13 @@
 		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
 		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
 		<button id="mute-audio" class="pronunciations-on" title="Audio hover"></button>
+		
+		<div id="load-quiz-error" class="alert alert-danger col-lg-6 col-md-6 col-xs-6" role="alert" style="margin-top:10px" hidden="hidden">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span id="load-quiz-message"></span>
+		</div>
+		
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
@@ -210,9 +217,14 @@
 		}
 
 		function loadQuiz() {
+		
 			var $selectedWords = $('#script .word-selected');
 
 			if ($selectedWords.length > 0) {
+			
+				$(".continue").css('background', '#47a447 url(/img/misc/loading.gif) no-repeat center');
+				$(".continue").attr('disabled', 'disabled');
+				
 				// This data needs to be sent to the quiz page
 				var json = {
 					'selected_words': $selectedWords.map(function() { 
@@ -244,8 +256,6 @@
 					'video_id': {{ $video_id }}
 				};
 
-				
-				
 				$.ajax({
 					url: '/api/quiz/video',
 					type: 'POST',
@@ -257,7 +267,29 @@
 						
 						window.location = '/quiz';
 					},
+					error: function (jqXHR, textStatus, errorThrown) {
+						
+						$("#load-quiz-error").removeAttr("hidden");
+						
+						if(jqXHR.responseJSON != null)
+						{
+							$("#load-quiz-message").text(jqXHR.responseJSON.data);
+						}
+						else
+						{
+							$("#load-quiz-message").text(jqXHR.responseText);
+						}
+
+						// Re-enable button
+						$(".continue").css('background', '');
+						$(".continue").removeAttr('disabled');
+					}
 				});
+			}
+			else {
+				
+				$("#load-quiz-error").removeAttr("hidden");
+				$("#load-quiz-message").text("Select words to learn.");
 			}
 		}
 
@@ -488,7 +520,6 @@
 			$('.continue').click(function()
 			{
 				loadQuiz();
-				$(this).attr('disabled', 'disabled');
 			});
 
 			// Used to determine how long the mouse is hovered over a word
