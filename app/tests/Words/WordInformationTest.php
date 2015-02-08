@@ -36,7 +36,7 @@ class WordInformationTest extends TestCase
 		$word = 'cat';
 		$sentence = 'the cat is annoying';
 		$wordInformation = new WordInformation($word, 'an annoying animal', $sentence, $this->videoId);
-		$this->assertEquals(str_replace(" ".$word." ", "**BLANK**", $sentence), $wordInformation->getSentence());
+		$this->assertEquals(str_replace($word, "**BLANK**", $sentence), $wordInformation->getSentence());
 	}
 
 	public function testGetDefinitionEmpty()

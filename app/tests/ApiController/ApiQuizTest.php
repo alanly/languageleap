@@ -138,7 +138,7 @@ class ApiQuizControllerTest extends TestCase {
 		);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(404);
+		$this->assertResponseStatus(400);
 	}
 
 	/**
@@ -165,7 +165,7 @@ class ApiQuizControllerTest extends TestCase {
 		);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseStatus(404);
+		$this->assertResponseStatus(400);
 	}
 
 	/*
