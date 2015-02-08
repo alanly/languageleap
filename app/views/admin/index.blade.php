@@ -246,7 +246,7 @@
 			<!-- /seasons and episodes -->
 						
       <div class="modal-body media" aria-hidden="true" style="display: none;">
-				<div class="row">	
+				<div class="row text-center">	
 					Video goes here
 				</div>
 				<div class="row">
@@ -257,7 +257,6 @@
 								<input type="text" class="" placeholder="" style="width: 100px;" /> &#8594; 
 								<input type="text" class="" placeholder="" style="width: 100px;" />
 							</li>
-					
 						</ul>
 						<i id="timestamp-add" class="fa fa-plus"></i>
 					</div>

@@ -17,7 +17,7 @@ class CreateVideoTable extends Migration {
 			$table->morphs('viewable');
 			$table->integer('language_id')->unsigned();
 			$table->string('path');
-			$table->string('timestamps_json');
+			$table->string('timestamps_json')->nullable();
 		});
 	}
 

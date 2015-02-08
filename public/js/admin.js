@@ -256,7 +256,7 @@ $('#content').on('click', 'span.media', function(event)
 		description = data.data.description;
 		director = data.data.director;
 		actor = data.data.actor;
-		
+				
 		$('.edit-media-title').empty().append(name);
 		$('.modal-image').attr("src", thumb);
 		$('.modal-id').empty().append(id);
@@ -267,13 +267,29 @@ $('#content').on('click', 'span.media', function(event)
 		
 		$('#media-modal').modal('show');
 		
-		//script view
 		if (currentType != "shows")
 		{
+			//script view
 			script = data.data.videos[0].script.text;
 			$('#edit-script').empty().append(script);
 			$('#footer-info').trigger( "click" );
+						
+			// timestamp view
+			timestamps = data.data.videos[0].timestamps_json;
+			timestamps = JSON.parse(timestamps);
+			$('#timestamp-list').empty();
+			for (i = 0; i < timestamps.length; i++)
+			{
+				$('#timestamp-list').append('<li id="timestamp-row-' + timestamp_id + '"><input type="text" class="" placeholder="" style="width: 100px;" value="' + timestamps[i].from + '" /> &#8594; <input type="text" class="" placeholder="" style="width: 100px;" value="' + timestamps[i+1].to + '" /> <i data-id="' + timestamp_id + '" class="fa fa-times timestamp-close"></i></li>');
+			
+				i++;
+			}
 		}
+		
+		console.log(timestamps);
+		
+		
+		// should update the video being displayed here
 	});
 	
 	// if tvshow, populate seasons
