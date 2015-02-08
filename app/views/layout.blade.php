@@ -145,7 +145,7 @@
 					</div>
 				</div>				
 			</div>
-			<div role="tabpanel" class="content">
+			<div role="tabpanel" class="content col-md-10">
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active section movies">
 						<div class="elements">
@@ -335,6 +335,7 @@
 			$('.filters').animate({ width: 'toggle' }, 350);
 			$('.hide-filters-text').animate({ width: 'toggle' }, 350);
 			$('.filters-toggle .glyphicon').toggleClass('hide');
+			$('.content').toggleClass('col-md-10');
 		}
 
 		$(document).ready(function() {
