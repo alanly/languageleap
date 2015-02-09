@@ -1,6 +1,8 @@
 <?php namespace LangLeap\Videos;
 
-class Commercial extends Media {
+use LangLeap\Videos\RecommendationSystem\Classifiable;
+
+class Commercial extends Media implements Classifiable {
 
 	public $timestamps = false;
 
@@ -36,6 +38,13 @@ class Commercial extends Media {
 			'description' => $this->description,
 			'level'       => $this->level->description,
 			'videos'      => $videos,
+		];
+	}
+
+	public function getClassificationAttributes()
+	{
+		return [
+			'type'	=> 'Commercial',
 		];
 	}
 

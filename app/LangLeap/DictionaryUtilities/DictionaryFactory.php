@@ -1,7 +1,6 @@
 <?php namespace LangLeap\DictionaryUtilities;
 
-use LangLeap\DictionaryUtilities\EnglishDictionary;
-use LangLeap\DictionaryUtilities\FrenchDictionary;
+use LangLeap\DictionaryUtilities\EnglishDictionaryWordnikAdapter;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
@@ -21,6 +20,12 @@ class DictionaryFactory
 		return static::$instance;
 	}
 
+	/**
+	 * Returns the dictionary adapter object
+	 *
+	 * @param $language
+	 * @return Dictionary adapter
+	 */
 	public function getDictionary($language)
 	{
 		$dictionary = $this->getAndSetDictionary($language);
@@ -28,6 +33,12 @@ class DictionaryFactory
 		return $dictionary;
 	}
 
+	/**
+	 * Sets the dictionary in memory, and then returns it
+	 *
+	 * @param $language
+	 * @return Dictionary adapter
+	 */
 	private function getAndSetDictionary($language)
 	{
 		if(!array_key_exists(strtoupper($language), static::$dictionaries))
@@ -45,10 +56,7 @@ class DictionaryFactory
 		switch($language)
 		{
 			case "EN":
-				$dictionary = new EnglishDictionary;
-				break;
-			case "FR":
-				$dictionary = new FrenchDictionary;
+				$dictionary = new EnglishDictionaryWordnikAdapter;
 				break;
 			default:
 				$dictionary = null;

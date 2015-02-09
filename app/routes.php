@@ -15,7 +15,6 @@ use LangLeap\Videos\Video;
 |
 */
 
-
 // Accordion
 Route::get('/', function()
 {
@@ -110,6 +109,8 @@ Route::group(['prefix' => 'api'], function()
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');
 
+		// Recommendations
+		Route::resource('recommended', 'ApiRecommendedVideosController');
 	});
 
 	// Query the definition API for a definition
@@ -117,15 +118,23 @@ Route::group(['prefix' => 'api'], function()
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
-	
+	Route::controller('videos/cut', 'ApiCutVideoController');
+
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 
-	// Quiz
-	Route::controller('quiz', 'ApiQuizController');
+	// Update user info
+	Route::controller('users','ApiUserController');
 
-	// Registration
-	Route::resource('users','ApiUserController');
+	//Api routes with auth filter
+	Route::group(array('before' => 'auth'), function() {  
+		
+		// Viewing History     
+		Route::controller('history', 'ApiViewingHistoryController');
+
+		// Quiz
+		Route::controller('quiz', 'ApiQuizController');
+	});
 
 });
 
@@ -156,6 +165,11 @@ Route::get('quiz', ['before' => 'auth', function()
 	return View::make('quiz.main');
 }]);
 
+// Recommended Videos View
+Route::get('/recommended', function()
+{
+	return View::make('recommended');
+});
 
 // Ranking Process
 Route::controller('rank', 'RankQuizController');
@@ -165,5 +179,18 @@ Route::controller('rank', 'RankQuizController');
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
 
-//User Level
-Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserLevelController@showLevel']);
+// Routes for user panel controllers
+Route::group(['prefix' => 'user'], function()
+{
+
+	//User Level
+	Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showLevel']);
+
+	//User Info
+	Route::get('info', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showInfo']);
+});
+
+Route::any('queue/recieve', function()
+{
+	return Queue::marshal();
+});

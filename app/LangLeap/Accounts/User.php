@@ -5,12 +5,13 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use LangLeap\Core\ValidatedModel;
+use LangLeap\Videos\RecommendationSystem\Historable;
 
 /**
  * @author Thomas Rahn <thomas@rahn.ca>
  * @author Alan Ly <hello@alan.ly>
  */
-class User extends ValidatedModel implements UserInterface, RemindableInterface
+class User extends ValidatedModel implements UserInterface, RemindableInterface, Historable
 {
 
 	use UserTrait, RemindableTrait;
@@ -33,8 +34,20 @@ class User extends ValidatedModel implements UserInterface, RemindableInterface
 		return $this->hasMany('LangLeap\Payments\Invoice');
 	}
 
+
 	public function level()
 	{
 		return $this->belongsTo('LangLeap\Levels\Level');
+	}
+	
+	
+	public function history()
+	{
+		return $this->hasMany('LangLeap\Accounts\ViewingHistory');
+	}
+
+	public function getViewingHistory()
+	{
+		return $this->history;
 	}
 }

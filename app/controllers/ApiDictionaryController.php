@@ -92,6 +92,5 @@ class ApiDictionaryController extends \BaseController
 		}
 
 		return strtoupper($language->code);
-
 	}
 }

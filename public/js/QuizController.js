@@ -1,7 +1,7 @@
 /**
  * Instantiate the QuizApp instance.
  */
-var quizApp = angular.module('quizApp', ['ui.bootstrap']);
+var quizApp = angular.module('quizApp', ['ui.bootstrap', 'ngDragDrop']);
 
 /**
  * Setup our CSRF-handling values.
@@ -32,8 +32,9 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 
 	// Get the video information from the local storage.
 	var quizInfo = $scope.videoInfo = JSON.parse(localStorage.getItem("quizPrerequisites"));
-	
-	console.log(quizInfo);
+
+	//Get the redirect link for after the quiz
+	var redirect = $scope.redirect = JSON.parse(localStorage.getItem("redirect"));
 
 	/**
 	 * Load questions from the API on boot.
@@ -57,19 +58,26 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 				return console.error(data);
 			}
 
-			console.log(data);
-
 			// Activate the first question in the array.
 			$scope.questions[0].active = true;
 			$scope.currentQuestionIndex = 0;
+			
+			setTimeout(function()
+			{
+				if($scope.questions[0].type == "dragAndDrop")
+				{
+					formatDragAndDrop();
+				}
+			}, 100);
 		}).
 		error(function(data, status, headers, config)
 		{
 			$window.alert('An error occured while attempting to load the quiz. Please return and try again.');
 			return console.error(data);
 		});
-
-	$scope.submit = function(selection)
+	
+	
+	$scope.multiplechoice = function(selection)
 	{
 		// Retrieve the actual form selection.
 		selection = angular.copy(selection);
@@ -78,51 +86,59 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 		{
 			return console.error('Form was submitted without selection.');
 		}
-
+		
 		// Reference the current question.
 		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
-
-		if (currentQuestion.active !== true)
+		
+		putAnswer(selection.answer_id, function(data, status, headers, config)
 		{
-			return console.error('Form was submitted against an inactive question.');
-		}
+			var isCorrect = data.data.is_correct;
 
-		// Send the request to the API and fetch the result.
-		$http.put(
-			'/api/quiz',
+			if (isCorrect === true)
 			{
-				'quiz_id': $scope.quizID,
-				'videoquestion_id': currentQuestion.id,
-				'selected_id': selection.definition_id
+				// Increment our counter.
+				$scope.correctQuestionsCount++;
 			}
-		).
-			success(function(data, status, headers, config)
-			{
-				var isCorrect = data.data.is_correct;
 
-				if (isCorrect === true)
-				{
-					// Increment our counter.
-					$scope.correctQuestionsCount++;
-				}
+			// Highlight the selection appropriately.
+			$('#selection-id-'+currentQuestion.id+'-'+selection.answer_id).
+				addClass('has-' + (isCorrect === true ? 'success' : 'error'));
 
-				// Highlight the selection appropriately.
-				$('#radio-selection-id-'+currentQuestion.id+'-'+selection.definition_id).
-					addClass('has-' + (isCorrect === true ? 'success' : 'error'));
+			// Disable the form's radio buttons.
+			$('#form-question-id-'+currentQuestion.id+' input').prop('disabled', true);
 
-				// Disable the form's radio buttons.
-				$('#form-question-id-'+currentQuestion.id+' input').prop('disabled', true);
-
-				// Enable the "Next Question" button and modify its colouring
-				$('#btn-next-'+currentQuestion.id).addClass('btn-success');
-				$('#btn-next-'+currentQuestion.id).prop('disabled', false);
-			}).
-			error(function(data, status, headers, config)
-			{
-				return console.error(data);
-			});
+			// Enable the "Next Question" button and modify its colouring
+			$('#btn-next-'+currentQuestion.id).addClass('btn-success');
+			$('#btn-next-'+currentQuestion.id).prop('disabled', false);
+		});
 	};
 
+	$scope.drag = function(event, ui)
+	{
+		// Reference the current question.
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+		var answer_id = ui.draggable.attr("data-word-id");
+		
+		putAnswer(answer_id, function(data, status, headers, config)
+		{
+			var isCorrect = data.data.is_correct;
+
+			if (isCorrect === true)
+			{
+				// Increment our counter.
+				$scope.correctQuestionsCount++;
+			}
+
+			// Highlight the selection appropriately.
+			$('#selection-id-'+currentQuestion.id+'-'+answer_id).find('.btn').
+				addClass('btn-' + (isCorrect === true ? 'success' : 'danger')).removeClass('btn-primary');
+
+			// Enable the "Next Question" button and modify its colouring
+			$('#btn-next-'+currentQuestion.id).addClass('btn-success');
+			$('#btn-next-'+currentQuestion.id).prop('disabled', false);
+		});
+	};
+	
 	/**
 	 * Load the proceeding question.
 	 * @return void
@@ -140,7 +156,14 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 
 		// Increment to the next question.
 		$scope.currentQuestionIndex++;
-		$scope.questions[$scope.currentQuestionIndex].active = true;
+		
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+		currentQuestion.active = true;
+		
+		if(currentQuestion.type == "dragAndDrop")
+		{
+			formatDragAndDrop();
+		}
 	};
 
 	/**
@@ -157,11 +180,50 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			resolve: {
 				correctQuestionsCount: function() { return $scope.correctQuestionsCount; },
 				questionsCount: function() { return $scope.questions.length; },
-				redirect: function() { return 'https://www.reddit.com/'; }
-			}
+				redirect: function() { return $scope.redirect.redirect; }
+			},
+			backdrop: 'static',
+			keyboard: false
 		});
 	};
 	
+	function putAnswer(answer_id, success)
+	{
+		// Reference the current question.
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+	
+		// Send the request to the API and fetch the result.
+		$http.put(
+			'/api/quiz',
+			{
+				'quiz_id': $scope.quizID,
+				'videoquestion_id': currentQuestion.id,
+				'selected_id': answer_id
+			}
+		).
+			success(success).
+			error(function(data, status, headers, config)
+			{
+				return console.error(data);
+			});
+			
+		if (currentQuestion.active !== true)
+		{
+			return console.error('Form was submitted against an inactive question.');
+		}
+	}
+	
+	function formatDragAndDrop()
+	{
+		// Reference the current question.
+		var currentQuestion = $scope.questions[$scope.currentQuestionIndex];
+		
+		var header = $("#form-question-id-" + currentQuestion.id).find("h3");
+		var text = header.text().replace("**BLANK**", '<div></div>');
+		header.html(text);
+		
+		$("#form-question-id-" + currentQuestion.id).find(".droppable").detach().appendTo(header.find("div")).unwrap();
+	}
 });
 
 /**

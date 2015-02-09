@@ -121,6 +121,9 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
+		'LangLeap\Videos\RecommendationSystem\Providers\ClassificationDriverServiceProvider',
+		'LangLeap\Videos\RecommendationSystem\Providers\ModellerUtilitiesServiceProvider',
+		'LangLeap\Videos\RecommendationSystem\Providers\RecommendationRepositoryServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
 
 	),
@@ -164,6 +167,8 @@ return array(
 		'DB'                => 'Illuminate\Support\Facades\DB',
 		'Eloquent'          => 'Illuminate\Database\Eloquent\Model',
 		'Event'             => 'Illuminate\Support\Facades\Event',
+		'FFMpeg'	    => 'FFMpeg\FFMpeg',
+		'FFProbe'	    => 'FFMpeg\FFProbe',
 		'File'              => 'Illuminate\Support\Facades\File',
 		'Form'              => 'Illuminate\Support\Facades\Form',
 		'Hash'              => 'Illuminate\Support\Facades\Hash',

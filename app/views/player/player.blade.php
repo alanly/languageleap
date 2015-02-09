@@ -71,6 +71,17 @@
 
 		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
 		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
+<<<<<<< HEAD
+=======
+		<button id="mute-audio" class="pronunciations-on" title="Audio hover"></button>
+		
+		<div id="load-quiz-error" class="alert alert-danger col-lg-6 col-md-6 col-xs-6" role="alert" style="margin-top:10px" hidden="hidden">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			<span id="load-quiz-message"></span>
+		</div>
+		
+>>>>>>> 2f2b06fa85692d9681559633de10d15a5bbc3d5b
 	</div>
 
 	<div class="clear" style="clear:both;"></div>
@@ -120,7 +131,6 @@
 
 		function loadVideo()
 		{
-			loadScript();
 			var url = '/content/videos/{{ $video_id }}';
 			$.ajax({
 				type : 'GET',
@@ -138,6 +148,7 @@
 			});
 		}
 
+<<<<<<< HEAD
 		function playAudio(audioArray){
 			var current = 0;
 			
@@ -147,6 +158,40 @@
 				if (current < audioArray.length) {
 					setCurrentAudio(audioArray[current]);
 				}
+=======
+		// Later on, this will be used for flashcards
+		function loadScriptDefinitions() {
+			$('#script span[data-type=word]').each(function() {
+				var $this = $(this);
+				var definitionId = $this.data('id');
+
+				if (definitionId == undefined)
+					return;
+
+				$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
+					if (data.status == 'success') {
+						$this.tooltip({
+							'container': 'body',
+							'placement': 'auto top',
+							'title': data.data.definition
+						});
+
+						$this.data('definition', data.data.definition);
+						$this.data('full-definition', data.data.full_definition);
+						$this.data('pronunciation', data.data.pronunciation);
+					} else {
+						// Handle failure
+					}
+				});
+			});
+
+			$('#script span[data-type=nonDefinedWord]').each(function() {
+				$(this).tooltip({
+						'container': 'body',
+						'placement': 'auto top',
+						'title': 'Loading definition...'
+				});
+>>>>>>> 2f2b06fa85692d9681559633de10d15a5bbc3d5b
 			});
 		}
 
@@ -257,18 +302,45 @@
 		}
 
 		function loadQuiz() {
+		
 			var $selectedWords = $('#script .word-selected');
 
 			if ($selectedWords.length > 0) {
+			
+				$(".continue").css('background', '#47a447 url(/img/misc/loading.gif) no-repeat center');
+				$(".continue").attr('disabled', 'disabled');
+				
 				// This data needs to be sent to the quiz page
 				var json = {
-					'video_id': {{ $video_id }},
-					'selected_words': $selectedWords.map(function() { return $(this).data('id'); }).get(),
-					'all_words': $('#script span[data-type=word]').map(function() { return $(this).data('id'); }).get()
+					'selected_words': $selectedWords.map(function() { 
+						var word = $(this). text();
+						var def = $(this).attr('data-type') == 'word' ? $(this).tooltip().data().fullDefinition : null;
+						
+						var node = $(this);
+						var sentence = [];
+						
+						// Traverse to the beginning of the sentence
+						while(node.prev().length > 0 && node.prev().attr("data-type") != "actor")
+						{
+							node = node.prev();
+						}
+						
+						// Traverse to the end of the actor's line and build the sentence
+						do
+						{
+							sentence.push(node.text());
+							node = node.next();
+						}while(node.length > 0 && node.next().attr("data-type") != "actor");
+						
+						sentence = sentence.join(' ');
+						sentence += '.';
+						
+						return {'word':word, 'definition':def, 'sentence':sentence};
+						
+					}).get(),
+					'video_id': {{ $video_id }}
 				};
 
-				
-				
 				$.ajax({
 					url: '/api/quiz/video',
 					type: 'POST',
@@ -276,10 +348,33 @@
 					success: function (data) {
 						// Store data in the HTML5 Storage schema
 						localStorage.setItem("quizPrerequisites", JSON.stringify({'quiz_id': data.data.quiz_id}));
+						localStorage.setItem("redirect", JSON.stringify({'redirect': data.data.redirect}));
 						
 						window.location = '/quiz';
 					},
+					error: function (jqXHR, textStatus, errorThrown) {
+						
+						$("#load-quiz-error").removeAttr("hidden");
+						
+						if(jqXHR.responseJSON != null)
+						{
+							$("#load-quiz-message").text(jqXHR.responseJSON.data);
+						}
+						else
+						{
+							$("#load-quiz-message").text(jqXHR.responseText);
+						}
+
+						// Re-enable button
+						$(".continue").css('background', '');
+						$(".continue").removeAttr('disabled');
+					}
 				});
+			}
+			else {
+				
+				$("#load-quiz-error").removeAttr("hidden");
+				$("#load-quiz-message").text("Select words to learn.");
 			}
 		}
 
@@ -354,6 +449,7 @@
 		{
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
 		}
+<<<<<<< HEAD
 
 		function loadAdminDefinition($word)
 		{
@@ -382,6 +478,10 @@
 		}
 
 		function loadDictionaryDefinition($word, callback)
+=======
+		
+		function loadDefinition($word)
+>>>>>>> 2f2b06fa85692d9681559633de10d15a5bbc3d5b
 		{
 			var url = '/api/dictionaryDefinitions/';
 
@@ -493,9 +593,52 @@
 			}
 		}
 
+		function videoLoaded()
+		{
+			var $videoPlayer = $('#video-player');
+			
+			$videoPlayer[0].currentTime = ($videoPlayer.data('history-time')) ? $videoPlayer.data('history-time') : 0;
+		}
+
+		function loadVideoHistory()
+		{
+			var url = '/api/history/';
+
+			$.ajax({
+				type: 'GET',
+				url: url,
+				data: { video_id : "{{ $video_id }}" },
+				success : function(data)
+				{
+					$('#video-player').data('history-time', data.data.current_time);
+				},
+				error : function(data)
+				{
+					$('#video-player').data('history-time', 0);
+				}
+			});
+		}
+
+		function saveVideoHistory()
+		{
+			var url = '/api/history/';
+
+			$.ajax({
+				async: false,
+				type: 'POST',
+				url: url,
+				data:
+				{ 
+					current_time: Math.floor($('#video-player')[0].currentTime),
+					video_id: "{{ $video_id }}"
+				}
+			});
+		}
+
 		$(function()
 		{
 			loadVideo();
+			loadVideoHistory();
 
 			$(".define").click(function()
 			{
@@ -505,7 +648,6 @@
 			$('.continue').click(function()
 			{
 				loadQuiz();
-				$(this).attr('disabled', 'disabled');
 			});
 
 			// Used to determine how long the mouse is hovered over a word
@@ -555,6 +697,14 @@
 			$('#flashcard').on('click', '.play-pronunciation', function()
 			{
 				playAudio($(this).data('audio-url').split(' '));
+			});
+
+			// Handle when the video is completely loaded
+			$('#video-player').bind('loadeddata', videoLoaded);
+
+			// Handle when the user leaves the page without going to the quiz
+			$(window).unload(function() { 
+				saveVideoHistory(); // Call this from the console to test
 			});
 		});
 	</script>

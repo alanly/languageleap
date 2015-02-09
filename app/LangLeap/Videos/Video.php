@@ -36,6 +36,20 @@ class Video extends ValidatedModel {
 		return $this->morphTo();
 	}	
 
+	/**
+	 * This function will return the next video in the sequence or null if there is none.
+	 *
+	 * @return Video 		The next video in the sequence
+	 */
+	public function nextVideo()
+	{
+		return Video::where('viewable_id', $this->viewable_id)
+							->where('viewable_type', $this->viewable_type)
+							->where('video_number', $this->video_number + 1)
+							->get()
+							->first();
+
+	}
 
 	public function toResponseArray()
 	{

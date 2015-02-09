@@ -2,7 +2,7 @@
 
 use LangLeap\Accounts\User;
 use LangLeap\Quizzes\Answer as QuizAnswer;
-use LangLeap\Quizzes\Question as QuizQuestion;
+use LangLeap\Questions\Question as QuizQuestion;
 
 /**
  * @author Alan Ly <hello@alan.ly>

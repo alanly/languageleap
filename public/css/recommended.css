@@ -1,0 +1,38 @@
+#recommended-scroller {
+	height: 200px;
+}
+
+#recommended-scroller img {
+	height: 150px;
+	margin-bottom: 10px;
+	width: 200px;
+}
+
+#recommended-scroller span {
+	display: inline-block;
+	width: 70%;
+}
+
+#recommended-scroller .carousel-control {
+	background-image: none;
+	color: black;
+}
+
+#recommended-scroller .carousel-control span {
+	font-size: 60px;
+	margin-top: -45px;
+	text-shadow: 0 -2px 3px #fff, 0 2px 3px #fff;
+}
+
+#recommended-scroller .right span {
+	margin-right: -35px;
+}
+
+#recommended-scroller .left span {
+	margin-left: -40px;
+}
+
+#recommended-scroller .no-videos {
+	height: 200px;
+	top: 50px;
+}
