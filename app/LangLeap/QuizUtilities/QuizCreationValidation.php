@@ -53,11 +53,11 @@ class QuizCreationValidation extends InputDecorator {
 			if(strlen($word) < 1) return ['error', "The selected word was not found.", 404];
 
 			$sentence = $selectedWord['sentence'];
-			if(strlen($sentence) < 1) return ['error', "The selected word was not associated to a sentence.", 404];
+			if(strlen($sentence) < 1) return ['error', "The selected word was not associated to a sentence.", 400];
 
 			if(stripos($sentence, $word) === FALSE)
 			{
-				return ['error', "The selected word was not found in the provided sentence.", 404];
+				return ['error', "The selected word was not found in the provided sentence.", 400];
 			}
 		}
 		

@@ -10,7 +10,7 @@ use App;
 class Question extends Eloquent {
 
 	public    $timestamps = false;
-	protected $fillable   = ['answer_id' => 'integer'];
+	protected $fillable   = ['answer_id', 'question_id', 'question_type'];
 
 	public function questionType()
 	{
