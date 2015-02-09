@@ -181,7 +181,9 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 				correctQuestionsCount: function() { return $scope.correctQuestionsCount; },
 				questionsCount: function() { return $scope.questions.length; },
 				redirect: function() { return $scope.redirect.redirect; }
-			}
+			},
+			backdrop: 'static',
+			keyboard: false
 		});
 	};
 	
