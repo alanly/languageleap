@@ -44,6 +44,7 @@ class CommercialTest extends TestCase {
 	{
 		$comm =  App::make('LangLeap\Videos\Commercial');
 		$comm->name = 'Test Commercial';
+		$comm->level_id = 1;
 		$comm->save();
 		return $comm;
 	}

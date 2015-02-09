@@ -6,31 +6,31 @@
 	width: 800px;
 }
 
-#script {
+.script-editor {
 	border: 1px solid #000;
-	margin-top: 125px;
 	outline: none;
-	padding: 20px;
+	padding: 2px;
+	margin-bottom: 20px;
 }
 
 /* Important: Keep the -moz-selection and other selections separate for firefox compatibility */
-#script::-moz-selection {
+.script-editor::-moz-selection {
 	color: #cba;
 }
 
-#script::selection {
+.script-editor::selection {
 	color: #cba;
 }
 
-#script span::-moz-selection {
+.script-editor span::-moz-selection {
 	background-color: transparent;
 }
 
-#script span::selection {
+.script-editor span::selection {
 	background-color: transparent;
 }
 
-#script span {
+.script-editor span {
 	cursor: pointer;
 	padding: 10px;
 
@@ -39,7 +39,7 @@
 	border-radius: 7px;
 }
 
-#script span:hover {
+.script-editor span:hover {
 	cursor: pointer;
 }
 
@@ -74,8 +74,8 @@
 	max-width: 568px;
 }
 
-#script .tooltip::selection,
-#script .tooltip-arrow::selection,
-#script .tooltip-inner::selection {
+.script-editor .tooltip::selection,
+.script-editor .tooltip-arrow::selection,
+.script-editor .tooltip-inner::selection {
 	background-color: transparent;
 }

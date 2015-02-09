@@ -214,6 +214,8 @@ class ApiEpisodeController extends \BaseController {
 			);
 		}
 
+
+
 		$episode->fill(Input::get());
 
 		if (! $episode->save())

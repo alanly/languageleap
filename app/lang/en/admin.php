@@ -34,4 +34,7 @@ return array(
 	'script' => array(
 		'upload' => 'Script Upload',
 	),
+	'upload' => array(
+		'success' => 'Media Uploaded Successfully'
+	),
 );

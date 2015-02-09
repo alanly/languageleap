@@ -28,25 +28,35 @@ class ApiVideoControllerTest extends TestCase {
 		$this->assertObjectHasAttribute('video', $data);
 
 	}
+	
 	public function testStore()
 	{
 		$this->seed();
-		$commercial = Commercial::first();
-		$language = Language::first();
+        $commercial = Commercial::first();
+        $language = Language::first();
 
-		$video = new Symfony\Component\HttpFoundation\File\UploadedFile(Config::get('media.test') . DIRECTORY_SEPARATOR . '1.mkv', '1.mkv','video/x-matroska',null,null,true);
-		$script = new Symfony\Component\HttpFoundation\File\UploadedFile(Config::get('media.test') . DIRECTORY_SEPARATOR . '1.txt', '1.txt');
+        $video = new Symfony\Component\HttpFoundation\File\UploadedFile(Config::get('media.test') . DIRECTORY_SEPARATOR . '1.mkv', 
+        	'1.mkv',
+        	'video/x-matroska',
+        	null,
+        	null,
+        	true);
+        
+        $text = "text";
 
-		$response = $this->action(
-			'POST',
-			'ApiVideoController@store',
-			[],['video_type'=>'commercial','commercial'=>$commercial->id, 'language_id' => $language->id ],
-			['video'=> $video, 'script' => $script]
-		);
+        $response = $this->action(
+                'POST',
+                'ApiVideoController@store',
+                [],
+                ['video_type'=>'commercial','commercial'=>$commercial->id, 'language_id' => $language->id, "text" => $text ],
+                ['video'=> $video]
+        );
 
-		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseOk();
+        $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+        $this->assertResponseOk();
+
 	}
+	
 	public function testUpdate()
 	{
 		$this->seed();

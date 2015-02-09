@@ -1,6 +1,7 @@
 <?php
 
 use LangLeap\Videos\Video;
+use LangLeap\Levels\Level;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +45,7 @@ Route::group(['prefix' => 'admin'], function()
 	// Interface index
 	Route::get('/', function()
 	{
-		return View::make('admin.index');
+		return View::make('admin.index')->with('levels', Level::all());
 	});
 
 	// Video interface
@@ -90,14 +91,17 @@ Route::group(['prefix' => 'api'], function()
 
 		// Commercials
 		Route::resource('commercials', 'ApiCommercialController');
+		Route::patch('commercials/update-script/{id}', 'ApiCommercialController@updateScript');
 
 		// Movies
 		Route::resource('movies', 'ApiMovieController');
+		Route::patch('movies/update-script/{id}', 'ApiMovieController@updateScript');
 
 		// Shows (and Seasons and Episodes)
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
+		Route::patch('shows/update-script/{id}', 'ApiShowController@updateScript');
 		
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');
@@ -166,6 +170,8 @@ Route::get('/recommended', function()
 
 // Ranking Process
 Route::controller('rank', 'RankQuizController');
+
+Route::controller('/api/videos/cut/segments', 'CutVideoStub');
 
 
 // CSRF Test Route

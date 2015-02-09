@@ -1,5 +1,10 @@
 <?php
+use LangLeap\Levels\Level;
 
+/*
+ * @author David Siekut
+ * @author Thomas Rahn 
+ */
 class FileUploadController extends \BaseController {
 
 	public function __construct()
@@ -13,6 +18,8 @@ class FileUploadController extends \BaseController {
 
 		$type = Input::get('info-radio');
 		
+		$response = App::make('ApiVideoController')->store();
+		
 		if ($type == "commercial")
 		{
 			$response = App::make('ApiCommercialController')->store();
@@ -21,6 +28,7 @@ class FileUploadController extends \BaseController {
 		else if ($type == "show")
 		{
 			$response = App::make('ApiShowController')->store();
+
 			
 		}
 		else if ($type == "movie")
@@ -28,7 +36,7 @@ class FileUploadController extends \BaseController {
 			$response = App::make('ApiMovieController')->store();
 			
 		}
-		
+
 		$id = $response->getData()->data->id;
 		
 		// get all post vars and add on video_id
@@ -40,7 +48,7 @@ class FileUploadController extends \BaseController {
 
 		//App::make('ApiScriptController')->store();
 		// create an internal request
-		$request = Request::create('admin/save-script', 'POST', $data);
+		$request = Request::create('/api/scripts', 'POST', $data);
 		// replace the old request with the internal request one
 		Request::replace($request->input());
 		
@@ -54,7 +62,13 @@ class FileUploadController extends \BaseController {
 		$path = '/storage/media/videos/' . $type . 's/';
 		Input::file('file')->move(app_path() . $path, $id . '.' . Input::file('file')->getClientOriginalExtension());
 		
-		return View::make('admin.index');
+
+		Session::flash('action.success', true);
+		Session::flash('action.message', Lang::get('admin.upload.success'));
+		
+		return View::make('admin.index')
+							->with('levels',LeveL::all());
+
 	}
 
 }

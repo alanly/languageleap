@@ -1,76 +1,97 @@
 @extends('admin.master')
+
 @section('head')
 <link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="/css/admin-script.css"/>
+<script type="text/javascript" src="/js/admin-script.js"></script>
+<meta name="csrf-token" content="<?= csrf_token() ?>">
 @stop
+
 @section('content')
 <div class="container-fluid">
+	<!-- pulldown modal for adding new media -->
 	<div id="slidedown-add-new" class="clearfix" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog modal-lg">
-			{{ Form::open(array('url'=>'admin/add-new-form-submit', 'files'=>true, 'id' => 'new-media-form')) }}
+			<!-- {{ Form::open(array('url'=>'admin/add-new-form-submit', 'files'=>true, 'id' => 'new-media-form')) }} -->
+			{{ Form::open(array('url'=>'api/videos', 'files'=>true, 'id' => 'new-media-form')) }}
+			
 			<div id="add-new-content" class="modal-content">
 	      <div id="add-new-header" class="modal-header">
         	<h2>Media Info</h2>
 				</div>
+				<!-- step one -->
 				<div id="add-new-body-info" class="modal-body clearfix" aria-hidden="false" style="display: block;">
-					<!-- <form id="new-form" role="form"> -->
-						<div class="form-group">
-							<label>Media type: </label>
-							<div class="radio">
-								<label>
-									<input type="radio" name="info-radio" id="info-commercial-radio" value="commercial" checked /> Commercial
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="info-radio" id="info-tvshow-radio" value="show" /> TV Show
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="info-radio" id="info-movie-radio" value="movie" /> Movie
-								</label>
-							</div>
+					<div class="form-group">
+						<label>Media type: </label>
+						<div class="radio">
+							<label>
+								<input type="radio" name="info-radio" id="info-commercial-radio" value="commercial" checked /> Commercial
+							</label>
 						</div>
-						
-						<div id="info-default-form" style="width: 500px;">
-							
-							<div id="info-default-form-name" class="form-group">
-								<label>Name</label>
-								<input id="info-commercial-form-name-input" name="name" type="text" class="form-control" placeholder="" />
-							</div>
-							<div id="info-default-form-description" class="form-group">
-								<label>Description</label>
-								<input id="info-default-form-description-input" name="description" type="text" class="form-control" placeholder="" />
-							</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="info-radio" id="info-tvshow-radio" value="show" /> TV Show
+							</label>
 						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="info-radio" id="info-movie-radio" value="movie" /> Movie
+							</label>
+						</div>
+					</div>
+				
+					<div id="info-default-form" style="width: 500px;">
+					
+						<div id="info-default-form-name" class="form-group">
+							<label>Name</label>
+							<input id="info-commercial-form-name-input" name="name" type="text" class="form-control" placeholder="" />
+						</div>
+						<div id="info-default-form-description" class="form-group">
+							<label>Description</label>
+							<input id="info-default-form-description-input" name="description" type="text" class="form-control" placeholder="" />
+						</div>
+						<div id="info-default-form-level" class="form-group">
+							<label>Level</label>
+							<select id="info-default-form-level-select" name="level_id" class="form-control">
+								@foreach($levels as $level)
+	  								<option value="{{ $level->id }}">{{ $level->description }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
 
-						<div id="info-extra-tab" aria-hidden="true" style="display: none;">
-							
-							<div id="info-tvshow-form" style="width: 500px;">
-								<div id="info-tvshow-form-director" class="form-group">
-									<label>Director</label>
-									<input name="director" type="text" class="form-control" placeholder="" />
-								</div>
-								<div id="info-tvshow-form-actor" class="form-group">
-									<label>Actor</label>
-									<input name="actor" type="text" class="form-control" placeholder="" />
-								</div>
-								<div id="info-tvshow-form-genre" class="form-group">
-									<label>Genre</label>
-									<input name="genre" type="text" class="form-control" placeholder="" />
-								</div>
+					<div id="info-extra-tab" aria-hidden="true" style="display: none;">
+					
+						<div id="info-tvshow-form" style="width: 500px;">
+							<div id="info-tvshow-form-director" class="form-group">
+								<label>Director</label>
+								<input name="director" type="text" class="form-control" placeholder="" />
+							</div>
+							<div id="info-tvshow-form-actor" class="form-group">
+								<label>Actor</label>
+								<input name="actor" type="text" class="form-control" placeholder="" />
+							</div>
+							<div id="info-tvshow-form-genre" class="form-group">
+								<label>Genre</label>
+								<input name="genre" type="text" class="form-control" placeholder="" />
 							</div>
 						</div>
-					<!-- </form> -->
-
+					</div>
 				</div>
+				<!-- /step one -->
+				<!-- step two -->
 				<div id="add-new-body-script" class="modal-body clearfix" aria-hidden="true" style="display: none;">
-					@include('admin.script.script')
+					<div id="edit-container">
+						<div id="add-script" class="script-editor" contenteditable=true></div>
+					</div>
 				</div>
+				<!-- /step two -->
+				<!-- step three -->
 				<div id="add-new-body-media" class="modal-body clearfix" aria-hidden="true" style="display: none;">
 				  {{ Form::label('file', 'File', array('id'=>'', 'class'=>'')) }}
 				  {{ Form::file('file', '', array('id'=>'', 'class'=>'')) }}
 				</div>
+				<!-- /step three -->
 				<div id="add-new-body-upload" class="modal-body clearfix" aria-hidden="true" style="display: none;">
 					upload progress ajax stuff goes here
 				</div>
@@ -81,87 +102,216 @@
 			</div>
 		  {{ Form::close() }}
 		</div>
+
+		<!-- modal for the script editor -->
+		@include('admin.script.script')
+		<!-- /modal for the script editor -->
 	</div>
+	<!-- /pulldown modal for adding new media -->
 	
 	<div id="button-add-new" class="pull-right">
 		<button type="button" class="btn btn-success center-block">Add Media</button>
 	</div>
 	
+	<!-- search -->
 	<div id="search" class="container">
 		<input class="rounded" style="margin-right: 5px;" /><i class="fa fa-search fa-lg"></i>
 	</div>
+	<!-- /search -->
+		
+	<!-- categories -->
 	<div id="select" class="container">
-		<span id="select-movies">Movies</span> <span id="select-commercials">Commercials</span> <span id="select-commercials">TV Shows</span>
+		<span id="select-movies">Movies</span> <span id="select-commercials">Commercials</span> <span id="select-shows">TV Shows</span>
 	</div>
 	<div id="content" class="container">
 	</div>
-	<div id="add" class="container">
-	</div>
+	<!-- /categories -->
 </div>
 
+<!-- media info modal -->
 <div id="media-modal" class="modal fade" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h2 class="modal-title"></h2>
+        <h2 class="edit-media-title"></h2>
       </div>
 			
+			<!-- info -->
       <div class="modal-body info" aria-hidden="false" style="display: block;">
+				{{ Form::open(array('url'=>'admin/edit-media-info', 'files'=>false, 'id' => 'edit-media-form')) }}
 		    <div class="row">
 		        <div class="col-xs-4">
 		        	<img class="modal-image" src="" />
 		        </div>
 		        <div class="col-xs-8">
-							<div class="info-row">ID: <span class="modal-id"></span></div>
-		        	<div class="info-row">Name: <span class="modal-name"></span></div>
-							<div class="info-row">Description: <span class="modal-desc"></span></div>
-							<div class="info-row">Director: <span class="modal-director"></span></div>
-							<div class="info-row">Actor: <span class="modal-actor"></span></div>
+					<div class="info-row">ID: <span class="modal-id"></span></div>
+
+					<div id="" class="form-group">
+						<label>Name</label>
+						<input id="edit-media-info-name" name="name" type="text" class="form-control" placeholder="" />
+
+						<label>Description</label>
+						<input id="edit-media-info-description" name="description" type="text" class="form-control" placeholder="" />
+
+						<label>Director</label>
+						<input id="edit-media-info-director" name="director" type="text" class="form-control" placeholder="" />
+						
+						<label>Actor</label>
+						<input id="edit-media-info-actor" name="actor" type="text" class="form-control" placeholder="" />
+					
+						<label>Level</label>
+						<select id="edit-media-info-level" name="level_id" class="form-control">
+							@foreach($levels as $level)
+		  						<option value="{{ $level->id }}">{{ $level->description }}</option>
+							@endforeach
+						</select>
+					
+					</div>
 		        </div>
+					<button id="button-edit-info-save" type="button" class="btn btn-primary pull-right">Save</button>
 		    </div>
+				{{ Form::close() }}
       </div>
+			<!-- /info -->
+
+		
+		<!-- video split -->
+		<div class="modal-body video-split clearfix" aria-hidden="true" style="display: none;">
+
+			<div class="row" style="padding-left: 20px;">
+				<div class="col-lg-6">
+					<video controls>
+						<source class="source" type="video/mp4">
+						<p>@lang('player.player.error')</p>
+					</video>
+				</div>
+				<div class="col-lg-6"  style="padding-right: 35px;">
+					<div class="control-group">
+						<div class="controls">
+							{{ Form::open(array('url'=>'/api/videos/cut/segments', 'id' => 'cut-form')) }}
+							<div class="radio row">
+								<br/>
+								<label>
+									<input id="user_role_cut_by" name="user[role]" type="radio" value="Cut by" checked>
+					                Cut by: 
+					                <input type="number" class="time-field" id="segment-amount" name="segments"> segments
+								</label>
+								<br/>
+								<br/>
+								<label class="interval-inputs">
+									<input id="user_role_cut_at" name="user[role]" type="radio" value="Cut at">
+									Cut from  
+									<input type="number" class="time-field" id="from-min"> m 
+									<input type="number" class="time-field" id="from-sec"> s to  
+									<input type="number" class="time-field" id="to-min"> m 
+									<input type="number" class="time-field" id="to-sec"> s</br>
+								</label>
+								<button id="button-edit-info-add" type="button" class="btn btn-success pull-right">Add</button>
+								<br/>
+								<br/>
+								<div id="segment-intervals">				
+								</div>
+							</div>
+							{{ Form::close() }}
+						</div>
+						<button id="button-edit-info-done" type="button" class="btn btn-primary pull-right">Done</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /video split -->
+
 			
+	<!-- script split -->
+      <div class="modal-body script clearfix" aria-hidden="true" style="display: none;">
+				<div class="row">
+					<div class="dropdown col-lg-12">
+						<button class="btn btn-default dropdown-toggle" type="button" id="video-segment-dropdown" data-toggle="dropdown" aria-expanded="true">
+							Video Segments
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" id="video-segment-list" role="menu" aria-labelledby="dropdownMenu1">
+						</ul>
+					</div>
+				
+					<div class="col-lg-4">
+						<video id="video-segment-player" controls>
+							<source class="source" type="video/mp4">
+							<p>@lang('player.player.error')</p>
+						</video>
+					</div>
+
+					<div id="edit-container" class="col-lg-4">
+						<div id="edit-script" class="script-editor" contenteditable=true></div>
+					</div>
+				
+					@include('admin.script.script')
+					<button id="button-edit-script-save" type="button" class="btn btn-primary pull-right">Save</button>
+				</div>
+      </div>
+	<!-- /script split-->
+			
+			<!-- seasons and episodes -->
+      <div class="modal-body seasons clearfix" aria-hidden="true" style="display: none;">
+				<div class="row">
+					<div class="col-xs-3">
+						<label>Season</label>
+						<select id="edit-media-info-seasons" name="season_id" class="form-control">
+						</select>
+						<a href="#" id="popover-new-season-outer" rel="popover" data-original-title="">+</a>
+					</div>
+					<div class="col-xs-3">
+						<label>&nbsp;</label>
+						<div id="popover-new-season-inner" style="display: block;">
+							<input id="add-new-season" name="new-season" type="text" class="form-control" placeholder="" style="display: inline-block; width: 50px;" />
+							<button id="add-season" type="button" class="btn btn-primary">Add</button>
+						</div>
+					</div>
+					
+					<div class="col-xs-3">
+						<label>Episode</label>
+						<select id="edit-media-info-episodes" name="episode_id" class="form-control">
+						</select>
+						<a href="#" id="popover-new-episode-outer" rel="popover" data-original-title="">+</a>
+					</div>
+					<div class="col-xs-3">
+						<label>&nbsp;</label>
+						<div id="popover-new-episode-inner" style="display: block;">
+							<input id="add-new-episode" name="new-episode" type="text" class="form-control" placeholder="" style="display: inline-block; width: 50px;" />
+							<button id="add-episode" type="button" class="btn btn-primary" disabled="true">Add</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<label>Name</label>
+						<input id="edit-media-info-episode-name" name="ep_name" type="text" class="form-control" placeholder="" />
+					</div>
+				</div>
+				<div class="row">		
+					<div class="col-xs-4">
+						<label>Description</label>
+						<input id="edit-media-info-episode-description" name="ep_description" type="text" class="form-control" placeholder="" />
+					</div>
+				</div>
+				<div class="row">	
+					<button id="button-edit-episode-save" type="button" class="btn btn-primary pull-right">Save</button>
+				</div>
+      </div>
+			<!-- /seasons and episodes -->
+						
       <div class="modal-body media" aria-hidden="true" style="display: none;">
 				Media goes here
-      </div>
-			
-      <div class="modal-body script clearfix" aria-hidden="true" style="display: none;">
-				<?php
-					// change route and function to whatever you need
-					echo Form::open(array('url' => 'foo/bar', 'class'=>'form-script'));
-					//echo Form::model($script, array('route' => array('script.create', $script->id)));
-					echo Form::label('text', 'Script');
-					echo Form::textarea('text');
-					echo Form::submit('Submit');
-					echo Form::close();
-				?>
-      </div>
-			
-      <div class="modal-body flash" aria-hidden="true" style="display: none;">
-				Flashcards go here
-      </div>
+			</div>
 			
       <div class="modal-footer">
 		    <div class="row-fluid">
-					<div id="footer-info" class="span2 text-center">
-						Info
-					</div>
-					<div id="footer-media" class="span2 text-center">
-						Media
-					</div>
-					<div id="footer-script" class="span2 text-center">
-						Script
-					</div>
-					<div id="footer-flash" class="span2 text-center">
-						Flashcards
-					</div>
-					<div id="" class="span2 text-center">
-						Aaaaaa
-					</div>
-					<div id="" class="span2 text-center">
-						Bbbbbb
-					</div>
+					<span id="footer-info">Info</span>
+					<span id="footer-seasons" aria-hidden="true" style="display: none;">Seasons</span>
+					<span id="footer-video-split">Split</span>
+					<span id="footer-script">Script</span>
+					<span id="footer-media"></span>
 				</div>				
       </div>
 		</div>
