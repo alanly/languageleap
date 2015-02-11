@@ -46,8 +46,9 @@ class VideoQuestionTest extends TestCase {
 
 	protected function getQuestionInstance()
 	{
-		$question = App::make('LangLeap\Quizzes\Question');
-		$question->question = '';
+		$question = App::make('LangLeap\Questions\Question');
+		$question->question_type = 'LangLeap\Questions\CustomQuestion';
+		$question->question_id = 1;
 		$question->answer_id = 1;
 		$question->save();
 

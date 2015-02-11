@@ -3,6 +3,7 @@
 @section('javascript')
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.0/angular.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.min.js"></script>
+<script src="js/angular-dragdrop.min.js"></script>
 @stop
 
 @section('css')

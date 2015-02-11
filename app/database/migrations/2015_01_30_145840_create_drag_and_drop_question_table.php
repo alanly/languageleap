@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuestionTable extends Migration {
+class CreateDraganddropquestionTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,9 @@ class CreateQuestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('questions', function($table){
+		Schema::create('drag_and_drop_questions', function($table){
 			$table->increments('id');
-			$table->integer('answer_id');
-			$table->morphs('question');
+			$table->string('sentence');
 		});
 	}
 
@@ -26,7 +25,7 @@ class CreateQuestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('questions');
+		Schema::dropIfExists('drag_and_drop_questions');
 	}
 
 }

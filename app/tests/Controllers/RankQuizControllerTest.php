@@ -10,7 +10,7 @@ use LangLeap\Core\Language;
  * @author Thomas Rahn <thomas@rahn.ca>
  * @author David Siekut <david.siekut@gmail.com>
  */
-class RankQuizTest extends TestCase {
+class RankQuizControllerTest extends TestCase {
 
 	public function setUp()
 	{
@@ -143,7 +143,7 @@ class RankQuizTest extends TestCase {
 		for ($i = 0; $i < count($questions); ++$i)
 		{
 			$q = $questions[$i];
-			$q = App::make('LangLeap\Quizzes\Question')->find($q->id);
+			$q = App::make('LangLeap\Questions\Question')->find($q->id);
 			$a = $q->answer;
 
 			$questions[$i]->selected = intval($a->id);
@@ -166,6 +166,7 @@ class RankQuizTest extends TestCase {
 		$this->assertEquals(4, $level->id);
 	}
 	
+
 	public function testSkipRankUnranked()
 	{
 		$this->be($this->createUser(1));
@@ -175,6 +176,7 @@ class RankQuizTest extends TestCase {
 		$this->assertResponseStatus(302);
 	}
 	
+
 	public function testSkipRankAlreadyRanked()
 	{
 		$this->be($this->createUser(2));
@@ -183,6 +185,7 @@ class RankQuizTest extends TestCase {
 		$this->assertInstanceOf('Illuminate\Http\Response', $response);
 		$this->assertResponseStatus(400);
 	}
+
 
 	protected function createUser(
  		$level_id,
@@ -205,4 +208,5 @@ class RankQuizTest extends TestCase {
  			'level_id'	 => $level_id,
  		]);
  	}
+ 	
 }

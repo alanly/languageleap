@@ -1,14 +1,14 @@
 <?php
 
 use LangLeap\TestCase;
-use LangLeap\DictionaryUtilities\EnglishDictionary;
+use LangLeap\DictionaryUtilities\EnglishDictionaryWordnikAdapter;
 
 class EnglishDictionaryTest extends TestCase
 {
 
 	public function testGettingADefinitionFromTheApi()
 	{
-		$dict = new EnglishDictionary;
+		$dict = new EnglishDictionaryWordnikAdapter;
 
 		$definition = $dict->getDefinition('cat');
 

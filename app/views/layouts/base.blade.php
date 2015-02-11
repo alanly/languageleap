@@ -13,7 +13,14 @@
 		<link rel="stylesheet" href="/css/layout.css">
 
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+		
+		<script type='text/JavaScript'>
+			$.widget.bridge('uitooltip', $.ui.tooltip); //Resolve name collision between jQuery UI and Twitter Bootstrap
+		</script>
+		
 		<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
 		@yield('javascript')
 
 		@yield('head')
