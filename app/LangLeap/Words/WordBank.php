@@ -30,10 +30,16 @@ class WordBank extends Eloquent {
 
 	public function toResponseArray()
 	{
+		$definition = Definition::find($this->definition_id)->first();
+		
 		return array(
 			'id' 			=> $this->id,
-			'definition_id' => $this->definition_id,
-			'definition' 	=> []
+			'definition' 	=> [
+				'id' 			=> $definition->id,
+				'word' 			=> $definition->word,
+				'pronunciation' => $definition->pronunciation,
+				'definition' 	=> $definition->definition,
+			]
 		);
 	}
 
