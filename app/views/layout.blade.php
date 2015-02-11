@@ -184,7 +184,7 @@
 			$.ajax({
 				type : "GET",
 				dataType : "JSON",
-				url : "/api/metadata/movies",
+				url : "/api/metadata/movie3s",
 				success : function(data){
 					var movies = "";
 					$.each(data.data, function(index,value){
@@ -197,7 +197,7 @@
 						}
 
 						movies += "<div class='element' id='" + value.id + "'>" 
-									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='bottom' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
 									+ "<img src='" + cover + "'/>"
 									+ "</a>"
 									+ "</div>";
@@ -207,9 +207,16 @@
 					$('[data-toggle="popover"]').popover();
 				},
 				error : function(data){
+					var message = data.responseJSON.data;
 
+					if(message === undefined)
+					{
+						message = "There was a problem loading the information, Please try again at a later time.";
+					}
+
+					var error = "<div class='alert alert-danger' role='alert'>" + message + "</div>";
+					$(".movie-elements").html(error);
 				}
-
 			});
 		}
 
@@ -232,7 +239,7 @@
 						}
 
 						commercials += "<div class='element' id='" + value.id + "'>" 
-									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='bottom' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
 									+ "<img src='" + cover + "'/>"
 									+ "</a>"
 									+ "</div>";
@@ -242,7 +249,15 @@
 					$('[data-toggle="popover"]').popover();
 				},
 				error : function(data){
+					var message = data.responseJSON.data;
 
+					if(message === undefined)
+					{
+						message = "There was a problem loading the information, Please try again at a later time.";
+					}
+					
+					var error = "<div class='alert alert-danger' role='alert'>" + message + "</div>";
+					$(".movie-elements").html(error);
 				}
 
 			});
@@ -267,7 +282,7 @@
 						}
 
 						shows += "<div class='element' id='" + value.id + "'>" 
-									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='bottom' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
 									+ "<img src='" + cover + "'/>"
 									+ "</a>"
 									+ "</div>";
@@ -277,7 +292,15 @@
 					$('[data-toggle="popover"]').popover();
 				},
 				error : function(data){
+					var message = data.responseJSON.data;
 
+					if(message === undefined)
+					{
+						message = "There was a problem loading the information, Please try again at a later time.";
+					}
+					
+					var error = "<div class='alert alert-danger' role='alert'>" + message + "</div>";
+					$(".movie-elements").html(error);
 				}
 
 			});
