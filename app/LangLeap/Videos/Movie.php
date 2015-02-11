@@ -42,6 +42,7 @@ class Movie extends Media implements Billable, Classifiable {
 			'director'    => $this->director,
 			'actor'       => $this->actor,
 			'genre'       => $this->genre,
+			'image_path'  => $this->image_path,
 			'level'       => $this->level->description,
 			'videos'      => $videos,
 		];
