@@ -7,9 +7,9 @@ class ApiUserPanelController extends \BaseController {
 	/**
 	 * Show the flashcards of a user
 	 */
-	public function showFlashcards()
+	public function showSelectedWords()
 	{
-		return View::make('account.flashcards');
+		return View::make('account.selectedWords');
 	}
 	
 	/**

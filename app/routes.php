@@ -106,7 +106,7 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('recommended', 'ApiRecommendedVideosController');
 
 		// Commercials
-		Route::resource('flashcards', 'ApiFlashcardController');
+		Route::resource('selectedWords', 'ApiSelectedWordsController');
 	});
 
 	// Query the definition API for a definition
@@ -179,7 +179,7 @@ Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 Route::group(['prefix' => 'user', "before" => "auth"], function()
 {
 	//User Level
-	Route::get('flashcards', 'ApiUserPanelController@showFlashcards');
+	Route::get('wordBank', 'ApiUserPanelController@showSelectedWords');
 
 	//User Level
 	Route::get('level', 'ApiUserPanelController@showLevel');

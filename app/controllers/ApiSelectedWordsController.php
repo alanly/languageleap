@@ -2,7 +2,7 @@
 
 use LangLeap\Words\Definition;
 
-class ApiFlashcardController extends \BaseController {
+class ApiSelectedWordsController extends \BaseController {
 
 	public function index()
 	{

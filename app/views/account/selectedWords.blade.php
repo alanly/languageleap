@@ -17,7 +17,7 @@
 
 @section('content')
 <div class="container">
-	<table id="flashcards" class="table table-striped table-bordered" cellspacing="0" width="100%">
+	<table id="selectedWords" class="table table-striped table-bordered" cellspacing="0" width="100%">
 		<thead>
 			<tr>
 				<th>Word</th>
@@ -39,9 +39,9 @@
 <script>
 	$(document).ready(function() 
 	{
-		$('#flashcards').dataTable(
+		$('#selectedWords').dataTable(
 		{
-			"ajax" : "/api/metadata/flashcards",
+			"ajax" : "/api/metadata/selectedWords",
 			"columns" :
 			[
 				{ "data" : "word"},
