@@ -13,7 +13,7 @@
 			display: inline-block;
 		}
 
-		.element:hover {
+		.element > img:hover {
 		  opacity: 0.4;
 		}
 
@@ -59,9 +59,9 @@
 	<div class="container-fluid">
 		<div class="row">
 			<ul class="nav nav-pills navbar-right" role="tablist">
-				<li role="presentation" class="active"><a href=".movies" aria-controls="movies" role="tab" data-toggle="tab">Movies</a></li>
-				<li role="presentation"><a href=".shows" aria-controls="shows" role="tab" data-toggle="tab">TV Shows</a></li>
-				<li role="presentation"><a href=".commercials" aria-controls="commercials" role="tab" data-toggle="tab">Commercials</a></li>
+				<li role="presentation" class="active"><a href=".movies" aria-controls="movies" role="tab" data-toggle="tab" onclick="loadMovies();">Movies</a></li>
+				<li role="presentation"><a href=".shows" aria-controls="shows" role="tab" data-toggle="tab" onclick="loadShows();">TV Shows</a></li>
+				<li role="presentation"><a href=".commercials" aria-controls="commercials" role="tab" data-toggle="tab" onclick="loadCommercials();">Commercials</a></li>
 			</ul>
 			<div class="filters-toggle pull-left">
 				<span class="hide-filters-text">
@@ -148,180 +148,15 @@
 			<div role="tabpanel" class="content col-md-10">
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active section movies">
-						<div class="elements">
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
+						<div class="elements movie-elements">
 						</div>
 					</div>
 					<div role="tabpanel" class="tab-pane section shows">
-						<div class="elements">
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
+						<div class="elements show-elements">
 						</div>
 					</div>
 					<div role="tabpanel" class="tab-pane section commercials">
-						<div class="elements">
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg"/>
-								</a>
-							</div>
-							<div class="element">
-								<a href="#" class="thumbnail cover">
-									<img src="http://parkthatcar.net/wp-content/uploads/2013/02/himym.jpeg"/>
-								</a>
-							</div>
+						<div class="elements commercial-elements">
 						</div>
 					</div>
 				</div>
@@ -339,8 +174,115 @@
 		}
 
 		$(document).ready(function() {
+			loadMovies();
 			$('.filters-toggle').click(toggleFilters);
 		});
+
+		function loadMovies()
+		{
+			//AJAX call to get all the movies here.
+			$.ajax({
+				type : "GET",
+				dataType : "JSON",
+				url : "/api/metadata/movies",
+				success : function(data){
+					var movies = "";
+					$.each(data.data, function(index,value){
+
+						var cover = "http://placehold.it/180x240";
+
+						if(value.cover != null)
+						{
+							cover = index.cover;
+						}
+
+						movies += "<div class='element' id='" + value.id + "'>" 
+									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='bottom' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<img src='" + cover + "'/>"
+									+ "</a>"
+									+ "</div>";
+					});
+
+					$(".movie-elements").html(movies);
+					$('[data-toggle="popover"]').popover();
+				},
+				error : function(data){
+
+				}
+
+			});
+		}
+
+		function loadCommercials()
+		{
+			//AJAX call to get all the movies here.
+			$.ajax({
+				type : "GET",
+				dataType : "JSON",
+				url : "/api/metadata/commercials",
+				success : function(data){
+					var commercials = "";
+					$.each(data.data, function(index,value){
+					
+						var cover = "http://placehold.it/180x240";
+
+						if(value.cover != null)
+						{
+							cover = value.cover;
+						}
+
+						commercials += "<div class='element' id='" + value.id + "'>" 
+									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='bottom' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<img src='" + cover + "'/>"
+									+ "</a>"
+									+ "</div>";
+					});
+
+					$(".commercial-elements").html(commercials);
+					$('[data-toggle="popover"]').popover();
+				},
+				error : function(data){
+
+				}
+
+			});
+		}
+
+		function loadShows()
+		{
+			//AJAX call to get all the movies here.
+			$.ajax({
+				type : "GET",
+				dataType : "JSON",
+				url : "/api/metadata/shows",
+				success : function(data){
+					var shows = "";
+					$.each(data.data, function(value,value){
+					
+						var cover = "http://placehold.it/180x240";
+
+						if(value.cover != null)
+						{
+							cover = value.cover;
+						}
+
+						shows += "<div class='element' id='" + value.id + "'>" 
+									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='bottom' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<img src='" + cover + "'/>"
+									+ "</a>"
+									+ "</div>";
+					});
+
+					$(".show-elements").html(shows);
+					$('[data-toggle="popover"]').popover();
+				},
+				error : function(data){
+
+				}
+
+			});
+		}
 			
 	</script>
+		}
 @stop
