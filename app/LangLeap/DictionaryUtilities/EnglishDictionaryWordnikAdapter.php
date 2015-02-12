@@ -52,12 +52,11 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 							->useCanonical(true)
 							->get();
 
+		$this->closeConnection($client);
 		if (!$audios)
 		{
 			return null;
 		}
-
-		$this->closeConnection($client);
 
 		return $audios[0]->fileUrl;
 	}
@@ -77,12 +76,11 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 							->useCanonical(true)
 							->get();
 
+		$this->closeConnection($client);
 		if (!$wordSegments)
 		{
 			return null;
 		}
-
-		$this->closeConnection($client);
 		
 		return $this->parseToHyphenatedString($wordSegments);;
 	}
@@ -110,12 +108,11 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 							->useCanonical(true)
 							->get();
 
+		$this->closeConnection($client);
 		if(!$definitions)
 		{
 			return null;
 		}
-
-		$this->closeConnection($client);
 
 		return $definitions[0]->text;
 	}
