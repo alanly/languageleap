@@ -19,27 +19,22 @@
 
 @section('content')
 	<div class="container">
-		<h2>Doritos</h2>
+		<h2 id="commercial-title"></h2>
 		<hr>
 		<div class="row">
 			<div class="col-md-3">
 				<div class="thumbnail cover center-block">
-					<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg" />
+					<img id="commercial-image" src="http://placehold.it/225x300" />
 				</div>
 			</div>
 			<div class="col-md-9">
 				<span class="level">
 					<h3>Difficulty Level</h3>
-					<p>Intermediate</p>
+					<p id="commercial-level"></p>
 				</span>
 				<span class="description">
 					<h3>Description</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					<p id="commercial-description"></p>
 				</span>
 				<br>
 				<span class="video-selection">
@@ -53,27 +48,7 @@
 									<th>Length</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td><span class="glyphicon glyphicon-eye-open"></span></td>
-									<td>0:30</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td><span class="glyphicon glyphicon-eye-open"></span></td>
-									<td>0:30</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td><span class="glyphicon glyphicon-eye-close"></span></td>
-									<td>0:30</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><span class="glyphicon glyphicon-eye-open"></span></td>
-									<td>0:30</td>
-								</tr>
+							<tbody id="commerial-videos">
 							</tbody>	
 						</table>
 					</div>
@@ -83,6 +58,54 @@
 	</div>
 
 	<script type="text/javascript">
+		$(document).ready(function(){
+			loadMediaInformation();	
+		});
 
+		function loadMediaInformation(){
+			$.ajax({
+				type : "GET",
+				url : "/api/metadata/commercials/{{ $commercial_id }}",
+				dataType : "JSON",
+				success : function(data)
+				{
+					var commercial = data.data;
+
+					$("#commercial-title").html(commercial.name);
+					$("#commercial-description").html(commercial.description);
+					$("#commercial-level").html(commercial.level);
+
+					if(commercial.image_path != null)
+					{
+						$("#commercial-image").attr("src", commercial.image_path);
+					}
+					loadVideos(commercial.videos);
+				},
+				error : function(data)
+				{
+
+				}
+			});
+		}
+
+		//shows all the videos in the table.
+		function loadVideos(videos)
+		{
+			var table_records = "";
+
+			$.each(videos, function(index, value){
+				if(value != null)
+				{
+					table_records += "<tr>"
+								+ "<td>" + value.id + "</td>"
+								+ "<td></td>"
+								+ "<td></td>"
+								+ "</tr>";
+				}
+			});
+
+			//Add the cords to the video table
+			$("#commerial-videos").append(table_records);
+		}
 	</script>
 @stop
