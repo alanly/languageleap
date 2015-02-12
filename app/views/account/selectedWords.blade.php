@@ -6,11 +6,9 @@
 	<script src="//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 
 	<style type="text/css">
-	.pronunciations-on 
+	.volume 
 	{
-		background: url(http://cdn.flaticon.com/png/64/498.png) no-repeat center;
-		height: 60px;
-		width: 70px;
+		font-size: 20px;
 	}
 	</style>
 @stop
@@ -53,7 +51,7 @@
 				{
 					"render" : function( data, type, row)
 					{
-						var button = '<button class="pronunciations-on" id="' + data + '"></button>';
+						var button = '<button class="pronunciations-on" id="' + data + '"><span class="glyphicon glyphicon-volume-up volume"></span></button>';
 						return button;
 					},
 					"targets" : 2
