@@ -59,13 +59,13 @@
 	<div class="container-fluid">
 		<div class="row">
 			<ul class="nav nav-pills navbar-right" role="tablist">
-				<li role="presentation" class="active"><a href=".movies" aria-controls="movies" role="tab" data-toggle="tab" onclick="loadMovies();">Movies</a></li>
-				<li role="presentation"><a href=".shows" aria-controls="shows" role="tab" data-toggle="tab" onclick="loadShows();">TV Shows</a></li>
-				<li role="presentation"><a href=".commercials" aria-controls="commercials" role="tab" data-toggle="tab" onclick="loadCommercials();">Commercials</a></li>
+				<li role="presentation" class="active"><a href=".movies" aria-controls="movies" role="tab" data-toggle="tab" onclick="loadMovies();">@lang('index.layout.tabs.movies')</a></li>
+				<li role="presentation"><a href=".shows" aria-controls="shows" role="tab" data-toggle="tab" onclick="loadShows();">@lang('index.layout.tabs.shows')</a></li>
+				<li role="presentation"><a href=".commercials" aria-controls="commercials" role="tab" data-toggle="tab" onclick="loadCommercials();">@lang('index.layout.tabs.commercials')</a></li>
 			</ul>
 			<div class="filters-toggle pull-left">
 				<span class="hide-filters-text">
-					<span>Hide filters</span>
+					<span>@lang('index.layout.filters.hide')</span>
 				</span>
 				<span class="glyphicon glyphicon-chevron-left pull-right"></span>
 				<span class="glyphicon glyphicon-chevron-right pull-right hide"></span>
@@ -74,18 +74,18 @@
 		<div class="row">
 			<div class="filters col-md-2">
 				<div class="panel panel-default">
-					<div class="panel-heading" data-toggle="collapse" data-target="#search">Search</div>
+					<div class="panel-heading" data-toggle="collapse" data-target="#search">@lang('index.layout.search.search')</div>
 					<div id="search" class="panel-body collapse in">
-						<input type="text" class="form-control" placeholder="Search for...">
+						<input type="text" class="form-control" placeholder="@lang('index.layout.search.for')">
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" data-toggle="collapse" data-target="#genres">Genres</div>
+					<div class="panel-heading" data-toggle="collapse" data-target="#genres">@lang('index.layout.filters.genre')</div>
 					<div id="genres" class="panel-body collapse in">
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" value="">
-								Action
+								@lang('index.layout.filters.action')
 							</label>
 						</div>
 						<div class="checkbox">
@@ -184,7 +184,7 @@
 			$.ajax({
 				type : "GET",
 				dataType : "JSON",
-				url : "/api/metadata/movie3s",
+				url : "/api/metadata/movies",
 				success : function(data){
 					var movies = "";
 					$.each(data.data, function(index,value){
@@ -197,7 +197,7 @@
 						}
 
 						movies += "<div class='element' id='" + value.id + "'>" 
-									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<a href='/movie' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
 									+ "<img src='" + cover + "'/>"
 									+ "</a>"
 									+ "</div>";
@@ -239,7 +239,7 @@
 						}
 
 						commercials += "<div class='element' id='" + value.id + "'>" 
-									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<a href='/commercial' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
 									+ "<img src='" + cover + "'/>"
 									+ "</a>"
 									+ "</div>";
@@ -282,7 +282,7 @@
 						}
 
 						shows += "<div class='element' id='" + value.id + "'>" 
-									+ "<a href='#' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<a href='/show' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
 									+ "<img src='" + cover + "'/>"
 									+ "</a>"
 									+ "</div>";

@@ -13,7 +13,6 @@ return array(
 	*/
 
 	'accordion' => array(
-
 		'movies' => array(
 			'name' => 'Movies',
 			'desc' => 'Learn through your favorite Movies!',
@@ -43,6 +42,22 @@ return array(
 		),
 		'items' => array(
 			'default' => 'Select Media',
+		),
+	),
+	'layout' => array(
+		'filters' => array(
+			'genre' => 'Genres',
+			'hide' => 'Hide filters',
+			'action' => 'Action',
+		),
+		'tabs' => array(
+			'movies' => 'Movies',
+			'commercials' => 'Commercials',
+			'shows' => 'TV Shows',
+		),
+		'search' => array(
+			'search' => 'Search',
+			'for' => 'Search for...',
 		),
 	),
 );
