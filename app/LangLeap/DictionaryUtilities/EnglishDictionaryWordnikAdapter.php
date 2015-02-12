@@ -25,7 +25,6 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 		$audioUrl = $this->getAudio($word, $client);
 		$hyphenatedWord = $this->getHyphenatedWord($word, $client);
 
-		$this->closeConnection($client);
 		if(!$dictionaryDefinition)
 		{
 			return null;
@@ -52,7 +51,6 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 							->useCanonical(true)
 							->get();
 
-		$this->closeConnection($client);
 		if (!$audios)
 		{
 			return null;
@@ -74,7 +72,6 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 							->useCanonical(true)
 							->get();
 
-		$this->closeConnection($client);
 		if (!$wordSegments)
 		{
 			return null;
@@ -117,11 +114,6 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 		$client = new Picnik;
 		$client->setApiKey($this->API_KEY);
 		return $client;
-	}
-
-	private function closeConnection($client)
-	{
-		unset($client);
 	}
 }
 
