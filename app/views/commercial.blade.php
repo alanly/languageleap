@@ -10,10 +10,6 @@
 		.thumbnail.cover {
 			width: 225px;
 		}
-
-		.video-selection tbody tr {
-			cursor: pointer;
-		}
 	</style>
 @stop
 
@@ -40,12 +36,12 @@
 				<span class="video-selection">
 					<div class="panel panel-default">
 						<!-- Table -->
-						<table class="table table-hover">
+						<table class="table">
 							<thead>
 								<tr>
 									<th>Part Number</th>
-									<th>Viewed</th>
 									<th>Length</th>
+									<th>Play</th>
 								</tr>
 							</thead>
 							<tbody id="commerial-videos">
@@ -54,6 +50,12 @@
 					</div>
 				</span>
 			</div>
+		</div>
+	</div>
+
+	<div class="error" style="display:none;">
+		<div class="alert alert-danger" role="alert" id="commercial-error">
+			
 		</div>
 	</div>
 
@@ -79,17 +81,31 @@
 					{
 						$("#commercial-image").attr("src", commercial.image_path);
 					}
-					loadVideos(commercial.videos);
+
+					showVideos(commercial.videos);
 				},
 				error : function(data)
 				{
+					$(".container").hide();
+
+					//show error here
+					$(".error").show();
+
+					var message = data.responseJSON.data;
+
+					if(message === undefined)
+					{
+						message = "There was a problem loading the information, Please try again at a later time.";
+					}
+
+					$("#commercial-error").html(message);
 
 				}
 			});
 		}
 
 		//shows all the videos in the table.
-		function loadVideos(videos)
+		function showVideos(videos)
 		{
 			var table_records = "";
 
@@ -98,8 +114,8 @@
 				{
 					table_records += "<tr>"
 								+ "<td>" + value.id + "</td>"
-								+ "<td></td>"
-								+ "<td></td>"
+								+ "<td></td>"//viewed or not
+								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>"//get duration
 								+ "</tr>";
 				}
 			});
