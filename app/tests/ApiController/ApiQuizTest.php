@@ -62,15 +62,12 @@ class ApiQuizControllerTest extends TestCase {
 	public function testVideo()
 	{
 		$video = Video::first();
-
-		$definition = Definition::all();
-		$all_words = array();
-		$selected_words = array();
-
-		foreach ($definition as $def) {
-			array_push($all_words, $def->id);
-		}
-		array_push($selected_words, $all_words[0]);
+		$selected_words = 
+		[
+			['word' => 'cat', 'definition' => 'lazy animal', 'sentence' => 'the cat is annoying.'],
+			['word' => 'dog', 'definition' => '', 'sentence' => 'the dog is lovely.'],
+			['word' => 'elephant', 'definition' => 'large land animal', 'sentence' => 'the elephant is huge.']
+		];
 
 		$response = $this->action(
 			'post',
@@ -78,7 +75,6 @@ class ApiQuizControllerTest extends TestCase {
 			[],
 			[
 				"video_id" => $video->id, 
-				"all_words" => $all_words, 
 				"selected_words" => $selected_words
 			]
 		);
@@ -91,17 +87,18 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertGreaterThan(0, $data->quiz_id);
 	}
 
-	/*
-	 * This test will test if a proper error code is recieved when trying to get a quiz with no/invalid deinitions
-	 *
+	/**
+	 * This test will check if a 404 is returned when 1 of the words sent to the backend is empty
 	 */
-	public function testIndexWithNoDefinitions()
+	public function testVideoInvalidWord()
 	{
 		$video = Video::first();
-
-		$definition = Definition::all();
-		$all_words = array();
-		$selected_words = array();
+		$selected_words = 
+		[
+			['word' => 'cat', 'definition' => 'lazy animal', 'sentence' => 'the cat is annoying.'],
+			['word' => '', 'definition' => '', 'sentence' => 'the dog is lovely.'],
+			['word' => 'elephant', 'definition' => 'large land animal', 'sentence' => 'the elephant is huge.']
+		];
 
 		$response = $this->action(
 			'post',
@@ -109,16 +106,66 @@ class ApiQuizControllerTest extends TestCase {
 			[],
 			[
 				"video_id" => $video->id, 
-				"all_words" => $all_words, 
 				"selected_words" => $selected_words
 			]
 		);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
-		$this->assertResponseOk();
+		$this->assertResponseStatus(404);
+	}
 
-		$this->assertObjectHasAttribute('result', json_decode($response->getContent())->data);
-		$this->assertObjectHasAttribute('redirect', json_decode($response->getContent())->data->result);
+	/**
+	 * This test will check if a 404 is returned when 1 of the sentences sent to the backend is empty
+	 */
+	public function testVideoInvalidSentence()
+	{
+		$video = Video::first();
+		$selected_words = 
+		[
+			['word' => 'cat', 'definition' => 'lazy animal', 'sentence' => ''],
+			['word' => 'dog', 'definition' => '', 'sentence' => 'the dog is lovely.'],
+			['word' => 'elephant', 'definition' => 'large land animal', 'sentence' => 'the elephant is huge.']
+		];
+
+		$response = $this->action(
+			'post',
+			'ApiQuizController@postVideo',
+			[],
+			[
+				"video_id" => $video->id, 
+				"selected_words" => $selected_words
+			]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
+
+	/**
+	 * This test will check if a 404 is returned when 1 of the words isn't found in the sentence
+	 */
+	public function testVideoWordNotInSentence()
+	{
+		$video = Video::first();
+		$selected_words = 
+		[
+			['word' => 'cat', 'definition' => 'lazy animal', 'sentence' => 'dog'],
+			['word' => 'dog', 'definition' => '', 'sentence' => 'the dog is lovely.'],
+			['word' => 'elephant', 'definition' => 'large land animal', 'sentence' => 'the elephant is huge.']
+		];
+
+		$response = $this->action(
+			'post',
+			'ApiQuizController@postVideo',
+			[],
+			[
+				"video_id" => $video->id, 
+				"selected_words" => $selected_words
+			]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
 	}
 
 	/*
@@ -128,16 +175,19 @@ class ApiQuizControllerTest extends TestCase {
 	{
 
 		$definition = Definition::all();
-		$all_words = array();
-		$selected_words = array();
+		$selected_words = 
+		[
+			['word' => 'cat', 'definition' => 'lazy animal', 'sentence' => 'the cat is annoying.'],
+			['word' => 'dog', 'definition' => '', 'sentence' => 'the dog is lovely.'],
+			['word' => 'elephant', 'definition' => 'large land animal', 'sentence' => 'the elephant is huge.']
+		];
 
 		$response = $this->action(
 			'post',
 			'ApiQuizController@postVideo',
 			[],
 			[
-				"video_id" => -1, 
-				"all_words" => $all_words, 
+				"video_id" => -1,  
 				"selected_words" => $selected_words
 			]
 		);

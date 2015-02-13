@@ -4,24 +4,47 @@
 			<div class="quiz-container" ng-controller="QuizController">
 				<carousel interval="-1">
 					<slide ng-repeat="question in questions" active="question.active">
-						<h3>{{ question.question }}</h3>
 
 						<form id="form-question-id-{{ question.id }}" class="question-form" role="form">
-							<div class="radio-group">
-								<div class="radio" id="radio-selection-id-{{ question.id }}-{{ definition.id }}" ng-repeat="definition in question.answers">
-									<label>
-										<input type="radio" name="definition" ng-model="selection.definition_id" value="{{ definition.id }}" ng-click="submit(selection)">
-										{{ definition.answer }}
-									</label>
+							<h3>{{ question.question }}</h3>
+							
+							<div ng-switch="question.type">
+							
+								<div ng-switch-when="multipleChoice" class="radio-group">
+									<div class="radio" id="selection-id-{{ question.id }}-{{ definition.id }}" ng-repeat="definition in question.answers">
+										<label>
+											<input type="radio" name="definition" ng-model="selection.answer_id" value="{{ definition.id }}" ng-click="multiplechoice(selection)">
+											{{ definition.answer }}
+										</label>
+									</div>
 								</div>
+								
+								<div ng-switch-when="dragAndDrop">
+								
+									<span class="droppable label label-default" data-drop="true"  jqyoui-droppable="{ onDrop: 'drag'}">_______</span>
+									
+									<div class="btn-group" style="padding-bottom:10px">
+									
+										<div id="selection-id-{{ question.id }}-{{ word.id }}" class="pull-left" ng-repeat="word in question.answers" style="padding:5px">
+											<div class="btn btn-primary"  data-word-id="{{ word.id }}" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{animate:true}">
+												{{ word.answer }}
+											</div>
+										</div>
+										
+									</div>
+									
+								</div>
+								
 							</div>
 
 							<button type="button" id="btn-next-{{ question.id }}" class="btn btn-next" ng-click="nextQuestion()" disabled="disabled">
 								{{ currentQuestionIndex == (questions.length - 1) ? 'Finish Quiz' : 'Next Question' }}
 							</button>
 						</form>
+						
 					</slide>
 				</carousel>
+
 			</div>
 		</div>
 	</div>
@@ -42,4 +65,7 @@
 			<a href="{{ redirect }}" class="btn btn-primary">Continue</a>
 		</div>
 	</script>
+	
+	
+	
 </div>

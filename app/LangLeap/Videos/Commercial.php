@@ -36,6 +36,7 @@ class Commercial extends Media implements Classifiable {
 			'id'          => $this->id,
 			'name'        => $this->name,
 			'description' => $this->description,
+			'image_path'  => $this->image_path,
 			'level'       => $this->level->description,
 			'videos'      => $videos,
 		];

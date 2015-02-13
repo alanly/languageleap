@@ -142,8 +142,8 @@ Route::group(['prefix' => 'api'], function()
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 
-	// Registration
-	Route::resource('users','ApiUserController');
+	// Update user info
+	Route::controller('users','ApiUserController');
 
 	//Api routes with auth filter
 	Route::group(array('before' => 'auth'), function() {  
@@ -200,8 +200,16 @@ Route::controller('rank', 'RankQuizController');
 Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
 
-//User Level
-Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserLevelController@showLevel']);
+// Routes for user panel controllers
+Route::group(['prefix' => 'user'], function()
+{
+
+	//User Level
+	Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showLevel']);
+
+	//User Info
+	Route::get('info', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showInfo']);
+});
 
 Route::any('queue/recieve', function()
 {
