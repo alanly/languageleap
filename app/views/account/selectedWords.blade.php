@@ -44,7 +44,7 @@
 			[
 				{ "data" : "word"},
 				{ "data" : "definition"},
-				{ "data" : "pronunciation"}
+				{ "data" : "audio_url"}
 			],
 			"columnDefs" :
 			[
