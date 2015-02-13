@@ -155,6 +155,8 @@ Route::group(['prefix' => 'api'], function()
 		Route::controller('quiz', 'ApiQuizController');
 	});
 
+	// Filtration
+	Route::resource('filter', 'ApiFilterController');
 });
 
 
