@@ -44,11 +44,12 @@ class VideoFactory {
 	
 
 	/**
-	*	This method will create a script from a file and a video id
-	*
-	*	@param File $file 
-	*	@param int $video_id 
-	*/
+	 * This method will create a script from a file and a video id
+	 *
+	 * @param File 		$file 
+	 * @param int 		$video_id 
+	 * @param Script 	$script
+	 */
 	public function setScript($file,$video_id, Script $script = null)
 	{
 		if($script == null)
@@ -59,24 +60,24 @@ class VideoFactory {
 		$script_text = ScriptFile::retrieveText($file);
 		$script->text = $script_text;
 		$script->video_id = $video_id;
+
 		$script->save();
 	}
 
 	/**
-	*	This function is used to take the file and type that is sent from the user to create/set a video object
-	*
-	*	@param File
-	*	@param String
-	*	@param Video
-	*
-	*	@return Video
-	*/
+	 *	This function is used to take the file and type that is sent from the user to create/set a video object
+	 *
+	 *	@param Input
+	 *	@param Video
+	 *
+	 *	@return Video
+	 */
 	public function setVideo($input, Video $video = null)
 	{
 
+		$lang = Language::find($input['language_id'])->first();
 		$file = $input['video'];
 		$type = $input['video_type'];
-		$lang = Language::find($input['language_id'])->first();
 
 		$ext = $file->getClientOriginalExtension();
 

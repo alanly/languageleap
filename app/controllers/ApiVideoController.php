@@ -66,8 +66,7 @@ class ApiVideoController extends \BaseController {
 			);
 		}
 
-		$videoArray = array(
-			"video" => $video->toResponseArray());
+		$videoArray = array("video" => $video->toResponseArray());
 
 		return $this->apiResponse("success",$videoArray);
 
