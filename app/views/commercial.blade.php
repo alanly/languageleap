@@ -10,6 +10,10 @@
 		.thumbnail.cover {
 			width: 225px;
 		}
+		
+		.video-selection tbody tr td {
+			vertical-align: middle;	
+		}
 	</style>
 @stop
 
@@ -114,7 +118,7 @@
 				{
 					table_records += "<tr>"
 								+ "<td>" + value.id + "</td>"
-								+ "<td></td>"//viewed or not
+								+ "<td></td>"//end time - start time converted to time string
 								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>"//get duration
 								+ "</tr>";
 				}
