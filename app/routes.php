@@ -130,6 +130,9 @@ Route::group(['prefix' => 'api'], function()
 
 		// Recommendations
 		Route::resource('recommended', 'ApiRecommendedVideosController');
+
+		// Filtration
+		Route::resource('filter', 'ApiFilterController');
 	});
 
 	// Query the definition API for a definition
@@ -154,9 +157,6 @@ Route::group(['prefix' => 'api'], function()
 		// Quiz
 		Route::controller('quiz', 'ApiQuizController');
 	});
-
-	// Filtration
-	Route::resource('filter', 'ApiFilterController');
 });
 
 
