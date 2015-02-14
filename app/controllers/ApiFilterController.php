@@ -1,41 +1,73 @@
 <?php
 
-use LangLeap\Videos\FilterSystem\Filtrator;
 use LangLeap\Videos\Movie;
+use LangLeap\Videos\Commercial;
+use LangLeap\Videos\Show;
 
 /**
  * @author Michael Lavoie
  */
 class ApiFilterController extends \BaseController {
 
-	private $filtrator;
+	/**
+	* The maximum number of filtered results that
+	* can be retrieved in one shot.
+	* @var int 
+	*/
+	private $maxTake;
 
-	public function __construct(Filtrator $filtrator)
+	public function __construct()
 	{
-		$this->filtrator = $filtrator;
+		$this->maxTake = Config::get('filtering.max_take');
 	}
 
+	/**
+	* Retrieves a collection of metadata for filtered content.
+	*/
 	public function index()
 	{
-		$type = Input::get('type');
 		$take = Input::get('take');
 		$skip = Input::get('skip');
+		$type = Input::get('type');
 
-		if (! $type) return [];
+		if (! $type || ! $this->isTakeValid($take) || ! $this->isSkipValid($skip))
+		{
+			return $this->apiResponse(
+				'error',
+				'Invalid parameters',
+				400
+			);
+		}
 
 		if ($type == 'movie')
-			$filterable = new Movie();
+			$res = Movie::filterBy(Input::get(), $take, $skip);
 		else if ($type == 'commercial')
-			$filterable = new Commercial();
-		else // Assume the type is 'Show'
-			$filterable = new Show();
-
-		if ($skip)
-			$results = $this->filtrator->filterBy($filterable, Input::get(), $take, $skip);
+			$res = Commercial::filterBy(Input::get(), $take, $skip);
 		else
-			$results = $this->filtrator->filterBy($filterable, Input::get(), $take);
+			$res = Show::filterBy(Input::get(), $take, $skip);
 
-		return $results;
+		return $this->apiResponse(
+			'success',
+			$res,
+			200
+		);
+	}
+
+	private function isTakeValid($take)
+	{
+		if ($take && is_numeric($take)
+			&& $take > 0 && $take <= $this->maxTake)
+			return true;
+
+		return false;
+	}
+
+	private function isSkipValid($skip)
+	{
+		if (is_numeric($skip) || is_int($skip))
+			return true;
+
+		return false;
 	}
 
 }
