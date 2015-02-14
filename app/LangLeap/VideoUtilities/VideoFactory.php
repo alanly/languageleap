@@ -32,7 +32,7 @@ class VideoFactory {
 	 * @param  array $input
 	 * @return array
 	 */
-	public function response(array $input)
+	public function createVideo(array $input)
 	{
 		$script_file =$input['script'];
 

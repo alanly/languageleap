@@ -1,4 +1,4 @@
-<?php
+\<?php
 
 use LangLeap\Videos\Video;
 use LangLeap\Words\Script;
@@ -42,7 +42,7 @@ class ApiVideoController extends \BaseController {
 	public function store()
 	{
 
-		$video = VideoFactory::getInstance()->response(Input::all());
+		$video = VideoFactory::getInstance()->createVideo(Input::all());
 		
 		return $this->apiResponse("success",$video->toResponseArray());
 	}
