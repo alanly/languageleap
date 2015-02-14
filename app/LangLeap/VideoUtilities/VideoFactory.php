@@ -16,6 +16,9 @@ class VideoFactory {
  
 	private static $instance;
 	
+	//Make sure no one can create an instance of this without using getInstance
+	private function __contructor() {}
+
 	public static function getInstance()
 	{
 		if (VideoFactory::$instance == null)
