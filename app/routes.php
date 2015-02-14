@@ -19,24 +19,24 @@ Route::get('/', function()
 	return View::make('index');
 });
 
-Route::get('/commercial', function()
+Route::get('/commercial/{id}', function($id)
 {
-	return View::make('commercial');
+	return View::make('commercial')->with("commercial_id", $id);
 });
 
-Route::get('/movie', function()
+Route::get('/movie/{id}', function($id)
 {
-	return View::make('movie');
+	return View::make('movie')->with("movie_id", $id);
 });
 
-Route::get('/episode', function()
+Route::get('/episode', function($id)
 {
-	return View::make('episode');
+	return View::make('episode')->with("episode_id", $id);
 });
 
-Route::get('/show', function()
+Route::get('/show/{id}', function($id)
 {
-	return View::make('show');
+	return View::make('show')->with("show_id", $id);
 });
 
 // TODO set this to be the index route

@@ -11,45 +11,40 @@
 			width: 225px;
 		}
 
-		.video-selection tbody tr {
-			cursor: pointer;
+		.video-selection tbody tr td {
+			vertical-align: middle;	
 		}
 	</style>
 @stop
 
 @section('content')
 	<div class="container">
-		<h2>Lord of the Things <small><em>(Horror)</em></small></h2>
+		<h2 id="movie-title"></h2>
 		<hr>
 		<div class="row">
 			<div class="col-md-3">
 				<div class="thumbnail cover center-block">
-					<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg" />
+					<img id="movie-image" src="http://placehold.it/225x300" />
 				</div>
 			</div>
 			<div class="col-md-9">
 				<span class="level">
 					<h3>Difficulty Level</h3>
-					<p>Advanced</p>
+					<p id="movie-level"></p>
 				</span>
 				<div class="row">
 					<span class="director col-md-4 col-xs-6">
 						<h3>Director</h3>
-						<p>Will Smith</p>
+						<p id="movie-director"></p>
 					</span>
 					<span class="starring col-md-4 col-xs-6">
 						<h3>Starring</h3>
-						<p>Samuel Jackson, Seth Junior</p>
+						<p id="movie-actors"></p>
 					</span>
 				</div>
 				<span class="description">
 					<h3>Description</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					<p id="movie-description"></p>
 				</span>
 				<br>
 				<span class="video-selection">
@@ -63,27 +58,8 @@
 									<th>Length</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td><span class="glyphicon glyphicon-eye-open"></span></td>
-									<td>0:30</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td><span class="glyphicon glyphicon-eye-open"></span></td>
-									<td>0:30</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td><span class="glyphicon glyphicon-eye-close"></span></td>
-									<td>0:30</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><span class="glyphicon glyphicon-eye-open"></span></td>
-									<td>0:30</td>
-								</tr>
+							<tbody id="movie-videos">
+							
 							</tbody>	
 						</table>
 					</div>
@@ -91,8 +67,74 @@
 			</div>
 		</div>
 	</div>
-
+	<div class="error" style="display:none;">
+		<div class="alert alert-danger" role="alert" id="movie-error">
+			
+		</div>
+	</div>
 	<script type="text/javascript">
+			$(document).ready(function(){
+			loadMediaInformation();	
+		});
 
+		function loadMediaInformation(){
+			$.ajax({
+				type : "GET",
+				url : "/api/metadata/movies/{{ $movie_id }}",
+				dataType : "JSON",
+				success : function(data)
+				{
+					var movie = data.data;
+
+					$("#movie-title").html(movie.name);
+					$("#movie-description").html(movie.description);
+					$("#movie-level").html(movie.level);
+
+					if(movie.image_path != null)
+					{
+						$("#movie-image").attr("src", movie.image_path);
+					}
+
+					showVideos(movie.videos);
+				},
+				error : function(data)
+				{
+					$(".container").hide();
+
+					//show error here
+					$(".error").show();
+
+					var message = data.responseJSON.data;
+
+					if(message === undefined)
+					{
+						message = "There was a problem loading the information, Please try again at a later time.";
+					}
+
+					$("#movie-error").html(message);
+
+				}
+			});
+		}
+
+		//shows all the videos in the table.
+		function showVideos(videos)
+		{
+			var table_records = "";
+
+			$.each(videos, function(index, value){
+				if(value != null)
+				{
+					table_records += "<tr>"
+								+ "<td>" + value.id + "</td>"
+								+ "<td></td>"//end time - start time converted to time string
+								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>"//get duration
+								+ "</tr>";
+				}
+			});
+
+			//Add the cords to the video table
+			$("#movie-videos").append(table_records);
+		}
 	</script>
 @stop

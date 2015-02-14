@@ -197,7 +197,7 @@
 						}
 
 						movies += "<div class='element' id='" + value.id + "'>" 
-									+ "<a href='/movie' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<a href='/movie/" + value.id + "' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
 									+ "<img src='" + cover + "'/>"
 									+ "</a>"
 									+ "</div>";
@@ -239,7 +239,7 @@
 						}
 
 						commercials += "<div class='element' id='" + value.id + "'>" 
-									+ "<a href='/commercial' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<a href='/commercial/" + value.id + "' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
 									+ "<img src='" + cover + "'/>"
 									+ "</a>"
 									+ "</div>";
@@ -282,7 +282,7 @@
 						}
 
 						shows += "<div class='element' id='" + value.id + "'>" 
-									+ "<a href='/show' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
+									+ "<a href='/show/" + value.id + "' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
 									+ "<img src='" + cover + "'/>"
 									+ "</a>"
 									+ "</div>";
