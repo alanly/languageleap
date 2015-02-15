@@ -55,9 +55,10 @@
 
 		.loading-overlay {
 			background-color: #e4e4e4;
+			left: 15px;
+			right: 15px;
 			position: absolute;
 			opacity: 0.5;
-			width: 97%;
 		}
 
 		.vertical-center {
@@ -66,6 +67,14 @@
 
 			display: flex;
 			align-items: center;
+		}
+
+		.content {
+			padding: 0 15px 0 15px;
+		}
+
+		.filters {
+			padding-right: 0;
 		}
 	</style>
 @stop
@@ -89,14 +98,14 @@
 		<div class="row">
 			<div class="filters col-md-2">
 				<div class="panel panel-default">
-					<div class="panel-heading" data-toggle="collapse" data-target="#search">@lang('index.layout.search.search')</div>
-					<div id="search" class="panel-body collapse in">
+					<div class="panel-heading">@lang('index.layout.search.search')</div>
+					<div id="search" class="panel-body">
 						<input type="text" class="form-control" placeholder="@lang('index.layout.search.for')">
 					</div>
 				</div>
 				<div class="panel panel-default">
-					<div class="panel-heading" data-toggle="collapse" data-target="#genres">@lang('index.layout.filters.genre')</div>
-					<div id="genres" class="panel-body collapse in">
+					<div class="panel-heading">@lang('index.layout.filters.genre')</div>
+					<div id="genres" class="panel-body">
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" value="">
