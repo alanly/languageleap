@@ -77,6 +77,9 @@
 			loadMediaInformation();	
 		});
 
+		/**
+		 * Will load the Movie from the API and populate the appropriate fields
+		 */
 		function loadMediaInformation(){
 			$.ajax({
 				type : "GET",
@@ -116,8 +119,10 @@
 				}
 			});
 		}
-
-		//shows all the videos in the table.
+		
+		/**
+		 * Given a JSON value containing all the videos, it will populate the videos tables.
+		 */
 		function showVideos(videos)
 		{
 			var table_records = "";

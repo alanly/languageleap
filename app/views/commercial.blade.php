@@ -68,6 +68,9 @@
 			loadMediaInformation();	
 		});
 
+		/**
+		 * Will load the media from the API and populate the appropriate fields
+		 */
 		function loadMediaInformation(){
 			$.ajax({
 				type : "GET",
@@ -108,7 +111,9 @@
 			});
 		}
 
-		//shows all the videos in the table.
+		/**
+		 * Given a JSON value containing all the videos, it will populate the videos tables.
+		 */
 		function showVideos(videos)
 		{
 			var table_records = "";
@@ -118,8 +123,8 @@
 				{
 					table_records += "<tr>"
 								+ "<td>" + value.id + "</td>"
-								+ "<td></td>"//end time - start time converted to time string
-								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>"//get duration
+								+ "<td></td>" //end time - start time converted to time string
+								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>" //get duration
 								+ "</tr>";
 				}
 			});

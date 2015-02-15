@@ -114,6 +114,7 @@
 				}
 			});
 		}
+		
 		function loadSeasons(seasons)
 		{
 			$.each(seasons, function(index,value){
@@ -153,7 +154,7 @@
 						var episodes = data.data.episodes;
 
 						$.each(episodes, function(index, value){
-							episode_data += "<li class='list-group-item'><a href=''>Episode " + value.number + "</a></li>";
+							episode_data += "<li class='list-group-item'><a href='/episode/" + value.id + "'>Episode " + value.number + "</a></li>";
 							
 						});
 						
