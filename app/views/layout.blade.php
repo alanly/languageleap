@@ -343,7 +343,7 @@
 		*/
 		function addElementToPanel($panel, type, elementData) {
 			var url = '/' + type + '/' + elementData.id;
-			var coverUrl = (elementData.cover) ? elementData.cover : 'http://placehold.it/180x240';
+			var coverUrl = (elementData.image_path) ? elementData.image_path : 'http://placehold.it/180x240';
 			var element =	'<div class="element" id="' + elementData.id + '">' +
 								'<a href="' + url + '" class="thumbnail cover" data-toggle="popover" data-trigger="hover" data-placement="auto" title="' + elementData.name + '" data-content="' + elementData.description + '">' +
 									'<img src="' + coverUrl + '" />' +
@@ -353,6 +353,9 @@
 			$panel.children('.elements').append(element);
 		}
 
+		/**
+		* Show or hide the filters side bar.
+		*/
 		function toggleFilters() {
 			$('.filters').animate({ width: 'toggle' }, 350);
 			$('.hide-filters-text').animate({ width: 'toggle' }, 350);
@@ -360,6 +363,9 @@
 			$('.content').toggleClass('col-md-10');
 		}
 
+		/**
+		* Loads the initial content with no filters applied.
+		*/
 		function loadInitialContent() {
 			refreshFilteredData();
 		}
