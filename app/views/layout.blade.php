@@ -80,98 +80,23 @@
 @stop
 
 @section('content')
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
-			<ul class="nav nav-pills navbar-right" role="tablist">
-				<li role="presentation" class="active"><a href=".movies" aria-controls="movies" role="tab" data-toggle="tab">@lang('index.layout.tabs.movies')</a></li>
-				<li role="presentation"><a href=".shows" aria-controls="shows" role="tab" data-toggle="tab">@lang('index.layout.tabs.shows')</a></li>
-				<li role="presentation"><a href=".commercials" aria-controls="commercials" role="tab" data-toggle="tab">@lang('index.layout.tabs.commercials')</a></li>
-			</ul>
-			<div class="filters-toggle pull-left">
-				<span class="hide-filters-text">
-					<span>@lang('index.layout.filters.hide')</span>
-				</span>
-				<span class="glyphicon glyphicon-chevron-left pull-right"></span>
-				<span class="glyphicon glyphicon-chevron-right pull-right hide"></span>
+			<div class="col-md-6">
+				<ul class="nav nav-pills col-md-9" role="tablist">
+					<li role="presentation" class="active"><a href=".movies" aria-controls="movies" role="tab" data-toggle="tab">@lang('index.layout.tabs.movies')</a></li>
+					<li role="presentation"><a href=".shows" aria-controls="shows" role="tab" data-toggle="tab">@lang('index.layout.tabs.shows')</a></li>
+					<li role="presentation"><a href=".commercials" aria-controls="commercials" role="tab" data-toggle="tab">@lang('index.layout.tabs.commercials')</a></li>
+				</ul>
+			</div>
+			<div id="search" class="pull-right col-md-3">
+				<input type="text" class="form-control" placeholder="@lang('index.layout.search.for')">
 			</div>
 		</div>
 		<div class="row">
-			<div class="filters col-md-2">
-				<div class="panel panel-default">
-					<div class="panel-heading">@lang('index.layout.search.search')</div>
-					<div id="search" class="panel-body">
-						<input type="text" class="form-control" placeholder="@lang('index.layout.search.for')">
-					</div>
-				</div>
-				<div class="panel panel-default">
-					<div class="panel-heading">@lang('index.layout.filters.genre')</div>
-					<div id="genres" class="panel-body">
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								@lang('index.layout.filters.action')
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								Animated
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								Family
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								Comedy
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								Crime
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								Documentary
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								Drama
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								Holidays
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								Horror
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" value="">
-								Music
-							</label>
-						</div>
-					</div>
-				</div>				
-			</div>
-			<div role="tabpanel" class="content col-md-10">
+			<div role="tabpanel" class="content col-md-12">
 				<div class="loading-overlay vertical-center">
-					{{ HTML::image('img/misc/loading-main.gif', 'Loading', array('class' => 'center-block loading')) }}
+					{{ HTML::image('img/misc/loading-main.gif', 'Loading', array('class' => 'center-block')) }}
 				</div>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active section movies" data-type="movie">
@@ -412,16 +337,6 @@
 		}
 
 		/**
-		* Show or hide the filters side bar.
-		*/
-		function toggleFilters() {
-			$('.filters').animate({ width: 'toggle' }, 350);
-			$('.hide-filters-text').animate({ width: 'toggle' }, 350);
-			$('.filters-toggle .glyphicon').toggleClass('hide');
-			$('.content').toggleClass('col-md-10');
-		}
-
-		/**
 		* Loads the initial content with no filters applied.
 		*/
 		function loadInitialContent() {
@@ -431,9 +346,6 @@
 		$(document).ready(function() {
 			// Load the content for the active panel
 			loadInitialContent();
-
-			// The button for toggling the filters
-			$('.filters-toggle').on('click', toggleFilters);
 
 			// Handler for when the user types in the search box
 			$('#search input').on('input', onSearchInput);
