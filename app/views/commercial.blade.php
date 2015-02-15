@@ -29,11 +29,11 @@
 			</div>
 			<div class="col-md-9">
 				<span class="level">
-					<h3>Difficulty Level</h3>
+					<h3>@lang('index.layout.general.difficulty')</h3>
 					<p id="commercial-level"></p>
 				</span>
 				<span class="description">
-					<h3>Description</h3>
+					<h3>@lang('index.layout.general.description')</h3>
 					<p id="commercial-description"></p>
 				</span>
 				<br>
@@ -43,9 +43,9 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th>Part Number</th>
-									<th>Length</th>
-									<th>Play</th>
+									<th>@lang('index.layout.general.part_number')</th>
+									<th>@lang('index.layout.general.length')</th>
+									<th>@lang('index.layout.general.play')</th>
 								</tr>
 							</thead>
 							<tbody id="commerial-videos">
@@ -68,6 +68,9 @@
 			loadMediaInformation();	
 		});
 
+		/**
+		 * Will load the media from the API and populate the appropriate fields
+		 */
 		function loadMediaInformation(){
 			$.ajax({
 				type : "GET",
@@ -99,7 +102,7 @@
 
 					if(message === undefined)
 					{
-						message = "There was a problem loading the information, Please try again at a later time.";
+						message = "@lang('index.layout.general.error')";
 					}
 
 					$("#commercial-error").html(message);
@@ -108,7 +111,9 @@
 			});
 		}
 
-		//shows all the videos in the table.
+		/**
+		 * Given a JSON value containing all the videos, it will populate the videos tables.
+		 */
 		function showVideos(videos)
 		{
 			var table_records = "";
@@ -118,8 +123,8 @@
 				{
 					table_records += "<tr>"
 								+ "<td>" + value.id + "</td>"
-								+ "<td></td>"//end time - start time converted to time string
-								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>"//get duration
+								+ "<td></td>" //end time - start time converted to time string
+								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>" //get duration
 								+ "</tr>";
 				}
 			});

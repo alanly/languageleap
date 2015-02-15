@@ -290,6 +290,28 @@ class ApiEpisodeController extends \BaseController {
 		return $this->apiResponse('success', 'Episode deleted.', 204);
 	}
 
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return JsonResponse
+	 */
+	public function showEpisode($id)
+	{
+		
+		$episode = $this->episodes->find($id);
+
+		if (! $episode)
+		{
+			return $this->apiResponse(
+				'error',
+				"Episode {$id} could not be found.",
+				404
+			);
+		}
+
+		return $this->generateCustomizedResponse($episode);
+	}
 
 	/**
 	 * @param  LangLeap\Videos\Show           $show
@@ -326,5 +348,17 @@ class ApiEpisodeController extends \BaseController {
 		return $this->apiResponse('success', $data, $code);
 	}
 
+
+	/**
+	 * @param  LangLeap\Videos\Episode       $episodes
+	 * @return Illuminate\Http\JsonResponse
+	 */
+	protected function generateCustomizedResponse($episode, $code = 200)
+	{
+		$data['episode'] = $episode->toResponseArray();
+		$data['videos'] = $episode->videos;
+		
+		return $this->apiResponse('success', $data, $code);
+	}
 
 }

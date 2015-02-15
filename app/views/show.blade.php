@@ -39,7 +39,7 @@
 					</span>
 				</div>
 				<span class="description">
-					<h3>Description</h3>
+					<h3>@lang('index.layout.general.description')</h3>
 					<p id="show-description"></p>
 				</span>
 				<br>
@@ -107,13 +107,14 @@
 
 					if(message === undefined)
 					{
-						message = "There was a problem loading the information, Please try again at a later time.";
+						message = "@lang('index.layout.general.error')";
 					}
 
 					$("#show-error").html(message);
 				}
 			});
 		}
+		
 		function loadSeasons(seasons)
 		{
 			$.each(seasons, function(index,value){
@@ -153,7 +154,7 @@
 						var episodes = data.data.episodes;
 
 						$.each(episodes, function(index, value){
-							episode_data += "<li class='list-group-item'><a href=''>Episode " + value.number + "</a></li>";
+							episode_data += "<li class='list-group-item'><a href='/episode/" + value.id + "'>Episode " + value.number + "</a></li>";
 							
 						});
 						

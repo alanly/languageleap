@@ -21,17 +21,17 @@ class VideoTableSeeder extends Seeder {
 
 		foreach (Commercial::all() as $commercial)
 		{
-			$commercial->videos()->create(['path' => 'videos/TestVideo.mp4', 'language_id'   => $lang->id]);
+			$commercial->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id]);
 		}
 
 		foreach (Episode::all() as $episode)
 		{
-			$episode->videos()->create(['path' => 'videos/TestVideo.mp4', 'language_id'   => $lang->id]);
+			$episode->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id]);
 		}
 
 		foreach (Movie::all() as $movie)
 		{
-			$movie->videos()->create(['path' => 'videos/TestVideo.mp4', 'language_id'   => $lang->id]);
+			$movie->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id]);
 		}
 	}
 }

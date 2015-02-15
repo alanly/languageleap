@@ -11,73 +11,44 @@
 			width: 225px;
 		}
 
-		.video-selection tbody tr {
-			cursor: pointer;
+		.video-selection tbody tr td {
+			vertical-align: middle;	
 		}
 	</style>
 @stop
 
 @section('content')
 	<div class="container">
-		<h2>How I Met Your Mother<br> <small><em>Season 1, Episode 2</em></small></h2>
+		<h2 id="episode-title"></h2>
 		<hr>
 		<div class="row">
 			<div class="col-md-3">
 				<div class="thumbnail cover center-block">
-					<img src="http://upload.wikimedia.org/wikipedia/en/c/cb/From-justin-to-kelly.jpg" />
+					<img id="episode-image" src="http://placehold.it/225x300" />
 				</div>
 			</div>
 			<div class="col-md-9">
 				<span class="level">
-					<h3>Difficulty Level</h3>
-					<p>Advanced</p>
-				</span>
-				<span class="episode-name">
-					<h3>Title</h3>
-					<p>There was a place far away</p>
+					<h3>@lang('index.layout.general.difficulty')</h3>
+					<p id="episode-level"></p>
 				</span>
 				<span class="description">
-					<h3>Description</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					<h3>@lang('index.layout.general.description')</h3>
+					<p id="episode-description"></p>
 				</span>
 				<br>
 				<span class="video-selection">
 					<div class="panel panel-default">
 						<!-- Table -->
-						<table class="table table-hover">
+						<table class="table">
 							<thead>
 								<tr>
-									<th>Part Number</th>
-									<th>Viewed</th>
-									<th>Length</th>
+									<th>@lang('index.layout.general.part_number')</th>
+									<th>@lang('index.layout.general.length')</th>
+									<th>@lang('index.layout.general.play')</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td><span class="glyphicon glyphicon-eye-open"></span></td>
-									<td>0:30</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td><span class="glyphicon glyphicon-eye-open"></span></td>
-									<td>0:30</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td><span class="glyphicon glyphicon-eye-close"></span></td>
-									<td>0:30</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><span class="glyphicon glyphicon-eye-open"></span></td>
-									<td>0:30</td>
-								</tr>
+							<tbody id="episode-videos">
 							</tbody>	
 						</table>
 					</div>
@@ -86,7 +57,80 @@
 		</div>
 	</div>
 
+	<div class="error" style="display:none;">
+		<div class="alert alert-danger" role="alert" id="episode-error">
+			
+		</div>
+	</div>
 	<script type="text/javascript">
+		$(document).ready(function(){
+			loadEpisode();
+		});
 
+		/**
+		 * Will load the episodes from the API and populate the appropriate fields
+		 */
+		function loadEpisode()
+		{
+			$.ajax({
+				type : "GET",
+				url : "/api/metadata/episode/{{ $episode_id }}",
+				dataType : "JSON",
+				success : function(data)
+				{
+					var episode = data.data.episode;
+
+
+					$("#episode-title").html(episode.name + "<br> <small><em>Season " + episode.season_number + ", Episode " + episode.number + "</em></small>");
+					$("#episode-description").html(episode.description);
+					$("#episode-level").html(episode.level);
+
+					if(episode.image_path != null)
+					{
+						$("#episode-image").attr("src", episode.image_path);
+					}
+
+					showVideos(data.data.videos);
+				},
+				error: function(data)
+				{
+					$(".container").hide();
+
+					//show error here
+					$(".error").show();
+
+					var message = data.responseJSON.data;
+
+					if(message === undefined)
+					{
+						message = "@lang('index.layout.general.error')";
+					}
+
+					$("#episode-error").html(message);
+				}
+			});
+		}
+
+		/**
+		 * Given a JSON value containing all the videos, it will populate the videos tables.
+		 */
+		function showVideos(videos)
+		{
+			var table_records = "";
+
+			$.each(videos, function(index, value){
+				if(value != null)
+				{
+					table_records += "<tr>"
+									+ "<td>" + value.id + "</td>"
+									+ "<td></td>"//end time - start time converted to time string
+									+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>"//get duration
+									+ "</tr>";
+				}
+			});
+
+			//Add the cords to the video table
+			$("#episode-videos").append(table_records);
+		}
 	</script>
 @stop

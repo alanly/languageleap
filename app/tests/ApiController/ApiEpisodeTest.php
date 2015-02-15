@@ -79,6 +79,24 @@ class ApiEpisodeControllerTest extends TestCase {
 		$this->assertEquals(1, $data->episode->id);
 	}
 
+	public function showEpisode()
+	{
+		$this->seed();
+
+		// Retrieve Episode 1
+		$response = $this->action('GET', 'ApiEpisodeController@showEpisode', [ 1]);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+
+		$data = $response->getData()->data;
+
+		$this->assertObjectHasAttribute('episode', $data);
+		$this->assertObjectHasAttribute('videos', $data);
+
+		$this->assertEquals(1, $data->episode->id);
+	}
+
 	public function testUpdate()
 	{
 		$this->seed();

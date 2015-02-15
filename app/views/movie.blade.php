@@ -29,21 +29,21 @@
 			</div>
 			<div class="col-md-9">
 				<span class="level">
-					<h3>Difficulty Level</h3>
+					<h3>@lang('index.layout.general.difficulty')</h3>
 					<p id="movie-level"></p>
 				</span>
 				<div class="row">
 					<span class="director col-md-4 col-xs-6">
-						<h3>Director</h3>
+						<h3>@lang('index.layout.movie.director')</h3>
 						<p id="movie-director"></p>
 					</span>
 					<span class="starring col-md-4 col-xs-6">
-						<h3>Starring</h3>
+						<h3>@lang('index.layout.movie.starring')</h3>
 						<p id="movie-actors"></p>
 					</span>
 				</div>
 				<span class="description">
-					<h3>Description</h3>
+					<h3>@lang('index.layout.general.description')</h3>
 					<p id="movie-description"></p>
 				</span>
 				<br>
@@ -53,9 +53,9 @@
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th>Part Number</th>
-									<th>Viewed</th>
-									<th>Length</th>
+									<th>@lang('index.layout.general.part_number')</th>
+									<th>@lang('index.layout.general.length')</th>
+									<th>@lang('index.layout.general.play')</th>
 								</tr>
 							</thead>
 							<tbody id="movie-videos">
@@ -77,6 +77,9 @@
 			loadMediaInformation();	
 		});
 
+		/**
+		 * Will load the Movie from the API and populate the appropriate fields
+		 */
 		function loadMediaInformation(){
 			$.ajax({
 				type : "GET",
@@ -108,7 +111,7 @@
 
 					if(message === undefined)
 					{
-						message = "There was a problem loading the information, Please try again at a later time.";
+						message = "@lang('index.layout.general.error')";
 					}
 
 					$("#movie-error").html(message);
@@ -117,7 +120,9 @@
 			});
 		}
 
-		//shows all the videos in the table.
+		/**
+		 * Given a JSON value containing all the videos, it will populate the videos tables.
+		 */
 		function showVideos(videos)
 		{
 			var table_records = "";
