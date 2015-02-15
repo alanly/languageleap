@@ -47,7 +47,7 @@ class Show extends ValidatedModel implements Billable, Filterable {
 			{
 				if (! isset($input[$a])) continue;
 
-				$q->orWhere($a, 'like', $input[$a] . '%');
+				$q->orWhere($a, 'like', '%' . $input[$a] . '%');
 			}
 		})
 		->where(function($q) use ($input, $filterableAttributes)
@@ -56,7 +56,7 @@ class Show extends ValidatedModel implements Billable, Filterable {
 			{
 				if (! isset($input[$a])) continue;
 
-				$q->where($a, '=', $input[$a] . '%');
+				$q->where($a, '=', $input[$a]);
 			}
 		});
 

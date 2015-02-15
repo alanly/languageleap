@@ -65,9 +65,9 @@ class Commercial extends Media implements Classifiable, Filterable {
 				if (! isset($input[$a])) continue;
 
 				if ($a == 'level')
-					$q->orWhere('levels.description', 'like', $input[$a] . '%');
+					$q->orWhere('levels.description', 'like', '%' . $input[$a] . '%');
 				else
-					$q->orWhere($a, 'like', $input[$a] . '%');
+					$q->orWhere($a, 'like', '%' . $input[$a] . '%');
 			}
 		})
 		->where(function($q) use ($input, $filterableAttributes)
@@ -79,7 +79,7 @@ class Commercial extends Media implements Classifiable, Filterable {
 				if ($a == 'level')
 					$q->where('levels.description', '=', $input[$a]);
 				else
-					$q->where($a, '=', $input[$a] . '%');
+					$q->where($a, '=', $input[$a]);
 			}
 		});
 
