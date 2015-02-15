@@ -171,7 +171,7 @@
 			</div>
 			<div role="tabpanel" class="content col-md-10">
 				<div class="loading-overlay vertical-center">
-					{{ HTML::image('img/misc/loading-main.gif', 'Loading', array('class' => 'center-block loading')) }}
+					{{ HTML::image('/img/misc/loading-main.gif', 'Loading', array('class' => 'center-block loading')) }}
 				</div>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active section movies" data-type="movie">
