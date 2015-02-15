@@ -300,6 +300,10 @@
 			});
 		}
 
+		function refreshPopovers() {
+			$('[data-toggle="popover"]').popover();
+		}
+
 		/**
 		* This function is called upon successful
 		* interaction with the server for filtered results.
@@ -314,6 +318,8 @@
 				$.each(data.data, function(i, v) {
 					addElementToPanel($panel, type, v);
 				});
+
+				refreshPopovers();
 			};
 		}
 
