@@ -383,16 +383,16 @@
 					var movies = "";
 					$.each(data.data, function(index,value){
 
-						var cover = "http://placehold.it/180x240";
+						var image_path = "http://placehold.it/180x240";
 
-						if(value.cover != null)
+						if(value.image_path != null)
 						{
-							cover = index.cover;
+							image_path = index.image_path;
 						}
 
 						movies += "<div class='element' id='" + value.id + "'>" 
 									+ "<a href='/movie/" + value.id + "' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
-									+ "<img src='" + cover + "'/>"
+									+ "<img src='" + image_path + "'/>"
 									+ "</a>"
 									+ "</div>";
 					});
@@ -425,16 +425,16 @@
 					var commercials = "";
 					$.each(data.data, function(index,value){
 					
-						var cover = "http://placehold.it/180x240";
+						var image_path = "http://placehold.it/180x240";
 
-						if(value.cover != null)
+						if(value.image_path != null)
 						{
-							cover = value.cover;
+							image_path = value.image_path;
 						}
 
 						commercials += "<div class='element' id='" + value.id + "'>" 
 									+ "<a href='/commercial/" + value.id + "' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
-									+ "<img src='" + cover + "'/>"
+									+ "<img src='" + image_path + "'/>"
 									+ "</a>"
 									+ "</div>";
 					});
@@ -468,16 +468,16 @@
 					var shows = "";
 					$.each(data.data, function(value,value){
 					
-						var cover = "http://placehold.it/180x240";
+						var image_path = "http://placehold.it/180x240";
 
-						if(value.cover != null)
+						if(value.image_path != null)
 						{
-							cover = value.cover;
+							image_path = value.image_path;
 						}
 
 						shows += "<div class='element' id='" + value.id + "'>" 
 									+ "<a href='/show/" + value.id + "' class='thumbnail cover' data-toggle='popover' data-trigger='hover' data-placement='auto' title='" + value.name + "' data-content='" + value.description + "'>"
-									+ "<img src='" + cover + "'/>"
+									+ "<img src='" + image_path + "'/>"
 									+ "</a>"
 									+ "</div>";
 					});
