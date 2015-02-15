@@ -2,8 +2,9 @@
 
 use LangLeap\Payments\Billable;
 use LangLeap\Videos\RecommendationSystem\Classifiable;
+use LangLeap\Videos\Filtering\Filterable;
 
-class Movie extends Media implements Billable, Classifiable {
+class Movie extends Media implements Billable, Classifiable, Filterable {
 
 	public $timestamps = false;
 
@@ -55,6 +56,33 @@ class Movie extends Media implements Billable, Classifiable {
 			'actor'		=> explode(',', $this->actor),
 			'genre'		=> $this->genre,
 		];
+	}
+
+	public static function filterBy($input, $take, $skip = 0)
+	{
+		$filterableAttributes = [
+			'name',
+			'director',
+			'actor',
+			'genre',
+			'level',
+		];
+
+		$query = Movie::query();
+		$query->select('movies.id');
+		$query->join('levels', 'movies.level_id', '=', 'levels.id');
+
+		foreach ($filterableAttributes as $a)
+		{
+			if (! isset($input[$a])) continue;
+
+			if ($a == 'level')
+				$query->where('levels.description', '=', $input[$a]);
+			else
+				$query->where($a, 'like', $input[$a] . '%');
+		}
+
+		return $query->take($take)->skip($skip)->get();
 	}
 
 }

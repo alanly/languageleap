@@ -7,7 +7,7 @@ return array(
 
 	/**
 	* The maximum number of results that can
-	* be requested by the filter system.
+	* be requested by the filter.
 	*/
 	'max_take' => 200,
 

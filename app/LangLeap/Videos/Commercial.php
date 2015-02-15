@@ -1,8 +1,9 @@
 <?php namespace LangLeap\Videos;
 
 use LangLeap\Videos\RecommendationSystem\Classifiable;
+use LangLeap\Videos\Filtering\Filterable;
 
-class Commercial extends Media implements Classifiable {
+class Commercial extends Media implements Classifiable, Filterable {
 
 	public $timestamps = false;
 
@@ -47,6 +48,30 @@ class Commercial extends Media implements Classifiable {
 		return [
 			'type'	=> 'Commercial',
 		];
+	}
+
+	public static function filterBy($input, $take, $skip = 0)
+	{
+		$filterableAttributes = [
+			'name',
+			'level',
+		];
+
+		$query = Commercial::query();
+		$query->select('commercials.id');
+		$query->join('levels', 'commercials.level_id', '=', 'levels.id');
+
+		foreach ($filterableAttributes as $a)
+		{
+			if (! isset($input[$a])) continue;
+
+			if ($a == 'level')
+				$query->where('levels.description', '=', $input[$a]);
+			else
+				$query->where($a, 'like', $input[$a] . '%');
+		}
+
+		return $query->take($take)->skip($skip)->get();
 	}
 
 }

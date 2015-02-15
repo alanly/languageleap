@@ -13,5 +13,11 @@ class CommercialTableSeeder extends Seeder {
 
 		$c = App::make('LangLeap\Videos\Commercial');
 		$c = $c->create(['name' => 'Test Commercial']);
+		$c = $c->create(['name' => 'Doritos']);
+		$c = $c->create(['name' => 'Gillete']);
+		$c = $c->create(['name' => 'Old Spice']);
+		$c = $c->create(['name' => 'Test Commercial']);
+		$c = $c->create(['name' => 'Statefarm']);
+		$c = $c->create(['name' => 'Nike']);
 	}
 }
