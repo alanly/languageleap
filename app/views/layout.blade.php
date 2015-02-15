@@ -52,6 +52,21 @@
 			max-width: 200px;
 			width: 100%;
 		}
+
+		.loading-overlay {
+			background-color: #e4e4e4;
+			position: absolute;
+			opacity: 0.5;
+			width: 97%;
+		}
+
+		.vertical-center {
+			min-height: 100%;
+			min-height: 75vh;
+
+			display: flex;
+			align-items: center;
+		}
 	</style>
 @stop
 
@@ -146,6 +161,9 @@
 				</div>				
 			</div>
 			<div role="tabpanel" class="content col-md-10">
+				<div class="loading-overlay vertical-center">
+					{{ HTML::image('img/misc/loading-main.gif', 'Loading', array('class' => 'center-block loading')) }}
+				</div>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active section movies" data-type="movie">
 						<div class="elements movie-elements">
@@ -254,7 +272,7 @@
 		* for filtering.
 		*/
 		function getActiveTabType() {
-			return $('.tab-content .active').data('type');
+			return getActivePanel().data('type');
 		}
 
 		/**
@@ -266,11 +284,37 @@
 		}
 
 		/**
+		* Returns the panel that is currently
+		* displayed (as a jQuery object).
+		*/
+		function getActivePanel() {
+			return $('.tab-content .active');
+		}
+
+		/**
+		* Show the loading overlay with a bit of
+		* delay and animation to provide a more natural loading feeling.
+		*/
+		function showLoadingOverlay() {
+			$('.loading-overlay').removeClass('hide', 200, 'linear');
+		}
+
+		/**
+		* Hide the loading overlay with a bit of
+		* delay and animation to provide a more natural loading feeling.
+		*/
+		function hideLoadingOverlay() {
+			$('.loading-overlay').addClass('hide', 200, 'linear');
+		}
+
+
+		/**
 		* A timer is used to reduce the number of requests
 		* to the server.
 		*/
 		window.filterTimeout = null;
-		function onSearchKeypress() {
+		function onSearchInput() {
+			showLoadingOverlay();
 			clearTimeout(filterTimeout);
 			filterTimeout = setTimeout(refreshFilteredData, 600);
 		}
@@ -279,6 +323,7 @@
 		* This function is called when the user switches panels.
 		*/
 		function onSwitchPanel() {
+			showLoadingOverlay();
 			refreshFilteredData();
 		}
 
@@ -310,6 +355,8 @@
 		*/
 		function onGetFilteredSuccess(type) {
 			return function(data) {
+				hideLoadingOverlay();
+
 				var $panel = getPanelWithType(type);
 
 				// Empty the panel
@@ -328,6 +375,8 @@
 		* retrieval has failed.
 		*/
 		function onGetFilteredFail(data) {
+			hideLoadingOverlay();
+
 			var message = data.responseJSON.data;
 
 			if(message === undefined)
@@ -378,10 +427,10 @@
 			$('.filters-toggle').on('click', toggleFilters);
 
 			// Handler for when the user types in the search box
-			$('#search input').on('keydown', onSearchKeypress);
+			$('#search input').on('input', onSearchInput);
 
 			// Handler for when the user switches panel
-			$(document).on('shown.bs.tab', onSwitchPanel);
+			$(document).on('hidden.bs.tab', onSwitchPanel);
 		});
 			
 	</script>
