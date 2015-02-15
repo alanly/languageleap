@@ -29,7 +29,7 @@ Route::get('/movie/{id}', function($id)
 	return View::make('movie')->with("movie_id", $id);
 });
 
-Route::get('/episode', function($id)
+Route::get('/episode/{id}', function($id)
 {
 	return View::make('episode')->with("episode_id", $id);
 });
@@ -125,6 +125,9 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
 		
+		//Episode without show/season identifiers
+		Route::get('episode/{id}', 'ApiEpisodeController@showEpisode');
+
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');
 
