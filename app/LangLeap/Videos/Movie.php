@@ -60,27 +60,36 @@ class Movie extends Media implements Billable, Classifiable, Filterable {
 
 	public static function filterBy($input, $take, $skip = 0)
 	{
-		$filterableAttributes = [
-			'name',
-			'director',
-			'actor',
-			'genre',
-			'level',
-		];
+		$searchableAttributes = ['name', 'director', 'actor', 'genre'];
+		$filterableAttributes = ['level'];
 
 		$query = Movie::query();
-		$query->select('movies.id');
-		$query->join('levels', 'movies.level_id', '=', 'levels.id');
-
-		foreach ($filterableAttributes as $a)
+		$query->select('movies.*')
+		->join('levels', 'movies.level_id', '=', 'levels.id')
+		->where(function($q) use ($input, $searchableAttributes)
 		{
-			if (! isset($input[$a])) continue;
+			foreach ($searchableAttributes as $a)
+			{
+				if (! isset($input[$a])) continue;
 
-			if ($a == 'level')
-				$query->where('levels.description', '=', $input[$a]);
-			else
-				$query->where($a, 'like', $input[$a] . '%');
-		}
+				if ($a == 'level')
+					$q->orWhere('levels.description', 'like', $input[$a] . '%');
+				else
+					$q->orWhere($a, 'like', $input[$a] . '%');
+			}
+		})
+		->where(function($q) use ($input, $filterableAttributes)
+		{
+			foreach ($filterableAttributes as $a)
+			{
+				if (! isset($input[$a])) continue;
+
+				if ($a == 'level')
+					$q->where('levels.description', '=', $input[$a]);
+				else
+					$q->where($a, '=', $input[$a] . '%');
+			}
+		});
 
 		return $query->take($take)->skip($skip)->get();
 	}

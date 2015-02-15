@@ -36,20 +36,29 @@ class Show extends ValidatedModel implements Billable, Filterable {
 
 	public static function filterBy($input, $take, $skip = 0)
 	{
-		$filterableAttributes = [
-			'name',
-			'director',
-		];
+		$searchableAttributes = ['name', 'director'];
+		$filterableAttributes = [];
 
 		$query = Show::query();
-		$query->select('shows.id');
-
-		foreach ($filterableAttributes as $a)
+		$query->select('shows.*')
+		->where(function($q) use ($input, $searchableAttributes)
 		{
-			if (! isset($input[$a])) continue;
+			foreach ($searchableAttributes as $a)
+			{
+				if (! isset($input[$a])) continue;
 
-			$query->where($a, 'like', $input[$a] . '%');
-		}
+				$q->orWhere($a, 'like', $input[$a] . '%');
+			}
+		})
+		->where(function($q) use ($input, $filterableAttributes)
+		{
+			foreach ($filterableAttributes as $a)
+			{
+				if (! isset($input[$a])) continue;
+
+				$q->where($a, '=', $input[$a] . '%');
+			}
+		});
 
 		return $query->take($take)->skip($skip)->get();
 	}

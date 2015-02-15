@@ -52,24 +52,36 @@ class Commercial extends Media implements Classifiable, Filterable {
 
 	public static function filterBy($input, $take, $skip = 0)
 	{
-		$filterableAttributes = [
-			'name',
-			'level',
-		];
+		$searchableAttributes = ['name'];
+		$filterableAttributes = ['level'];
 
 		$query = Commercial::query();
-		$query->select('commercials.id');
-		$query->join('levels', 'commercials.level_id', '=', 'levels.id');
-
-		foreach ($filterableAttributes as $a)
+		$query->select('commercials.*')
+		->join('levels', 'commercials.level_id', '=', 'levels.id')
+		->where(function($q) use ($input, $searchableAttributes)
 		{
-			if (! isset($input[$a])) continue;
+			foreach ($searchableAttributes as $a)
+			{
+				if (! isset($input[$a])) continue;
 
-			if ($a == 'level')
-				$query->where('levels.description', '=', $input[$a]);
-			else
-				$query->where($a, 'like', $input[$a] . '%');
-		}
+				if ($a == 'level')
+					$q->orWhere('levels.description', 'like', $input[$a] . '%');
+				else
+					$q->orWhere($a, 'like', $input[$a] . '%');
+			}
+		})
+		->where(function($q) use ($input, $filterableAttributes)
+		{
+			foreach ($filterableAttributes as $a)
+			{
+				if (! isset($input[$a])) continue;
+
+				if ($a == 'level')
+					$q->where('levels.description', '=', $input[$a]);
+				else
+					$q->where($a, '=', $input[$a] . '%');
+			}
+		});
 
 		return $query->take($take)->skip($skip)->get();
 	}
