@@ -57,14 +57,21 @@
 			<div class="panel-collapse collapse season-information" role="tabpanel">
 				<div class="panel-body">
 					<ul class="list-group">
-						<li class="list-group-item"><a href="#">Episode 1</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 
+	<div class="error" style="display:none;">
+		<div class="alert alert-danger" role="alert" id="show-error">
+			
+		</div>
+	</div>
+
 	<script type="text/javascript">
+
+		var seasons_loaded = [];
 		$(document).ready(function(){
 			loadShow();
 		});
@@ -91,7 +98,19 @@
 				},
 				error: function(data)
 				{
+					$(".container").hide();
 
+					//show error here
+					$(".error").show();
+
+					var message = data.responseJSON.data;
+
+					if(message === undefined)
+					{
+						message = "There was a problem loading the information, Please try again at a later time.";
+					}
+
+					$("#show-error").html(message);
 				}
 			});
 		}
@@ -102,17 +121,50 @@
 				season_holder.removeClass("clonable");
 
 				season_holder.find(".season-number").attr("href", ".season-" + value.number);
-				season_holder.find(".season-information").addClass("season-" + value.number);
 				season_holder.find(".season-number").html("Season " + value.number);
+
+				//Add a custom click function
+				season_holder.find(".season-number").click(function(){
+					loadEpisodes(value.id);
+				});
+
+				season_holder.find(".season-information").addClass("season-" + value.number);
 
 				season_holder.show();
 				$(".season-selection").append(season_holder);
+
+				//Initially all ids are false
+				seasons_loaded[value.id] = false;
 			});
 		}
 
 		function loadEpisodes(season_id)
 		{
-			
+			if(!seasons_loaded[season_id])
+			{
+				//When clicked on season header, need to load the episodes
+				$.ajax({
+					url : "/api/metadata/shows/{{ $show_id }}/seasons/" + season_id + "/episodes",
+					dataType : "JSON",
+					success : function(data){
+						seasons_loaded[season_id] = true;
+
+						var episode_data = "";
+						var episodes = data.data.episodes;
+
+						$.each(episodes, function(index, value){
+							episode_data += "<li class='list-group-item'><a href=''>Episode " + value.number + "</a></li>";
+							
+						});
+						
+						$(".season-" + season_id).find(".list-group").html(episode_data)
+					},
+					error : function(data){
+						//set loaded to false
+						//show error
+					}
+				});
+			}
 		}
 	</script>
 @stop
