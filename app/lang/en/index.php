@@ -59,5 +59,21 @@ return array(
 			'search' => 'Search',
 			'for' => 'Search for...',
 		),
+		'general' => array(
+			'difficulty' => 'Difficulty level',
+			'description' => 'Description',
+			'part_number' => 'Part Number',
+			'length' => 'Length',
+			'play' => 'Play',
+			'error' => 'There was a problem loading the information, Please try again at a later time.',
+		),
+		'movie' => array(
+			'director' => 'Director',
+			'starring' => 'Starring',
+		),
+		'show' => array(
+		),
+		'commercial' => array(
+		),
 	),
 );

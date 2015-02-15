@@ -29,11 +29,11 @@
 			</div>
 			<div class="col-md-9">
 				<span class="level">
-					<h3>Difficulty Level</h3>
+					<h3>@lang('index.layout.general.difficulty')</h3>
 					<p id="commercial-level"></p>
 				</span>
 				<span class="description">
-					<h3>Description</h3>
+					<h3>@lang('index.layout.general.description')</h3>
 					<p id="commercial-description"></p>
 				</span>
 				<br>
@@ -43,9 +43,9 @@
 						<table class="table">
 							<thead>
 								<tr>
-									<th>Part Number</th>
-									<th>Length</th>
-									<th>Play</th>
+									<th>@lang('index.layout.general.part_number')</th>
+									<th>@lang('index.layout.general.length')</th>
+									<th>@lang('index.layout.general.play')</th>
 								</tr>
 							</thead>
 							<tbody id="commerial-videos">
@@ -102,7 +102,7 @@
 
 					if(message === undefined)
 					{
-						message = "There was a problem loading the information, Please try again at a later time.";
+						message = "@lang('index.layout.general.error')";
 					}
 
 					$("#commercial-error").html(message);
