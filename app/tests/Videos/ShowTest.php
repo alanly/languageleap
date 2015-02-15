@@ -39,7 +39,7 @@ class ShowTest extends TestCase {
 		$res = Show::filterBy($input, 1);
 
 		$this->assertCount(1, $res);
-		$this->assertSame($show->id, $res[0]->id);
+		$this->assertSame($show->name, $res[0]->name);
 	}
 
 	public function testFilterBySuccessWithSkip()
@@ -48,8 +48,8 @@ class ShowTest extends TestCase {
 
 		$show = Show::first();
 
-		// There should be more than one show beginning
-		// with the same letter
+		// There should be more than one show
+		// containing the same letter in the searchable attributes.
 		$letter = substr($show->name, 0, 1);
 
 		$input = [
@@ -58,11 +58,7 @@ class ShowTest extends TestCase {
 
 		$res = Show::filterBy($input, 1, 1);
 
-		$match = Show::find($res[0]->id);
-		$matchFirstLetter = substr($match->name, 0, 1);
-
 		$this->assertCount(1, $res);
-		$this->assertSame($letter, $matchFirstLetter);
 	}
 
 	public function testFilterBySuccessWithIrrelevantQueryData()
@@ -79,7 +75,7 @@ class ShowTest extends TestCase {
 		$res = Show::filterBy($input, 1, 0);
 
 		$this->assertCount(1, $res);
-		$this->assertSame($show->id, $res[0]->id);
+		$this->assertSame($show->name, $res[0]->name);
 	}
 
 	public function testFilterBySuccessWithTakeExtra()
@@ -88,8 +84,8 @@ class ShowTest extends TestCase {
 
 		$show = Show::first();
 
-		// There should be more than one show beginning
-		// with the same letter
+		// There should be more than one show
+		// containing the same letter in the searchable attributes.
 		$input = [
 			'name' => substr($show->name, 0, 1),
 		];

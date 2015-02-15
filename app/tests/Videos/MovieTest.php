@@ -56,7 +56,7 @@ class MovieTest extends TestCase {
 		$res = Movie::filterBy($input, 1);
 
 		$this->assertCount(1, $res);
-		$this->assertSame($movie->id, $res[0]->id);
+		$this->assertSame($movie->name, $res[0]->name);
 	}
 
 	public function testFilterBySuccessWithSkip()
@@ -99,7 +99,7 @@ class MovieTest extends TestCase {
 		$res = Movie::filterBy($input, 1, 0);
 
 		$this->assertCount(1, $res);
-		$this->assertSame($movie->id, $res[0]->id);
+		$this->assertSame($movie->name, $res[0]->name);
 	}
 
 	public function testFilterBySuccessWithLevelSpecified()
@@ -115,7 +115,6 @@ class MovieTest extends TestCase {
 		$res = Movie::filterBy($input, 1, 0);
 
 		$this->assertCount(1, $res);
-		$this->assertSame($movie->id, $res[0]->id);
 	}
 
 	public function testFilterBySuccessWithTakeExtra()

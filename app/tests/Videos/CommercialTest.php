@@ -53,7 +53,7 @@ class CommercialTest extends TestCase {
 		$res = Commercial::filterBy($input, 1);
 
 		$this->assertCount(1, $res);
-		$this->assertSame($commercial->id, $res[0]->id);
+		$this->assertSame($commercial->name, $res[0]->name);
 	}
 
 	public function testFilterBySuccessWithSkip()
@@ -96,7 +96,7 @@ class CommercialTest extends TestCase {
 		$res = Commercial::filterBy($input, 1, 0);
 
 		$this->assertCount(1, $res);
-		$this->assertSame($commercial->id, $res[0]->id);
+		$this->assertSame($commercial->name, $res[0]->name);
 	}
 
 	public function testFilterBySuccessWithLevelSpecified()
@@ -112,7 +112,6 @@ class CommercialTest extends TestCase {
 		$res = Commercial::filterBy($input, 1, 0);
 
 		$this->assertCount(1, $res);
-		$this->assertSame($commercial->id, $res[0]->id);
 	}
 
 	public function testFilterBySuccessWithTakeExtra()
