@@ -105,7 +105,7 @@ Route::group(['prefix' => 'api'], function()
 		// Recommendations
 		Route::resource('recommended', 'ApiRecommendedVideosController');
 
-		// Commercials
+		//Selected words
 		Route::resource('selectedWords', 'ApiSelectedWordsController');
 	});
 
