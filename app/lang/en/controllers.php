@@ -52,6 +52,7 @@ return array(
 	'scripts' => array(
 		'script_error' => 'Script :id not found.',
 		'script_deletion' => 'Script :id has been removed.',
+		'association_error' => 'There is no script associated with this video.',
 	),
 	'shows' => array(
 		'deletion' => 'Show :id has been removed.',
