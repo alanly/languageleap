@@ -131,14 +131,14 @@ class ApiQuizController extends \BaseController {
 		$quiz = Quiz::find($quiz_id);
 		if (! $quiz)
 		{
-			return $this->apiResponse('error', "Quiz {$quiz_id} not found", 404);
+			return $this->apiResponse('error', Lang::get('controllers.quiz.quiz_error', $quiz_id), 404);
 		}
 		
 		if ( ($quiz->user_id != Auth::user()->id) && (! Auth::user()->is_admin) )
 		{
 			return $this->apiResponse(
 				'error',
-				"Not authorized to view quiz {$quiz_id}",
+				Lang::get('controllers.quiz.quiz_no-auth', $quiz_id),
 				401
 			);
 		}
