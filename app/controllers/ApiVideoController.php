@@ -61,7 +61,7 @@ class ApiVideoController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Video {$videoId} not found.",
+				Lang::get('controllers.videos.error', ['id' => $videoId]),
 				404
 			);
 		}
@@ -86,7 +86,7 @@ class ApiVideoController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Video {$id} not found.",
+				Lang::get('controllers.videos.error', ['id' => $id]),
 				404
 			);
 		}
@@ -120,7 +120,7 @@ class ApiVideoController extends \BaseController {
 
 		return $this->apiResponse(
 			'success',
-			'Video {$id} has been removed',
+			Lang::get('controllers.videos.removed', ['id' => $id]),
 			200
 		);
 	}
