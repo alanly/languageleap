@@ -112,9 +112,7 @@ class RegistrationController extends \BaseController {
 		{
 			return Redirect::to('/')
 				->with('action.failed', true)
-				->with('action.message', 'You are already logged in. To create a new '.
-					'account, please sign out first.'
-				);
+				->with('action.message', Lang::get('auth.register.loggedin_error'));
 		}
 	}
 

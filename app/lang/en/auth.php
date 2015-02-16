@@ -19,6 +19,7 @@ return [
 	],
 
 	'register' => [
+		'create' => 'Create an account today!',
 		'form_errors'   => 'There is an error in your form, please fix it and try again.|There are errors in your form, please fix them and try again.',
 		'login_account' => 'Log in to my account',
 		'page_name'     => 'Create an account',
@@ -42,6 +43,7 @@ return [
 				'last_name'             => 'Your last name.',
 			],
 		],
+		'loggedin_error' => 'You are already logged in. To create a new account, please sign out first.',
 	],
 
 	'verify' => [

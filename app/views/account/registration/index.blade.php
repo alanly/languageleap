@@ -15,7 +15,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
-				<h2 class="text-center">Create an account today!</h2>
+				<h2 class="text-center">@lang('auth.register.create')</h2>
 			</div>
 		</div>
 		<div class="row">
