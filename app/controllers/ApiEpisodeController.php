@@ -152,7 +152,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.episodes.episode_error', $episodeId $seasonId , $showId),
+				Lang::get('controllers.episodes.episode_error', $episodeId, $seasonId , $showId),
 				404
 			);
 		}
@@ -209,7 +209,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.episodes.episode_error', $episodeId $seasonId , $showId),
+				Lang::get('controllers.episodes.episode_error', $episodeId, $seasonId , $showId),
 				404
 			);
 		}
@@ -273,7 +273,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.episodes.episode_error', $episodeId $seasonId , $showId),
+				Lang::get('controllers.episodes.episode_error', $episodeId, $seasonId , $showId),
 				404
 			);
 		}
@@ -282,7 +282,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.episodes.episode-deletion_error', $episodeId $seasonId , $showId),
+				Lang::get('controllers.episodes.episode-deletion_error', $episodeId, $seasonId , $showId),
 				500
 			);
 		}
