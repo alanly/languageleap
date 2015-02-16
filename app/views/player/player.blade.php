@@ -139,6 +139,9 @@
 
 			// Load the source.
 			$player.load();
+
+			// Load the associated script.
+			loadScript();
 		}
 
 		// Later on, this will be used for flashcards
