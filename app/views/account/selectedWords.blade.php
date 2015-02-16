@@ -51,8 +51,7 @@
 				{
 					"render" : function( data, type, row)
 					{
-						var button = '<button class="pronunciations-on" id="' + data + '"><span class="glyphicon glyphicon-volume-up volume"></span></button>';
-						return button;
+						return '<button class="pronunciations-on" id="' + data + '"><span class="glyphicon glyphicon-volume-up volume"></span></button>';
 					},
 					"targets" : 2
 				}
