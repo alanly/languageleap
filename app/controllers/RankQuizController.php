@@ -106,7 +106,7 @@ class RankQuizController
 	{
 		if (! $user)
 		{
-			return $this->apiResponse('error', Lang::get('controllers.rank.update_error', 500);
+			return $this->apiResponse('error', Lang::get('controllers.rank.update_error', 500));
 		}
 
 		// Generate a response containin the needed values.
