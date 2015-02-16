@@ -4,8 +4,8 @@
 	<style>
 		.cover img {
 			margin-bottom: 0;
-			height: 240px;
-			width: 180px;
+			height: 277px;
+			width: 208px;
 		}
 
 		.element {
@@ -13,44 +13,13 @@
 			display: inline-block;
 		}
 
-		.element > img:hover {
-		  opacity: 0.4;
-		}
-
-		.filters-toggle {
-			border-right: 1px solid #DDD;
-			border-bottom: 1px solid #DDD;
-			border-top: 1px solid #DDD;
-			cursor: pointer;
-			height: 40px;
-			padding: 10px;
-
-			margin-bottom: 15px;
+		.element img:hover {
+			opacity: 0.5;
 		}
 
 		.nav-pills {
 			margin-bottom: 15px;
 			margin-right: 15px;
-		}
-
-		.hide-filters-text span {
-			display: inline-block;
-			width: 85px;
-		}
-
-		.hide-filters-text {
-			display: inline-block;
-			padding-left: 20px;
-		}
-
-		.filters-toggle .glyphicon {
-			top: 2px;
-		}
-
-		#genres .checkbox {
-			display: inline-block;
-			max-width: 200px;
-			width: 100%;
 		}
 
 		.loading-overlay {
@@ -73,9 +42,6 @@
 			padding: 0 15px 0 15px;
 		}
 
-		.filters {
-			padding-right: 0;
-		}
 	</style>
 @stop
 
@@ -296,12 +262,28 @@
 				// Empty the panel
 				$panel.children('.elements').empty();
 
-				$.each(data.data, function(i, v) {
-					addElementToPanel($panel, type, v);
-				});
+				if (data.data.length > 0) {
+					$.each(data.data, function(i, v) {
+						addElementToPanel($panel, type, v);
+					});
 
-				refreshPopovers();
+					refreshPopovers();
+				} else {
+					showNoResults($panel);
+				}
 			};
+		}
+
+		/**
+		* Shows an alert in the given panel to let
+		* the user know that no results were returned.
+		*/
+		function showNoResults($panel) {
+			var noResults = '<div class="alert" role="alert">' +
+								'<h2><small>No results matching your search were found</small></h2>' +
+							'</div>';
+
+			$panel.children('.elements').html(noResults);
 		}
 
 		/**
@@ -326,7 +308,7 @@
 		*/
 		function addElementToPanel($panel, type, elementData) {
 			var url = '/' + type + '/' + elementData.id;
-			var coverUrl = (elementData.image_path) ? elementData.image_path : 'http://placehold.it/180x240';
+			var coverUrl = (elementData.image_path) ? elementData.image_path : 'http://placehold.it/208x277';
 			var element =	'<div class="element" id="' + elementData.id + '">' +
 								'<a href="' + url + '" class="thumbnail cover" data-toggle="popover" data-trigger="hover" data-placement="auto" title="' + elementData.name + '" data-content="' + elementData.description + '">' +
 									'<img src="' + coverUrl + '" />' +
