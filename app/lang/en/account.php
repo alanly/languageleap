@@ -30,4 +30,12 @@ return array(
 		'about' => 'About',
 		'contact' => 'Contact',
 	),
+	'verification' => array(
+		'title' => 'Verify Your Email Address',
+		'thankyou' => 'Thank you for registering for LanguageLeap!',
+		'instruction' =>'In order to activate your account, we will need to confirm your email
+			address. To do so, just follow',
+		'signature' => '&mdash; The LanguageLeap Team',
+		'this' => 'this Link',
+	),
 );
