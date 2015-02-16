@@ -44,6 +44,7 @@ return [
 			],
 		],
 		'loggedin_error' => 'You are already logged in. To create a new account, please sign out first.',
+		'verify_email' => 'Verify your email address',
 	],
 
 	'verify' => [

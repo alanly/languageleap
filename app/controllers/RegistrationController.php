@@ -92,7 +92,7 @@ class RegistrationController extends \BaseController {
 			function($message) {
 				$message
 					->to(Input::get('email'), Input::get('username'))
-					->subject('Verify your email address');
+					->subject(Lang::get('auth.register.verify_email'));
 			}
 		);
 
