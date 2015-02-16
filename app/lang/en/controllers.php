@@ -14,12 +14,19 @@ return array(
 
 	'definition' => array(
 		'error' => 'Definition :id not found.',
-		'flashcard' => 'Define Selected',
 	),
-	'player' => array(
-		'error' => 'Your browser does not support HTML5 video.',
+	'dictionary' => array(
+		'word_error' => 'Word :word does not exist.',
+		'video_error' => 'Video :videoId does not exist.',
+		'lang_error' => 'Language for :videoId not found.',
+		'dictionary_error' => ':videoLang dictionary not found.',
+		'definition_error' => 'Definition not found.',
 	),
-	'audio' => array(
-		'error' => 'Your browser does not support HTML5 audio.',
+	'episodes' => array(
+		'show_error' => 'Show :showId could not be found.',
+		'season_error' => 'Season :seasonId not found for show :showId.',
+		'show-season_error' => 'Season :seasonId of show :showId could not be found.',
+		'episode_error' => 'Episode :episodeId of season :seasonId for show :showId could not be found.',
+		'episode-deletion_error' => 'Episode :episodeId of season :seasonId for show :showId could not be deleted.',
 	),
 );
