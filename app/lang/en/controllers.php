@@ -34,6 +34,9 @@ return array(
 		'movie_deletion' => 'Movie :id has been removed.',
 	),
 	'quiz' => array(
+		'saved' => 'Custom question saved successfully',
+		'database_error' => 'Video not found in database.',
+		'blank-fields_error' => 'Fields not filled in properly.',
 		'quiz_error' => 'Quiz :quiz_id not found.',
 		'quiz_no-auth' => 'Not authorized to view quiz :quiz_id.',
 	),

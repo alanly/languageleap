@@ -63,7 +63,7 @@ class ApiQuizController extends \BaseController {
 		$question = Input::get('question');
 		$answers = Input::get('answer');
 		
-		$message = 'Custom question saved successfully';
+		$message = Lang::get('controllers.quiz.saved');
 		$success = true;
 
 		$video = Video::find($video_id);
@@ -71,13 +71,13 @@ class ApiQuizController extends \BaseController {
 		if (! $video)
 		{
 			$success = false;
-			$message = 'Video not found in database';
+			$message = Lang::get('controllers.quiz.database_error');
 		}
 		
 		if(! $question || ! $answers || count($answers) < 1)
 		{
 			$success = false;
-			$message = 'Fields not filled in properly';
+			$message = Lang::get('controllers.quiz.blank-fields_error');
 		}
 
 		if($success) // Create the question if the input is correct
