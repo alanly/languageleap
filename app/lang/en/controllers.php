@@ -28,7 +28,8 @@ return array(
 		'show-season_error' => 'Season :seasonId of show :showId could not be found.',
 		'episode_error' => 'Episode :episodeId of season :seasonId for show :showId could not be found.',
 		'episode-deletion_error' => 'Episode :episodeId of season :seasonId for show :showId could not be deleted.',
-		'season-deletion_error' => 'Unable to delete season :seasonId for show :showId.'
+		'season-deletion_error' => 'Unable to delete season :seasonId for show :showId.',
+		'season-deletion' => 'Season deleted.',
 	),
 	'commercial' => array(
 		'error' => 'Commercial :id not found.',
@@ -53,7 +54,15 @@ return array(
 		'script_deletion' => 'Script :id has been removed.',
 	),
 	'shows' => array(
-		'error' => 'Show :id not found.',
 		'deletion' => 'Show :id has been removed.',
 	),
+	'videos' => array(
+		'error' => 'Video :id not found.',
+		'removed' => 'Video :id has been removed.',
+		'inexistant' => 'Video :id does not exist.',
+		'history_updated' => 'History Updated successfully',
+	),
+	'home' => array(
+		'hello' => 'hello',
+	)
 );
