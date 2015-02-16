@@ -33,4 +33,8 @@ return array(
 		'movie_error' => 'Movie :id not found.',
 		'movie_deletion' => 'Movie :id has been removed.',
 	),
+	'quiz' => array(
+		'quiz_error' => 'Quiz :quiz_id not found.',
+		'quiz_no-auth' => 'Not authorized to view quiz :quiz_id.',
+	),
 );
