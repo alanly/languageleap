@@ -29,6 +29,10 @@ return array(
 		'episode_error' => 'Episode :episodeId of season :seasonId for show :showId could not be found.',
 		'episode-deletion_error' => 'Episode :episodeId of season :seasonId for show :showId could not be deleted.',
 	),
+	'commercial' => array(
+		'error' => 'Commercial :id not found.',
+		'movie_deletion' => 'Movie :id has been removed.',
+	),
 	'movies' => array(
 		'movie_error' => 'Movie :id not found.',
 		'movie_deletion' => 'Movie :id has been removed.',
