@@ -121,7 +121,7 @@
 				var season_holder = $(".clonable").clone();
 				season_holder.removeClass("clonable");
 
-				season_holder.find(".season-number").attr("href", ".season-" + value.number);
+				season_holder.find(".season-number").attr("href", ".season-" + value.id);
 				season_holder.find(".season-number").html("Season " + value.number);
 
 				//Add a custom click function
@@ -129,7 +129,7 @@
 					loadEpisodes(value.id);
 				});
 
-				season_holder.find(".season-information").addClass("season-" + value.number);
+				season_holder.find(".season-information").addClass("season-" + value.id);
 
 				season_holder.show();
 				$(".season-selection").append(season_holder);
@@ -155,14 +155,20 @@
 
 						$.each(episodes, function(index, value){
 							episode_data += "<li class='list-group-item'><a href='/episode/" + value.id + "'>Episode " + value.number + "</a></li>";
-							
 						});
-						
-						$(".season-" + season_id).find(".list-group").html(episode_data)
+
+						if(episodes.length > 0)
+						{
+							$(".season-" + season_id).find(".list-group").html(episode_data);
+						}
+						else
+						{
+							$(".season-" + season_id).find(".list-group").html("@lang('index.layout.show.seasons.empty')");
+						}
 					},
 					error : function(data){
-						//set loaded to false
-						//show error
+						seasons_loaded[season_id] = false;
+
 					}
 				});
 			}

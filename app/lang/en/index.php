@@ -72,6 +72,9 @@ return array(
 			'starring' => 'Starring',
 		),
 		'show' => array(
+			'seasons' => array(
+				'empty' => 'There are no episodes currently for this season',
+			),
 		),
 		'commercial' => array(
 		),
