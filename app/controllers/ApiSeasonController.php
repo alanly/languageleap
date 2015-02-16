@@ -86,7 +86,6 @@ class ApiSeasonController extends \BaseController {
 		if (! $show)
 		{
 			return $this->apiResponse('error', Lang::get('controllers.episodes.show_error', ['id' => $showId]), 404);
-		}, 404);
 		}
 
 		$season = $show->seasons()->where('id', $seasonId)->first();
