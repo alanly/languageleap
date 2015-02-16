@@ -62,6 +62,7 @@ return array(
 		'removed' => 'Video :id has been removed.',
 		'inexistant' => 'Video :id does not exist.',
 		'history_updated' => 'History Updated successfully',
+		'reading_error' => 'An error occurred while reading video :id.',
 	),
 	'home' => array(
 		'hello' => 'hello',
