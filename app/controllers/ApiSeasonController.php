@@ -31,7 +31,7 @@ class ApiSeasonController extends \BaseController {
 
 		if (! $show)
 		{
-			return $this->apiResponse('error', "Show {$showId} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.episodes.error', ['id' => $showId]), 404);
 		}
 
 		$showSeasons = $show->seasons()->get();
@@ -54,7 +54,8 @@ class ApiSeasonController extends \BaseController {
 
 		if (! $show)
 		{
-			return $this->apiResponse('error', "Show {$showId} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.episodes.show_error', ['id' => $showId]), 404);
+		}, 404);
 		}
 
 		$season = $this->seasons->newInstance(Input::get());
@@ -85,7 +86,8 @@ class ApiSeasonController extends \BaseController {
 
 		if (! $show)
 		{
-			return $this->apiResponse('error', "Show {$showId} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.episodes.show_error', ['id' => $showId]), 404);
+		}, 404);
 		}
 
 		$season = $show->seasons()->where('id', $seasonId)->first();
@@ -94,7 +96,7 @@ class ApiSeasonController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Season {$seasonId} not found for show {$showId}.",
+				Lang::get('controllers.episodes.season_error', ['seasonId' => $seasonId, 'showId' => $showId]),
 				404
 			);
 		}
@@ -115,7 +117,7 @@ class ApiSeasonController extends \BaseController {
 
 		if (! $show)
 		{
-			return $this->apiResponse('error', "Show {$showId} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.episodes.show_error', ['id' => $showId]), 404);
 		}
 
 		$season = $show->seasons()->where('id', $seasonId)->first();
@@ -124,7 +126,7 @@ class ApiSeasonController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Season {$seasonId} not found for show {$showId}.",
+				Lang::get('controllers.episodes.season_error', ['seasonId' => $seasonId, 'showId' => $showId]),
 				404
 			);
 		}
@@ -157,7 +159,7 @@ class ApiSeasonController extends \BaseController {
 
 		if (! $show)
 		{
-			return $this->apiResponse('error', "Show {$showId} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.episodes.show_error', ['id' => $showId]), 404);
 		}
 
 		$season = $show->seasons()->where('id', $seasonId)->first();
@@ -166,7 +168,7 @@ class ApiSeasonController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Season {$seasonId} not found for show {$showId}.",
+				Lang::get('controllers.episodes.season_error', ['seasonId' => $seasonId, 'showId' => $showId]),
 				404
 			);
 		}
@@ -175,14 +177,14 @@ class ApiSeasonController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Unable to delete season {$seasonId} for show {$showId}.",
+				Lang::get('controllers.episodes.season-deletion_error', ['seasonId' => $seasonId, 'showId' => $showId]),
 				500
 			);
 		}
 
 		return $this->apiResponse(
 			'success',
-			'Season deleted.',
+			Lang::get('controllers.episodes.season-deletion'),
 			204
 		);
 	}
