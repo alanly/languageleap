@@ -95,7 +95,7 @@ class ApiDefinitionController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Definition {$id} not found.",
+				Lang::get('controllers.definitions.error', $id),
 				404
 			);
 		}
