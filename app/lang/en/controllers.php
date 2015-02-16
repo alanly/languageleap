@@ -8,7 +8,7 @@ return array(
 	|------------------------------------------------------------------
 	|
 	| The following language lines will be used for the english 
-	| version of the player page.
+	| version for controllers.
 	|
 	*/
 
@@ -36,5 +36,8 @@ return array(
 	'quiz' => array(
 		'quiz_error' => 'Quiz :quiz_id not found.',
 		'quiz_no-auth' => 'Not authorized to view quiz :quiz_id.',
+	),
+	'recommended' => array(
+		'not-logged_error' => 'User not logged in.',
 	),
 );
