@@ -117,21 +117,28 @@
 
 		function loadVideo()
 		{
+			// Combulate our source URL.
 			var url = '/content/videos/{{ $video_id }}';
-			$.ajax({
-				type : 'GET',
-				url : url,
-				success : function(data){
-					$('#video-player').find('source').attr('src', url);
-					$('#video-player').load();
-					loadScript();
-				},
-				error : function(data){
-					var json = $.parseJSON(data.responseText);
-					$('.error-message').html(json.data);
-					$('.error-message').show();
-				}
+
+			// Get our player element.
+			var $player = $('#video-player');
+
+			// Get our 'source' element.
+			var $source = $('#video-player').find('source');
+
+			// Create an event handler callback for error on our player.
+			$source.on('error', function(event)
+			{
+				console.error("Error occured when loading video from source.");
+				$('.error-message').html('<p>An error occured while attempting to play this video.');
+				$('.error-message').show();
 			});
+
+			// Set the desired source.
+			$source.attr('src', url);
+
+			// Load the source.
+			$player.load();
 		}
 
 		// Later on, this will be used for flashcards
