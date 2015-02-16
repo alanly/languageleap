@@ -46,7 +46,7 @@ class ApiDefinitionController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.definitions.error', $id),
+				Lang::get('controllers.definitions.error', ['id' => $id]),
 				404
 			);
 		}
@@ -95,7 +95,7 @@ class ApiDefinitionController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.definitions.error', $id),
+				Lang::get('controllers.definitions.error',  ['id' => $id]),
 				404
 			);
 		}

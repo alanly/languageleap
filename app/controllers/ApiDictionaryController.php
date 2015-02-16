@@ -22,7 +22,7 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.dictionary.word_error', $word),
+				Lang::get('controllers.dictionary.word_error', ['word' => $word]),
 				404
 			);
 		}
@@ -33,7 +33,7 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.dictionary.video_error', $videoId),
+				Lang::get('controllers.dictionary.video_error', ['videoId' => $videoId]),
 				404
 			);
 		}
@@ -43,7 +43,7 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.dictionary.video_error', $videoId),
+				Lang::get('controllers.dictionary.video_error', ['videoId' => $videoId]),
 				404
 			);
 		}
@@ -53,7 +53,7 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.dictionary.dictionary_error', $videoLanguage),
+				Lang::get('controllers.dictionary.dictionary_error', ['videoLanguage' => $videoLanguage]),
 				404
 			);
 		}
