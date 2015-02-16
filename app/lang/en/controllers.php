@@ -64,5 +64,10 @@ return array(
 	),
 	'home' => array(
 		'hello' => 'hello',
-	)
+	),
+	'rank' => array(
+		'already_ranked' => 'You have already been ranked.',
+		'incomplete' => 'Missing or incomplete questions object in request.',
+		'update_error' => 'Error when updating user.',
+	),
 );

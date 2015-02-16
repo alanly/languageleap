@@ -59,7 +59,7 @@ class RankQuizController
 		}
 		else
 		{
-			return Response::make("You have already been ranked.", 400);
+			return Response::make(Lang::get('controllers.rank.already_ranked'), 400);
 		}
 	}
 
@@ -83,7 +83,7 @@ class RankQuizController
 		// There should be questions.
 		if (! $questions || (count($questions) < 1))
 		{
-			return $this->apiResponse('error', 'Missing or incomplete questions object in request.', 400);
+			return $this->apiResponse('error', Lang::get('controllers.rank.incomplete'), 400);
 		}
 
 		$userRanker = App::make('LangLeap\Rank\UserRanker');
@@ -106,7 +106,7 @@ class RankQuizController
 	{
 		if (! $user)
 		{
-			return $this->apiResponse('error', 'Error when updating user.', 500);
+			return $this->apiResponse('error', Lang::get('controllers.rank.update_error', 500);
 		}
 
 		// Generate a response containin the needed values.
