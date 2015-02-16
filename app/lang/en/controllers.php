@@ -31,7 +31,7 @@ return array(
 	),
 	'commercial' => array(
 		'error' => 'Commercial :id not found.',
-		'movie_deletion' => 'Movie :id has been removed.',
+		'removed' => 'Commercial :id has been removed.',
 	),
 	'movies' => array(
 		'movie_error' => 'Movie :id not found.',
@@ -46,5 +46,9 @@ return array(
 	),
 	'recommended' => array(
 		'not-logged_error' => 'User not logged in.',
+	),
+	'scripts' => array(
+		'script_error' => 'Script :id not found.',
+		'script_deletion' => 'Script :id has been removed.',
 	),
 );
