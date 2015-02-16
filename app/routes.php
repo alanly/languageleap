@@ -13,12 +13,6 @@ use LangLeap\Videos\Video;
 |
 */
 
-// Accordion
-Route::get('/', function()
-{
-	return View::make('index');
-});
-
 Route::get('/commercial/{id}', function($id)
 {
 	return View::make('commercial')->with("commercial_id", $id);
@@ -40,7 +34,7 @@ Route::get('/show/{id}', function($id)
 });
 
 // TODO set this to be the index route
-Route::get('/layout', function()
+Route::get('/', function()
 {
 	return View::make('layout');
 });
