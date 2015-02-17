@@ -314,7 +314,7 @@ class QuizFactory implements UserInputResponse {
 			{
 				// Get the definition of the word, if successful push into the array
 				$wordInformation = new WordInformation($word, '', '', $videoId);
-				if(strlen($wordInformation->getDefinition()) > 1) 
+				if($wordInformation->getDefinition()) 
 				{
 					array_push($randomWords, $wordInformation);
 				}
