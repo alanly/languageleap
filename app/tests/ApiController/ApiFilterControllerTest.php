@@ -120,5 +120,22 @@ class ApiFilterControllerTest extends TestCase {
 
 		$this->getFilteredDataFail($query, $movie);
 	}
+
+	public function testGetFilteredContentFailOnInvalidSkip()
+	{
+		$this->seed();
+
+		$movie = Movie::first();
+
+		$query = [
+			'type' => 'movie',
+			'take' => 1,
+			'skip' => 'invalidskip',
+			'name' => $movie->name,
+			'level' => $movie->level->description,
+		];
+
+		$this->getFilteredDataFail($query, $movie);
+	}
 	
 }
