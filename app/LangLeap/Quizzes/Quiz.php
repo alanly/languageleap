@@ -39,6 +39,8 @@ class Quiz extends Eloquent {
 		{
 			array_push($response['video_questions'], $vq->toResponseArray());
 		}
+
+		shuffle($response['video_questions']);
 		
 		return $response;
 	}
