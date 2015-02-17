@@ -168,6 +168,31 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertResponseStatus(400);
 	}
 
+	/**
+	 * This test will check for a correct response when only 1 word is selected, and the API returned no definition.
+	 */	
+	public function testVideoNoDefinitionForWord()
+	{
+		$video = Video::first();
+		$selected_words = 
+		[
+			['word' => 'thiswordhasnodefinition', 'definition' => '', 'sentence' => 'thiswordhasnodefinition is nice.']
+		];
+
+		$response = $this->action(
+			'post',
+			'ApiQuizController@postVideo',
+			[],
+			[
+				"video_id" => $video->id, 
+				"selected_words" => $selected_words
+			]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(404);
+	}
+
 	/*
 	 *	This test will test that a proper error code is recieved when trying to get a quiz with an invalid video
 	 */
