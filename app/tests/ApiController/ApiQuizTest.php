@@ -194,9 +194,36 @@ class ApiQuizControllerTest extends TestCase {
 	}
 
 	/**
-	 * This test will check for a correct response when only 1 word is selected, and the API returned no definition.
+	 * This test will check for a correct response when 2 words are selected, and the API returned no definition for both.
 	 */	
-	public function testVideoNoDefinitionForOneWordSelected()
+	public function testVideoNoDefinitionForWordsSelected()
+	{
+		$video = Video::first();
+		$selected_words = 
+		[
+			['word' => 'thiswordhasnodefinition', 'definition' => '', 'sentence' => 'thiswordhasnodefinition is nice.'],
+			['word' => 'thiswordhasnodefinition', 'definition' => '', 'sentence' => 'thiswordhasnodefinition is nice.']
+		];
+
+		$response = $this->action(
+			'post',
+			'ApiQuizController@postVideo',
+			[],
+			[
+				"video_id" => $video->id, 
+				"selected_words" => $selected_words
+			]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(404);
+	}
+
+	/**
+	 * This test will check for a correct response when only 1 word is selected, and the API returned no definition.
+	 * However, there are other words selected with a definition
+	 */	
+	public function testVideoNoDefinitionForOneOfTheWordSelected()
 	{
 		$video = Video::first();
 		$selected_words = 

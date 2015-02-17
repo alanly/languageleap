@@ -57,6 +57,7 @@ class QuizFactory implements UserInputResponse {
 			$selectedWords = $input['selected_words'];
 			$wordsInformation = array();
 
+			$numberOfBadWords = 0;
 			for($i = 0; $i < count($selectedWords); $i++)
 			{
 				// Ensure word exists.
@@ -73,16 +74,16 @@ class QuizFactory implements UserInputResponse {
 				//Skip this word, but still create the quiz with the rest of the words.
 				if(!$wordInformation->getDefinition())
 				{
-					//This is the only word.
-					if(count($selectedWords) == 1)
-					{
-						return ['error', 'The selected word does not have a definition.', 404];
-					}
-
+					$numberOfBadWords += 1;
 					continue;
 				}
 
 				array_push($wordsInformation, $wordInformation);
+			}
+
+			if($numberOfBadWords == count($selectedWords))
+			{
+				return ['error', 'The selected words do not have a definition.', 404];
 			}
 			
 			$quiz = $this->getQuiz(
