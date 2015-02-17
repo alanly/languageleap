@@ -34,10 +34,14 @@ class Show extends ValidatedModel implements Billable, Filterable {
 		return $this->hasMany('LangLeap\Videos\Season');
 	}
 
+	public static function getSearchableAttributes()
+	{
+		return ['name', 'director'];
+	}
+
 	public static function filterBy($input, $take, $skip = 0)
 	{
-		$searchableAttributes = ['name', 'director'];
-		$filterableAttributes = [];
+		$searchableAttributes = Show::getSearchableAttributes();
 
 		$query = Show::query();
 		$query->select('shows.*')
@@ -48,15 +52,6 @@ class Show extends ValidatedModel implements Billable, Filterable {
 				if (! isset($input[$a])) continue;
 
 				$q->orWhere($a, 'like', '%' . $input[$a] . '%');
-			}
-		})
-		->where(function($q) use ($input, $filterableAttributes)
-		{
-			foreach ($filterableAttributes as $a)
-			{
-				if (! isset($input[$a])) continue;
-
-				$q->where($a, '=', $input[$a]);
 			}
 		});
 

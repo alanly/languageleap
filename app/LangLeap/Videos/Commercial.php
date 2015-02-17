@@ -50,10 +50,14 @@ class Commercial extends Media implements Classifiable, Filterable {
 		];
 	}
 
+	public static function getSearchableAttributes()
+	{
+		return ['name'];
+	}
+
 	public static function filterBy($input, $take, $skip = 0)
 	{
-		$searchableAttributes = ['name'];
-		$filterableAttributes = ['level'];
+		$searchableAttributes = Commercial::getSearchableAttributes();
 
 		$query = Commercial::query();
 		$query->select('commercials.*')
@@ -64,23 +68,14 @@ class Commercial extends Media implements Classifiable, Filterable {
 			{
 				if (! isset($input[$a])) continue;
 
-				if ($a == 'level')
-					$q->orWhere('levels.description', 'like', '%' . $input[$a] . '%');
-				else
-					$q->orWhere($a, 'like', '%' . $input[$a] . '%');
+				$q->orWhere($a, 'like', '%' . $input[$a] . '%');
 			}
 		})
-		->where(function($q) use ($input, $filterableAttributes)
+		->where(function($q) use ($input)
 		{
-			foreach ($filterableAttributes as $a)
-			{
-				if (! isset($input[$a])) continue;
+			if (! isset($input['level'])) return;
 
-				if ($a == 'level')
-					$q->where('levels.description', '=', $input[$a]);
-				else
-					$q->where($a, '=', $input[$a]);
-			}
+			$q->where('levels.description', '=', $input['level']);
 		});
 
 		return $query->take($take)->skip($skip)->get();
