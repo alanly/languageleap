@@ -240,7 +240,11 @@ quizApp.controller(
 
 		$scope.finalScore = function()
 		{
-			return (correctQuestionsCount / questionsCount) * 100;
+			// Ensure we only have 2 decimal places.
+			var score = (correctQuestionsCount / questionsCount) * 100;
+			score = Math.round(score * 100) / 100
+
+			return score;
 		};
 
 	}
