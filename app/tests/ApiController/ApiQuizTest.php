@@ -171,7 +171,7 @@ class ApiQuizControllerTest extends TestCase {
 	/**
 	 * This test will check for a correct response when only 1 word is selected, and the API returned no definition.
 	 */	
-	public function testVideoNoDefinitionForWord()
+	public function testVideoNoDefinitionForWordSelected()
 	{
 		$video = Video::first();
 		$selected_words = 
@@ -191,6 +191,36 @@ class ApiQuizControllerTest extends TestCase {
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(404);
+	}
+
+	/**
+	 * This test will check for a correct response when only 1 word is selected, and the API returned no definition.
+	 */	
+	public function testVideoNoDefinitionForOneWordSelected()
+	{
+		$video = Video::first();
+		$selected_words = 
+		[
+			['word' => 'cat', 'definition' => 'lazy animal', 'sentence' => 'the cat is annoying.'],
+			['word' => 'thiswordhasnodefinition', 'definition' => '', 'sentence' => 'thiswordhasnodefinition is nice.']
+		];
+
+		$response = $this->action(
+			'post',
+			'ApiQuizController@postVideo',
+			[],
+			[
+				"video_id" => $video->id, 
+				"selected_words" => $selected_words
+			]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+		
+		$data = $response->getData()->data;
+		$this->assertObjectHasAttribute('quiz_id', $data);
+		$this->assertGreaterThan(0, $data->quiz_id);
 	}
 
 	/*
