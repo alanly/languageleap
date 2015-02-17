@@ -11,16 +11,13 @@
 @stop
 
 @section('content')
-	<div id="wrapper">
+	<div class="container">
 		<div class="error-message alert alert-danger" style="display:none">
 		</div>
 
 		<div class="row">
-			<div id="script" class="col-lg-6 col-md-6 col-xs-6" style="width: 50%;">
-			</div>
-
 			<!-- Player here -->
-			<div class="jumbotron col-lg-6 col-md-6 col-xs-6" style="width: 50%;">	
+			<div class="col-lg-7 col-md-7 col-xl-12">	
 				<div id="video-container">
 					<video width="100%" id="video-player">
 						<source class="source" type="video/mp4">
@@ -64,35 +61,35 @@
 				</div>					
 			</div>
 
+			<div id="script" class="col-lg-5 col-md-5 col-xs-12">
+			</div>
+			<audio id="word-audio" autoplay>
+				<p>@lang('player.audio.error')</p>
+			</audio>
 
-		<audio id="word-audio" autoplay>
-			<p>@lang('player.audio.error')</p>
-		</audio>
-
-		<a class="continue btn btn-success">@lang('player.script.quiz')</a>
-		<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
-		<button id="mute-audio" class="pronunciations-on" title="Audio hover"></button>
-		
-		<div id="load-quiz-error" class="alert alert-danger col-lg-6 col-md-6 col-xs-6" role="alert" style="margin-top:10px" hidden="hidden">
-			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="sr-only">Error:</span>
-			<span id="load-quiz-message"></span>
+			<a class="continue btn btn-success">@lang('player.script.quiz')</a>
+			<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
+			<button id="mute-audio" class="pronunciations-on" title="Audio hover"></button>
+			
+			<div id="load-quiz-error" class="alert alert-danger col-lg-6 col-md-6 col-xs-6" role="alert" style="margin-top:10px" hidden="hidden">
+				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+				<span class="sr-only">Error:</span>
+				<span id="load-quiz-message"></span>
+			</div>
 		</div>
-		
-	</div>
 
-	<div class="clear" style="clear:both;"></div>
+		<div class="clear" style="clear:both;"></div>
 	
-	<div id="flashcard" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-body">
-					@include('flashcard')
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-		
+		<div id="flashcard" class="modal fade">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						@include('flashcard')
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+	</div>
 	<script>
 		var definitions = [];
 
