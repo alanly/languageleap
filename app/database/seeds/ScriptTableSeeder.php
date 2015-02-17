@@ -24,7 +24,7 @@ class ScriptTableSeeder extends Seeder {
 			$path = explode('\\', $video->viewable_type);
 			$type = array_pop($path);
 
-			Script::create(array('text' => $text, 'video_id' => $video->id));
+			Script::create(array('text' => $scriptText, 'video_id' => $video->id));
 		}
 	}
 
