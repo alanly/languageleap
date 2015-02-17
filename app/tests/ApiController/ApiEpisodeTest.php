@@ -79,7 +79,7 @@ class ApiEpisodeControllerTest extends TestCase {
 		$this->assertEquals(1, $data->episode->id);
 	}
 
-	public function showEpisode()
+	public function testShowEpisode()
 	{
 		$this->seed();
 
