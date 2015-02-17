@@ -22,11 +22,11 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 	 */
 	public function getDefinition($word)
 	{
-		$this->openConnection();
-		$dictionaryDefinition = $this->getWordDefinition($word);
-		$audioUrl = $this->getAudio($word);
-		$hyphenatedWord = $this->getHyphenatedWord($word);
-		$synonym = $this->getSynonym($word);
+		//Make requests here
+		$client = $this->instantiateConnection();
+		$dictionaryDefinition = $this->getWordDefinition($word, $client);
+		$audioUrl = $this->getAudio($word, $client);
+		$hyphenatedWord = $this->getHyphenatedWord($word, $client);
 
 		if(!$dictionaryDefinition)
 		{
@@ -51,9 +51,9 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 	 * @param  string  $word
 	 * @return string (URL of audio)
 	 */
-	public function getAudio($word)
+	public function getAudio($word, $client)
 	{
-		$audios = $this->client->wordAudio($word)
+		$audios = $client->wordAudio($word)
 							->limit(1)
 							->useCanonical(true)
 							->get();
@@ -107,9 +107,9 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 	 * @param  string  $word
 	 * @return string
 	 */
-	public function getHyphenatedWord($word)
+	public function getHyphenatedWord($word, $client)
 	{
-		$wordSegments = $this->client->wordHyphenation($word)
+		$wordSegments = $client->wordHyphenation($word)
 							->limit(20)
 							->useCanonical(true)
 							->get();
@@ -133,7 +133,7 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 		return substr($result, 0, -1);
 	}
 
-	private function getWordDefinition($word)
+	private function getWordDefinition($word, $client)
 	{
 		//Returns an array of Definition Objects, only take the text of the first one.
 		$definitions = $this->client->wordDefinitions($word)
@@ -161,11 +161,6 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 		$client = new Picnik;
 		$client->setApiKey($this->API_KEY);
 		return $client;
-	}
-
-	private function closeConnection()
-	{
-		unset($this->client);
 	}
 }
 

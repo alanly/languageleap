@@ -30,7 +30,7 @@ class WordInformation
 			$this->definition = $definition;
 		}
 
-		$this->sentence = str_replace($word, $this->BLANK, $sentence);
+		$this->sentence = preg_replace('/\b' . $word . '\b/', $this->BLANK, $sentence);
 	}
 
 	public function getWord()
