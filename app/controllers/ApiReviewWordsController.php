@@ -12,7 +12,7 @@ class ApiReviewWordsController extends \BaseController {
 		$this->beforeFilter('auth');
 	}
 
-	public function index()
+	public function getIndex()
 	{
 		$words = WordBank::where('user_id', '=', Auth::user()->id)->get();
 		
