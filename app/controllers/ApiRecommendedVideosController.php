@@ -40,9 +40,14 @@ class ApiRecommendedVideosController extends \BaseController {
 	public function generateResponseData($recommendations)
 	{
 		$responseData = array();
-		foreach ($recommendations as $recommendation)
+		foreach ($recommendations as $r)
 		{
-			array_push($responseData, $recommendation->getMedia()->toResponseArray());
+			$media = $r->getMedia();
+			
+			$response = $media->toResponseArray();
+			$response[] = get_class($media);
+
+			$responseData[] = $response;
 		}
 		
 		return $responseData;
