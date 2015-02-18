@@ -4,6 +4,7 @@ use LangLeap\Accounts\User;
 use LangLeap\Core\UserInputResponse;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\VideoQuestion;
+use LangLeap\Words\WordBank;
 
 /**
  * Encapsulate the behavior of response for answering questions in a quiz
@@ -27,6 +28,21 @@ class QuizAnswerUpdate implements UserInputResponse {
 		
 		// Check if the answer is correct
 		$isCorrectAnswer = $videoquestion->question->answer_id.'' === $selectedId;
+		
+		if(!$isCorrectAnswer && $videoquestion->question->questionType->isBankable()) // Store for user to review
+		{
+			$word = WordBank::where('user_id', '=', $user->id)->where('definition_id', '=', $videoquestion->question->questionType->definition_id)
+							->where('media_id', '=', $videoquestion->video->viewable_id)->where('media_type', '=', $videoquestion->video->viewable_type)->first();
+			if(!$word)
+			{
+				WordBank::create([
+					'user_id' => $user->id,
+					'media_id' => $videoquestion->video->viewable_id,
+					'media_type' => $videoquestion->video->viewable_type,
+					'definition_id' => $videoquestion->question->questionType->definition_id
+				]);
+			}
+		}
 		
 		// Update the correctness of the quiz
 		$videoquestion->quiz()->updateExistingPivot(
