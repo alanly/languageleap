@@ -33,8 +33,8 @@ return array(
 			'select' => 'Select Season',
 		),
 		'episodes' => array(
-			'name' => 'Episoides',
-			'select' => 'Select Episoide',
+			'name' => 'Episodes',
+			'select' => 'Select Episode',
 		),
 		'videos' => array(
 			'name' => 'Videos',

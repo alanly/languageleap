@@ -11,6 +11,12 @@ return array(
 	'rank' => array(
 		'self' => 'Your Ranking',
 		'quizSkip' => 'Skipping the ranking process will automatically rank you as a beginner.',
+		'score' => 'You are at the :level level',
+		'continue' => 'Continue'
+	),
+	'skip' => array(
+		'ranked' => 'You will be ranked a "Beginner"',
+		'desc' => 'Skipping the ranking process will automatically rank you as a beginner',
 	),
 	'player' => array(
 		'faster' => 'Faster',

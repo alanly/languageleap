@@ -76,7 +76,7 @@ class ApiCommercialController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Commercial {$commercialId} not found.",
+				Lang::get('controllers.commercial.error', ['id' => $commercialId]),
 				404
 			);
 		}
@@ -100,7 +100,7 @@ class ApiCommercialController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Commercial {$id} not found.",
+				Lang::get('controllers.commercial.error', ['id' => $id]),
 				404
 			);
 		}
@@ -137,7 +137,7 @@ class ApiCommercialController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Commercial {$id} not found.",
+				Lang::get('controllers.commercial.error', ['id' => $id]),
 				404
 			);
 		}
@@ -147,7 +147,7 @@ class ApiCommercialController extends \BaseController {
 
 		return $this->apiResponse(
 			'success',
-			'Commercial {$id} has been removed',
+			Lang::get('controllers.commercial.removed', ['id' => $id]),
 			200
 		);
 	}

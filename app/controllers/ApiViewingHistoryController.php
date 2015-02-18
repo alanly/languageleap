@@ -18,7 +18,7 @@ class ApiViewingHistoryController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Video {$video_id} does not exists",
+				Lang::get('controllers.videos.inexistant', ['id' => $video_id]),
 				404
 			);
 		}
@@ -36,7 +36,7 @@ class ApiViewingHistoryController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Video {$video_id} does not exists",
+				Lang::get('controllers.videos.inexistant', ['id' => $video_id]),
 				404
 			);
 		}
@@ -57,7 +57,7 @@ class ApiViewingHistoryController extends \BaseController {
 
 		return $this->apiResponse(
 			'success',
-			"History Updated successfully",
+			Lang::get('controllers.videos.history_updated'),
 			200
 		);
 	}
