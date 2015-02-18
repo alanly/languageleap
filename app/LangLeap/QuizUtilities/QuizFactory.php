@@ -57,6 +57,7 @@ class QuizFactory implements UserInputResponse {
 			$selectedWords = $input['selected_words'];
 			$wordsInformation = array();
 
+			$numberOfBadWords = 0;
 			for($i = 0; $i < count($selectedWords); $i++)
 			{
 				// Ensure word exists.
@@ -70,9 +71,19 @@ class QuizFactory implements UserInputResponse {
 				// If the definition doesn't exist, the WordInformation class will fetch the definition.
 				$wordInformation = new WordInformation($word, $selectedWords[$i]['definition'], $sentence, $videoId);
 
-				if(strlen($wordInformation->getDefinition()) < 1) return null;
+				//Skip this word, but still create the quiz with the rest of the words.
+				if(!$wordInformation->getDefinition())
+				{
+					$numberOfBadWords += 1;
+					continue;
+				}
 
 				array_push($wordsInformation, $wordInformation);
+			}
+
+			if($numberOfBadWords == count($selectedWords))
+			{
+				return ['error', 'The selected words do not have a definition.', 404];
 			}
 			
 			$quiz = $this->getQuiz(
@@ -299,17 +310,17 @@ class QuizFactory implements UserInputResponse {
 		// Get 3 words with length > 3 which are different than the word in the question
 		foreach($words as $word)
 		{
-			if($correctWord != $word && strlen($word) > 3)
+			if($correctWord != $word && !in_array($word, $randomWords) && strlen($word) > 3)
 			{
 				// Get the definition of the word, if successful push into the array
 				$wordInformation = new WordInformation($word, '', '', $videoId);
-				if(strlen($wordInformation->getDefinition()) > 1) 
+				if($wordInformation->getDefinition()) 
 				{
 					array_push($randomWords, $wordInformation);
 				}
 			}
 
-			if(count($randomWords) > $numAnswers - 1) return $randomWords;
+			if(count($randomWords) == $numAnswers - 1) return $randomWords;
 		}
 
 		return $randomWords;
@@ -335,7 +346,7 @@ class QuizFactory implements UserInputResponse {
 				array_push($randomWords, $word);
 			}
 
-			if(count($randomWords) > $numAnswers - 1) return $randomWords;
+			if(count($randomWords) == $numAnswers - 1) return $randomWords;
 		}
 
 		return $randomWords;

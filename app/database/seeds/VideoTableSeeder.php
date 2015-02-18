@@ -19,8 +19,19 @@ class VideoTableSeeder extends Seeder {
 
 		$lang = Language::first();
 
-		Commercial::first()->videos()->create(['path' => '/path/to/somewhere/1.mkv', 'language_id'   => $lang->id]);
-		Movie::first()->videos()->create(['path' => '/path/to/somewhere/2.mkv', 'language_id'   => $lang->id]);
-		Episode::first()->videos()->create(['path' => '/path/to/somewhere/3.mkv', 'language_id'   => $lang->id]);
+		foreach (Commercial::all() as $commercial)
+		{
+			$commercial->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id]);
+		}
+
+		foreach (Episode::all() as $episode)
+		{
+			$episode->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id]);
+		}
+
+		foreach (Movie::all() as $movie)
+		{
+			$movie->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id]);
+		}
 	}
 }

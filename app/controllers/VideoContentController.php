@@ -60,7 +60,7 @@ class VideoContentController extends \BaseController {
 			$this->addViewingHistoryRecord(Auth::user(), $video);
 		}
 
-		return Response::download($file, null, $headers);
+		return Response::download($file, null, $headers, 'inline');
 	}
 
 	
@@ -104,13 +104,13 @@ class VideoContentController extends \BaseController {
 
 		$parentDirName = basename(dirname($file->getRealPath())).'/';
 
-		$headers = [
+		$sendfileHeader = [
 			'apache'   => ['X-Sendfile'           => $file->getRealPath()],
 			'lighttpd' => ['X-LIGHTTPD-send-file' => $file->getRealPath()],
 			'nginx'    => ['X-Accel-Redirect'     => Config::get('media.paths.xsendfile.videos').'/'.$parentDirName.$file->getFilename()],
 		];
 
-		return $headers[$server];
+		return $sendfileHeader[$server];
 	}
 
 }

@@ -13,10 +13,30 @@ use LangLeap\Videos\Video;
 |
 */
 
-// Accordion
+Route::get('/commercial/{id}', function($id)
+{
+	return View::make('commercial')->with("commercial_id", $id);
+});
+
+Route::get('/movie/{id}', function($id)
+{
+	return View::make('movie')->with("movie_id", $id);
+});
+
+Route::get('/episode/{id}', function($id)
+{
+	return View::make('episode')->with("episode_id", $id);
+});
+
+Route::get('/show/{id}', function($id)
+{
+	return View::make('show')->with("show_id", $id);
+});
+
+// TODO set this to be the index route
 Route::get('/', function()
 {
-	return View::make('index');
+	return View::make('layout');
 });
 
 
@@ -99,11 +119,17 @@ Route::group(['prefix' => 'api'], function()
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
 		
+		//Episode without show/season identifiers
+		Route::get('episode/{id}', 'ApiEpisodeController@showEpisode');
+
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');
 
 		// Recommendations
 		Route::resource('recommended', 'ApiRecommendedVideosController');
+
+		// Filtration
+		Route::resource('filter', 'ApiFilterController');
 	});
 
 	// Query the definition API for a definition
@@ -128,7 +154,6 @@ Route::group(['prefix' => 'api'], function()
 		// Quiz
 		Route::controller('quiz', 'ApiQuizController');
 	});
-
 });
 
 
