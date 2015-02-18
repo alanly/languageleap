@@ -2,6 +2,7 @@
 
 use LangLeap\Videos\Video;
 use LangLeap\Core\Language;
+use LangLeap\Words\Definition;
 use LangLeap\DictionaryUtilities\DictionaryFactory;
 
 /**
@@ -14,6 +15,7 @@ class WordInformation
 	private $word 		= "";
 	private $definition 	= "";
 	private $sentence 	= "";
+	private $definition_id = -1;
 	private $BLANK		= "**BLANK**";
 
 	public function __construct($word, $definition, $sentence, $videoId)
@@ -47,6 +49,11 @@ class WordInformation
 	{
 		return $this->sentence;
 	}
+	
+	public function getDefinitionId()
+	{
+		return $this->definition_id;
+	}
 
 	private function getWordDefinition($word, $videoId)
 	{
@@ -56,9 +63,23 @@ class WordInformation
 		$dictionary = DictionaryFactory::getInstance()->getDictionary($videoLanguage);
 		if(!$dictionary) return '';
 
-		$definition = $dictionary->getDefinition($word);
-		if(!$definition) return '';
-
+		$definition = Definition::where('word', '=', $word)->first();
+		
+		if(!$definition)
+		{
+			$definition = $dictionary->getDefinition($word);
+			if(!$definition) return '';
+			
+			$definition = Definition::create([
+				'word' => $word,
+				'definition' => $definition->definition,
+				'full_definition' => $definition->definition,
+				'pronunciation' => $definition->pronunciation,
+			]);
+		}
+		
+		$this->definition_id = $definition->id;
+		
 		return $definition->definition;
 	}
 

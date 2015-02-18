@@ -44,42 +44,7 @@ class QuizFactory implements UserInputResponse {
 	{
 		if($input) // there is input then create a quiz based on that
 		{
-			if (! $input['selected_words'] || count($input['selected_words']) < 1)
-			{
-				return null;
-			}
-
-			// Ensure the video exists
-			$videoId = $input['video_id'];
-			if (Video::find($videoId) == null) return null;
-			
-			// Retrieve the word, its associated definition, and the sentence it is in.
-			$selectedWords = $input['selected_words'];
-			$wordsInformation = array();
-
-			for($i = 0; $i < count($selectedWords); $i++)
-			{
-				// Ensure word exists.
-				$word = $selectedWords[$i]['word'];
-				if(!$word) return null;
-
-				// Ensure sentence the word is in exists.
-				$sentence = $selectedWords[$i]['sentence'];
-				if(!$sentence) return null;
-
-				// If the definition doesn't exist, the WordInformation class will fetch the definition.
-				$wordInformation = new WordInformation($word, $selectedWords[$i]['definition'], $sentence, $videoId);
-
-				if(strlen($wordInformation->getDefinition()) < 1) return null;
-
-				array_push($wordsInformation, $wordInformation);
-			}
-			
-			$quiz = $this->getQuiz(
-				$user->id,
-				$input['video_id'],
-				$wordsInformation
-			);
+			$quiz = $this->getVideoQuiz($user->id, $input['video_id'], $input['selected_words']);
 
 			return ['success', 
 			[
@@ -108,19 +73,13 @@ class QuizFactory implements UserInputResponse {
 	 * 
 	 * @param  int         $user_id
 	 * @param  int         $video_id
-	 * @param  array       $wordsInformation
+	 * @param  array     $selectedWords
 	 * @return Quiz
 	 */
-	public function getQuiz($user_id, $video_id, $wordsInformation)
+	public function getVideoQuiz($user_id, $video_id, $selectedWords)
 	{
-		// Ensure that $selectedWords is not empty.
-		if (count($wordsInformation) < 1) return null;
-		
-		// Ensure the user exists
-		if (User::find($user_id) == null) return null;
-		
-		// Ensure the video exists
-		if (Video::find($video_id) == null) return null;
+		// Retrieve the word, its associated definition, and the sentence it is in.
+		$wordsInformation = $this->inputToWordInformation($selectedWords, $video_id);
 		
 		// Create a new quiz
 		$quiz = Quiz::create(['user_id'	=> $user_id]);
@@ -389,6 +348,38 @@ class QuizFactory implements UserInputResponse {
 
 			return "/video/play/" . $next_video->id;
 		}
+	}
+	
+	/**
+	 * This function will create word information instances from every word
+	 * 
+	 * @param array	selectedWords
+	 * @param int		video_id
+	 * @return array
+	 */ 
+	private function inputToWordInformation($selectedWords, $video_id)
+	{
+		$wordsInformation = array();
+
+		for($i = 0; $i < count($selectedWords); $i++)
+		{
+			// Ensure word exists.
+			$word = $selectedWords[$i]['word'];
+			if(!$word) return null;
+
+			// Ensure sentence the word is in exists.
+			$sentence = $selectedWords[$i]['sentence'];
+			if(!$sentence) return null;
+
+			// If the definition doesn't exist, the WordInformation class will fetch the definition.
+			$wordInformation = new WordInformation($word, $selectedWords[$i]['definition'], $sentence, $video_id);
+
+			if(strlen($wordInformation->getDefinition()) < 1) return null;
+
+			array_push($wordsInformation, $wordInformation);
+		}
+		
+		return $wordsInformation;
 	}
 
 }
