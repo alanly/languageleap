@@ -7,16 +7,18 @@ class ReviewWordsController extends \BaseController {
 	public function index()
 	{
 		$words = WordBank::where('user_id', '=', string)->get();
-				
-		if(!$words)
+		
+		$reviewArray = array();
+		
+		foreach ($words as $reviewWords)
 		{
-			return $this->apiResponse('error', 'An error has occurred.', 400);
+			array_push($reviewArray, $reviewWords->toResponseArray());
 		}
 		
-		$decreasingWords = rsort($words);
-		
 		return $this->apiResponse(
-			'success', $decreasingWords->toResponseArray()
+			'success',
+			$reviewArray, 
+			200
 		);
 	}
 }
