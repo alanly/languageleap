@@ -2,7 +2,7 @@
 
 use LangLeap\Words\WordBank;
 
-class ReviewWordsController extends \BaseController {
+class ApiReviewWordsController extends \BaseController {
 
 	public function index()
 	{
