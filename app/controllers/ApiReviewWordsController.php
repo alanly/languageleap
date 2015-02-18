@@ -2,7 +2,15 @@
 
 use LangLeap\Words\WordBank;
 
+/**
+ * @author Kwok-Chak Wan <martinwan1992@hotmail.com>
+ */
 class ApiReviewWordsController extends \BaseController {
+
+	public function __construct()
+	{
+		$this->beforeFilter('auth');
+	}
 
 	public function index()
 	{
