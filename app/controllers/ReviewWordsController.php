@@ -6,7 +6,7 @@ class ReviewWordsController extends \BaseController {
 
 	public function index()
 	{
-		$words = WordBank::where('user_id', '=', string)->get();
+		$words = WordBank::where('user_id', '=', Auth::user()->id)->get();
 		
 		$reviewArray = array();
 		
