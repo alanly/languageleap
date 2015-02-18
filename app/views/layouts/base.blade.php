@@ -52,7 +52,7 @@
 										Account
 									<span class="caret"></span></a>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#" role="menu-item">Profile</a></li>
+										<li><a href="/user/info" role="menu-item">Profile</a></li>
 										<li><a href="#" role="menu-item">Settings</a></li>
 										<li class="divider"></li>
 										<li><a href="{{ URL::to('logout') }}" role="menu-item">Logout</a></li>
