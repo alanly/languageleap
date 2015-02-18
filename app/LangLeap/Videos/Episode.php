@@ -58,13 +58,15 @@ class Episode extends Media implements Billable, Classifiable {
 	public function toResponseArray()
 	{
 		return [
-			'id'          => $this->id,
-			'season_id'   => $this->season_id,
-			'number'      => $this->number,
-			'name'        => $this->name,
-			'description' => $this->description,
-			'show_id'     => $this->season->show_id,
-			'level'       => $this->level->description,
+			'id'            => $this->id,
+			'image_path'    => $this->season->show->image_path,
+			'season_id'     => $this->season_id,
+			'season_number' => $this->season->number,
+			'number'        => $this->number,
+			'name'          => $this->name,
+			'description'   => $this->description,
+			'show_id'       => $this->season->show_id,
+			'level'         => $this->level->description,
 		];
 	}
 

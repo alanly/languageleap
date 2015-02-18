@@ -33,7 +33,7 @@
 
 		<div class="clearfix">
 			<div class="col-md-12">
-				<h1>Personal Information <small><br/>Review and Change your personal information.</small></h1>
+				<h1>@lang('account.info.title')<small><br/>@lang('account.info.subtitle')</small></h1>
 			</div>
 		</div>
 	</div>
@@ -47,28 +47,28 @@
 				
 				<div class="form-group">
 					<div class="input col-sm-6 col-md-6 col-lg-6">
-						<label for="InputName">First Name</label>
+						<label for="InputName">@lang('account.info.fname')</label>
 						<div class="input-group">
-							<input value="{{ $data['fname'] }}" type="text" class="form-control" name="first_name" id="first_name" placeholder="Enter First Name" style="background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+							<input value="{{ $data['fname'] }}" type="text" class="form-control" name="first_name" id="first_name" placeholder="@lang('account.info.fname')" style="background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
 						</div>
 					</div>
 					<div class="input col-sm-6 col-md-6 col-lg-6">
-						<label for="InputName">Last Name</label>
+						<label for="InputName">@lang('account.info.lname')</label>
 						<div class="input-group">
-							<input value="{{ $data['lname'] }}"  type="text" class="form-control" name="last_name" id="last_name" placeholder="Enter Last Name"style="background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+							<input value="{{ $data['lname'] }}"  type="text" class="form-control" name="last_name" id="last_name" placeholder="@lang('account.info.lname')" style="background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
 						</div>
 					</div>
 				</div>
 
 				<div class="form-group">
 					<div class="input col-sm-6 col-md-6 col-lg-6">
-						<label for="InputEmail">Enter New Email</label>
+						<label for="InputEmail">@lang('account.info.email')</label>
 						<div class="input-group">
 							<input value="{{ $data['email'] }}"  type="email" class="form-control" id="InputEmail" name="email" placeholder="Enter New Email">
 						</div>
 					</div>
 					<div class="input col-sm-6 col-md-6 col-lg-6">
-						<label for="InputEmail">Select Language</label>
+						<label for="InputEmail">@lang('account.info.lang')</label>
 						<div class="input-group">
 							<select name="language" id="InputEmail" class="form-control">
 								@foreach($langs as $lang)
@@ -81,27 +81,27 @@
 
 				<div class="form-group">	
 					<div class="input col-sm-6 col-md-6 col-lg-6">
-						<label for="InputEmail">Enter New Password</label>
+						<label for="InputEmail">@lang('account.info.pass')</label>
 						<div class="input-group">
-							<input type="password" class="form-control" id="InputPassword" name="new_password" placeholder="Enter New Password">
+							<input type="password" class="form-control" id="InputPassword" name="new_password" placeholder="@lang('account.info.pass')">
 						</div>
 					</div>                
 					<div class="input col-sm-6 col-md-6 col-lg-6">
-						<label for="InputEmail">Confirm New Password</label>
+						<label for="InputEmail">@lang('account.info.pass2')</label>
 						<div class="input-group">
-							<input type="password" class="form-control" id="InputConfirmPassword" name="new_password_confirmation" placeholder="Confirm New Password">
+							<input type="password" class="form-control" id="InputConfirmPassword" name="new_password_confirmation" placeholder="@lang('account.info.pass2')">
 						</div>
 					</div>  
 				</div>
 
 				<div class="form-group">
-					<label for="InputEmail">Enter your current password to confirm changes</label>
+					<label for="InputEmail">@lang('account.info.cpass')</label>
 					<div class="input-group">
-						<input type="password" class="form-control" id="ConfirmPassword" name="password" placeholder="Enter current password" required="">
+						<input type="password" class="form-control" id="ConfirmPassword" name="password" placeholder="@lang('account.info.cpass')" required="">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
 					</div>
 				</div>
-				<input type="button" name="submit" id="submit" value="Submit" class="btn btn-info pull-right">
+				<input type="button" name="submit" id="submit" value="@lang('account.info.submit')" class="btn btn-info pull-right">
 			</div>
 		</form>
 	</div>

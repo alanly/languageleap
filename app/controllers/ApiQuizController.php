@@ -63,7 +63,7 @@ class ApiQuizController extends \BaseController {
 		$question = Input::get('question');
 		$answers = Input::get('answer');
 		
-		$message = 'Custom question saved successfully';
+		$message = Lang::get('controllers.quiz.saved');
 		$success = true;
 
 		$video = Video::find($video_id);
@@ -71,13 +71,13 @@ class ApiQuizController extends \BaseController {
 		if (! $video)
 		{
 			$success = false;
-			$message = 'Video not found in database';
+			$message = Lang::get('controllers.quiz.database_error');
 		}
 		
 		if(! $question || ! $answers || count($answers) < 1)
 		{
 			$success = false;
-			$message = 'Fields not filled in properly';
+			$message = Lang::get('controllers.quiz.blank-fields_error');
 		}
 
 		if($success) // Create the question if the input is correct
@@ -131,14 +131,14 @@ class ApiQuizController extends \BaseController {
 		$quiz = Quiz::find($quiz_id);
 		if (! $quiz)
 		{
-			return $this->apiResponse('error', "Quiz {$quiz_id} not found", 404);
+			return $this->apiResponse('error', Lang::get('controllers.quiz.quiz_error', ['quiz_id' => $quiz_id]), 404);
 		}
 		
 		if ( ($quiz->user_id != Auth::user()->id) && (! Auth::user()->is_admin) )
 		{
 			return $this->apiResponse(
 				'error',
-				"Not authorized to view quiz {$quiz_id}",
+				Lang::get('controllers.quiz.quiz_no-auth', ['quiz_id' => $quiz_id]),
 				401
 			);
 		}

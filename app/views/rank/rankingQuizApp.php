@@ -1,12 +1,11 @@
 <div class="container" ng-app="rankingQuizApp">
 	<div class="row">
 		<div class="col-sm-6">
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#skip">Skip Ranking Process</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#skip"><?php echo Lang::get('rank.quiz.skip') ?></button>
 		</div>
 		<div class="col-sm-6 col-sm-offset-3">
-			<h2>Let's see how good you are!</h2>
-			<p>This ranking procedure let's us figure out how much you already know,
-			so that we can tailor lessons to your needs.</p>
+			<h2><?php echo Lang::get('rank.quiz.intro') ?></h2>
+			<p><?php echo Lang::get('rank.quiz.desc') ?></p>
 
 			<hr>
 		</div>
@@ -26,7 +25,7 @@
 				</div>
 				<hr>
 				<div class="form-group">
-					<button type="button" class="btn btn-primary" ng-click="submit()">Submit Answers</button>
+					<button type="button" class="btn btn-primary" ng-click="submit()"><?php echo Lang::get('rank.quiz.submit') ?></button>
 				</div>
 			</form>
 		</div>
@@ -34,16 +33,16 @@
 
 	<script type="text/ng-template" id="ResultModalTemplate.html">
 		<div class="modal-header">
-			<h3 class="modal-title">Your Ranking</h3>
+			<h3 class="modal-title"><?php echo Lang::get('rank.rank.self') ?></h3>
 		</div>
 
 		<div id="modal-body" class="modal-body text-center">
 			<h1><span class="glyphicon glyphicon-certificate"></span></h1>
-			<h2>You are at the <strong>{{ level.description }}</strong> level.</h2>
+			<h2><?php echo Lang::get('rank.rank.score', ['level' => '{{ level.description }}']) ?></h2>
 		</div>
 
 		<div class="modal-footer">
-			<a href="{{ redirect }}" class="btn btn-primary">Continue</a>
+			<a href="{{ redirect }}" class="btn btn-primary"><?php echo Lang::get('rank.rank.continue') ?></a>
 		</div>
 	</script>
 </div>
@@ -53,10 +52,10 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">You will be ranked as "Beginner"</h4>
+				<h4 class="modal-title" id="myModalLabel"><?php echo Lang::get('rank.skip.ranked') ?></h4>
 			</div>
 			<div class="modal-body">
-					Skipping the ranking process will automatically rank you as a beginner.
+					<?php echo Lang::get('rank.skip.desc') ?>
 			</div>
 			<div class="modal-footer">
 				<form action="/rank/skip" class="form-horizontal reg-form" method="GET">

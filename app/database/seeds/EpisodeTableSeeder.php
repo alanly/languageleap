@@ -13,8 +13,12 @@ class EpisodeTableSeeder extends Seeder {
 	{
 		DB::table('episodes')->delete();
 
-		$season = Season::first();
-		$season->episodes()->create(['number' => 1, 'name' => 'Test 1', 'description' => 'Test episode 1.']);
-		$season->episodes()->create(['number' => 2, 'name' => 'Test 2', 'description' => 'Test episode 2.']);
+		foreach (Season::all() as $season)
+		{
+			for ($i = 1; $i < 4; $i++)
+			{
+				$season->episodes()->create(['number' => $i, 'name' => "Test $i", 'description' => "Test episode $i."]);
+			}
+		}
 	}
 }
