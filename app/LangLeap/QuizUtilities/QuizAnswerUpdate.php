@@ -31,9 +31,12 @@ class QuizAnswerUpdate implements UserInputResponse {
 		
 		if(!$isCorrectAnswer && $videoquestion->question->questionType->isBankable()) // Store for user to review
 		{
-			$word = WordBank::where('user_id', '=', $user->id)->where('definition_id', '=', $videoquestion->question->questionType->definition_id)
-							->where('media_id', '=', $videoquestion->video->viewable_id)->where('media_type', '=', $videoquestion->video->viewable_type)->first();
-			if(!$word)
+			$word = WordBank::where('user_id', '=', $user->id)
+							->where('definition_id', '=', $videoquestion->question->questionType->definition_id)
+							->where('media_id', '=', $videoquestion->video->viewable_id)
+							->where('media_type', '=', $videoquestion->video->viewable_type)->first();
+							
+			if(!$word) // Create a wordbank item if there is none
 			{
 				WordBank::create([
 					'user_id' => $user->id,
