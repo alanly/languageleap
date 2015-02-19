@@ -128,6 +128,9 @@ Route::group(['prefix' => 'api'], function()
 		// Recommendations
 		Route::resource('recommended', 'ApiRecommendedVideosController');
 
+		//Selected words
+		Route::resource('selectedWords', 'ApiSelectedWordsController');
+
 		// Filtration
 		Route::resource('filter', 'ApiFilterController');
 	});
@@ -198,14 +201,16 @@ Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
 
 // Routes for user panel controllers
-Route::group(['prefix' => 'user'], function()
+Route::group(['prefix' => 'user', "before" => "auth"], function()
 {
+	//User Level
+	Route::get('wordBank', 'ApiUserPanelController@showSelectedWords');
 
 	//User Level
-	Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showLevel']);
+	Route::get('level', 'ApiUserPanelController@showLevel');
 
 	//User Info
-	Route::get('info', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showInfo']);
+	Route::get('info', 'ApiUserPanelController@showInfo');
 });
 
 Route::any('queue/recieve', function()
