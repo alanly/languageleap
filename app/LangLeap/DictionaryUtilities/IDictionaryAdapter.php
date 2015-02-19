@@ -17,16 +17,18 @@ interface IDictionaryAdapter
 	 * Queries the API and returns the audio pronounciation of the word
 	 *
 	 * @param $word
+	 * @param $client
 	 * @return string URL to the audio
 	 */
-	public function getAudio($word);
+	public function getAudio($word, $client);
 
 	/**
 	 * Queries the API and returns the word with hypens
 	 *
 	 * @param $word
+	 * @param $client
 	 * @return string
 	 */
-	public function getHyphenatedWord($word);
+	public function getHyphenatedWord($word, $client);
 }
 

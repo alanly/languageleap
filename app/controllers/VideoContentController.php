@@ -40,7 +40,7 @@ class VideoContentController extends \BaseController {
 
 		if (! $video)
 		{
-			return $this->apiResponse('error', "Video {$id} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.videos.error', ['id' => $id]), 404);
 		}
 
 		// Get an instance of SplFileInfo from the factory.
@@ -48,7 +48,7 @@ class VideoContentController extends \BaseController {
 
 		if (! ($file->isFile() && $file->isReadable()))
 		{
-			return $this->apiResponse('error', "An error occurred while reading video {$id}.", 500);
+			return $this->apiResponse('error', Lang::get('controllers.videos.reading_error', ['id' => $id]), 500);
 		}
 
 		// Create the Sendfile headers for this file.
@@ -60,7 +60,7 @@ class VideoContentController extends \BaseController {
 			$this->addViewingHistoryRecord(Auth::user(), $video);
 		}
 
-		return Response::download($file, null, $headers);
+		return Response::download($file, null, $headers, 'inline');
 	}
 
 	
@@ -104,13 +104,13 @@ class VideoContentController extends \BaseController {
 
 		$parentDirName = basename(dirname($file->getRealPath())).'/';
 
-		$headers = [
+		$sendfileHeader = [
 			'apache'   => ['X-Sendfile'           => $file->getRealPath()],
 			'lighttpd' => ['X-LIGHTTPD-send-file' => $file->getRealPath()],
 			'nginx'    => ['X-Accel-Redirect'     => Config::get('media.paths.xsendfile.videos').'/'.$parentDirName.$file->getFilename()],
 		];
 
-		return $headers[$server];
+		return $sendfileHeader[$server];
 	}
 
 }

@@ -32,7 +32,7 @@ class WordInformation
 			$this->definition = $definition;
 		}
 
-		$this->sentence = str_replace($word, $this->BLANK, $sentence);
+		$this->sentence = preg_replace('/\b' . $word . '\b/', $this->BLANK, $sentence);
 	}
 
 	public function getWord()
@@ -95,5 +95,37 @@ class WordInformation
 
 		return strtoupper($language->code);
 
+	}
+	
+	/**
+	 * This function will create word information instances from every word in selectedWords
+	 * 
+	 * @param array	selectedWords
+	 * @param int		video_id
+	 * @return array
+	 */ 
+	public static function fromInput($selectedWords, $video_id)
+	{
+		$wordsInformation = array();
+
+		for($i = 0; $i < count($selectedWords); $i++)
+		{
+			// Ensure word exists.
+			$word = $selectedWords[$i]['word'];
+			if(!$word) continue;
+
+			// Ensure sentence the word is in exists.
+			$sentence = $selectedWords[$i]['sentence'];
+			if(!$sentence) continue;
+
+			// If the definition doesn't exist, the WordInformation class will fetch the definition.
+			$wordInformation = new WordInformation($word, $selectedWords[$i]['definition'], $sentence, $video_id);
+
+			if(strlen($wordInformation->getDefinition()) < 1) continue;
+
+			array_push($wordsInformation, $wordInformation);
+		}
+		
+		return $wordsInformation;
 	}
 }

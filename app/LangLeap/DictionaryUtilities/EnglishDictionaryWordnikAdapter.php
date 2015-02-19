@@ -20,9 +20,10 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 	public function getDefinition($word)
 	{
 		//Make requests here
-		$dictionaryDefinition = $this->getWordDefinition($word);
-		$audioUrl = $this->getAudio($word);
-		$hyphenatedWord = $this->getHyphenatedWord($word);
+		$client = $this->instantiateConnection();
+		$dictionaryDefinition = $this->getWordDefinition($word, $client);
+		$audioUrl = $this->getAudio($word, $client);
+		$hyphenatedWord = $this->getHyphenatedWord($word, $client);
 
 		if(!$dictionaryDefinition)
 		{
@@ -43,10 +44,8 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 	 * @param  string  $word
 	 * @return string (URL of audio)
 	 */
-	public function getAudio($word)
+	public function getAudio($word, $client)
 	{
-		$client = $this->instantiateConnection();
-
 		$audios = $client->wordAudio($word)
 							->limit(1)
 							->useCanonical(true)
@@ -57,8 +56,6 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 			return null;
 		}
 
-		$this->closeConnection($client);
-
 		return $audios[0]->fileUrl;
 	}
 
@@ -68,10 +65,8 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 	 * @param  string  $word
 	 * @return string
 	 */
-	public function getHyphenatedWord($word)
+	public function getHyphenatedWord($word, $client)
 	{
-		$client = $this->instantiateConnection();
-
 		$wordSegments = $client->wordHyphenation($word)
 							->limit(20)
 							->useCanonical(true)
@@ -81,8 +76,6 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 		{
 			return null;
 		}
-
-		$this->closeConnection($client);
 		
 		return $this->parseToHyphenatedString($wordSegments);;
 	}
@@ -98,10 +91,8 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 		return substr($result, 0, -1);
 	}
 
-	private function getWordDefinition($word)
+	private function getWordDefinition($word, $client)
 	{
-		$client = $this->instantiateConnection();
-
 		//Returns an array of Definition Objects, only take the text of the first one.
 		$definitions = $client->wordDefinitions($word)
 							->sourceDictionaries($this->DICTIONARY_SOURCE)
@@ -115,8 +106,6 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 			return null;
 		}
 
-		$this->closeConnection($client);
-
 		return $definitions[0]->text;
 	}
 
@@ -125,11 +114,6 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 		$client = new Picnik;
 		$client->setApiKey($this->API_KEY);
 		return $client;
-	}
-
-	private function closeConnection($client)
-	{
-		unset($client);
 	}
 }
 

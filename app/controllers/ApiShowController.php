@@ -65,7 +65,7 @@ class ApiShowController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Show {$id} not found.",
+				Lang::get('controllers.shows.error', ['id' => $id]),
 				404
 			);
 		}
@@ -87,7 +87,7 @@ class ApiShowController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Movie {$id} not found.",
+				Lang::get('controllers.shows.error', ['id' => $id]),
 				404
 			);
 		}
@@ -125,7 +125,7 @@ class ApiShowController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Show {$id} not found.",
+				Lang::get('controllers.episodes.error', ['id' => $id]),
 				404
 			);
 		}
@@ -135,7 +135,7 @@ class ApiShowController extends \BaseController {
 
 		return $this->apiResponse(
 			'success',
-			'Show {$id} has been removed',
+			Lang::get('controllers.shows.deletion', ['id' => $id]),
 			200
 		);
 	}

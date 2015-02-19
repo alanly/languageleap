@@ -23,7 +23,7 @@ class ApiRecommendedVideosController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				'User not logged in.',
+				Lang::get('controllers.recommended.not-logged_error'),
 				401
 			);
 		}

@@ -5,6 +5,7 @@ use LangLeap\Core\Collection;
 use LangLeap\Core\InputDecorator;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
+use LangLeap\WordUtilities\WordInformation;
 
 /**
  * Concrete decorator that adds validation behavior to Quiz creation
@@ -59,6 +60,12 @@ class QuizCreationValidation extends InputDecorator {
 			{
 				return ['error', "The selected word was not found in the provided sentence.", 400];
 			}
+		}
+		
+		$wordInformations = WordInformation::fromInput($selectedWords, $videoId);
+		if(count($wordInformations) < 1)
+		{
+			return ['error', 'The selected words do not have a definition.', 404];
 		}
 		
 		return parent::response($user, $input);
