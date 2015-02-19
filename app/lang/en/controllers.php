@@ -39,6 +39,10 @@ return array(
 		'movie_error' => 'Movie :id not found.',
 		'movie_deletion' => 'Movie :id has been removed.',
 	),
+	'question' => array(
+		'answer_invalid' => 'The selected definition :selected_id is invalid',
+		'question_error' => 'Question :question_id not found',
+	),
 	'quiz' => array(
 		'saved' => 'Custom question saved successfully',
 		'database_error' => 'Video not found in database.',

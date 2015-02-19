@@ -90,7 +90,7 @@
 							// Store data in the HTML5 Storage schema
 							localStorage.setItem("quizPrerequisites", JSON.stringify({'quiz_id': data.data.quiz_id}));
 								
-							$("#quiz-link").html('<a href="quiz"><span class="glyphicon glyphicon-pencil" aria-hidden="true">@lang("navbar.buttons.quiz-reminder.attempt")</span></a>');
+							$("#quiz-link").html('<a href="{{ URL::to("quiz") }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true">@lang("navbar.buttons.quiz-reminder.attempt")</span></a>');
 						}
 					},
 				});
