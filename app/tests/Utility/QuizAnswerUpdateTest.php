@@ -55,7 +55,7 @@ class QuizAnswerUpdateTest extends TestCase {
 		
 		$wordbank = WordBank::where('user_id', '=', $user->id)->first();
 		$this->assertNotNull($wordbank);
-		$this->assertEquals(1, $wordbank->definition_id);
+		$this->assertEquals('hello', $wordbank->word);
 	}
 	
 	protected function getUserInstance()
