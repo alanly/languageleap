@@ -21,16 +21,7 @@ class WordInformation
 	public function __construct($word, $definition, $sentence, $videoId)
 	{
 		$this->word = $word;
-
-		// Definition does not exist, fetch it.
-		if(strlen($definition) < 1)
-		{
-			$this->definition = $this->getWordDefinition($word, $videoId);
-		}
-		else
-		{
-			$this->definition = $definition;
-		}
+		$this->definition = $this->getWordDefinition($word, $videoId);
 
 		$this->sentence = preg_replace('/\b' . $word . '\b/', $this->BLANK, $sentence);
 	}
@@ -63,8 +54,8 @@ class WordInformation
 		$dictionary = DictionaryFactory::getInstance()->getDictionary($videoLanguage);
 		if(!$dictionary) return '';
 
+		$word = strtolower($word);
 		$definition = Definition::where('word', '=', $word)->first();
-		
 		if(!$definition)
 		{
 			$definition = $dictionary->getDefinition($word);

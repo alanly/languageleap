@@ -127,10 +127,7 @@ Route::group(['prefix' => 'api'], function()
 
 		// Recommendations
 		Route::resource('recommended', 'ApiRecommendedVideosController');
-
-		//Selected words
-		Route::resource('selectedWords', 'ApiSelectedWordsController');
-
+		
 		// Filtration
 		Route::resource('filter', 'ApiFilterController');
 	});

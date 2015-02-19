@@ -1,6 +1,9 @@
 <?php namespace LangLeap\Words;
 
 use Eloquent;
+use LangLeap\Accounts\User;
+use LangLeap\Core\Language;
+use LangLeap\DictionaryUtilities\DictionaryFactory;
 
 /**
  * @author Thomas Rahn <thomas@rahn.ca>
@@ -30,19 +33,29 @@ class WordBank extends Eloquent {
 
 	public function toResponseArray()
 	{
-		$definition = Definition::find($this->definition_id)->first();
-
+		$definition = Definition::find($this->definition_id);
+		$definition->audio_url = $this->getAudioUrl($definition->word);
+		
 		return array(
 			'id' 			=> $this->id,
-			'definition' 	=> [
-				'id' 		=> $definition->id,
-				'word' 		=> $definition->word,
-				'media_type'	=> $definition->media_type,
-				'media_id'		=> $definition->media_id,
-				'pronunciation' => $definition->pronunciation,
-				'definition' 	=> $definition->definition,
-			]
+			'media_id'	=> $this->media_id,
+			'media_type'	=> $this->media_type,
+			'definition' 	=> $definition->toResponseArray(),
 		);
 	}
 
+	private function getAudioUrl($word)
+	{
+		$user = User::find($this->user_id);
+
+		$language = Language::find($user->language_id);
+		if(!$language)
+		{
+			return null;
+		}
+
+		$language = strtoupper($language->code);
+		$dictionary = DictionaryFactory::getInstance()->getDictionary($language);
+		return $dictionary->getAudio($word, $dictionary->instantiateConnection());
+	}
 }
