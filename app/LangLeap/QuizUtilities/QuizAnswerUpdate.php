@@ -32,7 +32,7 @@ class QuizAnswerUpdate implements UserInputResponse {
 		if(!$isCorrectAnswer && $videoquestion->question->questionType->isBankable()) // Store for user to review
 		{
 			$word = WordBank::where('user_id', '=', $user->id)
-							->where('definition_id', '=', $videoquestion->question->questionType->definition_id)
+							->where('word', '=', $videoquestion->question->questionType->word)
 							->where('media_id', '=', $videoquestion->video->viewable_id)
 							->where('media_type', '=', $videoquestion->video->viewable_type)->first();
 							
@@ -42,7 +42,7 @@ class QuizAnswerUpdate implements UserInputResponse {
 					'user_id' => $user->id,
 					'media_id' => $videoquestion->video->viewable_id,
 					'media_type' => $videoquestion->video->viewable_type,
-					'definition_id' => $videoquestion->question->questionType->definition_id
+					'word' => $videoquestion->question->questionType->word
 				]);
 			}
 		}

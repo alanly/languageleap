@@ -24,7 +24,7 @@ class WordBankTest extends TestCase {
 		$bank->user_id = $user->id;
 		$bank->media_id = 1;
 		$bank->media_type = "LangLeap\Videos\Episode";
-		$bank->definition_id = 1;
+		$bank->word = 'hello';
 		$bank->save();
 
 		$this->assertEquals($user->id, $bank->user()->first()->id );
@@ -38,7 +38,7 @@ class WordBankTest extends TestCase {
 		$bank->user_id = 1;
 		$bank->media_id = 1;
 		$bank->media_type = "LangLeap\Videos\Episode";
-		$bank->definition_id = $def->id;
+		$bank->word = $def->word;
 		$bank->save();
 
 		$this->assertEquals($def->id, $bank->definition()->first()->id );
@@ -52,7 +52,7 @@ class WordBankTest extends TestCase {
 		$bank->user_id = 1;
 		$bank->media_id = $ep->id;
 		$bank->media_type = "LangLeap\Videos\Episode";
-		$bank->definition_id = 1;
+		$bank->word = 'hello';
 		$bank->save();
 
 		$this->assertEquals($ep->id, $bank->media()->first()->id );

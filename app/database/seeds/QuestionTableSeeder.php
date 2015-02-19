@@ -19,7 +19,7 @@ class QuestionTableSeeder extends Seeder {
 		$ddq = App::make('LangLeap\Questions\DragAndDropQuestion');
 		
 		$dq->question = "What is the definition of hello?";
-		$dq->definition_id = 1;
+		$dq->word = 'hello';
 		$dq->save();
 		$question->create(["question_type" => "LangLeap\Questions\DefinitionQuestion", "question_id" => $dq->id, "answer_id" => 1]);
 

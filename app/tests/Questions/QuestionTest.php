@@ -45,7 +45,7 @@ class QuestionTest extends TestCase {
 			Answer::create(['answer' => 'test answer 4']),
 		];
 
-		$dq = DefinitionQuestion::create(['question' => 'What is the definition of dog?', 'definition_id' => 1]);
+		$dq = DefinitionQuestion::create(['question' => 'What is the definition of dog?', 'word' => 'dog']);
 
 		// Create our question.
 		$q = new Question();
@@ -120,7 +120,7 @@ class QuestionTest extends TestCase {
 			Answer::create(['answer' => 'test answer 4']),
 		];
 
-		$dq = DefinitionQuestion::create(['question' => 'What is the definition of dog?', 'definition_id' => 1]);
+		$dq = DefinitionQuestion::create(['question' => 'What is the definition of dog?', 'word' => 'dog']);
 
 		// Create our question.
 		$q = new Question();

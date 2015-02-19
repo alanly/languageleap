@@ -9,7 +9,7 @@ class DefinitionQuestion extends QuestionType {
 
 	public    $timestamps = false;
 	protected $table      = 'definition_questions';
-	protected $fillable   = ['question', 'definition_id'];
+	protected $fillable   = ['question', 'word'];
 
 	public function questionType()
 	{

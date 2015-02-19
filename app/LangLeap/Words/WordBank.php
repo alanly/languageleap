@@ -12,7 +12,7 @@ class WordBank extends Eloquent {
 
 	public $timestamps	= false;
 
-	protected $fillable	= ['user_id', 'media_id', 'media_type', 'definition_id'];
+	protected $fillable	= ['user_id', 'media_id', 'media_type', 'word'];
 	protected $table	= "word_bank";
 
 
@@ -28,13 +28,23 @@ class WordBank extends Eloquent {
 
 	public function definition()
 	{
-		return $this->belongsTo('LangLeap\Words\Definition');
+		return Definition::where('word', '=', $this->word)->first();
 	}
 
 	public function toResponseArray()
 	{
-		$definition = Definition::find($this->definition_id);
-		$definition->audio_url = $this->getAudioUrl($definition->word);
+		$definition = $this->definition();
+		$dictionary = $this->getDictionary();
+		
+		if(!$definition)
+		{
+			$definition = $dictionary->getDefinition($this->word);
+			$definition->word = $this->word;
+		}
+		else
+		{
+			$definition->audio_url = $dictionary->getAudio($definition->word, $dictionary->instantiateConnection());
+		}
 		
 		return array(
 			'id' 		=> $this->id,
@@ -43,19 +53,18 @@ class WordBank extends Eloquent {
 			'definition' 	=> $definition->toResponseArray(),
 		);
 	}
-
-	private function getAudioUrl($word)
+	
+	private function getDictionary()
 	{
 		$user = User::find($this->user_id);
-
+		
 		$language = Language::find($user->language_id);
 		if(!$language)
 		{
 			return null;
 		}
-
+		
 		$language = strtoupper($language->code);
-		$dictionary = DictionaryFactory::getInstance()->getDictionary($language);
-		return $dictionary->getAudio($word, $dictionary->instantiateConnection());
+		return DictionaryFactory::getInstance()->getDictionary($language);
 	}
 }

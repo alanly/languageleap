@@ -94,7 +94,7 @@ class QuizAnswerUpdateTest extends TestCase {
 		
 		$this->definitionQuestion = $dq->create([
 			'question' => 'What is the definition of hello?',
-			'definition_id' => 1
+			'word' => 'hello'
 		]);
 		
 		$this->question = $question->create([
