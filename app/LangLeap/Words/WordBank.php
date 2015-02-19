@@ -12,7 +12,7 @@ class WordBank extends Eloquent {
 
 	public $timestamps	= false;
 
-	protected $fillable	= ['user_id', 'media_id', 'media_type','definition_id'];
+	protected $fillable	= ['user_id', 'media_id', 'media_type', 'definition_id'];
 	protected $table	= "word_bank";
 
 
@@ -37,7 +37,7 @@ class WordBank extends Eloquent {
 		$definition->audio_url = $this->getAudioUrl($definition->word);
 		
 		return array(
-			'id' 			=> $this->id,
+			'id' 		=> $this->id,
 			'media_id'	=> $this->media_id,
 			'media_type'	=> $this->media_type,
 			'definition' 	=> $definition->toResponseArray(),
