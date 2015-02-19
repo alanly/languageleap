@@ -21,7 +21,7 @@ class WordInformation
 	public function __construct($word, $definition, $sentence, $videoId)
 	{
 		$this->word = $word;
-		$this->definition = $this->getWordDefinition($word, $videoId);
+		$this->definition = $this->getWordDefinition($word, $definition, $videoId);
 
 		$this->sentence = preg_replace('/\b' . $word . '\b/', $this->BLANK, $sentence);
 	}
@@ -46,7 +46,7 @@ class WordInformation
 		return $this->definition_id;
 	}
 
-	private function getWordDefinition($word, $videoId)
+	private function getWordDefinition($word, $provided_definition, $videoId)
 	{
 		$videoLanguage = $this->getVideoLanguage($videoId);
 		if(!$videoLanguage) return '';
@@ -55,15 +55,18 @@ class WordInformation
 		if(!$dictionary) return '';
 
 		$word = strtolower($word);
+		
 		$definition = Definition::where('word', '=', $word)->first();
 		if(!$definition)
 		{
 			$definition = $dictionary->getDefinition($word);
 			if(!$definition) return '';
 			
+			if(!$provided_definition) $provided_definition = $definition->definition;
+			
 			$definition = Definition::create([
 				'word' => $word,
-				'definition' => $definition->definition,
+				'definition' => $provided_definition,
 				'full_definition' => $definition->definition,
 				'pronunciation' => $definition->pronunciation,
 			]);
