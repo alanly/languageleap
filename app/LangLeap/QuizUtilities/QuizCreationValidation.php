@@ -26,7 +26,7 @@ class QuizCreationValidation extends InputDecorator {
 	{
 		if (! $user)
 		{
-			return ['error', 'Must be logged in to create a quiz.', 401];
+			return ['error', Lang::get('controllers.quiz.create_no-auth'), 401];
 		}
 	
 		// Ensure the video exists.
