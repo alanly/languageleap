@@ -1,5 +1,6 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use Lang;
 use LangLeap\Accounts\User;
 use LangLeap\Core\InputDecorator;
 use LangLeap\Core\UserInputResponse;
@@ -23,11 +24,25 @@ class QuizAnswerValidation extends InputDecorator {
 	public function response(User $user, array $input)
 	{
 		$quizId = isset($input['quiz_id']) ? $input['quiz_id'] : null;
+		// Ensure the quiz exists
+		$quiz = null;
+		if ($quizId)
+		{
+			$quiz = Quiz::find($quizId);
+		}
+		if (! $quiz)
+		{
+			return ['error', Lang::get('controllers.quiz.quiz_error', ['quiz_id' => $quizId]), 404];
+		}
+		else if ( ($quiz->user_id != $user->id) && ! $user->is_admin )
+		{
+			return ['error', Lang::get('controllers.quiz.quiz_no-auth', ['quiz_id' => $quizId]), 401];
+		}
 		
 		// Ensure that there is a user
 		if (! $user)
 		{
-			return ['error', Lang::get('controllers.quiz.quiz_no-auth', ), 401];
+			return ['error', Lang::get('controllers.quiz.quiz_no-auth', ['quiz_id' => $quizId]), 401];
 		}
 		
 		// Ensure that the Question exists, else return a 404.
@@ -41,7 +56,7 @@ class QuizAnswerValidation extends InputDecorator {
 		{
 			return [
 				'error',
-				Lang::get('controllers.question.question_error', $videoquestionId),
+				Lang::get('controllers.question.question_error', ['question_id' => $videoquestionId]),
 				404
 			];
 		}
@@ -52,24 +67,9 @@ class QuizAnswerValidation extends InputDecorator {
 		{
 			return [
 				'error',
-				Lang::get('controllers.question.answer_invalid', $selectedId),
+				Lang::get('controllers.question.answer_invalid', ['selected_id' => $selectedId]),
 				400
 			];
-		}
-
-		// Ensure the quiz exists
-		$quiz = null;
-		if ($quizId)
-		{
-			$quiz = Quiz::find($quizId);
-		}
-		if (! $quiz)
-		{
-			return ['error', Lang::get('controllers.quiz.quiz_error', $quizId), 404];
-		}
-		else if ( ($quiz->user_id != $user->id) && ! $user->is_admin )
-		{
-			return ['error', Lang::get('controllers.quiz.quiz_no-auth', $quizId), 401];
 		}
 		
 		return parent::response($user, $input);
