@@ -23,12 +23,12 @@ class QuizFactoryTest extends TestCase {
 	{
 		$video_id = Video::first()->id;
 		$wordsInformation = [
-			new WordInformation('cat', 'vicious, animal', 'the cat is annoying', $video_id),
-			new WordInformation('dog', 'barking animal', 'the dog is cute', $video_id),
-			new WordInformation('elephant', 'large land animal', 'the elephany is huge', $video_id),
+			['word' => 'cat', 'definition' => 'vicious, animal', 'sentence' => 'the cat is annoying'],
+			['word' => 'dog', 'definition' => 'barking animal', 'sentence' => 'the dog is cute'],
+			['word' => 'elephant', 'definition' => 'large land animal', 'sentence' => 'the elephany is huge'],
 		];
 
-		$quiz = QuizFactory::getInstance()->getQuiz(Auth::user()->id, $video_id, $wordsInformation);
+		$quiz = QuizFactory::getInstance()->getVideoQuiz(Auth::user()->id, $video_id, $wordsInformation);
 
 		$this->assertNotEmpty($quiz->videoQuestions);
 
@@ -38,47 +38,5 @@ class QuizFactoryTest extends TestCase {
 			$question = $vq->question;
 			$this->assertGreaterThan(1, $question->answers->count());
 		}
-	}
-	
-	public function testNullReturnedWhenWordsAreNotSelected()
-	{
-		$video_id = Video::first()->id;
-		$wordsInformation = [];
-		$video_id = Video::first()->id;
-
-		$quiz = QuizFactory::getInstance()->getQuiz(Auth::user()->id, $video_id, $wordsInformation);
-
-		$this->assertNull($quiz);
-	}
-	
-	public function testNullWhenVideoDoesNotExist()
-	{
-		$video_id = -1;
-		$wordsInformation = [
-			new WordInformation('cat', 'vicious, animal', 'the cat is annoying', 1),
-		];
-		
-		
-		$quiz = QuizFactory::getInstance()->getQuiz(Auth::user()->id, $video_id, $wordsInformation);
-		
-		$this->assertNull($quiz);
-	}
-	
-	public function testNullReturnedWhenUserDoesNotExist()
-	{
-		$user = App::make('\LangLeap\Accounts\User');
-		$user->id = -1;
-		$this->be($user);
-		$video_id = Video::first()->id;
-		$wordsInformation = [
-			new WordInformation('cat', 'vicious, animal', 'the cat is annoying', $video_id),
-			new WordInformation('dog', 'barking animal', 'the dog is cute', $video_id),
-			new WordInformation('elephant', 'large land animal', 'the elephany is huge', $video_id),
-		];
-		
-		
-		$quiz = QuizFactory::getInstance()->getQuiz(Auth::user()->id, $video_id, $wordsInformation);
-
-		$this->assertNull($quiz);
 	}
 }

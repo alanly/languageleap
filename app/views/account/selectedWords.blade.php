@@ -39,12 +39,12 @@
 	{
 		$('#selectedWords').dataTable(
 		{
-			"ajax" : "/api/metadata/selectedWords",
+			"ajax" : "/api/review",
 			"columns" :
 			[
-				{ "data" : "word"},
-				{ "data" : "definition"},
-				{ "data" : "audio_url"}
+				{ "data" : "definition.word"},
+				{ "data" : "definition.definition"},
+				{ "data" : "definition.audio_url"}
 			],
 			"columnDefs" :
 			[

@@ -26,4 +26,8 @@ class DragAndDropQuestion extends QuestionType {
 		return QuestionTypes::DragAndDrop;
 	}
 
+	public function isBankable()
+	{
+		return false;
+	}
 }

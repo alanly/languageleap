@@ -127,10 +127,7 @@ Route::group(['prefix' => 'api'], function()
 
 		// Recommendations
 		Route::resource('recommended', 'ApiRecommendedVideosController');
-
-		//Selected words
-		Route::resource('selectedWords', 'ApiSelectedWordsController');
-
+		
 		// Filtration
 		Route::resource('filter', 'ApiFilterController');
 	});
@@ -147,6 +144,9 @@ Route::group(['prefix' => 'api'], function()
 
 	// Update user info
 	Route::controller('users','ApiUserController');
+	
+	// Review words
+	Route::controller('review', 'ApiReviewWordsController');
 
 	//Api routes with auth filter
 	Route::group(array('before' => 'auth'), function() {  
