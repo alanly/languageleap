@@ -3,6 +3,14 @@ use LangLeap\Videos\Show;
 use LangLeap\Core\Language;
 
 class ApiUserPanelController extends \BaseController {
+
+	/**
+	 * Show the flashcards of a user
+	 */
+	public function showSelectedWords()
+	{
+		return View::make('account.selectedWords');
+	}
 	
 	/**
 	 * Show the level for the given user.

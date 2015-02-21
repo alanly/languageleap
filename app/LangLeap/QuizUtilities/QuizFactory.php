@@ -44,54 +44,8 @@ class QuizFactory implements UserInputResponse {
 	{
 		if($input) // there is input then create a quiz based on that
 		{
-			if (! $input['selected_words'] || count($input['selected_words']) < 1)
-			{
-				return null;
-			}
-
-			// Ensure the video exists
-			$videoId = $input['video_id'];
-			if (Video::find($videoId) == null) return null;
+			$quiz = $this->getVideoQuiz($user->id, $input['video_id'], $input['selected_words']);
 			
-			// Retrieve the word, its associated definition, and the sentence it is in.
-			$selectedWords = $input['selected_words'];
-			$wordsInformation = array();
-
-			$numberOfBadWords = 0;
-			for($i = 0; $i < count($selectedWords); $i++)
-			{
-				// Ensure word exists.
-				$word = $selectedWords[$i]['word'];
-				if(!$word) return null;
-
-				// Ensure sentence the word is in exists.
-				$sentence = $selectedWords[$i]['sentence'];
-				if(!$sentence) return null;
-
-				// If the definition doesn't exist, the WordInformation class will fetch the definition.
-				$wordInformation = new WordInformation($word, $selectedWords[$i]['definition'], $sentence, $videoId);
-
-				//Skip this word, but still create the quiz with the rest of the words.
-				if(!$wordInformation->getDefinition())
-				{
-					$numberOfBadWords += 1;
-					continue;
-				}
-
-				array_push($wordsInformation, $wordInformation);
-			}
-
-			if($numberOfBadWords == count($selectedWords))
-			{
-				return ['error', 'The selected words do not have a definition.', 404];
-			}
-			
-			$quiz = $this->getQuiz(
-				$user->id,
-				$input['video_id'],
-				$wordsInformation
-			);
-
 			return ['success', 
 			[
 				'quiz_id' => $quiz->id,
@@ -119,19 +73,13 @@ class QuizFactory implements UserInputResponse {
 	 * 
 	 * @param  int         $user_id
 	 * @param  int         $video_id
-	 * @param  array       $wordsInformation
+	 * @param  array     $selectedWords
 	 * @return Quiz
 	 */
-	public function getQuiz($user_id, $video_id, $wordsInformation)
+	public function getVideoQuiz($user_id, $video_id, $selectedWords)
 	{
-		// Ensure that $selectedWords is not empty.
-		if (count($wordsInformation) < 1) return null;
-		
-		// Ensure the user exists
-		if (User::find($user_id) == null) return null;
-		
-		// Ensure the video exists
-		if (Video::find($video_id) == null) return null;
+		// Retrieve the word, its associated definition, and the sentence it is in.
+		$wordsInformation = WordInformation::fromInput($selectedWords, $video_id);
 		
 		// Create a new quiz
 		$quiz = Quiz::create(['user_id'	=> $user_id]);
@@ -401,5 +349,4 @@ class QuizFactory implements UserInputResponse {
 			return "/video/play/" . $next_video->id;
 		}
 	}
-
 }

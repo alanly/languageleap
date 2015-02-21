@@ -46,6 +46,11 @@ class User extends ValidatedModel implements UserInterface, RemindableInterface,
 		return $this->hasMany('LangLeap\Accounts\ViewingHistory');
 	}
 
+	public function wordBank()
+	{
+		return $this->hasMany('LangLeap\Words\WordBank');
+	}
+
 	public function getViewingHistory()
 	{
 		return $this->history;

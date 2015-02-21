@@ -42,7 +42,7 @@ class QuestionTypeTest extends TestCase {
 			Answer::create(['answer' => 'test answer 4']),
 		];
 
-		$dq = DefinitionQuestion::create(['question' => 'What is the definition of cat?']);
+		$dq = DefinitionQuestion::create(['question' => 'What is the definition of cat?', 'word' => 'cat']);
 
 		// Create our question.
 		$q = new Question();

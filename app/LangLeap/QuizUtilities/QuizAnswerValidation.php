@@ -1,5 +1,6 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use Lang;
 use LangLeap\Accounts\User;
 use LangLeap\Core\InputDecorator;
 use LangLeap\Core\UserInputResponse;
@@ -22,24 +23,40 @@ class QuizAnswerValidation extends InputDecorator {
 	 */
 	public function response(User $user, array $input)
 	{
+		$quizId = isset($input['quiz_id']) ? $input['quiz_id'] : null;
+		// Ensure the quiz exists
+		$quiz = null;
+		if ($quizId)
+		{
+			$quiz = Quiz::find($quizId);
+		}
+		if (! $quiz)
+		{
+			return ['error', Lang::get('controllers.quiz.quiz_error', ['quiz_id' => $quizId]), 404];
+		}
+		else if ( ($quiz->user_id != $user->id) && ! $user->is_admin )
+		{
+			return ['error', Lang::get('controllers.quiz.quiz_no-auth', ['quiz_id' => $quizId]), 401];
+		}
+		
 		// Ensure that there is a user
 		if (! $user)
 		{
-			return ['error', 'Must be logged in to answer a quiz question', 401];
+			return ['error', Lang::get('controllers.quiz.quiz_no-auth', ['quiz_id' => $quizId]), 401];
 		}
 		
 		// Ensure that the Question exists, else return a 404.
 		$videoquestion = null;
-		if (isset($input['videoquestion_id']))
+		$videoquestionId = isset($input['videoquestion_id']) ? $input['videoquestion_id'] : null;
+		if ($videoquestionId)
 		{
-			$videoquestion_id = $input['videoquestion_id'];
-			$videoquestion = VideoQuestion::find($videoquestion_id);
+			$videoquestion = VideoQuestion::find($videoquestionId);
 		}
 		if (! $videoquestion)
 		{
 			return [
 				'error',
-				"Question {$videoquestion_id} not found.",
+				Lang::get('controllers.question.question_error', ['question_id' => $videoquestionId]),
 				404
 			];
 		}
@@ -50,25 +67,9 @@ class QuizAnswerValidation extends InputDecorator {
 		{
 			return [
 				'error',
-				"The selected definition {$selectedId} is invalid",
+				Lang::get('controllers.question.answer_invalid', ['selected_id' => $selectedId]),
 				400
 			];
-		}
-
-		// Ensure the quiz exists
-		$quiz = null;
-		if (isset($input['quiz_id']))
-		{
-			$quiz_id = $input['quiz_id'];
-			$quiz = Quiz::find($quiz_id);
-		}
-		if (! $quiz)
-		{
-			return ['error', "Quiz {$quiz_id} not found.", 404];
-		}
-		else if ( ($quiz->user_id != $user->id) && ! $user->is_admin )
-		{
-			return ['error', "Not authorized to answer questions for quiz {$quiz_id}", 401];
 		}
 		
 		return parent::response($user, $input);
