@@ -11,9 +11,8 @@ class ApiParseScriptController extends \BaseController {
 	 */
 	public function postIndex()
 	{
-		$file = Input::file("script-file");
-
-		if(! $file)
+		
+		if(! Input::hasFile("script-file"))
 		{
 			return $this->apiResponse(
 					'error',
@@ -21,6 +20,8 @@ class ApiParseScriptController extends \BaseController {
 					400
 			);			
 		}
+
+		$file = Input::file("script-file");
 
 		$script_contents = ScriptFile::extractTextFromSRT($file);
 
