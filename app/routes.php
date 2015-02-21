@@ -142,6 +142,9 @@ Route::group(['prefix' => 'api'], function()
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 
+	// Scripts
+	Route::post('parse/script', 'ApiParseScriptController@postIndex');
+
 	// Update user info
 	Route::controller('users','ApiUserController');
 
