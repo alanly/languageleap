@@ -1,8 +1,22 @@
 <?php
 
 use LangLeap\WordUtilities\ScriptFile;
+use LangLeap\ScriptUtilities\ParserFactory;
+use LangLeap\ScriptUtilities\FactoryType;
 
 class ApiParseScriptController extends \BaseController {
+
+	/**
+	* For the time being, we only support SRT parsing, therefore,
+	* we will leave the factory as a class member.
+	* @var
+	*/
+	protected $subRipParserFactory;
+
+	public function __construct()
+	{
+		$this->subRipParserFactory = ParserFactory::getFactory(FactoryType::SUBRIP);
+	}
 
 	/**
 	 * Will recieve a file from the request, extract the contents from that file and parse it into script format.
@@ -33,6 +47,9 @@ class ApiParseScriptController extends \BaseController {
 					400
 			);	
 		}
+
+		// Parse the subtitles
+		$script_contents = $this->subRipParserFactory->getParser()->parse($script_contents);
 
 		//Encode to be able to return in response
 		$script_contents = utf8_encode($script_contents);
