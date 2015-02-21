@@ -59,13 +59,60 @@
 			<p class="lead"><?php echo Lang::get('quiz.results.result', ['correct' => "{{ correctQuestionsCount }}", 'count' => "{{ questionsCount }}"]) ?></p>
 			<br>
 			<span id="final-score">{{ finalScore() }}%</span>
+
+			<hr>
+			<h4>Recommended</h4>
+			<div id="recommended"></div>
 		</div>
 
 		<div class="modal-footer">
 			<a href="{{ redirect }}" class="btn btn-primary"><?php echo Lang::get('quiz.continue') ?></a>
 		</div>
-	</script>
-	
-	
-	
+		
+		<script>
+			function refreshPopovers() {
+				$('[data-toggle="popover"]').popover();
+			}
+
+			function getContentUrl(content) {
+				var typeArray = content.type.split('\\');
+				var type = typeArray[typeArray.length - 1].toLowerCase();
+
+				return '/' + type + '/' + content.id;
+			}
+
+			function onLoadRecommendedSuccess(data) {
+				$.each(data.data, function(i, v) {
+					var url = getContentUrl(v);
+					var coverUrl = (v.image_path) ? v.image_path : 'http://placehold.it/115x153';
+					var element = 	'<div class="element">' +
+										'<a href="' + url + '" class="thumbnail cover" data-toggle="popover" data-trigger="hover" data-placement="auto" title="' + v.name + '" data-content="' + v.description + '">' +
+											'<img src="' + coverUrl + '" />' +
+										'</a>' +
+									'</div>';
+
+					$('#recommended').append(element);
+				});
+
+				refreshPopovers();
+			}
+
+			function loadRecommendations() {
+				var url = '/api/metadata/recommended';
+				var data = { 'take' : 4 };
+				$.ajax({
+					type: 'GET',
+					url: url,
+					data: data,
+					success: onLoadRecommendedSuccess,
+					error: function(data) {
+					}
+				});
+			}
+
+			$(function() {
+				loadRecommendations();
+			});
+		</script>
+	</script>	
 </div>

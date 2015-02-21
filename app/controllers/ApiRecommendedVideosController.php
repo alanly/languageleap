@@ -4,6 +4,8 @@ use LangLeap\Videos\RecommendationSystem\Recommendatore;
 
 class ApiRecommendedVideosController extends \BaseController {
 
+	private $defaultTake = 5;
+
 	protected $recommendatore;
 
 	public function __construct(Recommendatore $recommendatore)
@@ -19,6 +21,11 @@ class ApiRecommendedVideosController extends \BaseController {
 	 */
 	public function index()
 	{
+		$take = Input::get('take');
+
+		if (! $take || ! is_numeric($take))
+			$take = $this->defaultTake;
+
 		if (! Auth::check())
 		{
 			return $this->apiResponse(
@@ -29,7 +36,7 @@ class ApiRecommendedVideosController extends \BaseController {
 		}
 
 		$this->recommendatore->generate(Auth::user());
-		$recommendations = $this->recommendatore->fetch(Auth::user(), 10);
+		$recommendations = $this->recommendatore->fetch(Auth::user(), $take);
 
 		return $this->apiResponse(
 			'success',
@@ -43,9 +50,9 @@ class ApiRecommendedVideosController extends \BaseController {
 		foreach ($recommendations as $r)
 		{
 			$media = $r->getMedia();
-			
+
 			$response = $media->toResponseArray();
-			$response[] = get_class($media);
+			$response['type'] = get_class($media);
 
 			$responseData[] = $response;
 		}
