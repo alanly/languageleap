@@ -72,4 +72,8 @@ return array(
 		'incomplete' => 'Missing or incomplete questions object in request.',
 		'update_error' => 'Error when updating user.',
 	),
+	'parse' => array(
+		'invalid_file' => 'Invalid Script file',
+		'unreadable' => 'Unable to read file',
+	),
 );

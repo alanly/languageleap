@@ -17,7 +17,7 @@ class ApiParseScriptController extends \BaseController {
 		{
 			return $this->apiResponse(
 					'error',
-					'Invalid Script file',
+					Lang::get('controllers.parse.invalid_file'),
 					400
 			);			
 		}
@@ -28,7 +28,7 @@ class ApiParseScriptController extends \BaseController {
 		{
 			return $this->apiResponse(
 					'error',
-					'Unable to read file',
+					Lang::get('controllers.parse.unreadable'),
 					400
 			);	
 		}
