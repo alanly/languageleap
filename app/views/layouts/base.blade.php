@@ -49,11 +49,12 @@
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-decoration: none;">
 									<span class="account glyphicon glyphicon-user"></span>
-										Account
+										@lang('navbar.buttons.account.name')
 									<span class="caret"></span></a>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="/user/info" role="menu-item">Profile</a></li>
-										<li><a href="#" role="menu-item">Settings</a></li>
+										<li><a href="{{ URL::to('user/info') }}" role="menu-item">@lang('navbar.buttons.account.profile')</a></li>
+										<li><a href="#" role="menu-item">@lang('navbar.buttons.account.settings')</a></li>
+										<li><a href="{{ URL::to('user/wordBank') }}" role="menu-item">@lang('navbar.buttons.account.review')</a></li>
 										<li class="divider"></li>
 										<li><a href="{{ URL::to('logout') }}" role="menu-item">Logout</a></li>
 									</ul>
@@ -89,7 +90,7 @@
 							// Store data in the HTML5 Storage schema
 							localStorage.setItem("quizPrerequisites", JSON.stringify({'quiz_id': data.data.quiz_id}));
 								
-							$("#quiz-link").html('<a href="quiz"><span class="glyphicon glyphicon-pencil" aria-hidden="true">@lang("navbar.buttons.quiz-reminder.attempt")</span></a>');
+							$("#quiz-link").html('<a href="{{ URL::to("quiz") }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true">@lang("navbar.buttons.quiz-reminder.attempt")</span></a>');
 						}
 					},
 				});
