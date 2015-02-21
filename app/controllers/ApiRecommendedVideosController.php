@@ -21,10 +21,7 @@ class ApiRecommendedVideosController extends \BaseController {
 	 */
 	public function index()
 	{
-		$take = Input::get('take');
-
-		if (! $take || ! is_numeric($take))
-			$take = $this->defaultTake;
+		$take = Input::get('take', $this->defaultTake);
 
 		if (! Auth::check())
 		{
