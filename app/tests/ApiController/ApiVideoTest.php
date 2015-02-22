@@ -50,7 +50,7 @@ class ApiVideoControllerTest extends TestCase {
                 'ApiVideoController@store',
                 [],
                 [
-                	'video_type'	=>'commercial',
+                	'info-radio'	=>'commercial',
                 	'commercial'	=>$commercial->id, 
                 	'language_id' 	=> $language->id, 
                 	"script" 		=> $text 
@@ -75,7 +75,7 @@ class ApiVideoControllerTest extends TestCase {
 		$response = $this->action(
 			'PATCH',
 			'ApiVideoController@update',
-			[$video->id],['video_type'=>'episode','episode'=>$episode->id, 'language_id' => $language->id],
+			[$video->id],['info-radio'=>'episode','episode'=>$episode->id, 'language_id' => $language->id],
 			['video'=> $video_file, 'script' => $script]
 		);
 
