@@ -80,38 +80,38 @@ function refreshContent()
 		{
 			var p = "";
 			p = getScriptText();
-			p = "<input type='text' name='text' value='" + p + "' style='display: none;'/>";
+			p = "<input type='text' name='script' value='" + p + "' style='display: none;'/>";
 			// append script to form for post
 			$('#new-media-form').append(p);
 			//document.getElementById("new-media-form").submit();
 			
 			var xhr = null;
 			var form = $("#new-media-form");
-      var formData = new FormData(form[0]);
-      xhr = $.ajax({
-          type: "POST",
-          url: "/api/videos/",
-          data: formData,
-          cache: false,
-          processData: false,
-          contentType: false,
-          xhr: function() {
-              myXhr = $.ajaxSettings.xhr();
-              if (myXhr.upload) myXhr.upload.addEventListener('progress', uploadProgressHandler, false);
-              return myXhr;
-          }
-      }).done(function(data, status, xhr) {
-          $("#add-new-body-upload").html(
-						"Upload complete! Redirecting..."
-          );
-          ($("#new-media-form")[0]).reset();
-					setTimeout("location.href = '/admin';", 4000);
-      }).fail(function(xhr, status, error) {
-          $("#add-new-body-upload").html(
-              "Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>"
-          );
-					setTimeout("location.href = '/admin';", 4000);
-      });
+			var formData = new FormData(form[0]);
+			xhr = $.ajax({
+			  type: "POST",
+			  url: "/api/videos/",
+			  data: formData,
+			  cache: false,
+			  processData: false,
+			  contentType: false,
+			  xhr: function() {
+			      myXhr = $.ajaxSettings.xhr();
+			      if (myXhr.upload) myXhr.upload.addEventListener('progress', uploadProgressHandler, false);
+			      return myXhr;
+			  }
+			}).done(function(data, status, xhr) {
+			  $("#add-new-body-upload").html(
+							"Upload complete! Redirecting..."
+			  );
+			  ($("#new-media-form")[0]).reset();
+						setTimeout("location.href = '/admin';", 4000);
+			}).fail(function(xhr, status, error) {
+			  $("#add-new-body-upload").html(
+			      "Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>"
+			  );
+						setTimeout("location.href = '/admin';", 4000);
+			});
 
 			$('#add-new-header').empty().append("<h2>Uploading...</h2>");
 			$('#button-add-new-back').attr('disabled', 'disabled');

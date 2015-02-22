@@ -37,10 +37,10 @@ class VideoFactory {
 	 */
 	public function createVideo(array $input)
 	{
-		$script_file =$input['script'];
+		$script = $input['script'];
 
 		$video = $this->setVideo($input,null);
-		$this->setScript($script_file, $video->id);
+		$this->setScript($script, $video->id);
 
 		return $video;
 	}
@@ -53,14 +53,13 @@ class VideoFactory {
 	 * @param int 		$video_id 
 	 * @param Script 	$script
 	 */
-	public function setScript($file,$video_id, Script $script = null)
+	public function setScript($script_text,$video_id, Script $script = null)
 	{
 		if($script == null)
 		{
 			$script = new Script;
 		}
 
-		$script_text = ScriptFile::retrieveText($file);
 		$script->text = $script_text;
 		$script->video_id = $video_id;
 
@@ -80,7 +79,7 @@ class VideoFactory {
 
 		$lang = Language::find($input['language_id'])->first();
 		$file = $input['video'];
-		$type = $input['video_type'];
+		$type = $input['info-radio'];
 
 		$ext = $file->getClientOriginalExtension();
 

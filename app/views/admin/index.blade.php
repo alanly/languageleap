@@ -97,7 +97,7 @@
 				<!-- step three -->
 				<div id="add-new-body-media" class="modal-body clearfix" aria-hidden="true" style="display: none;">
 				  {{ Form::label('file', 'File', array('id'=>'', 'class'=>'')) }}
-				  {{ Form::file('file', '', array('id'=>'file', 'class'=>'')) }}
+				  {{ Form::file('video', '', array('id'=>'file', 'class'=>'')) }}
 				</div>
 				<!-- /step three -->
 				<div id="add-new-body-upload" class="modal-body text-center clearfix" aria-hidden="true" style="display: none;">

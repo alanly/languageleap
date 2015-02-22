@@ -31,7 +31,7 @@ class ApiVideoControllerTest extends TestCase {
 	
 	public function testStore()
 	{
-		/*
+		
 		$this->seed();
         $commercial = Commercial::first();
         $language = Language::first();
@@ -49,13 +49,17 @@ class ApiVideoControllerTest extends TestCase {
                 'POST',
                 'ApiVideoController@store',
                 [],
-                ['video_type'=>'commercial','commercial'=>$commercial->id, 'language_id' => $language->id, "text" => $text ],
+                [
+                	'video_type'	=>'commercial',
+                	'commercial'	=>$commercial->id, 
+                	'language_id' 	=> $language->id, 
+                	"script" 		=> $text 
+                ],
                 ['video'=> $video]
         );
 
         $this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
         $this->assertResponseOk();
-		*/
 	}
 	
 	public function testUpdate()
