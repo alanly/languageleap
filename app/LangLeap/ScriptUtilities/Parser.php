@@ -1,8 +1,8 @@
 <?php namespace LangLeap\ScriptUtilities;
 
 /**
-* Defines an interface for a type that can
-* be parsed.
+* Defines a standard interface for the implementing parsing
+* utilities/engines which perform an operation over a given data.
 * @author Michael Lavoie <lavoie6453@gmail.com>
 */
 interface Parser {
