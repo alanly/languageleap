@@ -14,6 +14,8 @@
 	.has-success label { font-weight: 800; }
 	#score-modal-body { text-align: center; }
 	#final-score { font-size: 4rem; font-weight: 800; padding-bottom: 1rem; }
+	#recommended .cover img { height: 153px; width: 115px; }
+	#recommended .element {	display: inline-block; padding: 5px; }
 </style>
 @stop
 

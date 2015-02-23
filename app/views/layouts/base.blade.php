@@ -52,7 +52,7 @@
 										@lang('navbar.buttons.account.name')
 									<span class="caret"></span></a>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#" role="menu-item">@lang('navbar.buttons.account.profile')</a></li>
+										<li><a href="{{ URL::to('user/info') }}" role="menu-item">@lang('navbar.buttons.account.profile')</a></li>
 										<li><a href="#" role="menu-item">@lang('navbar.buttons.account.settings')</a></li>
 										<li><a href="{{ URL::to('user/wordBank') }}" role="menu-item">@lang('navbar.buttons.account.review')</a></li>
 										<li class="divider"></li>
