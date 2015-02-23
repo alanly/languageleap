@@ -92,19 +92,19 @@ class VideoFactory {
 
 		if($type === "commercial")
 		{
-			$video->viewable_id = $input['commercial'];
+			$video->viewable_id = $input['media_id'];
 			$video->viewable_type = 'LangLeap\Videos\Commercial';
 			$path = Config::get('media.paths.videos.commercials');
 		}
 		elseif($type === "movie")
 		{
-			$video->viewable_id = $input['movie'];
+			$video->viewable_id = $input['media_id'];
 			$video->viewable_type = 'LangLeap\Videos\Movie';
 			$path = Config::get('media.paths.videos.movies');
 		}
 		elseif($type === "show")
 		{
-			$video->viewable_id = $input['episode'];
+			$video->viewable_id = $input['media_id'];
 			$video->viewable_type = 'LangLeap\Videos\Episode';
 			$path = Config::get('media.paths.videos.shows');
 		}

@@ -51,9 +51,9 @@ class ApiVideoControllerTest extends TestCase {
                 [],
                 [
                 	'info-radio'	=>'commercial',
-                	'commercial'	=>$commercial->id, 
+                	'media_id'	=>$commercial->id, 
                 	'language_id' 	=> $language->id, 
-                	"script" 		=> $text 
+                	"script" 		=> $text,
                 ],
                 ['video'=> $video]
         );

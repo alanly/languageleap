@@ -88,29 +88,58 @@ function refreshContent()
 			var xhr = null;
 			var form = $("#new-media-form");
 			var formData = new FormData(form[0]);
-			xhr = $.ajax({
-			  type: "POST",
-			  url: "/api/videos/",
-			  data: formData,
-			  cache: false,
-			  processData: false,
-			  contentType: false,
-			  xhr: function() {
-			      myXhr = $.ajaxSettings.xhr();
-			      if (myXhr.upload) myXhr.upload.addEventListener('progress', uploadProgressHandler, false);
-			      return myXhr;
-			  }
-			}).done(function(data, status, xhr) {
-			  $("#add-new-body-upload").html(
-							"Upload complete! Redirecting..."
-			  );
-			  ($("#new-media-form")[0]).reset();
-						setTimeout("location.href = '/admin';", 4000);
-			}).fail(function(xhr, status, error) {
-			  $("#add-new-body-upload").html(
-			      "Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>"
-			  );
-						setTimeout("location.href = '/admin';", 4000);
+			
+			var current = $("input:radio[name=info-radio]").val();
+			
+			$.ajax(
+			{
+				type: "POST",
+				url: "/api/metadata/" + current + "s",
+				data:
+				{
+					name: $('#info-commercial-form-name-input').val(),
+					description: $('#info-default-form-description-input').val(),
+					director: $('#director-input').val(),
+					actor: $('#actor-input').val(),
+					genre: $('#genre-input').val(),
+				},
+				success: function(data)
+				{
+					//console.log(data);
+
+					var media_id = data.data.id
+					formData.append("media_id", media_id);
+					
+					xhr = $.ajax({
+					  type: "POST",
+					  url: "/api/videos/",
+					  data: formData,
+					  cache: false,
+					  processData: false,
+					  contentType: false,
+					  xhr: function() {
+					      myXhr = $.ajaxSettings.xhr();
+					      if (myXhr.upload) myXhr.upload.addEventListener('progress', uploadProgressHandler, false);
+					      return myXhr;
+					  }
+					}).done(function(data, status, xhr) {
+					  $("#add-new-body-upload").html(
+									"Upload complete! Redirecting..."
+					  );
+					  ($("#new-media-form")[0]).reset();
+								setTimeout("location.href = '/admin';", 4000);
+					}).fail(function(xhr, status, error) {
+					  $("#add-new-body-upload").html(
+					      "Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>"
+					  );
+								setTimeout("location.href = '/admin';", 4000);
+					});
+
+				},
+				error: function(data)
+				{
+					console.log(data);
+				}
 			});
 
 			$('#add-new-header').empty().append("<h2>Uploading...</h2>");
