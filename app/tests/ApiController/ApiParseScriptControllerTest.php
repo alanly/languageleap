@@ -44,4 +44,16 @@ class ApiParseScriptControllerTest extends TestCase {
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseStatus(400);
 	}
+
+	public function testIndexWithInvalidNofile()
+	{
+		$response = $this->action(
+			'POST',
+			'ApiParseScriptController@postIndex',
+			[], [],	[]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(400);
+	}
 }
