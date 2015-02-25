@@ -9,7 +9,7 @@ interface Filterable {
 
 	/**
 	 * Returns a collection of filtered content.
-	 * @param   array       A dictionary of query data
+	 * @param   array       $input   A dictionary of query data
 	 * @param   int         $take    The number of matches to retrieve
 	 * @param   int         $skip    The starting index of where to start retrieving
 	 * @return  Collection  A collection of filtered results
