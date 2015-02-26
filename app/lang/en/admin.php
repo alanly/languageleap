@@ -37,4 +37,14 @@ return array(
 	'upload' => array(
 		'success' => 'Media Uploaded Successfully'
 	),
+	'index' => array(
+		'menu' => array(
+			'dashboard' => 'Dashboard',
+			'logout' => 'Sign Out',
+			'client' => 'Client Side',
+			'videos' => 'Manage Videos',
+			'scripts' => 'Manage Scripts',
+			'user' => 'Manager Users',
+		),
+	),
 );

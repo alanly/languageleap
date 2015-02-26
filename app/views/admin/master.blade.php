@@ -68,20 +68,20 @@
           </ul>
 
           <ul class="nav nav-sidebar">
-            <li><a href="#"><i class="fa fa-film fa-fw"></i> Manage Videos</a></li>
-            <li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> Manage Scripts</a></li>
-            <li><a href="#"><i class="fa fa-users fa-fw"></i> Manage Users</a></li>
+            <li><a href="#"><i class="fa fa-film fa-fw"></i>@lang('admin.index.menu.videos')</a></li>
+            <li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> @lang('admin.index.menu.scripts')</a></li>
+            <li><a href="#"><i class="fa fa-users fa-fw"></i> @lang('admin.index.menu.users')</a></li>
           </ul>
 
           <ul class="nav nav-sidebar">
-            <li><a href="#"><i class="fa fa-road fa-fw"></i> Client Side</a></li>
-            <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Sign Out</a></li>
+            <li><a href="#"><i class="fa fa-road fa-fw"></i> @lang('admin.index.menu.client')</a></li>
+            <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> @lang('admin.index.menu.logout')</a></li>
           </ul>
         </nav>
 
         <!-- Page Container -->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Dashboard</h1>
+          <h1 class="page-header">@lang('admin.index.menu.dashboard')</h1>
           <p>Here can be stats relevant to the administrator. (i.e. number of new users, active accounts, etc.)</p>
 
           @yield('content')
