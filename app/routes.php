@@ -98,6 +98,8 @@ Route::group(['prefix' => 'admin'], function()
 	{
 		return View::make('admin.quiz.index')->with('videos', Video::All());
 	});
+
+	Route::post('user', 'ApiAdminUserController@postActive');
 });
 
 
