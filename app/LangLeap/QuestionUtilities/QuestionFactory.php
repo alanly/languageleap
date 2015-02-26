@@ -41,6 +41,7 @@ class QuestionFactory
 	{
 		$definitionQuestion = DefinitionQuestion::create([
 			'question' => $questionPrepend . $wordInformation->getWord() . '?',
+			'word' => strtolower($wordInformation->getWord()),
 		]);
 
 		// Create a new Question instance

@@ -4,12 +4,11 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<h2>Verify Your Email Address</h2>
+		<h2>@lang('account.verification.title')</h2>
 		<div>
-			<p>Thank you for registering for <strong>LanguageLeap</strong>!</p>
-			<p>In order to activate your account, we will need to confirm your email
-			address. To do so, just follow {{ link_to_action('RegistrationController@getVerify', 'this link', [$confirmation_code]) }}.</p>
-			<p>&mdash; The LanguageLeap Team</p>
+			<p>@lang('account.verification.thankyou')</p>
+			<p>@lang('account.verification.instruction') {{ link_to_action('RegistrationController@getVerify', Lang::get('account.verification.this'), [$confirmation_code]) }}.</p>
+			<p>@lang('account.verification.signature')</p>
 		</div>
 	</body>
 </html>

@@ -2,6 +2,7 @@
 
 use LangLeap\Videos\Video;
 use LangLeap\Core\Language;
+use LangLeap\Words\Definition;
 use LangLeap\DictionaryUtilities\DictionaryFactory;
 
 /**
@@ -19,16 +20,7 @@ class WordInformation
 	public function __construct($word, $definition, $sentence, $videoId)
 	{
 		$this->word = $word;
-
-		// Definition does not exist, fetch it.
-		if(strlen($definition) < 1)
-		{
-			$this->definition = $this->getWordDefinition($word, $videoId);
-		}
-		else
-		{
-			$this->definition = $definition;
-		}
+		$this->definition = $this->getWordDefinition($word, $definition, $videoId);
 
 		$this->sentence = preg_replace('/\b' . $word . '\b/', $this->BLANK, $sentence);
 	}
@@ -47,18 +39,29 @@ class WordInformation
 	{
 		return $this->sentence;
 	}
-
-	private function getWordDefinition($word, $videoId)
+	
+	private function getWordDefinition($word, $provided_definition, $videoId)
 	{
+		if($provided_definition)
+		{
+			return $provided_definition;
+		}
+		
 		$videoLanguage = $this->getVideoLanguage($videoId);
 		if(!$videoLanguage) return '';
 
 		$dictionary = DictionaryFactory::getInstance()->getDictionary($videoLanguage);
 		if(!$dictionary) return '';
 
-		$definition = $dictionary->getDefinition($word);
-		if(!$definition) return '';
-
+		$word = strtolower($word);
+		
+		$definition = Definition::where('word', '=', $word)->first();
+		if(!$definition)
+		{
+			$definition = $dictionary->getDefinition($word);
+			if(!$definition) return '';
+		}
+		
 		return $definition->definition;
 	}
 
@@ -74,5 +77,37 @@ class WordInformation
 
 		return strtoupper($language->code);
 
+	}
+	
+	/**
+	 * This function will create word information instances from every word in selectedWords
+	 * 
+	 * @param array	selectedWords
+	 * @param int		video_id
+	 * @return array
+	 */ 
+	public static function fromInput($selectedWords, $video_id)
+	{
+		$wordsInformation = array();
+
+		for($i = 0; $i < count($selectedWords); $i++)
+		{
+			// Ensure word exists.
+			$word = $selectedWords[$i]['word'];
+			if(!$word) continue;
+
+			// Ensure sentence the word is in exists.
+			$sentence = $selectedWords[$i]['sentence'];
+			if(!$sentence) continue;
+
+			// If the definition doesn't exist, the WordInformation class will fetch the definition.
+			$wordInformation = new WordInformation($word, $selectedWords[$i]['definition'], $sentence, $video_id);
+
+			if(strlen($wordInformation->getDefinition()) < 1) continue;
+
+			array_push($wordsInformation, $wordInformation);
+		}
+		
+		return $wordsInformation;
 	}
 }

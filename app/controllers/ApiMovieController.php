@@ -64,7 +64,7 @@ class ApiMovieController extends \BaseController {
 
 		if (!$movie)
 		{
-			return $this->apiResponse('error', "Movie {$id} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
 		}
 
 		return $this->apiResponse("success", $movie->toResponseArray());
@@ -82,7 +82,7 @@ class ApiMovieController extends \BaseController {
 
 		if (! $movie)
 		{
-			return $this->apiResponse('error', "Movie {$id} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
 		}
 
 		$movie->fill(Input::get());
@@ -108,13 +108,13 @@ class ApiMovieController extends \BaseController {
 
 		if (! $movie)
 		{
-			return $this->apiResponse('error', "Movie {$id} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
 		}
 
 		$movie->videos()->delete();
 		$movie->delete();
 
-		return $this->apiResponse('success', "Movie {$id} has been removed", 204);
+		return $this->apiResponse('success', Lang::get('controllers.movies.movie_deletion', ['id' => $id]), 204);
 	}
 	
 	

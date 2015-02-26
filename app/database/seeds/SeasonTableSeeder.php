@@ -13,9 +13,12 @@ class SeasonTableSeeder extends Seeder {
 	{
 		DB::table('seasons')->delete();
 
-		$show = Show::first();
-		$show->seasons()->create(['number' => 1]);
-		$show->seasons()->create(['number' => 2]);
-		$show->seasons()->create(['number' => 3]);
+		foreach (Show::all() as $show)
+		{
+			for ($i = 1; $i < 4; $i++)
+			{
+				$show->seasons()->create(['number' => $i]);
+			}
+		}
 	}
 }

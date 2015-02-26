@@ -19,23 +19,21 @@ class VideoTableSeeder extends Seeder {
 		DB::table('videos')->delete();
 
 		$lang = Language::first();
-		
-		$movies = Movie::all();
-		foreach ($movies as $movie)
+
+		foreach (Commercial::all() as $commercial)
 		{
-			$movie->videos()->create(['path' => '/path/to/somewhere/media.mkv', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+			$commercial->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
 		}
-				
-		$commercials = Commercial::all();
-		foreach ($commercials as $commercial)
+
+		foreach (Episode::all() as $episode)
 		{
-			$commercial->videos()->create(['path' => '/path/to/somewhere/media.mkv', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+			$episode->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
 		}
-		
-		$shows = Episode::all();
-		foreach ($shows as $show)
+
+		foreach (Movie::all() as $movie)
 		{
-			$show->videos()->create(['path' => '/path/to/somewhere/media.mkv', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+			$movie->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+
 		}
 	}
 	

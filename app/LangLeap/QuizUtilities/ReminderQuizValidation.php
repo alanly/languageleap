@@ -1,5 +1,6 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use Lang;
 use LangLeap\Accounts\User;
 use LangLeap\Core\InputDecorator;
 
@@ -21,7 +22,7 @@ class ReminderQuizValidation extends InputDecorator {
 	{
 		if (! $user)
 		{
-			return ['error', 'Must be logged in to create a quiz.', 401];
+			return ['error', Lang::get('controllers.quiz.create_no-auth'), 401];
 		}
 		
 		return parent::response($user, $input);

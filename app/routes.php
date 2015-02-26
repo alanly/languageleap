@@ -15,10 +15,30 @@ use LangLeap\Videos\Video;
 |
 */
 
-// Accordion
+Route::get('/commercial/{id}', function($id)
+{
+	return View::make('commercial')->with("commercial_id", $id);
+});
+
+Route::get('/movie/{id}', function($id)
+{
+	return View::make('movie')->with("movie_id", $id);
+});
+
+Route::get('/episode/{id}', function($id)
+{
+	return View::make('episode')->with("episode_id", $id);
+});
+
+Route::get('/show/{id}', function($id)
+{
+	return View::make('show')->with("show_id", $id);
+});
+
+// TODO set this to be the index route
 Route::get('/', function()
 {
-	return View::make('index');
+	return View::make('layout');
 });
 
 
@@ -106,11 +126,17 @@ Route::group(['prefix' => 'api'], function()
 		Route::patch('shows/update-script/{id}', 'ApiShowController@updateScript');
 		Route::patch('shows/save-timestamps/{id}', 'ApiShowController@saveTimestamps');
 		
+		//Episode without show/season identifiers
+		Route::get('episode/{id}', 'ApiEpisodeController@showEpisode');
+
 		// Get single definition using new definition model
 		Route::resource('definitions', 'ApiDefinitionController');
 
 		// Recommendations
 		Route::resource('recommended', 'ApiRecommendedVideosController');
+		
+		// Filtration
+		Route::resource('filter', 'ApiFilterController');
 	});
 
 	// Query the definition API for a definition
@@ -123,8 +149,14 @@ Route::group(['prefix' => 'api'], function()
 	// Scripts
 	Route::resource('scripts', 'ApiScriptController');
 
+	// Scripts
+	Route::post('parse/script', 'ApiParseScriptController@postIndex');
+
 	// Update user info
 	Route::controller('users','ApiUserController');
+	
+	// Review words
+	Route::controller('review', 'ApiReviewWordsController');
 
 	//Api routes with auth filter
 	Route::group(array('before' => 'auth'), function() {  
@@ -135,7 +167,6 @@ Route::group(['prefix' => 'api'], function()
 		// Quiz
 		Route::controller('quiz', 'ApiQuizController');
 	});
-
 });
 
 
@@ -180,14 +211,16 @@ Route::any('test/csrf', ['before' => 'csrf', function() {}]);
 
 
 // Routes for user panel controllers
-Route::group(['prefix' => 'user'], function()
+Route::group(['prefix' => 'user', "before" => "auth"], function()
 {
+	//User Level
+	Route::get('wordBank', 'ApiUserPanelController@showSelectedWords');
 
 	//User Level
-	Route::get('level', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showLevel']);
+	Route::get('level', 'ApiUserPanelController@showLevel');
 
 	//User Info
-	Route::get('info', ['before' => 'auth', 'uses' => 'ApiUserPanelController@showInfo']);
+	Route::get('info', 'ApiUserPanelController@showInfo');
 });
 
 Route::any('queue/recieve', function()

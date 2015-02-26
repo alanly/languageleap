@@ -9,7 +9,7 @@ class DefinitionQuestion extends QuestionType {
 
 	public    $timestamps = false;
 	protected $table      = 'definition_questions';
-	protected $fillable   = ['question'];
+	protected $fillable   = ['question', 'word'];
 
 	public function questionType()
 	{
@@ -26,4 +26,8 @@ class DefinitionQuestion extends QuestionType {
 		return QuestionTypes::MultipleChoice;
 	}
 
+	public function isBankable()
+	{
+		return true;
+	}
 }

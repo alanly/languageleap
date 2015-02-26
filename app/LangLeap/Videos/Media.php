@@ -39,4 +39,6 @@ abstract class Media extends ValidatedModel {
 
 	abstract public function videos();
 
+	abstract public function toResponseArray();
+
 }

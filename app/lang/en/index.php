@@ -13,7 +13,6 @@ return array(
 	*/
 
 	'accordion' => array(
-
 		'movies' => array(
 			'name' => 'Movies',
 			'desc' => 'Learn through your favorite Movies!',
@@ -34,8 +33,8 @@ return array(
 			'select' => 'Select Season',
 		),
 		'episodes' => array(
-			'name' => 'Episoides',
-			'select' => 'Select Episoide',
+			'name' => 'Episodes',
+			'select' => 'Select Episode',
 		),
 		'videos' => array(
 			'name' => 'Videos',
@@ -43,6 +42,41 @@ return array(
 		),
 		'items' => array(
 			'default' => 'Select Media',
+		),
+	),
+	'layout' => array(
+		'filters' => array(
+			'genre' => 'Genres',
+			'hide' => 'Hide filters',
+			'action' => 'Action',
+		),
+		'tabs' => array(
+			'movies' => 'Movies',
+			'commercials' => 'Commercials',
+			'shows' => 'TV Shows',
+		),
+		'search' => array(
+			'search' => 'Search',
+			'for' => 'Search for...',
+		),
+		'general' => array(
+			'difficulty' => 'Difficulty level',
+			'description' => 'Description',
+			'part_number' => 'Part Number',
+			'length' => 'Length',
+			'play' => 'Play',
+			'error' => 'There was a problem loading the information, Please try again at a later time.',
+		),
+		'movie' => array(
+			'director' => 'Director',
+			'starring' => 'Starring',
+		),
+		'show' => array(
+			'seasons' => array(
+				'empty' => 'There are no episodes currently for this season',
+			),
+		),
+		'commercial' => array(
 		),
 	),
 );

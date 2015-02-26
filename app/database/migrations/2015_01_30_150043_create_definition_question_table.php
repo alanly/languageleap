@@ -15,6 +15,7 @@ class CreateDefinitionquestionTable extends Migration {
 		Schema::create('definition_questions', function($table){
 			$table->increments('id');
 			$table->string('question');
+			$table->string('word');
 		});
 	}
 

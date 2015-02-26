@@ -12,7 +12,7 @@
 @section('content')
 
 <div class="title">
-	<h1>Tutorial Video</h1>
+	<h1>@lang('rank.title')</h1>
 </div>
 <div class="jumbotron" style="padding-left: 20px; margin-bottom: 0;">	
 	<!-- Player here -->
@@ -35,9 +35,9 @@
 					    <span class="caret"></span>
 				  	</button>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="speed-drop">
-						<li role="presentation"><a class="speed faster" role="menuitem" tabindex="-1" href="#">Faster</a></li>
-						<li role="presentation"><a class="speed normal" role="menuitem" tabindex="-1" href="#">Normal</a></li>
-						<li role="presentation"><a class="speed slower" role="menuitem" tabindex="-1" href="#">Slower</a></li>
+						<li role="presentation"><a class="speed faster" role="menuitem" tabindex="-1" href="#">@lang('rank.player.faster')</a></li>
+						<li role="presentation"><a class="speed normal" role="menuitem" tabindex="-1" href="#">@lang('rank.player.normal')</a></li>
+						<li role="presentation"><a class="speed slower" role="menuitem" tabindex="-1" href="#">@lang('rank.player.slower')</a></li>
 					</ul>
 				</div>
 
@@ -65,7 +65,7 @@
 </div>
 <div class="form-group">
 	<div id="quizButton">
-		<a class="btn btn-primary" href="{{ URL::to('/rank') }}">Proceed to Quiz</a>
+		<a class="btn btn-primary" href="{{ URL::to('/rank') }}">@lang('rank.proceed')</a>
 	</div>
 </div>
 @stop

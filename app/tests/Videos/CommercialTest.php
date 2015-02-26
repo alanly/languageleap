@@ -40,6 +40,95 @@ class CommercialTest extends TestCase {
 		$this->assertEquals($a['level_id'], $i->level_id);
 	}
 
+	public function testFilterBySuccessWithNoSkip()
+	{
+		$this->seed();
+
+		$commercial = Commercial::first();
+
+		$input = [
+			'name' => $commercial->name,
+		];
+
+		$res = Commercial::filterBy($input, 1);
+
+		$this->assertCount(1, $res);
+		$this->assertSame($commercial->name, $res[0]->name);
+	}
+
+	public function testFilterBySuccessWithSkip()
+	{
+		$this->seed();
+
+		// Get the first commercial along with all the other commercials that
+		// have the same level id
+		$commercial = Commercial::first();
+		$commercials = Commercial::where('level_id', '=', $commercial->level_id)->get();
+
+		$count = count($commercials);
+		$skip = (int)($count / 2);
+
+		// If we 'skip' by an amount and we 'take' more than the remaining,
+		// then we should get whatever is remaining.
+		$remaining = $count - $skip;
+		$take = $remaining + 1;
+
+		$input = [
+			'level' => $commercial->level->description,
+		];
+
+		$res = Commercial::filterBy($input, $take, $skip);
+
+		$this->assertCount($remaining, $res);
+	}
+
+	public function testFilterBySuccessWithIrrelevantQueryData()
+	{
+		$this->seed();
+
+		$commercial = Commercial::first();
+
+		$input = [
+			'name' => $commercial->name,
+			'irrelevant' => 'data',
+		];
+
+		$res = Commercial::filterBy($input, 1, 0);
+
+		$this->assertCount(1, $res);
+		$this->assertSame($commercial->name, $res[0]->name);
+	}
+
+	public function testFilterBySuccessWithLevelSpecified()
+	{
+		$this->seed();
+
+		$commercial = Commercial::first();
+
+		$input = [
+			'level' => $commercial->level->description,
+		];
+
+		$res = Commercial::filterBy($input, 1, 0);
+
+		$this->assertCount(1, $res);
+	}
+
+	public function testFilterBySuccessWithTakeExtra()
+	{
+		$this->seed();
+
+		$commercial = Commercial::first();
+
+		$input = [
+			'level' => $commercial->level->description,
+		];
+
+		$res = Commercial::filterBy($input, 3, 0);
+
+		$this->assertCount(3, $res);
+	}
+
 	protected function getCommercialInstance()
 	{
 		$comm =  App::make('LangLeap\Videos\Commercial');

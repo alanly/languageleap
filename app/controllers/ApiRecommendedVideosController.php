@@ -4,6 +4,8 @@ use LangLeap\Videos\RecommendationSystem\Recommendatore;
 
 class ApiRecommendedVideosController extends \BaseController {
 
+	private $defaultTake = 5;
+
 	protected $recommendatore;
 
 	public function __construct(Recommendatore $recommendatore)
@@ -19,17 +21,19 @@ class ApiRecommendedVideosController extends \BaseController {
 	 */
 	public function index()
 	{
+		$take = Input::get('take', $this->defaultTake);
+
 		if (! Auth::check())
 		{
 			return $this->apiResponse(
 				'error',
-				'User not logged in.',
+				Lang::get('controllers.recommended.not-logged_error'),
 				401
 			);
 		}
 
 		$this->recommendatore->generate(Auth::user());
-		$recommendations = $this->recommendatore->fetch(Auth::user(), 10);
+		$recommendations = $this->recommendatore->fetch(Auth::user(), $take);
 
 		return $this->apiResponse(
 			'success',
@@ -40,9 +44,14 @@ class ApiRecommendedVideosController extends \BaseController {
 	public function generateResponseData($recommendations)
 	{
 		$responseData = array();
-		foreach ($recommendations as $recommendation)
+		foreach ($recommendations as $r)
 		{
-			array_push($responseData, $recommendation->getMedia()->toResponseArray());
+			$media = $r->getMedia();
+
+			$response = $media->toResponseArray();
+			$response['type'] = get_class($media);
+
+			$responseData[] = $response;
 		}
 		
 		return $responseData;

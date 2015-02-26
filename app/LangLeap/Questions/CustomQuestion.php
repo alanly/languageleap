@@ -25,5 +25,10 @@ class CustomQuestion extends QuestionType {
 	{
 		return QuestionTypes::MultipleChoice;
 	}
+	
+	public function isBankable()
+	{
+		return false;
+	}
 
 }

@@ -16,7 +16,7 @@ class DefinitionTableSeeder extends Seeder {
 		$w = App::make('LangLeap\Words\Definition');
 
 		$w->create(array(
-			'word' => 'Hello',
+			'word' => 'hello',
 			'definition' => 'a greeting.',
 			'full_definition' => 'used as a greeting or to begin a telephone conversation.',
 			'pronunciation' => 'hel·lo',
@@ -24,7 +24,7 @@ class DefinitionTableSeeder extends Seeder {
 		));
 
 		$w->create(array(
-			'word' => 'Definition',
+			'word' => 'definition',
 			'definition' => 'a definition.',
 			'full_definition' => 'a description a word',
 			'pronunciation' => 'de-fi-ni-tion',
@@ -32,7 +32,7 @@ class DefinitionTableSeeder extends Seeder {
 		));
 		
 		$w->create(array(
-			'word' => 'Random',
+			'word' => 'random',
 			'definition' => 'odd, unusual, or unexpected',
 			'full_definition' => 'made, done, happening, or chosen without method or conscious decision.',
 			'pronunciation' => 'randəm',
@@ -40,7 +40,7 @@ class DefinitionTableSeeder extends Seeder {
 		));
 		
 		$w->create(array(
-			'word' => 'Phone',
+			'word' => 'phone',
 			'definition' => 'a telephone.',
 			'full_definition' => 'a system that converts acoustic vibrations to electrical signals in order to transmit sound, typically voices, over a distance using wire or radio.',
 			'pronunciation' => 'fōn',

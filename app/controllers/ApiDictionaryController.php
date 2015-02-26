@@ -22,7 +22,7 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				"Word {$word} does not exists",
+				Lang::get('controllers.dictionary.word_error', ['word' => $word]),
 				404
 			);
 		}
@@ -34,7 +34,7 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				"Video {$videoId} does not exists",
+				Lang::get('controllers.dictionary.video_error', ['videoId' => $videoId]),
 				404
 			);
 		}
@@ -45,7 +45,7 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				"Language for {$videoId} not found.",
+				Lang::get('controllers.dictionary.video_error', ['videoId' => $videoId]),
 				404
 			);
 		}
@@ -56,7 +56,7 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				"{$videoLanguage} dictionary not found.",
+				Lang::get('controllers.dictionary.dictionary_error', ['videoLanguage' => $videoLanguage]),
 				404
 			);
 		}
@@ -67,7 +67,7 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				"Definition not found.",
+				Lang::get('controllers.dictionary.definition_error'),
 				404
 			);
 		}

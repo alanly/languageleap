@@ -43,6 +43,95 @@ class MovieTest extends TestCase {
 		$this->assertSame($a['genre'], $i->genre);
 	}
 
+	public function testFilterBySuccessWithNoSkip()
+	{
+		$this->seed();
+
+		$movie = Movie::first();
+
+		$input = [
+			'name' => $movie->name,
+		];
+
+		$res = Movie::filterBy($input, 1);
+
+		$this->assertCount(1, $res);
+		$this->assertSame($movie->name, $res[0]->name);
+	}
+
+	public function testFilterBySuccessWithSkip()
+	{
+		$this->seed();
+
+		// Get the first movie along with all the other movies that
+		// have the same level id
+		$movie = Movie::first();
+		$movies = Movie::where('level_id', '=', $movie->level_id)->get();
+
+		$count = count($movies);
+		$skip = (int)($count / 2);
+
+		// If we 'skip' by an amount and we 'take' more than the remaining,
+		// then we should get whatever is remaining.
+		$remaining = $count - $skip;
+		$take = $remaining + 1;
+
+		$input = [
+			'level' => $movie->level->description,
+		];
+
+		$res = Movie::filterBy($input, $take, $skip);
+
+		$this->assertCount($remaining, $res);
+	}
+
+	public function testFilterBySuccessWithIrrelevantQueryData()
+	{
+		$this->seed();
+
+		$movie = Movie::first();
+
+		$input = [
+			'name' => $movie->name,
+			'irrelevant' => 'data',
+		];
+
+		$res = Movie::filterBy($input, 1, 0);
+
+		$this->assertCount(1, $res);
+		$this->assertSame($movie->name, $res[0]->name);
+	}
+
+	public function testFilterBySuccessWithLevelSpecified()
+	{
+		$this->seed();
+
+		$movie = Movie::first();
+
+		$input = [
+			'level' => $movie->level->description,
+		];
+
+		$res = Movie::filterBy($input, 1, 0);
+
+		$this->assertCount(1, $res);
+	}
+
+	public function testFilterBySuccessWithTakeExtra()
+	{
+		$this->seed();
+
+		$movie = Movie::first();
+
+		$input = [
+			'level' => $movie->level->description,
+		];
+
+		$res = Movie::filterBy($input, 2, 0);
+
+		$this->assertCount(2, $res);
+	}
+
 	protected function getMovieInstance()
 	{
 		$mov =  App::make('LangLeap\Videos\Movie');

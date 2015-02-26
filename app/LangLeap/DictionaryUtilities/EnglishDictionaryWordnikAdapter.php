@@ -93,7 +93,8 @@ class EnglishDictionaryWordnikAdapter implements IDictionaryAdapter
 		}
 		return $definitions[0]->text;
 	}
-	private function instantiateConnection()
+
+	public function instantiateConnection()
 	{
 		$client = new Picnik;
 		$client->setApiKey($this->API_KEY);
