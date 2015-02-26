@@ -211,7 +211,7 @@
 			{
 				var $this = $(this);
 
-				// Check if the audio has already been loaded
+				// Check if the audio has already been loaded before
 				if ($this.children().length == 0) {
 					var words = $this.text().split(' ');
 					$($this).empty();
@@ -219,13 +219,13 @@
 					$.each(words, function(i, v) {
 						$($this).append($('<span>').text(v + ((i == words.length - 1) ? '' : ' ')));
 					});
-
-					// For each word, load its audio
-					$.each($($this).find('span'), function()
-					{
-						deffereds.push(loadDictionaryDefinition($(this), initAdminWordAudioData));
-					});
 				}
+
+				// For each word, load its audio
+				$.each($($this).find('span'), function()
+				{
+					deffereds.push(loadDictionaryDefinition($(this), initAdminWordAudioData));
+				});
 
 				// Check if the definition has already been loaded
 				if (!$this.data('definition'))
@@ -446,7 +446,6 @@
 					$(this).data('pronunciation', data.data.pronunciation);
 					setTooltipSynonym($(this), ((data.data.synonym) ? data.data.synonym : 'Synonym not found.'));
 					setWordAudioUrl($(this), data.data.audio_url);
-					$(this).attr('data-type', 'definedWord');
 				} else {
 					setTooltipSynonym($word, "Synonym not found.");
 				}
@@ -475,22 +474,27 @@
 				$(this).data('audio-url', url);
 			});
 		}
+
 		function setCurrentAudio(url)
 		{
 			$('#word-audio').attr('src', url);
 		}
+
 		function getMinutesFromTimestamp(timestamp)
 		{
 			return parseInt(timestamp.split(':')[0]);
 		}
+
 		function getSecondsFromTimestamp(timestamp)
 		{
 			return parseInt(timestamp.split(':')[1]);
 		}
+
 		function getTimeInSecondsFromTimestamp(timestamp)
 		{
 			return (getMinutesFromTimestamp(timestamp) * 60) + getSecondsFromTimestamp(timestamp);
 		}
+
 		function updateCurrentSpeaker()
 		{
 			var currentTimeInSeconds = Math.floor(this.currentTime);
