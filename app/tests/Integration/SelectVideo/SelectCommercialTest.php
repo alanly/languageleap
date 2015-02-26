@@ -2,9 +2,9 @@
 
 use LangLeap\TestCase;
 use LangLeap\Videos\Video;
-use LangLeap\Videos\Movie;
+use LangLeap\Videos\Commercial;
 
-class SelectMovieTest extends TestCase {
+class SelectCommercialTest extends TestCase {
 
 	public function setUp()
 	{
@@ -14,43 +14,43 @@ class SelectMovieTest extends TestCase {
 		$this->seed();
 	}
 
-	//1. Go to the Movies panel in the main page
+	//1. Go to the Commercials panel in the main page
 	//2. Do some filtering
-	//3. Select one of the movies
-	//4. Request a video from the movie
+	//3. Select one of the commercial
+	//4. Request a video from the commercial
 	public function testSelectMovie()
 	{
-		$this->getMovies();
-		$filteredMovie = $this->getFilteredMovie();
-		$movie = $this->getMovie($filteredMovie->id);
-		$this->getVideo($movie->videos[0]->id);
+		$this->getCommercials();
+		$filteredCommercial = $this->getFilteredCommercial();
+		$commercial = $this->getCommercial($filteredCommercial->id);
+		$this->getVideo($commercial->videos[0]->id);
 	}
 
-	private function getMovies()
+	private function getCommercials()
 	{
-		$response = $this->action('GET', 'ApiMovieController@index');
+		$response = $this->action('GET', 'ApiCommercialController@index');
 		$this->assertResponseOk();
 		$this->assertJson($response->getContent());
 	}
 
-	private function getFilteredMovie()
+	private function getFilteredCommercial()
 	{
-		$movie = Movie::first();
+		$commercial = Commercial::first();
 
 		$query = [
-			'type' => 'movie',
+			'type' => 'commercial',
 			'take' => 1,
 			'skip' => 0,
-			'name' => $movie->name,
-			'level' => $movie->level->description,
+			'name' => $commercial->name,
+			'level' => $commercial->level->description,
 		];
 
-		return $this->getFilteredDataSuccess($query, $movie);
+		return $this->getFilteredDataSuccess($query, $commercial);
 	}
 
-	private function getMovie($id)
+	private function getCommercial($id)
 	{
-		$response = $this->action('GET', 'ApiMovieController@show', [$id]);
+		$response = $this->action('GET', 'ApiCommercialController@show', [$id]);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
