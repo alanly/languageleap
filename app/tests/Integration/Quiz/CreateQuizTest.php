@@ -19,15 +19,35 @@ class CreateQuizTest extends TestCase {
 
 	//1. Request a video
 	//2. Select a word from the script and create a quiz
-	//3. Do the quiz
+	//3. Do the quiz correctly
 	//4. Get redirected to next video
-	public function testCreateQuiz()
+	//5. Check for the word in the wordbank (should be empty)
+	public function testCreateQuizAnswerCorrectly()
 	{
 		$video = $this->getVideo();
 		$wordFromScript = $this->getWordFromScript($video);
 		$quiz = $this->createQuiz($video->video->id, $wordFromScript);
 		$videoQuestions = $this->getVideoQuestions($quiz->quiz_id);
-		$this->answerQuiz($videoQuestions);
+		$this->answerQuizCorrectly($videoQuestions);
+		$words = $this->getWordsInBank();
+		$this->assertSame(count($words), 0);
+	}
+
+	//1. Request a video
+	//2. Select a word from the script and create a quiz
+	//3. Do the quiz incorrectly
+	//4. Get redirected to next video
+	//5. Check for the word in the wordbank (should have 1 word)
+	public function testCreateQuizAnswerIncorrectly()
+	{
+		$video = $this->getVideo();
+		$wordFromScript = $this->getWordFromScript($video);
+		$quiz = $this->createQuiz($video->video->id, $wordFromScript);
+		$videoQuestions = $this->getVideoQuestions($quiz->quiz_id);
+		$this->answerQuizIncorrectly($videoQuestions);
+		$words = $this->getWordsInBank();
+		$this->assertSame(count($words), 1);
+		$this->assertSame(strtolower($words[0]->definition->word), strtolower($wordFromScript));
 	}
 
 	private function getVideo()
@@ -84,7 +104,7 @@ class CreateQuizTest extends TestCase {
 		return $words[1];
 	}
 
-	private function answerQuiz($videoQuestions)
+	private function answerQuizCorrectly($videoQuestions)
 	{
 		foreach($videoQuestions as $vq)
 		{
@@ -111,6 +131,33 @@ class CreateQuizTest extends TestCase {
 			$this->assertTrue($data->is_correct);
 			
 			$this->assertGreaterThan($prevScore, Quiz::find($quiz->id)->score); // Check score updates
+		}
+	}
+
+	private function answerQuizIncorrectly($videoQuestions)
+	{
+		foreach($videoQuestions as $vq)
+		{
+			$videoQuestion = VideoQuestion::find($vq->id);
+			$selected_id = $videoQuestion->question->answers->filter(function($answer) {return $answer->id != $answer->question->answer_id;})->first()->id;
+			$quiz_id = $videoQuestion->quiz()->first()->id;
+			
+			$response = $this->action(
+				'put',
+				'ApiQuizController@putIndex',
+				[],
+				[
+					'videoquestion_id' => $videoQuestion->id, 
+					'selected_id' => $selected_id, 
+					'quiz_id' => $quiz_id
+				]
+			);
+			
+			$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+			$this->assertResponseOk();
+			
+			$data = $response->getData()->data;
+			$this->assertFalse($data->is_correct);
 		}
 	}
 
@@ -143,5 +190,14 @@ class CreateQuizTest extends TestCase {
 		}
 
 		return $data->video_questions;
+	}
+
+	private function getWordsInBank()
+	{
+		$response = $this->action('GET', 'ApiReviewWordsController@getIndex');
+		$this->assertResponseOk();
+		$this->assertJson($response->getContent());
+
+		return $response->getData()->data;
 	}
 }
