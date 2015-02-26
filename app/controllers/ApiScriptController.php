@@ -86,7 +86,7 @@ class ApiScriptController extends \BaseController {
 	 * @return Response
 	 */
 	public function update($id)
-	{
+	{	
 		$script = $this->scripts->find($id);
 
 		if (! $script)

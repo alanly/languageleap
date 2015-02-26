@@ -1,7 +1,11 @@
 <?php
 
 use LangLeap\Videos\Commercial;
+use LangLeap\Words\Script;
 
+/**
+ * @author David Siekut
+ */
 class ApiCommercialController extends \BaseController {
 
 	protected $commercials;
@@ -153,4 +157,64 @@ class ApiCommercialController extends \BaseController {
 	}
 
 
+	/**
+	 * Update the script for this commercial.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function updateScript($id)
+	{
+		$commercial = $this->commercials->find($id);
+		$video_id = $commercial->videos()->first()->id;
+		
+		$script = Script::where('video_id', '=', $video_id)->firstOrFail();
+
+		if (! $script)
+		{
+			return $this->apiResponse('error', "Commercial {$id} not found.", 404);
+		}
+		
+		$script->text = Input::get('text');
+
+		if (! $script->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$script->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$script->toArray(),
+			200
+		);
+	}
+	
+	/**
+	*	This method updates timestamps for this video.
+	*
+	*	@param int $video_id 
+	*/
+	public function saveTimestamps($id)
+	{
+		$commercial = Commercial::find($id);
+		$video = $commercial->videos()->first();
+
+		if (!$video)
+		{
+			return $this->apiResponse(
+				'error',
+				"Video {$id} not found.",
+				404
+			);
+		}
+		
+		$video->timestamps_json = Input::get('text');
+		$video->save();
+		return $this->apiResponse("success", $video->toResponseArray());
+	}
+	
 }

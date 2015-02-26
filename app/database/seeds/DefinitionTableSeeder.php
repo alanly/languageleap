@@ -19,28 +19,32 @@ class DefinitionTableSeeder extends Seeder {
 			'word' => 'hello',
 			'definition' => 'a greeting.',
 			'full_definition' => 'used as a greeting or to begin a telephone conversation.',
-			'pronunciation' => 'hel·lo'
+			'pronunciation' => 'hel·lo',
+			'synonym' => 'hi'
 		));
 
 		$w->create(array(
 			'word' => 'definition',
 			'definition' => 'a definition.',
 			'full_definition' => 'a description a word',
-			'pronunciation' => 'de-fi-ni-tion'
+			'pronunciation' => 'de-fi-ni-tion',
+			'synonym' => 'Meaning'
 		));
 		
 		$w->create(array(
 			'word' => 'random',
 			'definition' => 'odd, unusual, or unexpected',
 			'full_definition' => 'made, done, happening, or chosen without method or conscious decision.',
-			'pronunciation' => 'randəm'
+			'pronunciation' => 'randəm',
+			'synonym' => 'Arbitrary'
 		));
 		
 		$w->create(array(
 			'word' => 'phone',
 			'definition' => 'a telephone.',
 			'full_definition' => 'a system that converts acoustic vibrations to electrical signals in order to transmit sound, typically voices, over a distance using wire or radio.',
-			'pronunciation' => 'fōn'
+			'pronunciation' => 'fōn',
+			'synonym' => 'Communication'
 		));
 	}
 

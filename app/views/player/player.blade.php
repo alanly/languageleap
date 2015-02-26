@@ -92,7 +92,6 @@
 	</div>
 	<script>
 		var definitions = [];
-
 		function loadScript()
 		{
 			$.ajax({
@@ -111,18 +110,14 @@
 				}
 			});
 		}
-
 		function loadVideo()
 		{
 			// Combulate our source URL.
 			var url = '/content/videos/{{ $video_id }}';
-
 			// Get our player element.
 			var $player = $('#video-player');
-
 			// Get our 'source' element.
 			var $source = $('#video-player').find('source');
-
 			// Create an event handler callback for error on our player.
 			$source.on('error', function(event)
 			{
@@ -130,26 +125,20 @@
 				$('.error-message').html('<p>An error occured while attempting to play this video.');
 				$('.error-message').show();
 			});
-
 			// Set the desired source.
 			$source.attr('src', url);
-
 			// Load the source.
 			$player.load();
-
 			// Load the associated script.
 			loadScript();
 		}
-
 		// Later on, this will be used for flashcards
 		function loadScriptDefinitions() {
 			$('#script span[data-type=word]').each(function() {
 				var $this = $(this);
 				var definitionId = $this.data('id');
-
 				if (definitionId == undefined)
 					return;
-
 				$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
 					if (data.status == 'success') {
 						$this.tooltip({
@@ -157,7 +146,6 @@
 							'placement': 'auto top',
 							'title': data.data.definition
 						});
-
 						$this.data('definition', data.data.definition);
 						$this.data('full-definition', data.data.full_definition);
 						$this.data('pronunciation', data.data.pronunciation);
@@ -166,7 +154,6 @@
 					}
 				});
 			});
-
 			$('#script span[data-type=nonDefinedWord]').each(function() {
 				$(this).tooltip({
 						'container': 'body',
@@ -175,7 +162,6 @@
 				});
 			});
 		}
-
 		function loadCarouselItems()
 		{
 			var carouselItems = '';
@@ -187,46 +173,36 @@
 								'<span>' + $(this).data('full-definition') + '</span>' +
 								'</div>';
 			});
-
 			$("#flashcard .carousel-inner").html(carouselItems);
 		}
-
 		function loadUndefinedSelectedWords()
 		{
 			var deffereds = [];
-
 			$('#script .word-selected[data-type=nonDefinedWord]').each(function()
 			{
 				deffereds.push(loadDefinition($(this)));
 			});
-
 			return deffereds;
 		}
-
 		function loadFlashcards()
 		{
 			// Check if any words have been selected
 			if ($('#script .word-selected').length == 0)
 				return;
-
 			$('#flashcard').modal();
 			$('#flashcard .loading').show();
-
 			$.when.apply(null, loadUndefinedSelectedWords()).done(function()
 			{
 				$('#flashcard .loading').hide();
 				loadCarouselItems();
-
 				// This makes the carousel work for dynamically loaded content
 				$('#scroller').carousel("pause").removeData()
 			});
 			
 		}
-
 		function loadQuiz() {
 		
 			var $selectedWords = $('#script .word-selected');
-
 			if ($selectedWords.length > 0) {
 			
 				$(".continue").css('background', '#47a447 url(/img/misc/loading.gif) no-repeat center');
@@ -262,7 +238,6 @@
 					}).get(),
 					'video_id': {{ $video_id }}
 				};
-
 				$.ajax({
 					url: '/api/quiz/video',
 					type: 'POST',
@@ -286,7 +261,6 @@
 						{
 							$("#load-quiz-message").text(jqXHR.responseText);
 						}
-
 						// Re-enable button
 						$(".continue").css('background', '');
 						$(".continue").removeAttr('disabled');
@@ -299,40 +273,32 @@
 				$("#load-quiz-message").text("Select words to learn.");
 			}
 		}
-
 		function addNonDefinedTags()
 		{
 			var wordsToDefine = formatNonDefinedWords();
 			var wordsArray = wordsToDefine.split(' ');
 			var uniqueWords = removeDuplicateWords(wordsArray);
-
 			addTags(uniqueWords);
 		}
-
 		function addTags(words)
 		{
 			var scriptHtml = $("#script").html();
-
 			for(var i = 0; i < words.length; i++)
 			{
 				//Regex test: https://www.regex101.com/r/mG8jG5/6
 				var regex = new RegExp('(\\b(' + words[i] + ')\\b)(?![^<]*>|[^<>]*<\\s*\\/)', 'ig');
 				scriptHtml = scriptHtml.replace(regex, "<span data-type='nonDefinedWord' name='" + words[i].toLowerCase() + "Word'>" + words[i] + "</span>");
 			}
-
 			$("#script").html(scriptHtml);
 		}
-
 		function formatNonDefinedWords()
 		{
 			var nonDefinedWords = getTextBetweenSpans(); //Get all the text between the span tags of defined words
 			var noPunctuation = removePunctuation(nonDefinedWords); //Remove all ',' and '.' in the string
 			var noDoubleSpaces = removeDoubleSpaces(noPunctuation); //Replace any number of spaces greater than 1, with 1 space
 			var trimmedText = noDoubleSpaces.trim();
-
 			return trimmedText;
 		}
-
 		function removeDuplicateWords(words)
 		{
 			var b = {}; //Create a dictionary and add all the words as keys. Keys are unique so no duplicates
@@ -340,16 +306,13 @@
 			{ 
 				b[words[i].toUpperCase()]=words[i];
 			}
-
 			var c = []; //Push the keys into an array
 			for (var key in b) 
 			{ 
 				c.push(b[key]); 
 			}
-
 			return c;
 		}
-
 		function getTextBetweenSpans()
 		{
 			var text = $('#script')
@@ -358,15 +321,12 @@
 						.remove()	//remove all the children
 						.end()		//again go back to selected element
 						.text();
-
 			return text;
 		}
-
 		function removePunctuation(text)
 		{
 			return text.replace(/\./g, "").replace(/,/g, "");
 		}
-
 		function removeDoubleSpaces(text)
 		{
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
@@ -375,7 +335,6 @@
 		function loadDefinition($word)
 		{
 			var url = '/api/dictionaryDefinitions/';
-
 			return $.ajax({
 				type: 'GET',
 				url: url,
@@ -401,58 +360,46 @@
 				}
 			});
 		}
-
 		function setTooltipDefinition($word, definition)
 		{
 			$word.attr('data-original-title', definition)
 			.tooltip('fixTitle');
-
 			$word.attr('data-type', 'definedWord');
-
 			// Only show the tooltip if the mouse is still hovering over the word
 			if ($($word[0]).is(':hover'))
 				$word.tooltip('show');
 		}
-
 		function setWordAudioUrl($word, url)
 		{
 			$('[name="' + $word.text().trim().toLowerCase() + 'Word"]').each(function() {
 				$(this).data('audio_url', url);
 			});
 		}
-
 		function setCurrentAudio(url)
 		{
 			$('#word-audio').attr('src', url);
 		}
-
 		function getMinutesFromTimestamp(timestamp)
 		{
 			return parseInt(timestamp.split(':')[0]);
 		}
-
 		function getSecondsFromTimestamp(timestamp)
 		{
 			return parseInt(timestamp.split(':')[1]);
 		}
-
 		function getTimeInSecondsFromTimestamp(timestamp)
 		{
 			return (getMinutesFromTimestamp(timestamp) * 60) + getSecondsFromTimestamp(timestamp);
 		}
-
 		function updateCurrentSpeaker()
 		{
 			var currentTimeInSeconds = Math.floor(this.currentTime);
 			var $speakers = $('#script span[data-timestamp]');
-
 			if ($speakers.length > 0)
 			{
 				var $currentSpeaker = $speakers.eq(0);
-
 				var timestamp = $currentSpeaker.data('timestamp');
 				var smallestDifference = currentTimeInSeconds - getTimeInSecondsFromTimestamp(timestamp);
-
 				// Find the speaker that produces the smallest positive difference
 				$speakers.each(function()
 				{
@@ -466,23 +413,19 @@
 						smallestDifference = tempDifference;
 					}
 				});
-
 				$speakers.removeClass('currently-speaking');
 				$currentSpeaker.addClass('currently-speaking');
 			}
 		}
-
 		function videoLoaded()
 		{
 			var $videoPlayer = $('#video-player');
 			
 			$videoPlayer[0].currentTime = ($videoPlayer.data('history-time')) ? $videoPlayer.data('history-time') : 0;
 		}
-
 		function loadVideoHistory()
 		{
 			var url = '/api/history/';
-
 			$.ajax({
 				type: 'GET',
 				url: url,
@@ -497,11 +440,9 @@
 				}
 			});
 		}
-
 		function saveVideoHistory()
 		{
 			var url = '/api/history/';
-
 			$.ajax({
 				async: false,
 				type: 'POST',
@@ -513,25 +454,20 @@
 				}
 			});
 		}
-
 		$(function()
 		{
 			loadVideo();
 			loadVideoHistory();
-
 			$(".define").click(function()
 			{
 				loadFlashcards();
 			});
-
 			$('.continue').click(function()
 			{
 				loadQuiz();
 			});
-
 			// Used to determine how long the mouse is hovered over a word
 			var hoverTimer;
-
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
 				{
@@ -561,14 +497,11 @@
 				{
 					$(this).removeClass('word-hover');
 				});
-
 			$('#script').on('click', 'span[data-type!=actor]', function()
 			{
 				$(this).toggleClass('word-selected');
 			});
-
 			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
-
 			$('#mute-audio').on('click', function()
 			{
 				$(this).toggleClass('pronunciations-off');
@@ -577,10 +510,8 @@
 				var $audio = $('#word-audio');
 				$audio.prop('muted', !$audio.prop('muted'));
 			});
-
 			// Handle when the video is completely loaded
 			$('#video-player').bind('loadeddata', videoLoaded);
-
 			// Handle when the user leaves the page without going to the quiz
 			$(window).unload(function() { 
 				saveVideoHistory(); // Call this from the console to test

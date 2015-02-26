@@ -1,5 +1,7 @@
 <?php
 
+use LangLeap\Levels\Level;
+use LangLeap\Core\Language;
 use LangLeap\Videos\Video;
 
 /*
@@ -64,7 +66,7 @@ Route::group(['prefix' => 'admin'], function()
 	// Interface index
 	Route::get('/', function()
 	{
-		return View::make('admin.index');
+		return View::make('admin.index')->with('levels', Level::all())->with('languages', Language::all());
 	});
 
 	// Video interface
@@ -96,7 +98,6 @@ Route::group(['prefix' => 'admin'], function()
 	{
 		return View::make('admin.quiz.index')->with('videos', Video::All());
 	});
-
 });
 
 
@@ -110,14 +111,20 @@ Route::group(['prefix' => 'api'], function()
 
 		// Commercials
 		Route::resource('commercials', 'ApiCommercialController');
+		Route::patch('commercials/update-script/{id}', 'ApiCommercialController@updateScript');
+		Route::patch('commercials/save-timestamps/{id}', 'ApiCommercialController@saveTimestamps');
 
 		// Movies
 		Route::resource('movies', 'ApiMovieController');
+		Route::patch('movies/update-script/{id}', 'ApiMovieController@updateScript');
+		Route::patch('movies/save-timestamps/{id}', 'ApiMovieController@saveTimestamps');
 
 		// Shows (and Seasons and Episodes)
 		Route::resource('shows', 'ApiShowController');
 		Route::resource('shows.seasons', 'ApiSeasonController');
 		Route::resource('shows.seasons.episodes', 'ApiEpisodeController');
+		Route::patch('shows/update-script/{id}', 'ApiShowController@updateScript');
+		Route::patch('shows/save-timestamps/{id}', 'ApiShowController@saveTimestamps');
 		
 		//Episode without show/season identifiers
 		Route::get('episode/{id}', 'ApiEpisodeController@showEpisode');

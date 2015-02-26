@@ -1,5 +1,6 @@
-\<?php
+<?php
 
+use LangLeap\Levels\Level;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Script;
 use LangLeap\Core\Language;
@@ -8,6 +9,7 @@ use LangLeap\VideoUtilities\VideoFactory;
 
 /**
 * @author Thomas Rahn <thomas@rahn.ca>
+* @author David Siekut
 */
 class ApiVideoController extends \BaseController {
 
@@ -27,7 +29,7 @@ class ApiVideoController extends \BaseController {
 			$videoArray[] = $vid->toResponseArray();
 		}
 
-		return $this->apiResponse("success",$videoArray);
+		return $this->apiResponse("success", $videoArray);
 	}
 
 	/**

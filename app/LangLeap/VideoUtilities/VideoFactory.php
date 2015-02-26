@@ -37,10 +37,10 @@ class VideoFactory {
 	 */
 	public function createVideo(array $input)
 	{
-		$script_file =$input['script'];
+		$script = $input['script'];
 
 		$video = $this->setVideo($input,null);
-		$this->setScript($script_file, $video->id);
+		$this->setScript($script, $video->id);
 
 		return $video;
 	}
@@ -53,14 +53,13 @@ class VideoFactory {
 	 * @param int 		$video_id 
 	 * @param Script 	$script
 	 */
-	public function setScript($file,$video_id, Script $script = null)
+	public function setScript($script_text,$video_id, Script $script = null)
 	{
 		if($script == null)
 		{
 			$script = new Script;
 		}
 
-		$script_text = ScriptFile::retrieveText($file);
 		$script->text = $script_text;
 		$script->video_id = $video_id;
 
@@ -80,7 +79,7 @@ class VideoFactory {
 
 		$lang = Language::find($input['language_id'])->first();
 		$file = $input['video'];
-		$type = $input['video_type'];
+		$type = $input['info-radio'];
 
 		$ext = $file->getClientOriginalExtension();
 
@@ -93,19 +92,19 @@ class VideoFactory {
 
 		if($type === "commercial")
 		{
-			$video->viewable_id = $input['commercial'];
+			$video->viewable_id = $input['media_id'];
 			$video->viewable_type = 'LangLeap\Videos\Commercial';
 			$path = Config::get('media.paths.videos.commercials');
 		}
 		elseif($type === "movie")
 		{
-			$video->viewable_id = $input['movie'];
+			$video->viewable_id = $input['media_id'];
 			$video->viewable_type = 'LangLeap\Videos\Movie';
 			$path = Config::get('media.paths.videos.movies');
 		}
 		elseif($type === "show")
 		{
-			$video->viewable_id = $input['episode'];
+			$video->viewable_id = $input['media_id'];
 			$video->viewable_type = 'LangLeap\Videos\Episode';
 			$path = Config::get('media.paths.videos.shows');
 		}
