@@ -44,7 +44,7 @@ return array(
 			'client' => 'Client Side',
 			'videos' => 'Manage Videos',
 			'scripts' => 'Manage Scripts',
-			'user' => 'Manager Users',
+			'users' => 'Manager Users',
 		),
 	),
 );
