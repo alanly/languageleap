@@ -14,7 +14,7 @@ class ApiUserControllerTest extends TestCase {
 		Route::enableFilters();
 	}
 
-	protected function getUserInstance() {
+	protected function getUserInstance($admin = false) {
 		$user = App::make('LangLeap\Accounts\User');
 		$user->username = 'username';
 		$user->email = 'username@email.com';
@@ -22,9 +22,27 @@ class ApiUserControllerTest extends TestCase {
 		$user->first_name = 'John';
 		$user->last_name = 'Doe';
 		$user->language_id = 1;
-		$user->is_admin = false;
+		$user->is_admin = $admin;
 
 		return m::mock($user);
+	}
+
+	public function testGetAllUsers()
+	{
+		$this->be($this->getUserInstance(true));
+
+		$response = $this->action('GET', 'ApiUserController@getIndex');
+
+		$this->assertResponseOk();
+	}
+
+	public function testGetAllUsersWhileNotBeingAdmin()
+	{
+		$this->be($this->getUserInstance(false));
+		
+		$response = $this->action('GET', 'ApiUserController@getIndex');
+
+		$this->assertResponseStatus(401);
 	}
 
 	public function testOnlyUpdatingPasswordWillNotAffectOtherModelValues()

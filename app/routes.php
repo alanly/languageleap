@@ -66,7 +66,7 @@ Route::group(['prefix' => 'admin'], function()
 	// Interface index
 	Route::get('/', function()
 	{
-		return View::make('admin.index')->with('levels', Level::all())->with('languages', Language::all());
+		return View::make('admin.index');
 	});
 
 	// Video interface
@@ -98,6 +98,8 @@ Route::group(['prefix' => 'admin'], function()
 	{
 		return View::make('admin.quiz.index')->with('videos', Video::All());
 	});
+
+	Route::post('user', 'ApiAdminUserController@postActive');
 });
 
 

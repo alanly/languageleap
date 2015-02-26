@@ -80,4 +80,14 @@ return array(
 		'invalid_file' => 'Invalid Script file',
 		'unreadable' => 'Unable to read file',
 	),
+	'user' => array(
+		'unauthorized' => 'You are unauthorized to view this information',
+	),
+	'admin' => array(
+		'user' => array(
+			'not_found' => 'User not found',
+			'sucess' => 'User updated successfully',
+			'error_save' => 'Unable to save user',
+		),
+	),
 );

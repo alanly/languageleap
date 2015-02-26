@@ -1,15 +1,32 @@
 <?php
 
+use LangLeap\Accounts\User;
 use LangLeap\Accounts\UserUpdaterListener;
 
 class ApiUserController extends \BaseController implements UserUpdaterListener {
 
-	public function __construct()
+	protected $users;
+
+	public function __construct(User $users)
 	{
 		// Add the auth filter controller-wide.
 		$this->beforeFilter('auth');
+		$this->users = $users;
 	}
 
+	public function getIndex()
+	{
+		$user = Auth::user();
+
+		if($user->is_admin)
+		{
+			return $this->apiResponse('success', $this->users->all(), 200);
+		}
+		else
+		{
+			return $this->apiResponse('error', Lang::get('controller.user.unauthorized'), 401);
+		}
+	}
 
 	public function putUser()
 	{
