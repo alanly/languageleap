@@ -30,5 +30,14 @@ interface IDictionaryAdapter
 	 * @return string
 	 */
 	public function getHyphenatedWord($word, $client);
+
+	/**
+	 * Queries the API and returns the synonyms of a word
+	 *
+	 * @param $word
+	 * @param $client
+	 * @return string
+	 */
+	public function getSynonym($word, $client);
 }
 

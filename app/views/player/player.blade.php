@@ -69,7 +69,6 @@
 
 			<a class="continue btn btn-success">@lang('player.script.quiz')</a>
 			<a class="define btn btn-primary">@lang('player.script.flashcard')</a>
-			<button id="mute-audio" class="pronunciations-on" title="Audio hover"></button>
 			
 			<div id="load-quiz-error" class="alert alert-danger col-lg-6 col-md-6 col-xs-6" role="alert" style="margin-top:10px" hidden="hidden">
 				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -91,6 +90,17 @@
 		</div><!-- /.modal -->
 	</div>
 	<script>
+		function initTooltips()
+		{
+			$('#script span[data-type!=actor]').each(function() {
+				$(this).tooltip({
+						'container': '#script',
+						'placement': 'auto top',
+						'title': 'Loading synonym...'
+				});
+			});
+		}
+
 		var definitions = [];
 		function loadScript()
 		{
@@ -102,7 +112,7 @@
 					addNonDefinedTags();
 					$('#script br').remove();
 					$('#script span[data-type=actor]:not(:first)').before('<br>');
-					loadScriptDefinitions();
+					initTooltips();
 				},
 				error : function(data){
 					var json = $.parseJSON(data);
@@ -110,6 +120,7 @@
 				}
 			});
 		}
+
 		function loadVideo()
 		{
 			// Combulate our source URL.
@@ -132,66 +143,110 @@
 			// Load the associated script.
 			loadScript();
 		}
-		// Later on, this will be used for flashcards
-		function loadScriptDefinitions() {
-			$('#script span[data-type=word]').each(function() {
-				var $this = $(this);
-				var definitionId = $this.data('id');
-				if (definitionId == undefined)
-					return;
-				$.getJSON('/api/metadata/definitions/' + definitionId, function(data) {
-					if (data.status == 'success') {
-						$this.tooltip({
-							'container': 'body',
-							'placement': 'auto top',
-							'title': data.data.definition
-						});
-						$this.data('definition', data.data.definition);
-						$this.data('full-definition', data.data.full_definition);
-						$this.data('pronunciation', data.data.pronunciation);
-					} else {
-						// Handle failure
-					}
-				});
-			});
-			$('#script span[data-type=nonDefinedWord]').each(function() {
-				$(this).tooltip({
-						'container': 'body',
-						'placement': 'auto top',
-						'title': 'Loading definition...'
-				});
+		
+		function playAudio(audioArray){
+			var current = 0;
+			
+			setCurrentAudio(audioArray[current]);
+			$('#word-audio').bind('ended', function(e){
+				current++;
+				if (current < audioArray.length) {
+					setCurrentAudio(audioArray[current]);
+				}
 			});
 		}
+
 		function loadCarouselItems()
 		{
 			var carouselItems = '';
 			$('#script .word-selected').each(function(i)
 			{
+				var audioAttribute = '';
+				// Determine whether audio is available for the current word(s)
+				if ($(this).data('type') == 'word') {
+					audioAttribute = 'disabled';
+					var audioUrl = '';
+
+					$.each($(this).children(), function()
+					{
+						if ($(this).data('audio-url'))
+							audioUrl += $(this).data('audio-url') + ' ';
+					});
+
+					if (audioUrl != '')
+						audioAttribute = 'data-audio-url="' + audioUrl + '"';
+				} else {
+					audioAttribute = ($(this).data('audio-url')) ? ('data-audio-url="' + $(this).data('audio-url') + '"') : 'disabled';
+				}
+
+				var notAvailable =  (audioAttribute == 'disabled') ? ' not-available" title="Not available' : '';
+				
 				carouselItems += '<div class="item' + ((i == 0) ? ' active' : '') + '">' +
 								'<h3>' + $(this).text() + '<br>' +
-								'<small>' + $(this).data('pronunciation') + '</small></h3><br>' +
+								'<small>' + $(this).data('pronunciation') +
+								'<button class="play-pronunciation glyphicon glyphicon-volume-up' + notAvailable + '" ' + audioAttribute +
+								'></button></small></h3>' +
+								'<br>' +
 								'<span>' + $(this).data('full-definition') + '</span>' +
 								'</div>';
 			});
+
 			$("#flashcard .carousel-inner").html(carouselItems);
 		}
+
 		function loadUndefinedSelectedWords()
 		{
 			var deffereds = [];
 			$('#script .word-selected[data-type=nonDefinedWord]').each(function()
 			{
-				deffereds.push(loadDefinition($(this)));
+				deffereds.push(loadDictionaryDefinition($(this), initNonDefinedWordData));
 			});
 			return deffereds;
 		}
+
+		function loadAdminDefinedSelectedWords()
+		{
+			var deffereds = [];
+			$('#script .word-selected[data-type=word]').each(function()
+			{
+				var $this = $(this);
+
+				// Check if the audio has already been loaded
+				if ($this.children().length == 0) {
+					var words = $this.text().split(' ');
+					$($this).empty();
+
+					$.each(words, function(i, v) {
+						$($this).append($('<span>').text(v + ((i == words.length - 1) ? '' : ' ')));
+					});
+
+					// For each word, load its audio
+					$.each($($this).find('span'), function()
+					{
+						deffereds.push(loadDictionaryDefinition($(this), initAdminWordAudioData));
+					});
+				}
+
+				// Check if the definition has already been loaded
+				if (!$this.data('definition'))
+					deffereds.push(loadAdminDefinition($this));
+			});
+			return deffereds;
+		}
+
 		function loadFlashcards()
 		{
 			// Check if any words have been selected
 			if ($('#script .word-selected').length == 0)
 				return;
+
+			// Clear existing carousel items
+			$("#flashcard .carousel-inner").html('');
 			$('#flashcard').modal();
 			$('#flashcard .loading').show();
-			$.when.apply(null, loadUndefinedSelectedWords()).done(function()
+
+			// When all ajax calls are done, execute the anonymous callback function
+			$.when.apply($, loadAdminDefinedSelectedWords().concat(loadUndefinedSelectedWords())).done(function()
 			{
 				$('#flashcard .loading').hide();
 				loadCarouselItems();
@@ -200,6 +255,7 @@
 			});
 			
 		}
+
 		function loadQuiz() {
 		
 			var $selectedWords = $('#script .word-selected');
@@ -273,6 +329,7 @@
 				$("#load-quiz-message").text("Select words to learn.");
 			}
 		}
+
 		function addNonDefinedTags()
 		{
 			var wordsToDefine = formatNonDefinedWords();
@@ -280,6 +337,7 @@
 			var uniqueWords = removeDuplicateWords(wordsArray);
 			addTags(uniqueWords);
 		}
+
 		function addTags(words)
 		{
 			var scriptHtml = $("#script").html();
@@ -291,6 +349,7 @@
 			}
 			$("#script").html(scriptHtml);
 		}
+
 		function formatNonDefinedWords()
 		{
 			var nonDefinedWords = getTextBetweenSpans(); //Get all the text between the span tags of defined words
@@ -299,6 +358,7 @@
 			var trimmedText = noDoubleSpaces.trim();
 			return trimmedText;
 		}
+
 		function removeDuplicateWords(words)
 		{
 			var b = {}; //Create a dictionary and add all the words as keys. Keys are unique so no duplicates
@@ -313,6 +373,7 @@
 			}
 			return c;
 		}
+
 		function getTextBetweenSpans()
 		{
 			var text = $('#script')
@@ -323,16 +384,41 @@
 						.text();
 			return text;
 		}
+
 		function removePunctuation(text)
 		{
 			return text.replace(/\./g, "").replace(/,/g, "");
 		}
+
 		function removeDoubleSpaces(text)
 		{
 			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
 		}
 		
-		function loadDefinition($word)
+		function loadAdminDefinition($word)
+		{
+			var definitionId = $word.data('id');
+			if (definitionId == undefined)
+				return;
+			var url = '/api/metadata/definitions/' + definitionId;
+			return $.ajax({
+				type: 'GET',
+				url: url,
+				success : function(data)
+				{
+					$word.data('definition', data.data.definition);
+					$word.data('full-definition', data.data.full_definition);
+					$word.data('pronunciation', data.data.pronunciation);
+					setTooltipSynonym($word, ((data.data.synonym) ? data.data.synonym : 'Synonym not found.'));
+				},
+				error : function(data)
+				{
+					setTooltipSynonym($word, "Synonym not found.");
+				}
+			});
+		}
+
+		function loadDictionaryDefinition($word, callback)
 		{
 			var url = '/api/dictionaryDefinitions/';
 			return $.ajax({
@@ -341,38 +427,52 @@
 				data: { word: $word.text().trim(), video_id : "{{ $video_id }}" },
 				success : function(data)
 				{
-					// For each of the same word
-					$('#script [name=' + $word.attr('name') + ']').each(function()
-					{
-						$(this).data('full-definition', data.data.definition);
-						$(this).data('pronunciation', data.data.pronunciation);
-						setTooltipDefinition($(this), data.data.definition);
-						setWordAudioUrl($(this), data.data.audio_url);
-					});
-					
-					// Only play the audio clip if the mouse is still over the word
-					if ($($word[0]).is(':hover'))
-						setCurrentAudio(data.data.audio_url);
+					callback($word, data);
 				},
 				error : function(data)
 				{
-					setTooltipDefinition($word, "Definition not found.");
+					callback($word)
 				}
 			});
 		}
-		function setTooltipDefinition($word, definition)
+
+		function initNonDefinedWordData($word, data)
 		{
-			$word.attr('data-original-title', definition)
+			// For each of the same word
+			$('#script [name=' + $word.attr('name') + ']').each(function()
+			{
+				if (data && data.status == 'success') {
+					$(this).data('full-definition', data.data.definition);
+					$(this).data('pronunciation', data.data.pronunciation);
+					setTooltipSynonym($(this), ((data.data.synonym) ? data.data.synonym : 'Synonym not found.'));
+					setWordAudioUrl($(this), data.data.audio_url);
+					$(this).attr('data-type', 'definedWord');
+				} else {
+					setTooltipSynonym($word, "Synonym not found.");
+				}
+			});
+		}
+
+		function initAdminWordAudioData($word, data)
+		{
+			if (data && data.status == 'success') {
+				$word.data('audio-url', data.data.audio_url);
+			}
+		}
+
+		function setTooltipSynonym($word, synonym)
+		{
+			$word.attr('data-original-title', synonym)
 			.tooltip('fixTitle');
-			$word.attr('data-type', 'definedWord');
 			// Only show the tooltip if the mouse is still hovering over the word
 			if ($($word[0]).is(':hover'))
 				$word.tooltip('show');
 		}
+
 		function setWordAudioUrl($word, url)
 		{
 			$('[name="' + $word.text().trim().toLowerCase() + 'Word"]').each(function() {
-				$(this).data('audio_url', url);
+				$(this).data('audio-url', url);
 			});
 		}
 		function setCurrentAudio(url)
@@ -417,12 +517,14 @@
 				$currentSpeaker.addClass('currently-speaking');
 			}
 		}
+
 		function videoLoaded()
 		{
 			var $videoPlayer = $('#video-player');
 			
 			$videoPlayer[0].currentTime = ($videoPlayer.data('history-time')) ? $videoPlayer.data('history-time') : 0;
 		}
+
 		function loadVideoHistory()
 		{
 			var url = '/api/history/';
@@ -440,6 +542,7 @@
 				}
 			});
 		}
+
 		function saveVideoHistory()
 		{
 			var url = '/api/history/';
@@ -454,6 +557,7 @@
 				}
 			});
 		}
+
 		$(function()
 		{
 			loadVideo();
@@ -471,17 +575,22 @@
 			$('#script')
 				.on('mouseenter', 'span[data-type=word]', function()
 				{
-					$(this).addClass('word-hover');
+					var $this = $(this);
+					$this.addClass('word-hover');
+
+					if (!$this.data('definition'))
+						hoverTimer = setTimeout(function() { loadAdminDefinition($this); }, 500);
 				})
 				.on('mouseleave', 'span[data-type=word]', function()
 				{
 					$(this).removeClass('word-hover');
+					clearTimeout(hoverTimer);
 				})
 				.on('mouseenter', 'span[data-type=nonDefinedWord]', function()
 				{
 					var $this = $(this);
 					$this.addClass('word-hover');
-					hoverTimer = setTimeout(function() { loadDefinition($this); }, 500);
+					hoverTimer = setTimeout(function() { loadDictionaryDefinition($this, initNonDefinedWordData); }, 500);
 				})
 				.on('mouseleave', 'span[data-type=nonDefinedWord]', function()
 				{
@@ -491,27 +600,26 @@
 				.on('mouseenter', 'span[data-type=definedWord]', function()
 				{
 					$(this).addClass('word-hover');
-					setCurrentAudio($(this).data('audio_url'));
 				})
 				.on('mouseleave', 'span[data-type=definedWord]', function()
 				{
 					$(this).removeClass('word-hover');
 				});
+
 			$('#script').on('click', 'span[data-type!=actor]', function()
 			{
 				$(this).toggleClass('word-selected');
 			});
 			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
-			$('#mute-audio').on('click', function()
-			{
-				$(this).toggleClass('pronunciations-off');
-				$(this).toggleClass('pronunciations-on');
-				
-				var $audio = $('#word-audio');
-				$audio.prop('muted', !$audio.prop('muted'));
-			});
+			
 			// Handle when the video is completely loaded
 			$('#video-player').bind('loadeddata', videoLoaded);
+
+			$('#flashcard').on('click', '.play-pronunciation', function()
+			{
+				playAudio($(this).data('audio-url').split(' '));
+			});
+
 			// Handle when the user leaves the page without going to the quiz
 			$(window).unload(function() { 
 				saveVideoHistory(); // Call this from the console to test
