@@ -2,10 +2,6 @@
 
 @section('javascript')
 <script type="text/javascript">
-	$(document).ready(function(){
-		loadUserInformation(); //testing
-	});
-
 
 	function loadUserInformation()
 	{
@@ -32,20 +28,25 @@
 						+ "<td>" + value.id + "</td>"
 						+ "<td>" + value.username + "</td>"
 						+ "<td>" + value.email + "</td>"
-						+ "<td><input type='checkbox' "+ checked + "/></td>"
+						+ "<td><input type='checkbox' onclick='toggleActiveStatus(" + value.id + ")' "+ checked + "/></td>"
 						+ "</tr>";
 				});
 
 				table += "</table>";
 				$(".content").html(table);
-			},
-			error : function(data)
-			{
-
 			}
 		});
 	}
-
+	function toggleActiveStatus(user_id)
+	{
+		$.ajax({
+			type : "POST",
+			url : "/admin/user",
+			data : {
+				'user_id' : user_id
+			}
+		});
+	}
 </script>
 @stop
 

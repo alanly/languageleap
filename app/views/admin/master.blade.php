@@ -44,7 +44,7 @@
 				<ul class="nav nav-sidebar">
 					<li><a href="#"><i class="fa fa-film fa-fw"></i>@lang('admin.index.menu.videos')</a></li>
 					<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> @lang('admin.index.menu.scripts')</a></li>
-					<li><a href="#"><i class="fa fa-users fa-fw"></i> @lang('admin.index.menu.users')</a></li>
+					<li><a href="#" onclick="loadUserInformation();"><i class="fa fa-users fa-fw"></i> @lang('admin.index.menu.users')</a></li>
 				</ul>
 
 				<ul class="nav nav-sidebar">
