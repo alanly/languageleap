@@ -66,7 +66,7 @@ Route::group(['prefix' => 'admin'], function()
 	// Interface index
 	Route::get('/', function()
 	{
-		return View::make('admin.index')->with('levels', Level::all())->with('languages', Language::all());
+		return View::make('admin.master');
 	});
 
 	// Video interface
