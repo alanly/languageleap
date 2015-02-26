@@ -50,8 +50,8 @@ class ApiVideoControllerTest extends TestCase {
                 'ApiVideoController@store',
                 [],
                 [
-                	'info-radio'	=>'commercial',
-                	'media_id'	=>$commercial->id, 
+                	'info-radio'	=> 'commercial',
+                	'media_id'		=> $commercial->id, 
                 	'language_id' 	=> $language->id, 
                 	"script" 		=> $text,
                 ],
