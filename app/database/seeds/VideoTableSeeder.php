@@ -22,17 +22,17 @@ class VideoTableSeeder extends Seeder {
 
 		foreach (Commercial::all() as $commercial)
 		{
-			$commercial->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+			$commercial->videos()->create(['path' => 'videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
 		}
 
 		foreach (Episode::all() as $episode)
 		{
-			$episode->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+			$episode->videos()->create(['path' => 'videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
 		}
 
 		foreach (Movie::all() as $movie)
 		{
-			$movie->videos()->create(['path' => '/videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+			$movie->videos()->create(['path' => 'videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
 
 		}
 	}
