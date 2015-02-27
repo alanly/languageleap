@@ -17,6 +17,8 @@
 						+ "<th>ID</th>"
 						+ "<th>Username</th>"
 						+ "<th>Email</th>"
+						+ "<th>First name</th>"
+						+ "<th>Last name</th>"
 						+ "<th>Active</th>"
 						+ "</tr></thead>";
 
@@ -28,6 +30,8 @@
 						+ "<td>" + value.id + "</td>"
 						+ "<td>" + value.username + "</td>"
 						+ "<td>" + value.email + "</td>"
+						+ "<td>" + value.first_name + "</td>"
+						+ "<td>" + value.last_name + "</td>"
 						+ "<td><input type='checkbox' onclick='toggleActiveStatus(" + value.id + ")' "+ checked + "/></td>"
 						+ "</tr>";
 				});
@@ -51,7 +55,5 @@
 @stop
 
 @section('content')
-	<div class="content">
-
-	</div>
+	<div class="content"></div>
 @stop

@@ -42,7 +42,15 @@
 				</ul>
 
 				<ul class="nav nav-sidebar">
-					<li><a href="#"><i class="fa fa-film fa-fw"></i>@lang('admin.index.menu.videos')</a></li>
+					<li>
+						<a href="#media-types" data-toggle="collapse" data-parent="#media-types"><i class="fa fa-film fa-fw"></i>@lang('admin.index.menu.videos')</a>
+						<div class="collapse list-group-submenu list-group-submenu-1" id="media-types">
+							<a href="#" class="list-group-item">@lang('admin.media.movie.name')</a>
+							<a href="#" class="list-group-item">@lang('admin.media.commercial.name')</a>
+							<a href="#" class="list-group-item">@lang('admin.media.show.name')</a>
+						</div>
+					</li>
+
 					<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> @lang('admin.index.menu.scripts')</a></li>
 					<li><a href="#" onclick="loadUserInformation();"><i class="fa fa-users fa-fw"></i> @lang('admin.index.menu.users')</a></li>
 				</ul>
