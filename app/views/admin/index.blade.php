@@ -78,18 +78,11 @@
 
 	function publishMovie(movie_id)
 	{
-		var publish = 0;
-		
-		if($("#"+movie_id+"-movie-publish").is(":checked"))
-		{
-			publish = 1;
-		}
-
 		$.ajax({
 			type : "PUT",
 			url : "/api/metadata/movies/" + movie_id,
 			data : {
-				'is_published' : publish
+				'is_published' : $("#"+movie_id+"-movie-publish").is(":checked")
 			}
 		});	
 	}
