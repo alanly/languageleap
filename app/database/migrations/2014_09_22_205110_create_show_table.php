@@ -20,7 +20,7 @@ class CreateShowTable extends Migration {
 			$table->string('director')->nullable();
 			$table->string('actor')->nullable();
 			$table->string('genre')->nullable();		
-			$table->integer('is_published')->unsigned()->default(0);
+			$table->boolean('is_published')->default(0);
 		});
 	}
 

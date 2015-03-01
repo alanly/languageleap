@@ -6,7 +6,7 @@ use LangLeap\Payments\Billable;
 class Season extends ValidatedModel implements Billable {
 
 	public    $timestamps = false;
-	protected $fillable   = ['show_id', 'number', 'description'];
+	protected $fillable   = ['show_id', 'number', 'description', 'is_published'];
 	protected $hidden     = ['episodes'];
 	protected $rules      = [
 		'show_id' => 'required|integer|exists:shows,id',

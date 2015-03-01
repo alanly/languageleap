@@ -3,6 +3,70 @@
 @section('javascript')
 <script type="text/javascript">
 
+	function fillShowTable(showArray) {
+		$('.content').html($('<table/>', {	class: 'table table-hover shows' }));
+
+		addShowTableHeader();
+
+		$.each(showArray, function(i, v) {
+			addShowTableRow(v);
+		});
+	}
+
+	function addShowTableHeader() {
+		var header =	'<thead>' +
+							'<tr>' +
+								'<th>ID</th>' +
+								'<th>Action</th>' +
+								'<th>Name</th>' +
+								'<th>Publish</th>' +
+							'</tr>' +
+						'</thead>';
+
+		$('table.shows').append(header);
+	}
+
+	function addShowTableRow(show) {
+		var published = show.is_published ? ' checked' : '';
+		var row =	'<tr>' +
+						'<td class="id">' + show.id + '</td>' +
+						'<td><a href="#"><i class="fa fa-edit fa-fw"></i></a><a href="#"><i class="fa fa-trash fa-fw"></i></a></td>' +
+						'<td>' + show.name + '</td>' +
+						'<td><input class="publish" type="checkbox"' + published + ' /></td>' +
+					'</tr>';
+
+		$('table.shows').append(row);
+	}
+
+	function loadShowData() {
+		$.ajax({
+			type: 'GET',
+			url: '/api/metadata/shows',
+			success: function(data) {
+				fillShowTable(data.data);
+			}
+		});
+	}
+
+	function onShowPublishChanged(e) {
+		var $target = $(e.target);
+
+		var show_id = $target.parents('tr').find('.id').text();
+		var is_published = $target.is(':checked') ? '1' : '0';
+
+		saveShowPublishState(show_id, is_published);
+	}
+
+	function saveShowPublishState(show_id, is_published) {
+		$.ajax({
+			type: "PUT",
+			url: "/api/metadata/shows/" + show_id,
+			data: {
+				'is_published': is_published
+			}
+		});	
+	}
+
 	function loadUserInformation()
 	{
 		$.ajax({
@@ -125,6 +189,14 @@
 			}
 		});	
 	}
+
+	$(function() {
+		// Register click handlers
+		$('.manage-shows').on('click', loadShowData);
+
+		// Register publish handlers
+		$('.content').on('change', 'table.shows .publish', onShowPublishChanged);
+	});
 </script>
 @stop
 
