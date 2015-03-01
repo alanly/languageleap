@@ -44,4 +44,9 @@ return array(
 	'verify' => array(
 		'message' => 'You have successfully verified your account! Please login.',
 	),
+	'words' => array(
+		'word' => 'Word',
+		'definition' => 'Definition',
+		'pronunciation' => 'Pronunciation',
+	),
 );
