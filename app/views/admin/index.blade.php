@@ -27,11 +27,12 @@
 	}
 
 	function addShowTableRow(show) {
+		var published = show.is_published ? ' checked' : '';
 		var row =	'<tr>' +
-						'<td>' + show.id + '</td>' +
+						'<td class="id">' + show.id + '</td>' +
 						'<td><a href="#"><i class="fa fa-edit fa-fw"></i></a><a href="#"><i class="fa fa-trash fa-fw"></i></a></td>' +
 						'<td>' + show.name + '</td>' +
-						'<td><input type="checkbox" checked /></td>' +
+						'<td><input class="publish" type="checkbox"' + published + ' /></td>' +
 					'</tr>';
 
 		$('table.shows').append(row);
@@ -45,6 +46,25 @@
 				fillShowTable(data.data);
 			}
 		});
+	}
+
+	function onShowPublishChanged(e) {
+		var $target = $(e.target);
+
+		var show_id = $target.parents('tr').find('.id').text();
+		var is_published = $target.is(':checked') ? '1' : '0';
+
+		saveShowPublishState(show_id, is_published);
+	}
+
+	function saveShowPublishState(show_id, is_published) {
+		$.ajax({
+			type: "PUT",
+			url: "/api/metadata/shows/" + show_id,
+			data: {
+				'is_published': is_published
+			}
+		});	
 	}
 
 	function loadUserInformation()
@@ -166,6 +186,9 @@
 	$(function() {
 		// Register click handlers
 		$('.manage-shows').on('click', loadShowData);
+
+		// Register publish handlers
+		$('.content').on('change', 'table.shows .publish', onShowPublishChanged);
 	});
 </script>
 @stop
