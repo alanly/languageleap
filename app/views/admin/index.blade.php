@@ -11,9 +11,10 @@
 			success : function(data)
 			{
 				
-				var table = "<table class='table table-hover'>";
+				$('.content').html($('<table/>', {	class: 'table table-hover users' }));
+
 				//Table headers
-				table += "<thead><tr>"
+				var headers = "<thead><tr>"
 						+ "<th>ID</th>"
 						+ "<th>Username</th>"
 						+ "<th>Email</th>"
@@ -22,24 +23,30 @@
 						+ "<th>Active</th>"
 						+ "</tr></thead>";
 
+				$(".movies").append(headers);
+
 				$.each(data.data, function(index,value){
 					//If the user is active or not.
-					var checked = value.is_active == 1 ? "checked" : "";
-
-					table += "<tr>"
-						+ "<td>" + value.id + "</td>"
-						+ "<td>" + value.username + "</td>"
-						+ "<td>" + value.email + "</td>"
-						+ "<td>" + value.first_name + "</td>"
-						+ "<td>" + value.last_name + "</td>"
-						+ "<td><input type='checkbox' onclick='toggleActiveStatus(" + value.id + ")' "+ checked + "/></td>"
-						+ "</tr>";
+					addUserRow(value);
 				});
-
-				table += "</table>";
-				$(".content").html(table);
 			}
 		});
+	}
+
+	function addUserRow(user)
+	{
+
+			var checked = user.is_active == 1 ? "checked" : "";
+
+			var user_item = "<tr>"
+						+ "<td>" + user.id + "</td>"
+						+ "<td>" + user.username + "</td>"
+						+ "<td>" + user.email + "</td>"
+						+ "<td>" + user.first_name + "</td>"
+						+ "<td>" + user.last_name + "</td>"
+						+ "<td><input type='checkbox' onclick='toggleActiveStatus(" + user.id + ")' "+ checked + "/></td>"
+						+ "</tr>";
+			$(".users").append(user_item);
 	}
 
 	function loadMovies()
@@ -90,7 +97,7 @@
 			type : "PUT",
 			url : "/api/metadata/movies/" + movie_id,
 			data : {
-				'is_published' : $("#"+movie_id+"-movie-publish").is(":checked")
+				'is_published' : ($("#"+movie_id+"-movie-publish").is(":checked") ? 1 : 0)
 			}
 		});	
 	}
