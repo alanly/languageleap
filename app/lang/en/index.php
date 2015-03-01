@@ -58,6 +58,7 @@ return array(
 		'search' => array(
 			'search' => 'Search',
 			'for' => 'Search for...',
+			'empty' => 'No results matching your search were found!',
 		),
 		'general' => array(
 			'difficulty' => 'Difficulty level',
@@ -77,6 +78,9 @@ return array(
 			),
 		),
 		'commercial' => array(
+		),
+		'filter' => array(
+			'error' => 'There was a problem loading the information, Please try again at a later time.',
 		),
 	),
 );
