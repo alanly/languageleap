@@ -28,16 +28,58 @@ return array(
 			),
 		),
 		'show' => array(
-			'name' => 'Tv Shows',
+			'name' => 'TV Shows',
 			'table' => array(
 			),
 		),
 		'add' => 'Add Media',
 	),
+
 	'script' => array(
 		'upload' => 'Script Upload',
 	),
+
 	'upload' => array(
-		'success' => 'Media Uploaded Successfully'
+		'uploading' => 'Uploading Media, Please Wait...',
+		'success' => 'Media Uploaded Successfully',
 	),
+
+	'modal' => array(
+
+		/**
+		 * The translations general to all modals.
+		 */
+		
+		'id' => 'ID:',
+		'name' => 'Name',
+		'description' => 'Description',
+		'level' => 'Level',
+		'language' => 'Language',
+		'director' => 'Director',
+		'actor' => 'Actor',
+		'genre' => 'Genre',
+		'file' => 'File',
+
+		/**
+		 * The translations specific to each modal.
+		 */
+		
+		'add_media' => array(
+			'media_info' => 'Media Info',
+			'media_type' => 'Media Type:',
+		),
+
+		'edit_media' => array(
+			'save' => 'Save',
+			'season' => 'Season|Seasons',
+			'episode' => 'Episode',
+			'add' => 'Add',
+			'timestamps' => 'Timestamps',
+			'info' => 'Info',
+			'script' => 'Script',
+			'media' => 'Media',
+		),
+
+	),
+
 );
