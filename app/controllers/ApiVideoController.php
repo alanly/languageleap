@@ -43,7 +43,6 @@ class ApiVideoController extends \BaseController {
 	 */
 	public function store()
 	{
-
 		$video = VideoFactory::getInstance()->createVideo(Input::all());
 		
 		return $this->apiResponse("success",$video->toResponseArray());

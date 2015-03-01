@@ -88,7 +88,7 @@ class VideoFactory {
 			$video = new Video;
 		}	
 		
-		$path = "";
+		$path = "Temp";
 
 		if($type === "commercial")
 		{
@@ -110,9 +110,9 @@ class VideoFactory {
 		}
 
 		$video->language_id = $lang->id;
-		$video->path = '';
+		$video->path = $path;
 		$video->save();
-		
+
 		//set the path
 		$new_name = $video->id . "." . $ext;
 		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
