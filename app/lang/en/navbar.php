@@ -26,6 +26,8 @@ return array(
 			'profile' => 'Profile',
 			'settings' => 'Settings',
 		),
+
+		'logout' => 'Logout',
 	),
 	'brand' => 'Language Leap'
 );
