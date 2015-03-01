@@ -42,38 +42,46 @@
 		});
 	}
 
-	function loadMovieInformation()
+	function loadMovies()
 	{
 		$.ajax({
 			type : "GET",
 			url : "/api/metadata/movies",
 			success : function(data)
 			{
-				var table = "<table class='table table-hover'>";
+
+				$('.content').html($('<table/>', {	class: 'table table-hover movies' }));
+
 				//Table headers
-				table += "<thead><tr>"
+				var header = "<thead><tr>"
 						+ "<th>ID</th>"
 						+ "<th>Actions</th>"
 						+ "<th>Name</th>"
 						+ "<th>Publish</th>"
 						+ "</tr></thead>";
 
+				$(".movies").append(header);
+
 				$.each(data.data, function(index,value){
-					//If the user is active or not.
-					var checked = value.is_published == 1 ? "checked" : "";
-
-					table += "<tr>"
-						+ "<td>" + value.id + "</td>"
-						+ "<td><a href='#'><i class='fa fa-edit fa-fw'></i></a><a href='#'><i class='fa fa-trash fa-fw'></i></a></td>"
-						+ "<td>" + value.name + "</td>"
-						+ "<td><input id='" + value.id + "-movie-publish'type='checkbox' onclick='publishMovie(" + value.id + ")'" + checked + " /></td>"
-						+ "</tr>";
-				});
-
-				table += "</table>";
-				$(".content").html(table);	
+					addMovieRow(value);
+				});	
 			}
 		});
+	}
+
+	function addMovieRow(movie)
+	{
+		//If the movie is active or not.
+		var checked = movie.is_published == 1 ? "checked" : "";
+
+		var row = "<tr id='" + movie.id + "-movie''>"
+				+ "<td>" + movie.id + "</td>"
+				+ "<td><a href='#' onclick='loadMovieInformation(" + movie.id + ");'><i class='fa fa-edit fa-fw'></i></a><a href='#'><i class='fa fa-trash fa-fw'></i></a></td>"
+				+ "<td>" + movie.name + "</td>"
+				+ "<td><input id='" + movie.id + "-movie-publish'type='checkbox' onclick='publishMovie(" + movie.id + ")'" + checked + " /></td>"
+				+ "</tr>";
+
+		$(".movies").append(row);	
 	}
 
 	function publishMovie(movie_id)
@@ -96,6 +104,19 @@
 				'user_id' : user_id
 			}
 		});
+	}
+
+	function loadMovieInformation(movie_id)
+	{	
+		$.ajax({
+			type : "GET",
+			url : "/api/metadata/movies/" + movie_id,
+			dataType : "JSON",
+			success : function(data)
+			{
+				$("#" + movie_id + "-movie").after("<div><p>TEST</p></div>")
+			}
+		});	
 	}
 </script>
 @stop
