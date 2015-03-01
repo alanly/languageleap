@@ -21,7 +21,7 @@ class CreateMovieTable extends Migration {
 			$table->string('genre')->nullable();
 			$table->string('image_path')->nullable();
 			$table->integer('level_id')->unsigned()->default(1);
-			$table->integer('is_published')->unsigned()->default(0);
+			$table->boolean('is_published')->default(0);
 
 		});
 	}
