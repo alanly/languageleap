@@ -11,7 +11,7 @@
 				<li role="presentation"><a href="#">@lang('account.level.contact')</a></li>
 			</ul>
 		</nav>
-		<h3 class="text-muted">@lang('sitename.name.name')</h3>
+		<h3 class="text-muted">@lang('sitename.name.no_space')</h3>
 	</div>
 
 	

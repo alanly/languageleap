@@ -13,6 +13,7 @@ return array(
 	*/
 
 	'name' => array(
-		'name' => 'LanguageLeap',
+		'no_space' => 'LanguageLeap',
+		'spaced' => 'Language Leap',
 	),
 );
