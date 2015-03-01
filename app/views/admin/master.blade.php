@@ -47,7 +47,7 @@
 						<div class="collapse list-group-submenu list-group-submenu-1" id="media-types">
 							<a href="#" onclick="loadMovies();" class="list-group-item">@lang('admin.media.movie.name')</a>
 							<a href="#" class="list-group-item">@lang('admin.media.commercial.name')</a>
-							<a href="#" class="list-group-item">@lang('admin.media.show.name')</a>
+							<a href="#" class="list-group-item manage-shows">@lang('admin.media.show.name')</a>
 						</div>
 					</li>
 

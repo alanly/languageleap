@@ -3,6 +3,50 @@
 @section('javascript')
 <script type="text/javascript">
 
+	function fillShowTable(showArray) {
+		$('.content').html($('<table/>', {	class: 'table table-hover shows' }));
+
+		addShowTableHeader();
+
+		$.each(showArray, function(i, v) {
+			addShowTableRow(v);
+		});
+	}
+
+	function addShowTableHeader() {
+		var header =	'<thead>' +
+							'<tr>' +
+								'<th>ID</th>' +
+								'<th>Action</th>' +
+								'<th>Name</th>' +
+								'<th>Publish</th>' +
+							'</tr>' +
+						'</thead>';
+
+		$('table.shows').append(header);
+	}
+
+	function addShowTableRow(show) {
+		var row =	'<tr>' +
+						'<td>' + show.id + '</td>' +
+						'<td><a href="#"><i class="fa fa-edit fa-fw"></i></a><a href="#"><i class="fa fa-trash fa-fw"></i></a></td>' +
+						'<td>' + show.name + '</td>' +
+						'<td><input type="checkbox" checked /></td>' +
+					'</tr>';
+
+		$('table.shows').append(row);
+	}
+
+	function loadShowData() {
+		$.ajax({
+			type: 'GET',
+			url: '/api/metadata/shows',
+			success: function(data) {
+				fillShowTable(data.data);
+			}
+		});
+	}
+
 	function loadUserInformation()
 	{
 		$.ajax({
@@ -118,6 +162,11 @@
 			}
 		});	
 	}
+
+	$(function() {
+		// Register click handlers
+		$('.manage-shows').on('click', loadShowData);
+	});
 </script>
 @stop
 
