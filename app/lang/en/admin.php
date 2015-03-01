@@ -17,6 +17,9 @@ return array(
 			'name' => 'Movies',
 			'table' => array(
 				'id' => 'Id',
+				'name' => 'Name',
+				'description' => 'Description',
+				'manage' => 'Manage'
 			),
 		),
 		'commercial' => array(
