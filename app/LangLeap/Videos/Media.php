@@ -7,7 +7,7 @@ use LangLeap\Core\ValidatedModel;
  */
 abstract class Media extends ValidatedModel {
 	
-	protected $fillable = ['name', 'description', 'level_id'];
+	protected $fillable = ['name', 'description', 'level_id', 'is_published'];
 	protected $rules    = ['name' => 'required'];
 
 

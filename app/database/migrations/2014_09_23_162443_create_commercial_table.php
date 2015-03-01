@@ -18,6 +18,7 @@ class CreateCommercialTable extends Migration {
 			$table->string('description')->nullable();
 			$table->string('image_path')->nullable();
 			$table->integer('level_id')->unsigned()->default(1);
+			$table->integer('is_published')->unsigned()->default(0);
 		});
 	}
 
