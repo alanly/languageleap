@@ -43,7 +43,7 @@
 	<div class="row">
 		<form role="form" id="user-update-form">
 			<div class="col-lg-6">
-				<div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>Required Field</strong></div>
+				<div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>@lang('account.info.required')</strong></div>
 				
 				<div class="form-group">
 					<div class="input col-sm-6 col-md-6 col-lg-6">
