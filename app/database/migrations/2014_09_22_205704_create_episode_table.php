@@ -19,6 +19,7 @@ class CreateEpisodeTable extends Migration {
 			$table->string('name')->nullable();
 			$table->string('description')->nullable();
 			$table->integer('level_id')->unsigned()->default(1);
+			$table->integer('is_published')->unsigned()->default(0);
 		});
 	}
 

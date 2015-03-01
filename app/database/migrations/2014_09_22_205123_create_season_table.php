@@ -17,7 +17,7 @@ class CreateSeasonTable extends Migration {
 			$table->integer('show_id')->unsigned();
 			$table->integer('number');
 			$table->string('description')->nullable();		
-
+			$table->integer('is_published')->unsigned()->default(0);
 		});
 	}
 
