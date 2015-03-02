@@ -26,11 +26,13 @@ return array(
 	 * Generic Terminologies
 	 */
 	'terms' => array(
-		'actors'      => 'Actor|Actors',
-		'definitions' => 'Definition|Definitions',
-		'none'        => 'None',
-		'timestamps'  => 'Timestamp|Timestamps',
-		'words'       => 'Word|Words',
+		'actors'         => 'Actor|Actors',
+		'definitions'    => 'Definition|Definitions',
+		'full_defin'     => 'Full Definition|Full Definitions',
+		'none'           => 'None',
+		'pronunciations' => 'Pronunciation|Pronunciations',
+		'timestamps'     => 'Timestamp|Timestamps',
+		'words'          => 'Word|Words',
 	),
 
 	'media' => array(
