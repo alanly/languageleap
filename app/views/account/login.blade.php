@@ -18,7 +18,7 @@
 			]) 
 		}}
 			<div>
-				<h3 class="brand">Language Leap</h3>
+				<h3 class="brand">@lang('sitename.name.spaced')</h3>
 			</div>
 
 			@if (Session::has('action.message'))

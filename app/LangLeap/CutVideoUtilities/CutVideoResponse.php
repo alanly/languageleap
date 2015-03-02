@@ -4,6 +4,7 @@ use LangLeap\Core\UserInputResponse;
 use LangLeap\CutVideoUtilities\CutVideoFFmpegAdapter;
 use LangLeap\Accounts\User;
 use LangLeap\Videos\Video;
+use Lang;
 
 /**
  * @author Dror Ozgaon <Dror.Ozgaon@gmail.com>
@@ -38,7 +39,7 @@ class CutVideoResponse implements UserInputResponse
 		}
 		catch(\Exception $e)
 		{
-			return ['error', 'The request to break the video at specified times could not be completed.', 500];
+			return ['error', Lang::get('videoutilities.response.error'), 500];
 		}
 
 		return ['success', $data, 200];

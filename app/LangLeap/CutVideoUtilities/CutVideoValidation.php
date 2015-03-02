@@ -3,7 +3,7 @@
 use LangLeap\Core\InputDecorator;
 use LangLeap\Accounts\User;
 use LangLeap\Videos\Video;
-
+use Lang;
 /**
  * Validation decorator for the CutVideoResponse.
  * Makes sure that the user is an admin and the inputs are properly formed.
@@ -16,23 +16,23 @@ class CutVideoValidation extends InputDecorator {
 	{
 		if(!$user || !$user->is_admin)
 		{
-			return ['error', 'Must be an administrator to edit videos',	401];
+			return ['error', Lang::get('videoutilities.validation.admin'),	401];
 		}
 		
 		if(!isset($input['video_id']))
 		{
-			return ['error', "Video id is missing.",	400];
+			return ['error', Lang::get('videoutilities.validation.no_video'),	400];
 		}
 
 		$video = Video::find($input['video_id']);
 		if(!$video)
 		{
-			return ['error',	"Video " . $input['video_id'] . " is missing.", 404];
+			return ['error', Lang::get('videoutilities.validation.video_missing', ['video_id', $input['video_id']]), 404];
 		}
 
 		if(!isset($input['segments']))
 		{
-			return ['error',	"Cut into segments value is missing.", 400];
+			return ['error', Lang::get('videoutilities.validation.segments_missing'), 400];
 		}
 		
 		$segments = $input['segments'];
@@ -40,19 +40,19 @@ class CutVideoValidation extends InputDecorator {
 		{
 			if(count($segments) < 1)
 			{
-				return ['error', 'Segments must contain at least one entry', 400];
+				return ['error', Lang::get('videoutilities.validation.atleast_one_segment'), 400];
 			}
 			foreach($segments as $times)
 			{
 				if(!isset($times['time']) || !isset($times['duration']))
 				{
-					return ['error', 'Segment entries must contain time and duration', 400];
+					return ['error', Lang::get('videoutilities.validation.time_duration'), 400];
 				}
 			}
 		}
 		else
 		{
-			return ['error', 'Segments value is not the correct type', 400];
+			return ['error', Lang::get('videoutilities.validation.invalid_type'), 400];
 		}
 		
 		return parent::response($user, $input);

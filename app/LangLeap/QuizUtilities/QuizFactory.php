@@ -12,6 +12,7 @@ use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 use LangLeap\WordUtilities\WordInformation;
 use LangLeap\Words\Script;
+use Lang;
 
 /**
  * Factory that creates quizzes based on selected words in a script
@@ -84,7 +85,7 @@ class QuizFactory implements UserInputResponse {
 		// Create a new quiz
 		$quiz = Quiz::create(['user_id'	=> $user_id]);
 		
-		$questionPrepend = 'What is the definition of ';
+		$questionPrepend = Lang::get('quiz.definition_of');
 		
 		// Check for questions for each selected definition
 		foreach ($wordsInformation as $word)

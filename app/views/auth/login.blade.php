@@ -19,7 +19,7 @@
 
 @section('content')
 <div class="container login-form">
-	<h3 class="brand">LanguageLeap</h3>
+	<h3 class="brand">@lang('sitename.name.no_space')</h3>
 
 	@if(Session::has('action.failed') === true)
 		<div class="alert {{ Session::get('action.failed') === false ? 'alert-info' : 'alert-danger' }}">

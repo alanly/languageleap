@@ -38,4 +38,15 @@ return array(
 		'signature' => '&mdash; The LanguageLeap Team',
 		'this' => 'this Link',
 	),
+	'success' => array(
+		'message' => 'You have successfully registered! A confirmation email has been sent.',
+	),
+	'verify' => array(
+		'message' => 'You have successfully verified your account! Please login.',
+	),
+	'words' => array(
+		'word' => 'Word',
+		'definition' => 'Definition',
+		'pronunciation' => 'Pronunciation',
+	),
 );

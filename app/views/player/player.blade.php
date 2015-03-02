@@ -36,9 +36,9 @@
 							    <span class="caret"></span>
 						  	</button>
 							<ul class="dropdown-menu" role="menu" aria-labelledby="speed-drop">
-								<li role="presentation"><a class="speed faster" role="menuitem" tabindex="-1" href="#">Faster</a></li>
-								<li role="presentation"><a class="speed normal" role="menuitem" tabindex="-1" href="#">Normal</a></li>
-								<li role="presentation"><a class="speed slower" role="menuitem" tabindex="-1" href="#">Slower</a></li>
+								<li role="presentation"><a class="speed faster" role="menuitem" tabindex="-1" href="#">@lang('player.functions.faster')</a></li>
+								<li role="presentation"><a class="speed normal" role="menuitem" tabindex="-1" href="#">@lang('player.functions.normal')</a></li>
+								<li role="presentation"><a class="speed slower" role="menuitem" tabindex="-1" href="#">@lang('player.functions.slower')</a></li>
 							</ul>
 						</div>
 
@@ -72,7 +72,7 @@
 			
 			<div id="load-quiz-error" class="alert alert-danger col-lg-6 col-md-6 col-xs-6" role="alert" style="margin-top:10px" hidden="hidden">
 				<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-				<span class="sr-only">Error:</span>
+				<span class="sr-only">@lang('player.error')</span>
 				<span id="load-quiz-message"></span>
 			</div>
 		</div>
@@ -132,8 +132,7 @@
 			// Create an event handler callback for error on our player.
 			$source.on('error', function(event)
 			{
-				console.error("Error occured when loading video from source.");
-				$('.error-message').html('<p>An error occured while attempting to play this video.');
+				$('.error-message').html('<p>@lang("player.load.error")</p>');
 				$('.error-message').show();
 			});
 			// Set the desired source.
@@ -326,7 +325,7 @@
 			else {
 				
 				$("#load-quiz-error").removeAttr("hidden");
-				$("#load-quiz-message").text("Select words to learn.");
+				$("#load-quiz-message").text("@lang('player.quiz.select_words')");
 			}
 		}
 
@@ -409,11 +408,11 @@
 					$word.data('definition', data.data.definition);
 					$word.data('full-definition', data.data.full_definition);
 					$word.data('pronunciation', data.data.pronunciation);
-					setTooltipSynonym($word, ((data.data.synonym) ? data.data.synonym : 'Synonym not found.'));
+					setTooltipSynonym($word, ((data.data.synonym) ? data.data.synonym : '@lang("player.quiz.synonym_not_found")'));
 				},
 				error : function(data)
 				{
-					setTooltipSynonym($word, "Synonym not found.");
+					setTooltipSynonym($word, "@lang('player.quiz.synonym_not_found')");
 				}
 			});
 		}
@@ -444,10 +443,10 @@
 				if (data && data.status == 'success') {
 					$(this).data('full-definition', data.data.definition);
 					$(this).data('pronunciation', data.data.pronunciation);
-					setTooltipSynonym($(this), ((data.data.synonym) ? data.data.synonym : 'Synonym not found.'));
+					setTooltipSynonym($(this), ((data.data.synonym) ? data.data.synonym : '@lang("player.quiz.synonym_not_found")'));
 					setWordAudioUrl($(this), data.data.audio_url);
 				} else {
-					setTooltipSynonym($word, "Synonym not found.");
+					setTooltipSynonym($word, '@lang("player.quiz.synonym_not_found")');
 				}
 			});
 		}

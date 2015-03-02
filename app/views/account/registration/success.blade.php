@@ -2,6 +2,6 @@
 
 @section('content')
 <div>
-	<h1>You have successfully registered! A confirmation email has been sent.</h1>
+	<h1>@lang('account.success.message')</h1>
 </div>
 @stop

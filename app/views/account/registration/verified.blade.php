@@ -2,6 +2,6 @@
 
 @section('content')
 <div>
-	<h1>You have successfully verified your account! Please login.</h1>
+	<h1>@lang('account.verify.message')</h1>
 </div>
 @stop
