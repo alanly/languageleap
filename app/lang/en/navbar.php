@@ -19,6 +19,15 @@ return array(
 			'none' => 'No quizzes to do',
 			'attempt' => 'Attempt',
 		),
+		
+		'account' => array(
+			'name' => 'Account',
+			'review' => 'Review',
+			'profile' => 'Profile',
+			'settings' => 'Settings',
+		),
+
+		'logout' => 'Logout',
 	),
 	'brand' => 'Language Leap'
 );

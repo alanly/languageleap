@@ -1,6 +1,11 @@
 <?php
-use LangLeap\Videos\Movie;
 
+use LangLeap\Videos\Movie;
+use LangLeap\Words\Script;
+
+/**
+ * @author David Siekut
+ */
 class ApiMovieController extends \BaseController {
 
 	protected $movies;
@@ -59,7 +64,7 @@ class ApiMovieController extends \BaseController {
 
 		if (!$movie)
 		{
-			return $this->apiResponse('error', "Movie {$id} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
 		}
 
 		return $this->apiResponse("success", $movie->toResponseArray());
@@ -77,7 +82,7 @@ class ApiMovieController extends \BaseController {
 
 		if (! $movie)
 		{
-			return $this->apiResponse('error', "Movie {$id} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
 		}
 
 		$movie->fill(Input::get());
@@ -103,12 +108,75 @@ class ApiMovieController extends \BaseController {
 
 		if (! $movie)
 		{
-			return $this->apiResponse('error', "Movie {$id} not found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
 		}
 
 		$movie->videos()->delete();
 		$movie->delete();
 
-		return $this->apiResponse('success', "Movie {$id} has been removed", 204);
+		return $this->apiResponse('success', Lang::get('controllers.movies.movie_deletion', ['id' => $id]), 204);
 	}
+	
+	
+	/**
+	 * Update the script for this movie.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function updateScript($id)
+	{
+		$movie = $this->movies->find($id);
+		$video_id = $movie->videos()->first()->id;
+		
+		$script = Script::where('video_id', '=', $video_id)->firstOrFail();
+
+		if (! $script)
+		{
+			return $this->apiResponse('error', "Movie {$id} not found.", 404);
+		}
+		
+		$script->text = Input::get('text');
+
+		if (! $script->save())
+		{
+			return $this->apiResponse(
+				'error',
+				$script->getErrors(),
+				500
+			);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$script->toArray(),
+			200
+		);
+	}
+	
+	
+	/**
+	*	This method updates timestamps for this video.
+	*
+	*	@param int $video_id 
+	*/
+	public function saveTimestamps($id)
+	{
+		$movie = Movie::find($id);
+		$video = $movie->videos()->first();
+
+		if (!$video)
+		{
+			return $this->apiResponse(
+				'error',
+				"Video {$id} not found.",
+				404
+			);
+		}
+		
+		$video->timestamps_json = Input::get('text');
+		$video->save();
+		return $this->apiResponse("success", $video->toResponseArray());
+	}
+	
 }

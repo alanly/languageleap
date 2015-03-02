@@ -7,11 +7,11 @@
 	<table class="table table-condensed table-hover">
 		<thead>
 			<tr>
-				<th>Id</th>
-				<th>Name</th>
-				<th>Description</th>
+				<th>@lang('admin.media.movie.table.id')</th>
+				<th>@lang('admin.media.movie.table.name')</th>
+				<th>@lang('admin.media.movie.table.description')</th>
 				<th></th>
-				<th>Manage</th>
+				<th>@lang('admin.media.movie.table.manage')</th>
 			</tr>
 		</thead>
 		<tbody>

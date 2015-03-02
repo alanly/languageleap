@@ -1,8 +1,9 @@
 <?php
 
 use LangLeap\TestCase;
-
 use LangLeap\Videos\Show;
+use LangLeap\Levels\Level;
+
 
 /**
  * @author Alan Ly <hello@alan.ly>
@@ -38,12 +39,12 @@ class ApiEpisodeControllerTest extends TestCase {
 
 		$show = Show::create(['name' => 'test show', 'description' => 'test show description']);
 		$season = $show->seasons()->create(['number' => 1]);
-
+		$level = Level::first();
 		$response = $this->action(
 			'POST',
 			'ApiEpisodeController@store',
 			[$show->id, $season->id],
-			['number' => 1, 'name' => 'Test Episode']
+			['number' => 1, 'name' => 'Test Episode', 'level_id' => $level->id]
 		);
 
 		$this->assertResponseStatus(201);
@@ -73,6 +74,24 @@ class ApiEpisodeControllerTest extends TestCase {
 
 		$this->assertObjectHasAttribute('show', $data);
 		$this->assertObjectHasAttribute('season', $data);
+		$this->assertObjectHasAttribute('episode', $data);
+		$this->assertObjectHasAttribute('videos', $data);
+
+		$this->assertEquals(1, $data->episode->id);
+	}
+
+	public function testShowEpisode()
+	{
+		$this->seed();
+
+		// Retrieve Episode 1
+		$response = $this->action('GET', 'ApiEpisodeController@showEpisode', [ 1]);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+
+		$data = $response->getData()->data;
+
 		$this->assertObjectHasAttribute('episode', $data);
 		$this->assertObjectHasAttribute('videos', $data);
 

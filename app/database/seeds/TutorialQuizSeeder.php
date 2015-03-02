@@ -1,6 +1,6 @@
 <?php
 
-use LangLeap\Quizzes\Question;
+use LangLeap\Questions\Question;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Videos\Commercial;
@@ -20,28 +20,29 @@ class TutorialQuizSeeder extends Seeder {
 	
 	private function createQuestions()
 	{
-		$question = App::make('LangLeap\Quizzes\Question');
-		
-		$q1 = $question->create(["question" => "What does Language Leap teach?", "answer_id" => 0]);
-		$q2 = $question->create(["question" => "What do you see beside the video?", "answer_id" => 0]);
-		$q3 = $question->create(["question" => "What can you gain by spending more time on Language Leap?", "answer_id" => 0]);
-		$q4 = $question->create(["question" => "How do you learn new words?", "answer_id" => 0]);
-		$q5 = $question->create(["question" => "What do you need to use Language Leap?", "answer_id" => 0]);
-		
+		$question = App::make('LangLeap\Questions\Question');
+		$cq = App::make('LangLeap\Questions\CustomQuestion');
+
+		$cq1 = $cq->create(["question" => "What does Language Leap teach?"]);
+		$q1 = $question->create(["question_type" => "LangLeap\Questions\CustomQuestion", "question_id" => $cq1->id, "answer_id" => 0]);
+
+		$cq2 = $cq->create(["question" => "What do you see beside the video?"]);
+		$q2 = $question->create(["question_type" => "LangLeap\Questions\CustomQuestion", "question_id" => $cq2->id, "answer_id" => 0]);
+
+		$cq3 = $cq->create(["question" => "What can you gain by spending more time on Language Leap?"]);
+		$q3 = $question->create(["question_type" => "LangLeap\Questions\CustomQuestion", "question_id" => $cq3->id, "answer_id" => 0]);
+
+		$cq4 = $cq->create(["question" => "How do you learn new words?"]);
+		$q4 = $question->create(["question_type" => "LangLeap\Questions\CustomQuestion", "question_id" => $cq4->id, "answer_id" => 0]);
+
+		$cq5 = $cq->create(["question" => "What do you need to use Language Leap?"]);
+		$q5 = $question->create(["question_type" => "LangLeap\Questions\CustomQuestion", "question_id" => $cq5->id, "answer_id" => 0]);
+
 		$language = Language::first();
 		$video = Commercial::first()->videos()->create([
 			'path' => '/path/to/tutorial/video.mkv',
 			'language_id' => $language->id
 		]);
-		
-		
-		/*$vq1 = $videoquestion->create(["question_id" => 1, "video_id" => $video->id, "is_custom" => true])->id;
-		$vq2 = $videoquestion->create(["question_id" => 2, "video_id" => $video->id, "is_custom" => true])->id;
-		$vq3 = $videoquestion->create(["question_id" => 3, "video_id" => $video->id, "is_custom" => true])->id;
-		$vq4 = $videoquestion->create(["question_id" => 4, "video_id" => $video->id, "is_custom" => true])->id;
-		$vq5 = $videoquestion->create(["question_id" => 5, "video_id" => $video->id, "is_custom" => true])->id;
-		
-		$quiz->videoQuestions()->attach([$vq1, $vq2, $vq3, $vq4, $vq5]);*/
 
 		$answer = App::make('LangLeap\Quizzes\Answer');
 		$answer->create(["answer" => "French", 'question_id' => $q1->id]);

@@ -1,7 +1,8 @@
 <?php
 
 use LangLeap\Quizzes\Answer;
-use LangLeap\Quizzes\Question;
+use LangLeap\Questions\Question;
+use LangLeap\Questions\CustomQuestion;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\QuizUtilities\QuizUtils;
@@ -62,7 +63,7 @@ class ApiQuizController extends \BaseController {
 		$question = Input::get('question');
 		$answers = Input::get('answer');
 		
-		$message = 'Custom question saved successfully';
+		$message = Lang::get('controllers.quiz.saved');
 		$success = true;
 
 		$video = Video::find($video_id);
@@ -70,47 +71,55 @@ class ApiQuizController extends \BaseController {
 		if (! $video)
 		{
 			$success = false;
-			$message = 'Video not found in database';
+			$message = Lang::get('controllers.quiz.database_error');
 		}
 		
 		if(! $question || ! $answers || count($answers) < 1)
 		{
 			$success = false;
-			$message = 'Fields not filled in properly';
+			$message = Lang::get('controllers.quiz.blank-fields_error');
 		}
 
-		$question = Question::create([
-			'question'  => $question,
-			'answer_id' => -1
-		]);
-		
-		// Shuffle the answers
-		$answer_id = -1;
-		while (count($answers) > 0)
+		if($success) // Create the question if the input is correct
 		{
-			$answer_key = array_rand($answers);
+			$customQuestion = CustomQuestion::create([
+				'question' => $question
+				]);
 
-			$answer = Answer::create([
-				'answer'      => $answers[$answer_key],
-				'question_id' => $question->id
+			$question = Question::create([
+				'question_type'  	=> 'LangLeap\Questions\CustomQuestion',
+				'question_id'		=> $customQuestion->id,
+				'answer_id' 		=> -1
 			]);
-
-			if ($answer_key == 0)
+			
+			// Shuffle the answers
+			$answer_id = -1;
+			while (count($answers) > 0)
 			{
-				$answer_id = $answer->id;
-			}
+				$answer_key = array_rand($answers);
 
-			unset($answers[$answer_key]);
+				$answer = Answer::create([
+					'answer'      => $answers[$answer_key],
+					'question_id' => $question->id
+				]);
+
+				if ($answer_key == 0)
+				{
+					$answer_id = $answer->id;
+				}
+
+				unset($answers[$answer_key]);
+			}
+			
+			$question->answer_id = $answer_id;
+			$question->save();
+			
+			$vq = VideoQuestion::create([
+				'video_id'    => $video_id,
+				'question_id' => $question->id,
+				'is_custom'   => true
+			]);
 		}
-		
-		$question->answer_id = $answer_id;
-		$question->save();
-		
-		$vq = VideoQuestion::create([
-			'video_id'    => $video_id,
-			'question_id' => $question->id,
-			'is_custom'   => true
-		]);
 		
 		return Redirect::to('admin/quiz/new')
 		               ->with('success', $success)
@@ -122,14 +131,14 @@ class ApiQuizController extends \BaseController {
 		$quiz = Quiz::find($quiz_id);
 		if (! $quiz)
 		{
-			return $this->apiResponse('error', "Quiz {$quiz_id} not found", 404);
+			return $this->apiResponse('error', Lang::get('controllers.quiz.quiz_error', ['quiz_id' => $quiz_id]), 404);
 		}
 		
 		if ( ($quiz->user_id != Auth::user()->id) && (! Auth::user()->is_admin) )
 		{
 			return $this->apiResponse(
 				'error',
-				"Not authorized to view quiz {$quiz_id}",
+				Lang::get('controllers.quiz.quiz_no-auth', ['quiz_id' => $quiz_id]),
 				401
 			);
 		}

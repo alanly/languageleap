@@ -6,14 +6,13 @@ use LangLeap\Words\Script;
 class Video extends ValidatedModel {
 
 	public    $timestamps = false;
-	protected $fillable   = ['path'];
+	protected $fillable   = ['path', 'timestamps_json'];
 	protected $rules      = [
 		'path'          => 'required',
 		'viewable_id'   => 'required|integer',
 		'viewable_type' => 'required',
 		'language_id'   => 'required'
 	];
-
 
 	public static function boot()
 	{
@@ -37,6 +36,20 @@ class Video extends ValidatedModel {
 		return $this->morphTo();
 	}	
 
+	/**
+	 * This function will return the next video in the sequence or null if there is none.
+	 *
+	 * @return Video 		The next video in the sequence
+	 */
+	public function nextVideo()
+	{
+		return Video::where('viewable_id', $this->viewable_id)
+							->where('viewable_type', $this->viewable_type)
+							->where('video_number', $this->video_number + 1)
+							->get()
+							->first();
+
+	}
 
 	public function toResponseArray()
 	{
@@ -50,6 +63,7 @@ class Video extends ValidatedModel {
 			'viewable_id'   => $this->viewable_id,
 			'viewable_type' => $this->viewable_type,
 			'script'        => ['id' => $script->id, 'text' => $script->text],
+			'timestamps_json'=> $this->timestamps_json,
 		];
 	}
 

@@ -22,48 +22,52 @@ class ApiDictionaryController extends \BaseController
 		{
 			return $this->apiResponse(
 				'error',
-				"Word {$word} does not exists",
+				Lang::get('controllers.dictionary.word_error', ['word' => $word]),
 				404
 			);
 		}
 
 		// Ensure the video exists.
 		$videoId = Input::get("video_id");
+
 		if (!$videoId)
 		{
 			return $this->apiResponse(
 				'error',
-				"Video {$videoId} does not exists",
+				Lang::get('controllers.dictionary.video_error', ['videoId' => $videoId]),
 				404
 			);
 		}
 
 		$videoLanguage = $this->getVideoLanguage($videoId);
+
 		if (!$videoLanguage)
 		{
 			return $this->apiResponse(
 				'error',
-				"Language for {$videoId} not found.",
+				Lang::get('controllers.dictionary.video_error', ['videoId' => $videoId]),
 				404
 			);
 		}
 
 		$dictionary = DictionaryFactory::getInstance()->getDictionary($videoLanguage);
+
 		if (!$dictionary)
 		{
 			return $this->apiResponse(
 				'error',
-				"{$videoLanguage} dictionary not found.",
+				Lang::get('controllers.dictionary.dictionary_error', ['videoLanguage' => $videoLanguage]),
 				404
 			);
 		}
 
 		$definition = $dictionary->getDefinition($word);
+		
 		if (!$definition)
 		{
 			return $this->apiResponse(
 				'error',
-				"Definition not found.",
+				Lang::get('controllers.dictionary.definition_error'),
 				404
 			);
 		}
@@ -88,6 +92,5 @@ class ApiDictionaryController extends \BaseController
 		}
 
 		return strtoupper($language->code);
-
 	}
 }

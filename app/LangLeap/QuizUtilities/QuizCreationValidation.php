@@ -1,10 +1,12 @@
 <?php namespace LangLeap\QuizUtilities;
 
+use Lang;
 use LangLeap\Accounts\User;
 use LangLeap\Core\Collection;
 use LangLeap\Core\InputDecorator;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
+use LangLeap\WordUtilities\WordInformation;
 
 /**
  * Concrete decorator that adds validation behavior to Quiz creation
@@ -24,7 +26,7 @@ class QuizCreationValidation extends InputDecorator {
 	{
 		if (! $user)
 		{
-			return ['error', 'Must be logged in to create a quiz.', 401];
+			return ['error', Lang::get('controllers.quiz.create_no-auth'), 401];
 		}
 	
 		// Ensure the video exists.
@@ -32,12 +34,11 @@ class QuizCreationValidation extends InputDecorator {
 
 		if (! Video::find($videoId))
 		{
-			return ['error', "Video {$videoId} does not exists", 404];
+			return ['error', Lang::get('controllers.videos.error', ['id' => $videoId]), 404];
 		}
 
 		// Get all the selected words; if empty, return with redirect.
 		$selectedWords = $input["selected_words"];
-
 		if (! $selectedWords || count($selectedWords) < 1)
 		{
 			return [
@@ -47,46 +48,24 @@ class QuizCreationValidation extends InputDecorator {
 			];
 		}
 
-		// Get all the words in the script; if empty, return 400 (client-side error).
-		$scriptWords = $input["all_words"];
-		
-		if (! $scriptWords || count($scriptWords) < 1)
+		foreach($selectedWords as $selectedWord)
 		{
-			return [
-				'error',
-				"Empty script supplied for video {$videoId}.",
-				400
-			];
-		}
+			$word = $selectedWord['word'];
+			if(strlen($word) < 1) return ['error', Lang::get('controllers.quiz.selected_error'), 404];
 
-		// Retrieve a collection of all definitions in the script.
-		$scriptDefinitions = Definition::whereIn('id', $scriptWords)->get();
+			$sentence = $selectedWord['sentence'];
+			if(strlen($sentence) < 1) return ['error', Lang::get('controllers.quiz.sentence_error'), 400];
 
-		// Use the overriden Collection class.
-		$scriptDefinitions = new Collection($scriptDefinitions->all());
-
-		// If words are missing, then return a 404.
-		if ($scriptDefinitions->count() != count($scriptWords))
-		{
-			return [
-				'error',
-				'Only '.$scriptDefinitions->count().' definitions found for '.count($scriptWords).' words.',
-				404
-			];
-		}
-
-		// Ensure that the _selected_ words are within the realm of the script.
-		foreach ($selectedWords as $definitionId)
-		{
-			// If a selected word is not in the script, return 404.
-			if (! $scriptDefinitions->contains($definitionId))
+			if(stripos($sentence, $word) === FALSE)
 			{
-				return [
-					'error',
-					"Selected definition {$definitionId} is not in video {$videoId}.",
-					404
-				];
+				return ['error', Lang::get('controllers.quiz.sentence_error'), 400];
 			}
+		}
+		
+		$wordInformations = WordInformation::fromInput($selectedWords, $videoId);
+		if(count($wordInformations) < 1)
+		{
+			return ['error', Lang::get('controllers.quiz.no_def'), 404];
 		}
 		
 		return parent::response($user, $input);

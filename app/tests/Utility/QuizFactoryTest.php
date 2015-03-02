@@ -6,6 +6,7 @@ use LangLeap\Words\Definition;
 use LangLeap\QuizUtilities\QuizFactory;
 use LangLeap\Videos\Video;
 use LangLeap\Accounts\User;
+use LangLeap\WordUtilities\WordInformation;
 
 class QuizFactoryTest extends TestCase {
 
@@ -20,11 +21,14 @@ class QuizFactoryTest extends TestCase {
 
 	public function testQuestionReturned()
 	{
-		$all_words = new Collection(Definition::all()->all());
-		$selected_words = array(Definition::first()->id);
 		$video_id = Video::first()->id;
+		$wordsInformation = [
+			['word' => 'cat', 'definition' => 'vicious, animal', 'sentence' => 'the cat is annoying'],
+			['word' => 'dog', 'definition' => 'barking animal', 'sentence' => 'the dog is cute'],
+			['word' => 'elephant', 'definition' => 'large land animal', 'sentence' => 'the elephany is huge'],
+		];
 
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
+		$quiz = QuizFactory::getInstance()->getVideoQuiz(Auth::user()->id, $video_id, $wordsInformation);
 
 		$this->assertNotEmpty($quiz->videoQuestions);
 
@@ -34,64 +38,5 @@ class QuizFactoryTest extends TestCase {
 			$question = $vq->question;
 			$this->assertGreaterThan(1, $question->answers->count());
 		}
-	}
-	
-	public function testNullReturnedWhenWordsAreNotSelected()
-	{
-		$all_words = new Collection(Definition::all()->all());
-		$selected_words = array();
-		$video_id = Video::first()->id;
-
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
-
-		$this->assertNull($quiz);
-	}
-
-	public function testNullReturnedWhenInvalidWordsAreSelected()
-	{
-		$all_words = new Collection(Definition::all()->all());
-		$selected_words = array(-1);
-		$video_id = Video::first()->id;
-
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
-
-		$this->assertNull($quiz);
-	}
-
-	public function testNullReturnedWhenScriptWordsNotSupplied()
-	{
-		$all_words = new Collection([]);
-		$selected_words = array(Definition::first()->id);
-		$video_id = Video::first()->id;
-
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
-
-		$this->assertNull($quiz);
-	}
-	
-	public function testNullWhenVideoDoesNotExist()
-	{
-		$all_words = new Collection(Definition::all()->all());
-		$selected_words = array(Definition::first());
-		$video_id = -1;
-		
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
-		
-		$this->assertNull($quiz);
-	}
-	
-	public function testNullReturnedWhenUserDoesNotExist()
-	{
-		$user = App::make('\LangLeap\Accounts\User');
-		$user->id = -1;
-		$this->be($user);
-		
-		$all_words = new Collection(Definition::all()->all());
-		$selected_words = array(Definition::first()->id);
-		$video_id = Video::first()->id;
-		
-		$quiz = QuizFactory::getInstance()->getDefinitionQuiz(Auth::user()->id, $video_id, $all_words, $selected_words);
-
-		$this->assertNull($quiz);
 	}
 }

@@ -86,14 +86,14 @@ class ApiScriptController extends \BaseController {
 	 * @return Response
 	 */
 	public function update($id)
-	{
+	{	
 		$script = $this->scripts->find($id);
 
 		if (! $script)
 		{
 			return $this->apiResponse(
 				'error',
-				"Script {$id} not found.",
+				Lang::get('controllers.scripts.script_error', ['id' => $id]),
 				404
 			);
 		}
@@ -131,7 +131,7 @@ class ApiScriptController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Script {$id} not found.",
+				Lang::get('controllers.scripts.script_error', ['id' => $id]),
 				404
 			);
 		}
@@ -140,7 +140,7 @@ class ApiScriptController extends \BaseController {
 
 		return $this->apiResponse(
 			'success',
-			'Script {$id} has been removed',
+			Lang::get('controllers.scripts.script_removed', ['id' => $id]),
 			200
 		);
 	}

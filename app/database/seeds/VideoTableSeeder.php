@@ -3,6 +3,7 @@
 use LangLeap\Videos\Video;
 use LangLeap\Videos\Episode;
 use LangLeap\Videos\Movie;
+use LangLeap\Videos\Show;
 use LangLeap\Videos\Commercial;
 use LangLeap\Core\Language;
 
@@ -19,8 +20,21 @@ class VideoTableSeeder extends Seeder {
 
 		$lang = Language::first();
 
-		Commercial::first()->videos()->create(['path' => '/path/to/somewhere/1.mkv', 'language_id'   => $lang->id]);
-		Movie::first()->videos()->create(['path' => '/path/to/somewhere/2.mkv', 'language_id'   => $lang->id]);
-		Episode::first()->videos()->create(['path' => '/path/to/somewhere/3.mkv', 'language_id'   => $lang->id]);
+		foreach (Commercial::all() as $commercial)
+		{
+			$commercial->videos()->create(['path' => 'videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+		}
+
+		foreach (Episode::all() as $episode)
+		{
+			$episode->videos()->create(['path' => 'videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+		}
+
+		foreach (Movie::all() as $movie)
+		{
+			$movie->videos()->create(['path' => 'videos/TestVideo.mp4', 'language_id'   => $lang->id, 'timestamps_json' => '[{"from":"1"},{"to":"2"}]']);
+
+		}
 	}
+	
 }

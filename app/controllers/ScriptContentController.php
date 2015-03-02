@@ -31,7 +31,7 @@ class ScriptContentController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"There is no script associated with this video.",
+				Lang::get('controllers.scripts.association_error'),
 				404
 			);
 		}
@@ -42,7 +42,7 @@ class ScriptContentController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"There is no script associated with this video.",
+				Lang::get('controllers.scripts.association_error'),
 				404
 			);
 		}

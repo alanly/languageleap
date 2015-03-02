@@ -1,6 +1,6 @@
 <?php
 
-use LangLeap\Quizzes\Question;
+use LangLeap\Questions\Question;
 use LangLeap\Quizzes\Answer;
 use LangLeap\Words\Definition;
 class QuestionTableSeeder extends Seeder {
@@ -13,12 +13,23 @@ class QuestionTableSeeder extends Seeder {
 	public function run()
 	{
 		Eloquent::unguard();
-		$question = App::make('LangLeap\Quizzes\Question');
+		$question = App::make('LangLeap\Questions\Question');
+		$dq = App::make('LangLeap\Questions\DefinitionQuestion');
+		$cq = App::make('LangLeap\Questions\CustomQuestion');
+		$ddq = App::make('LangLeap\Questions\DragAndDropQuestion');
 		
-		$question->create(["question" => "WHAT IS UP1?", "answer_id" => 1]);
-		$question->create(["question" => "WHAT IS UP2?", "answer_id" => 2]);
-		$question->create(["question" => "WHAT IS UP3?", "answer_id" => 3]);
-		$question->create(["question" => "WHAT IS UP4?", "answer_id" => 4]);
+		$dq->question = "What is the definition of hello?";
+		$dq->word = 'hello';
+		$dq->save();
+		$question->create(["question_type" => "LangLeap\Questions\DefinitionQuestion", "question_id" => $dq->id, "answer_id" => 1]);
+
+		$cq->question = "What is the movie about?";
+		$cq->save();
+		$question->create(["question_type" => "LangLeap\Questions\CustomQuestion", "question_id" => $cq->id, "answer_id" => 2]);
+
+		$ddq->sentence = "The **BLANK** is scared of water.";
+		$ddq->save();
+		$question->create(["question_type" => "LangLeap\Questions\DragAndDropQuestion", "question_id" => $ddq->id, "answer_id" => 3]);
 	}
 	
 }

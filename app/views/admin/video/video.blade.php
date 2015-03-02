@@ -7,9 +7,9 @@
 
 	{{ Form::open(array('url' => 'api/videos','files' => true)) }}
 
-		<input type="radio" id="comm" name="video_type" value="commercial"/><label>Commercial</label>
-		<input type="radio" id="mov" name="video_type" value="movie"/><label>Movie</label>
-		<input type="radio" id="show" name="video_type" value="show"/><label>Show</label>
+		<input type="radio" id="comm" name="video_type" value="commercial"/><label>@lang('admin.new_video.type.commercial')</label>
+		<input type="radio" id="mov" name="video_type" value="movie"/><label>@lang('admin.new_video.type.movie')</label>
+		<input type="radio" id="show" name="video_type" value="show"/><label>@lang('admin.new_video.type.show')</label>
 		<br/>
 
 		<select id="movie-select" name="movie" style="display:none">
@@ -26,11 +26,11 @@
 		<select id="episode-select" name="episode" style="display:none;">
 		</select>
 		<br/>
-		<label for='video'>Video</label> {{ Form::file('video')}} <br/>
+		<label for='video'>@lang('admin.new_video.video')</label> {{ Form::file('video')}} <br/>
 
-		<label for='script'>Script</label> {{ Form::file('script')}}<br/><br/>
+		<label for='script'>@lang('admin.new_video.script')</label> {{ Form::file('script')}}<br/><br/>
 
-		{{ Form::submit('submit')}}
+		{{ Form::submit(trans('admin.new_video.submit'))}}
 
 	{{ Form::close() }}
 </div>

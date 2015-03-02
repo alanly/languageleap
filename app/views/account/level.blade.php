@@ -6,12 +6,12 @@
 	<div class="page-header">
 		<nav>
 			<ul class="nav nav-pills pull-right">
-				<li role="presentation" class="active"><a href="#">My Level</a></li>
-				<li role="presentation"><a href="#">About</a></li>
-				<li role="presentation"><a href="#">Contact</a></li>
+				<li role="presentation" class="active"><a href="#">@lang('account.level.level')</a></li>
+				<li role="presentation"><a href="#">@lang('account.level.about')</a></li>
+				<li role="presentation"><a href="#">@lang('account.level.contact')</a></li>
 			</ul>
 		</nav>
-		<h3 class="text-muted">Language Leap</h3>
+		<h3 class="text-muted">@lang('sitename.name.no_space')</h3>
 	</div>
 
 	

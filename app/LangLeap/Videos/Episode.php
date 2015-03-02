@@ -1,13 +1,14 @@
 <?php namespace LangLeap\Videos;
 
 use LangLeap\Payments\Billable;
+use LangLeap\Videos\RecommendationSystem\Classifiable;
 
 /**
  * @author  Thomas Rahn <thomas@rahn.ca>
  * @author  Alan Ly <hello@alan.ly>
  * @author  Dror Ozgaon <dror.ozgaon@gmail.com>
  */
-class Episode extends Media implements Billable {
+class Episode extends Media implements Billable, Classifiable {
 
 	public $timestamps = false;
 
@@ -57,13 +58,22 @@ class Episode extends Media implements Billable {
 	public function toResponseArray()
 	{
 		return [
-			'id'          => $this->id,
-			'season_id'   => $this->season_id,
-			'number'      => $this->number,
-			'name'        => $this->name,
-			'description' => $this->description,
-			'show_id'     => $this->season->show_id,
-			'level'       => $this->level->description,
+			'id'            => $this->id,
+			'image_path'    => $this->season->show->image_path,
+			'season_id'     => $this->season_id,
+			'season_number' => $this->season->number,
+			'number'        => $this->number,
+			'name'          => $this->name,
+			'description'   => $this->description,
+			'show_id'       => $this->season->show_id,
+			'level'         => $this->level->description,
+		];
+	}
+
+	public function getClassificationAttributes()
+	{
+		return [
+			'director'	=> explode(',', $this->season->show->director),
 		];
 	}
 

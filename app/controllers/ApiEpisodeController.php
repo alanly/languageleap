@@ -36,7 +36,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Show {$showId} could not be found.",
+				Lang::get('controllers.episodes.show_error',  ['showId' => $showId]),
 				404
 			);
 		}
@@ -47,7 +47,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Season {$seasonId} not found for show {$showId}.",
+				Lang::get('controllers.episodes.season_error',  ['seasonId' => $seasonId,  'showId' => $showId]),
 				404
 			);
 		}
@@ -73,7 +73,7 @@ class ApiEpisodeController extends \BaseController {
 
 		if (! $show)
 		{
-			return $this->apiResponse('error', "Show {$showId} could not be found.", 404);
+			return $this->apiResponse('error', Lang::get('controllers.episodes.show_error', ['showId' => $showId]), 404);
 		}
 
 		$season = $show->seasons()->where('id', $seasonId)->first();
@@ -81,7 +81,7 @@ class ApiEpisodeController extends \BaseController {
 		if (! $season)
 		{
 			return $this->apiResponse(
-				'error', "Season {$seasonId} not found for show {$showId}.", 404
+				'error', Lang::get('controllers.episodes.season_error', ['seasonId' => $seasonId,  'showId' => $showId]), 404
 			);
 		}
 		
@@ -129,8 +129,8 @@ class ApiEpisodeController extends \BaseController {
 		if (! $show)
 		{
 			return $this->apiResponse(
-				'error',
-				"Show {$showId} could not be found.",
+				'error',				
+				Lang::get('controllers.episodes.show_error', ['showId' => $showId]),
 				404
 			);
 		}
@@ -141,7 +141,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Season {$seasonId} of show {$showId} could not be found.",
+				Lang::get('controllers.episodes.show-season_error', ['seasonId' => $seasonId,  'showId' => $showId]),
 				404
 			);
 		}
@@ -152,7 +152,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Episode {$episodeId} of season {$seasonId} for show {$showId} could not be found.",
+				Lang::get('controllers.episodes.episode_error', ['episodeId' => $episodeId, 'seasonId' => $seasonId, 'showId' => $showId]),
 				404
 			);
 		}
@@ -187,7 +187,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Show {$showId} could not be found.",
+				Lang::get('controllers.episodes.show_error', ['showId' => $showId]),
 				404
 			);
 		}
@@ -198,7 +198,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Season {$seasonId} of show {$showId} could not be found.",
+				Lang::get('controllers.episodes.show-season_error', ['seasonId' => $seasonId,  'showId' => $showId]),
 				404
 			);
 		}
@@ -209,10 +209,12 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Episode {$episodeId} of season {$seasonId} for show {$showId} could not be found.",
+				Lang::get('controllers.episodes.episode_error', ['episodeId' => $episodeId, 'seasonId' => $seasonId, 'showId' => $showId]),
 				404
 			);
 		}
+
+
 
 		$episode->fill(Input::get());
 
@@ -251,7 +253,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Show {$showId} could not be found.",
+				Lang::get('controllers.episodes.show_error', ['showId' => $showId]),
 				404
 			);
 		}
@@ -262,7 +264,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Season {$seasonId} of show {$showId} could not be found.",
+				Lang::get('controllers.episodes.show-season_error', ['seasonId' => $seasonId, 'showId' => $showId]),
 				404
 			);
 		}
@@ -273,7 +275,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Episode {$episodeId} of season {$seasonId} for show {$showId} could not be found.",
+				Lang::get('controllers.episodes.episode_error', ['episodeId' => $episodeId, 'seasonId' => $seasonId, 'showId' => $showId]),
 				404
 			);
 		}
@@ -282,7 +284,7 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				"Episode {$episodeId} of season {$seasonId} for show {$showId} could not be deleted.",
+				Lang::get('controllers.episodes.episode-deletion_error', ['episodeId' => $episodeId, 'seasonId' => $seasonId, 'showId' => $showId]),
 				500
 			);
 		}
@@ -290,6 +292,28 @@ class ApiEpisodeController extends \BaseController {
 		return $this->apiResponse('success', 'Episode deleted.', 204);
 	}
 
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return JsonResponse
+	 */
+	public function showEpisode($id)
+	{
+		
+		$episode = $this->episodes->find($id);
+
+		if (! $episode)
+		{
+			return $this->apiResponse(
+				'error',
+				"Episode {$id} could not be found.",
+				404
+			);
+		}
+
+		return $this->generateCustomizedResponse($episode);
+	}
 
 	/**
 	 * @param  LangLeap\Videos\Show           $show
@@ -326,5 +350,17 @@ class ApiEpisodeController extends \BaseController {
 		return $this->apiResponse('success', $data, $code);
 	}
 
+
+	/**
+	 * @param  LangLeap\Videos\Episode       $episodes
+	 * @return Illuminate\Http\JsonResponse
+	 */
+	protected function generateCustomizedResponse($episode, $code = 200)
+	{
+		$data['episode'] = $episode->toResponseArray();
+		$data['videos'] = $episode->videos;
+		
+		return $this->apiResponse('success', $data, $code);
+	}
 
 }

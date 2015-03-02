@@ -23,11 +23,6 @@ class Quiz extends Eloquent {
 		return $this->belongsTo('LangLeap\Account\User');
 	}
 	
-	public function video()
-	{
-		return $this->belongsTo('LangLeap\Videos\Video');
-	}
-	
 	public function toResponseArray()
 	{
 		$response =  [
@@ -39,6 +34,8 @@ class Quiz extends Eloquent {
 		{
 			array_push($response['video_questions'], $vq->toResponseArray());
 		}
+
+		shuffle($response['video_questions']);
 		
 		return $response;
 	}

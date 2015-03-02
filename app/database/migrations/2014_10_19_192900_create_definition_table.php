@@ -19,6 +19,7 @@ class CreateDefinitionTable extends Migration {
 			$table->string('definition');
 			$table->string('full_definition');
 			$table->string('pronunciation')->nullable();
+			$table->string('synonym')->nullable();
 		});
 	}
 
