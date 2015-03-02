@@ -56,6 +56,17 @@ return array(
 		'add' => 'Add Media',
 	),
 
+	'new_video' => array(
+		'type' => array(
+			'commercial' => 'Commercial',
+			'movie' => 'Movie',
+			'show' => 'Show',
+		),
+		'video' => 'Video',
+		'script' => 'Script',
+		'submit' => 'Submit',
+	),
+
 	'script' => array(
 		'upload'       => 'Script Upload',
 		'save_success' => 'Script saved successfully',
