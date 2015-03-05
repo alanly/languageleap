@@ -60,7 +60,7 @@ Route::controller('register', 'RegistrationController');
 
 
 // Route grouping for administration interface.
-Route::group(['prefix' => 'admin'], function()
+Route::group(['prefix' => 'admin', 'before' => 'admin'], function()
 {
 
 	// Interface index
