@@ -7,7 +7,12 @@ use Eloquent;
  */
 class Quiz extends Eloquent {
 
-	protected $fillable = ['score', 'user_id'];
+	protected $fillable = ['score', 'user_id', 'category_id', 'category_type'];
+	
+	public function category()
+	{
+		return $this->morphTo();
+	}
 	
 	public function videoQuestions()
 	{

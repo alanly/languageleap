@@ -1,12 +1,10 @@
 <?php
 
 use LangLeap\TestCase;
-use LangLeap\Core\Collection;
-use LangLeap\Words\Definition;
+use LangLeap\Quizzes\Quiz;
 use LangLeap\QuizUtilities\QuizFactory;
-use LangLeap\Videos\Video;
 use LangLeap\Accounts\User;
-use LangLeap\WordUtilities\WordInformation;
+use LangLeap\Videos\Video;
 
 class QuizFactoryTest extends TestCase {
 
@@ -30,6 +28,7 @@ class QuizFactoryTest extends TestCase {
 
 		$quiz = QuizFactory::getInstance()->getVideoQuiz(Auth::user()->id, $video_id, $wordsInformation);
 
+		$this->assertInstanceOf('LangLeap\Quizzes\VideoQuiz', $quiz->category);
 		$this->assertNotEmpty($quiz->videoQuestions);
 
 		foreach ($quiz->videoQuestions as $vq)
@@ -38,5 +37,69 @@ class QuizFactoryTest extends TestCase {
 			$question = $vq->question;
 			$this->assertGreaterThan(1, $question->answers->count());
 		}
+	}
+	
+	public function testReminderNullWhenNoQuestions()
+	{
+		$user = User::first();
+		$quiz = QuizFactory::getInstance()->getReminderQuiz($user->id);
+		$this->assertNull($quiz);
+	}
+	
+	public function testReminderWithPreviousIncorrectQuestion()
+	{
+		$this->saveQuizDependencies('LangLeap\Quizzes\VideoQuiz', ['video_id' => Video::first()->id]);
+		
+		$user = User::first();
+		$quiz = QuizFactory::getInstance()->getReminderQuiz($user->id);
+		
+		$this->assertInstanceOf('LangLeap\Quizzes\Quiz', $quiz);
+		$this->assertInstanceOf('LangLeap\Quizzes\ReminderQuiz', $quiz->category);
+		$this->assertNotEmpty($quiz->videoQuestions);
+	}
+	
+	public function testReminderWithPreviousReminderQuiz()
+	{
+		$user = User::first();
+		$this->saveQuizDependencies('LangLeap\Quizzes\ReminderQuiz', ['attempted' => false]);
+		
+		$previousQuiz = Quiz::where('quizzes.user_id', '=', $user->id)->join('reminder_quizzes', 'quizzes.category_id', '=', 'reminder_quizzes.id')->where('reminder_quizzes.attempted', '=', false)->first();
+		
+		$quiz = QuizFactory::getInstance()->getReminderQuiz($user->id);
+		
+		$this->assertInstanceOf('LangLeap\Quizzes\Quiz', $quiz);
+		$this->assertInstanceOf('LangLeap\Quizzes\ReminderQuiz', $quiz->category);
+		$this->assertEquals($previousQuiz->id, $quiz->id);
+		$this->assertNotEmpty($quiz->videoQuestions);
+	}
+	
+	protected function saveQuizDependencies($quizCategory, $categoryParams)
+	{
+		$category = App::make($quizCategory)->create($categoryParams);
+		
+		$quiz = App::make('LangLeap\Quizzes\Quiz')->create([
+			'user_id' => User::first()->id,
+			'category_type' => $quizCategory,
+			'category_id' => $category->id,
+		]);
+		
+		$dq = App::make('LangLeap\Questions\DefinitionQuestion')->create([
+			'question' => 'What is the definition of hello?',
+			'word' => 'hello'
+		]);
+		
+		$question = App::make('LangLeap\Questions\Question')->create([
+			"question_type" => "LangLeap\Questions\DefinitionQuestion", 
+			"question_id" => $dq->id, 
+			"answer_id" => 1
+		]);
+		
+		$videoquestion = App::make('LangLeap\Quizzes\VideoQuestion')->create([
+			'video_id' => Video::first()->id, 
+			'question_id' => $question->id, 
+			'is_custom' => false
+		]);
+		
+		$quiz->videoQuestions()->attach($videoquestion->id, ['attempted' => true, 'is_correct' => false]);
 	}
 }
