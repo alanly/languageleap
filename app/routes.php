@@ -62,6 +62,34 @@ Route::controller('register', 'RegistrationController');
 // Route grouping for administration interface.
 Route::group(['prefix' => 'admin', 'before' => 'admin'], function()
 {
+	/************************** NEW ANGULAR ADMIN ***************************/
+
+	// New admin index
+	Route::get('new', function()
+	{
+		return View::make('admin-new.index');
+	});
+
+	// New admin pages
+	Route::group(['prefix' => 'pages'], function()
+	{
+		Route::get('manage-commercials', function()
+		{
+			return View::make('admin-new.pages.manage-commercials');
+		});
+
+		Route::get('manage-movies', function()
+		{
+			return View::make('admin-new.pages.manage-movies');
+		});
+
+		Route::get('manage-shows', function()
+		{
+			return View::make('admin-new.pages.manage-shows');
+		});
+	});
+
+	/************************** END NEW ANGULAR ADMIN ************************/
 
 	// Interface index
 	Route::get('/', function()
