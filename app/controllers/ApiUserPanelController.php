@@ -35,4 +35,9 @@ class ApiUserPanelController extends \BaseController {
 		
 		return View::make('account.info')->with('data', $data)->with('langs', $langs);
 	}
+	
+	public function showQuizHistory()
+	{
+		return View::make('account.quizHistory');
+	}
 }

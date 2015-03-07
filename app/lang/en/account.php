@@ -49,4 +49,8 @@ return array(
 		'definition' => 'Definition',
 		'pronunciation' => 'Pronunciation',
 	),
+	'history' => array(
+		'title' => 'Title',
+		'score' => 'Quiz Score',
+	),
 );
