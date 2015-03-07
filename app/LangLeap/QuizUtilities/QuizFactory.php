@@ -148,7 +148,8 @@ class QuizFactory implements UserInputResponse {
 	public function getReminderQuiz($user_id)
 	{
 		// Check if a reminder quiz has been created but not attempted
-		$quiz = Quiz::where('quizzes.user_id', '=', $user_id)
+		$quiz = Quiz::select('quizzes.*')
+					->where('quizzes.user_id', '=', $user_id)
 					->where('quizzes.category_type', '=', 'LangLeap\Quizzes\ReminderQuiz')
 					->join('reminder_quizzes', 'quizzes.category_id', '=', 'reminder_quizzes.id')
 					->where('reminder_quizzes.attempted', '=', false)->first();

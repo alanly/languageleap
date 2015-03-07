@@ -59,8 +59,8 @@ class QuizAnswerUpdate implements UserInputResponse {
 			return $vq->pivot->is_correct;
 		});
 		$score = ($correctAnswers->count() * 100) / $quiz->videoQuestions->count();
+		$quiz->category->questionAnswered();
 		$quiz->score = $score;
-		$quiz->category->attempted = true;
 		$quiz->save();
 		
 		return [

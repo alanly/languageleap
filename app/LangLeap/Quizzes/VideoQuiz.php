@@ -3,9 +3,9 @@
 use Eloquent;
 
 /**
- * @author Alan Ly <hello@alan.ly>
+ * @author Quang Tran <tran.quang@live.com>
  */
-class VideoQuiz extends Eloquent {
+class VideoQuiz extends QuizCategory {
 
 	public $timestamps = false;
 	protected $fillable = ['video_id'];
@@ -18,6 +18,11 @@ class VideoQuiz extends Eloquent {
 	public function video()
 	{
 		return $this->belongsTo('LangLeap\Videos\Video');
+	}
+	
+	public function questionAnswered()
+	{
+		// Do nothing
 	}
 	
 	public function toResponseArray()

@@ -3,9 +3,9 @@
 use Eloquent;
 
 /**
- * @author Alan Ly <hello@alan.ly>
+ * @author Quang Tran <tran.quang@live.com>
  */
-class ReminderQuiz extends Eloquent {
+class ReminderQuiz extends QuizCategory {
 
 	public $timestamps = false;
 	protected $fillable = ['attempted'];
@@ -13,6 +13,15 @@ class ReminderQuiz extends Eloquent {
 	public function quiz()
 	{
 		return $this->morphMany('LangLeap\Quizzes\Quiz', 'category');
+	}
+	
+	public function questionAnswered()
+	{
+		if(!$this->attempted)
+		{
+			$this->attempted = true;
+			$this->save();
+		}
 	}
 	
 	public function toResponseArray()
