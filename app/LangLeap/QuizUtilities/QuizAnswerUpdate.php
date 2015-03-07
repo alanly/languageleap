@@ -60,6 +60,7 @@ class QuizAnswerUpdate implements UserInputResponse {
 		});
 		$score = ($correctAnswers->count() * 100) / $quiz->videoQuestions->count();
 		$quiz->score = $score;
+		$quiz->category->attempted = true;
 		$quiz->save();
 		
 		return [
