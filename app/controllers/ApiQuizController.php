@@ -153,5 +153,23 @@ class ApiQuizController extends \BaseController {
 			$response[0], $response[1], $response[2]
 		);
 	}
+	
+	public function getVideoScores()
+	{
+		$quizzes = Quiz::select(\DB::raw('quizzes.id, quizzes.category_id, quizzes.category_type, MAX(quizzes.score) as score'))
+							->where('quizzes.user_id', '=', Auth::user()->id)->where('quizzes.category_type', '=', 'LangLeap\Quizzes\VideoQuiz')
+							->join('video_quizzes', 'quizzes.category_id', '=', 'video_quizzes.id')->groupBy('video_quizzes.video_id')
+							->get();
+		
+		$data = [];
+		foreach($quizzes as $quiz)
+		{
+			array_push($data, ['video' => $quiz->category->video, 'score' => $quiz->score]);
+		}
+		
+		return $this->apiResponse(
+			'success', $data, 200
+		);
+	}
 
 }
