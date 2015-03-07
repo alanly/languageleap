@@ -164,7 +164,15 @@ class ApiQuizController extends \BaseController {
 		$data = [];
 		foreach($quizzes as $quiz)
 		{
-			array_push($data, ['video' => $quiz->category->video, 'score' => $quiz->score]);
+			$video = $quiz->category->video;
+			$viewable = $video->viewable;
+			
+			array_push($data, [
+				'title' => $viewable->name,
+				'description' => $viewable->description,
+				'link' => '/video/play/' . $video->id, 
+				'score' => $quiz->score
+			]);
 		}
 		
 		return $this->apiResponse(

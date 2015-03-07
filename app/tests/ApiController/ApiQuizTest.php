@@ -504,7 +504,9 @@ class ApiQuizControllerTest extends TestCase {
 		$this->assertNotEmpty($data);
 		foreach($data as $video_score)
 		{
-			$this->assertObjectHasAttribute('video', $video_score);
+			$this->assertObjectHasAttribute('title', $video_score);
+			$this->assertObjectHasAttribute('description', $video_score);
+			$this->assertObjectHasAttribute('link', $video_score);
 			$this->assertObjectHasAttribute('score', $video_score);
 		}
 	}
