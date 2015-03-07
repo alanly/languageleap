@@ -63,7 +63,8 @@ class QuizFactoryTest extends TestCase {
 		$user = User::first();
 		$this->saveQuizDependencies('LangLeap\Quizzes\ReminderQuiz', ['attempted' => false]);
 		
-		$previousQuiz = Quiz::where('quizzes.user_id', '=', $user->id)->join('reminder_quizzes', 'quizzes.category_id', '=', 'reminder_quizzes.id')->where('reminder_quizzes.attempted', '=', false)->first();
+		$previousQuiz = Quiz::select('quizzes.*')->where('quizzes.user_id', '=', $user->id)->where('category_type', '=', 'LangLeap\Quizzes\ReminderQuiz')
+								->join('reminder_quizzes', 'quizzes.category_id', '=', 'reminder_quizzes.id')->where('reminder_quizzes.attempted', '=', false)->first();
 		
 		$quiz = QuizFactory::getInstance()->getReminderQuiz($user->id);
 		
