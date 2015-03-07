@@ -66,7 +66,7 @@ Route::filter('auth.basic', function()
 
 Route::filter('admin', function()
 {
-	if (! Auth::user()->isAdmin())
+	if (! Auth::user() || ! Auth::user()->isAdmin())
 	{
 		return Response::make('Unauthorized', 401);
 	}
