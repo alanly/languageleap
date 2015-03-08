@@ -88,8 +88,8 @@ class QuizFactory implements UserInputResponse {
 		
 		// Create a new quiz
 		$quiz = Quiz::create([
-			'user_id'			=> $user_id,
-			'category_id'		=> $category->id,
+			'user_id'	=> $user_id,
+			'category_id'	=> $category->id,
 			'category_type'	=> 'LangLeap\Quizzes\VideoQuiz',
 		]);
 		
@@ -105,15 +105,15 @@ class QuizFactory implements UserInputResponse {
 			$dragAndDropQuestion = $this->createDragAndDropQuestion($word, 4, $video_id);
 
 			$videoQuestionDefinition = VideoQuestion::create([
-				'question_id' => $definitionQuestion->id,
-				'video_id'		=> $video_id,
-				'is_custom'		=> false // TODO Might not be required later on
+				'question_id' 	=> $definitionQuestion->id,
+				'video_id'	=> $video_id,
+				'is_custom'	=> false // TODO Might not be required later on
 			]);
 
 			$videoQuestionDragAndDrop = VideoQuestion::create([
-				'question_id' => $dragAndDropQuestion->id,
-				'video_id'		=> $video_id,
-				'is_custom'		=> false // TODO Might not be required later on
+				'question_id' 	=> $dragAndDropQuestion->id,
+				'video_id'	=> $video_id,
+				'is_custom'	=> false // TODO Might not be required later on
 			]);
 
 			$videoQuestionDefinition->save();
@@ -180,8 +180,8 @@ class QuizFactory implements UserInputResponse {
 			if($videoQuestions->count() > 0)
 			{
 				$quiz = Quiz::create([
-					'user_id' => $user_id,
-					'category_id'		=> $category->id,
+					'user_id' 	=> $user_id,
+					'category_id'	=> $category->id,
 					'category_type'	=> 'LangLeap\Quizzes\ReminderQuiz',
 				]);
 				
