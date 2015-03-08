@@ -252,7 +252,7 @@ quizApp.controller(
 			$.ajax(
 			{
 				type: 'GET',
-				url: "/api/metadata/level",
+				url: "/api/metadata/levelProgress",
 				data: {
 					_method: "PATCH"
 				},
