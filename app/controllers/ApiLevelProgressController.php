@@ -40,7 +40,7 @@ class ApiLevelProgressController extends \BaseController {
 		
 		return $this->apiResponse(
 			'success',
-			['level_id' => $currentLevel], 
+			Lang::get('controllers.quiz.level_up'), ['level_id' => $currentLevel], 
 			200
 		);
 	}
