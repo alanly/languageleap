@@ -262,7 +262,7 @@ quizApp.controller(
 				},
 				error: function(data)
 				{
-					sconsole.log(data);
+					console.log(data);
 				},
 			});
 		};
