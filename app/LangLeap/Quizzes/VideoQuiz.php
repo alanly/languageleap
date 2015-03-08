@@ -12,7 +12,7 @@ class VideoQuiz extends QuizCategory {
 	
 	public function quiz()
 	{
-		return $this->morphMany('LangLeap\Quizzes\Quiz', 'category');
+		return $this->morphOne('LangLeap\Quizzes\Quiz', 'category');
 	}
 	
 	public function video()

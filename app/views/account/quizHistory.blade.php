@@ -22,7 +22,7 @@
 				<th style="width: 58%">@lang('index.layout.general.description')</th>
 				<th style="width: 5%">@lang('index.layout.general.play')</th>
 				<th style="width: 12%">@lang('index.layout.general.part_number')</th>
-				<th style="width: 10%">@lang('account.history.score')</th>
+				<th style="width: 10%">@lang('index.layout.general.score')</th>
 			</tr>
 		</thead>
  
@@ -32,7 +32,7 @@
 				<th>@lang('index.layout.general.description')</th>
 				<th>@lang('index.layout.general.play')</th>
 				<th>@lang('index.layout.general.part_number')</th>
-				<th>@lang('account.history.score')</th>
+				<th>@lang('index.layout.general.score')</th>
 			</tr>
 		</tfoot>
 	</table>

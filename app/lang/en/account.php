@@ -51,6 +51,5 @@ return array(
 	),
 	'history' => array(
 		'title' => 'Title',
-		'score' => 'Quiz Score',
 	),
 );
