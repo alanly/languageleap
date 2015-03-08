@@ -23,14 +23,7 @@
 				<th>@lang('account.words.pronunciation')</th>
 			</tr>
 		</thead>
- 
-		<tfoot>
-			<tr>
-				<th>@lang('account.words.word')</th>
-				<th>@lang('account.words.definition')</th>
-				<th>@lang('account.words.pronunciation')</th>
-			</tr>
-		</tfoot>
+
 	</table>
 </div>
 <audio id="word-audio" autoplay></audio>
