@@ -49,6 +49,7 @@ return array(
 		'blank-fields_error' => 'Fields not filled in properly.',
 		'quiz_error' => 'Quiz :quiz_id not found.',
 		'quiz_no-auth' => 'Not authorized to view quiz :quiz_id.',
+		'level_up' => 'Level Up!',
 	),
 	'recommended' => array(
 		'not-logged_error' => 'User not logged in.',
