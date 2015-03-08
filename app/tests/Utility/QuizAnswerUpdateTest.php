@@ -88,8 +88,12 @@ class QuizAnswerUpdateTest extends TestCase {
 			'viewable_type' => 'LangLeap\Videos\Commercial'
 		]);
 		
+		$category = App::make('LangLeap\Quizzes\VideoQuiz')->create(['video_id' => $this->video->id]);
+		
 		$this->quiz = $quiz->create([
-			'user_id' => 1
+			'user_id' => 1,
+			'category_id' => $category->id,
+			'category_type' => 'LangLeap\Quizzes\VideoQuiz',
 		]);
 		
 		$this->definitionQuestion = $dq->create([

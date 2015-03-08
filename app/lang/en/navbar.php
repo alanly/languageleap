@@ -25,6 +25,7 @@ return array(
 			'review' => 'Review',
 			'profile' => 'Profile',
 			'settings' => 'Settings',
+			'history' => 'History',
 		),
 
 		'logout' => 'Logout',

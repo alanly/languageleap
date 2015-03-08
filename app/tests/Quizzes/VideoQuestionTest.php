@@ -58,6 +58,8 @@ class VideoQuestionTest extends TestCase {
 	protected function getQuizInstance()
 	{
 		$quiz = App::make('LangLeap\Quizzes\Quiz');
+		$quiz->category_id = 1;
+		$quiz->category_type = 'LangLeap\Quizzes\VideoQuiz';
 		$quiz->save();
 
 		return $quiz;
