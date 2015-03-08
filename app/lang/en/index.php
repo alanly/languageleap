@@ -67,6 +67,7 @@ return array(
 			'length' => 'Length',
 			'play' => 'Play',
 			'error' => 'There was a problem loading the information, Please try again at a later time.',
+			'score' => 'Quiz Score',
 		),
 		'movie' => array(
 			'director' => 'Director',

@@ -489,4 +489,25 @@ class ApiQuizControllerTest extends TestCase {
 		$data = $response->getData()->data;
 		$this->assertObjectHasAttribute('quiz_id', $data);
 	}
+	
+	public function testVideoScores()
+	{
+		$response = $this->call(
+			'get',
+			'api/quiz/video-scores'
+		);
+		
+		$this->assertResponseOk();
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		
+		$data = $response->getData()->data;
+		$this->assertNotEmpty($data);
+		foreach($data as $video_score)
+		{
+			$this->assertObjectHasAttribute('title', $video_score);
+			$this->assertObjectHasAttribute('description', $video_score);
+			$this->assertObjectHasAttribute('link', $video_score);
+			$this->assertObjectHasAttribute('score', $video_score);
+		}
+	}
 }

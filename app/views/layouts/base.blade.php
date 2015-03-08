@@ -38,6 +38,9 @@
 					<div class="collapse navbar-collapse" id="navbar-buttons">
 						<ul class="nav navbar-nav navbar-right">
 							@if (Auth::check())
+								<li>
+									<a href="{{ URL::to('user/history') }}" role="menu-item">@lang('navbar.buttons.account.history')</a>
+								</li>
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="text-decoration: none;">
 										@lang('navbar.buttons.quiz-reminder.name')

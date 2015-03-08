@@ -221,6 +221,9 @@ Route::group(['prefix' => 'user', "before" => "auth"], function()
 
 	//User Info
 	Route::get('info', 'ApiUserPanelController@showInfo');
+	
+	//User quiz history
+	Route::get('history', 'ApiUserPanelController@showQuizHistory');
 });
 
 Route::any('queue/recieve', function()
