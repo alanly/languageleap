@@ -17,7 +17,6 @@ class ApiLevelProgressController extends \BaseController {
 		$user = Auth::user();
 		
 		$quizScore = Input::get('score');
-		$levelUp = false;
 		
 		$exponentFactor = 2.5;
 		$levelFactor = 1.5;
@@ -41,10 +40,7 @@ class ApiLevelProgressController extends \BaseController {
 		
 		return $this->apiResponse(
 			'success',
-			[
-				'level_id' => $currentLevel,
-				$levelUp
-			], 
+			['level_id' => $currentLevel], 
 			200
 		);
 	}
