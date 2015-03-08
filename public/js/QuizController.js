@@ -258,7 +258,7 @@ quizApp.controller(
 				},
 				success: function(data)
 				{
-					return data.message + "";
+					return data.message;
 				},
 				error: function(data)
 				{
