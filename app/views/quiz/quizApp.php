@@ -59,7 +59,8 @@
 			<p class="lead"><?php echo Lang::get('quiz.results.result', ['correct' => "{{ correctQuestionsCount }}", 'count' => "{{ questionsCount }}"]) ?></p>
 			<br>
 			<span id="final-score">{{ finalScore() }}%</span>
-
+			<br/>
+			<span id="level-up">{{ levelUp() }}</span>
 			<hr>
 			<h4>Recommended</h4>
 			<div id="recommended"></div>

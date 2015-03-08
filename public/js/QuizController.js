@@ -233,7 +233,6 @@ quizApp.controller(
 	'ScoreModalInstanceController',
 	function($scope, $modalInstance, correctQuestionsCount, questionsCount, redirect)
 	{
-
 		$scope.correctQuestionsCount = correctQuestionsCount;
 		$scope.questionsCount = questionsCount;
 		$scope.redirect = redirect;
@@ -245,6 +244,27 @@ quizApp.controller(
 			score = Math.round(score * 100) / 100
 
 			return score;
+		};
+
+
+		$scope.levelUp = function()
+		{
+			$.ajax(
+			{
+				type: 'GET',
+				url: "/api/metadata/level",
+				data: {
+					_method: "PATCH"
+				},
+				success: function(data)
+				{
+					return data.message + "";
+				},
+				error: function(data)
+				{
+					sconsole.log(data);
+				},
+			});
 		};
 
 	}
