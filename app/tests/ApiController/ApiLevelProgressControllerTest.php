@@ -1,6 +1,7 @@
 <?php
 
 use LangLeap\TestCase;
+use LangLeap\Accounts\User;
 
 class ApiLevelProgressControllerTest extends TestCase {
 

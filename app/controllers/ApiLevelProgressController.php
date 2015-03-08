@@ -1,5 +1,7 @@
 <?php
 
+use LangLeap\Accounts\User;
+
 /**
  * @author Kwok-Chak Wan <martinwan1992@hotmail.com>
  */
@@ -14,15 +16,16 @@ class ApiLevelProgressController extends \BaseController {
 	{
 		$user = Auth::user();
 		
-		$quizScore = 0.8; //will be changed to percentage, currently 80% on quiz
+		$quizScore = Input::get('score');
+		$levelUp = false;
 		
 		$exponentFactor = 2.5;
 		$levelFactor = 1.5;
-		$scoreMultiplier = 10;
-		const levelUp = 1;
+		$scoreMultiplier = 0.1;
+		$levelIncrease = 1;
 		
-		$currentLevel = $user->level_id->get();
-		$userTotalPoints = $user->total_points->get();
+		$currentLevel = $user->level_id;
+		$userTotalPoints = $user->total_points;
 		
 		$requiredPoints = ceil((pow($currentLevel, $exponentFactor)) * $levelFactor);
 		
@@ -32,12 +35,16 @@ class ApiLevelProgressController extends \BaseController {
 		
 		if($userTotalPoints >= $requiredPoints)
 		{
-			$currentLevel += $levelUp;
+			$currentLevel += $levelIncrease;
+			$levelUp = true;
 		}
 		
 		return $this->apiResponse(
 			'success',
-			['level_id' => $currentLevel], 
+			[
+				'level_id' => $currentLevel,
+				$levelUp
+			], 
 			200
 		);
 	}
@@ -46,7 +53,7 @@ class ApiLevelProgressController extends \BaseController {
 	{
 		$user = Auth::user();
 		
-		$currentLevel = $user->level_id->get();
+		$currentLevel = $user->level_id;
 		
 		return $this->apiResponse(
 			'success',
