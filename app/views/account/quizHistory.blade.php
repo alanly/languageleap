@@ -25,16 +25,6 @@
 				<th style="width: 10%">@lang('index.layout.general.score')</th>
 			</tr>
 		</thead>
- 
-		<tfoot>
-			<tr>
-				<th>@lang('account.history.title')</th>
-				<th>@lang('index.layout.general.description')</th>
-				<th>@lang('index.layout.general.play')</th>
-				<th>@lang('index.layout.general.part_number')</th>
-				<th>@lang('index.layout.general.score')</th>
-			</tr>
-		</tfoot>
 	</table>
 </div>
 <audio id="word-audio" autoplay></audio>
