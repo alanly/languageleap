@@ -157,6 +157,9 @@ Route::group(['prefix' => 'api'], function()
 	
 	// Review words
 	Route::controller('review', 'ApiReviewWordsController');
+	
+	// Level progress
+	Route::controller('levelProgress', 'ApiLevelProgressController');
 
 	//Api routes with auth filter
 	Route::group(array('before' => 'auth'), function() {  
