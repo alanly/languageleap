@@ -17,7 +17,7 @@ class ApiLevelProgressController extends \BaseController {
 		$this->beforeFilter('auth');
 	}
 	
-	public function postIndex()
+	public function postIndex($quizScore)
 	{
 		$user = Auth::user();
 		
