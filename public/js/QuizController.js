@@ -185,15 +185,23 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 				redirect: function() { return $scope.redirect.redirect; },
 				levelUpMessage: function ()
 				{
-					$http.post('/api/levelProgress').
-					success(function(data, status, headers, config) 
-					{
-						$scope.levelUpMessage = "Hello";
-						return $scope.levelUpMessage;
-					});
-					
-					$scope.levelUpMessage = "Error";
-					return $scope.levelUpMessage;
+					var message = "Error";
+
+					$.ajax({
+							  type: "POST",
+							  url: "/api/levelProgress",
+							  async: false,
+							success: function(data) 
+							{
+								message = data.data.message;
+							},
+					      	error: function() 
+					      	{
+								message = "Error";
+					     	}
+					   });
+
+					return message;
 				}
 			},
 			backdrop: 'static',
