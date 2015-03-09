@@ -31,7 +31,6 @@ class ApiLevelProgressController extends \BaseController {
 		
 		//earned = ceiling(quizScore * 0.1 * 1.5 * userLevel)
 		$pointsEarned = ceil($quizScore * ApiLevelProgressController::scoreMultiplier * ApiLevelProgressController::levelFactor * $currentLevel);
-		//dd($pointsEarned);
 		
 		$userTotalPoints += $pointsEarned;	
 
@@ -42,7 +41,6 @@ class ApiLevelProgressController extends \BaseController {
 			$currentLevel += ApiLevelProgressController::levelIncrease;
 			$user->level_id = $currentLevel;
 			$message = Lang::get('controllers.quiz.level_up');
-			//dd("test");
 		}
 		
 		$user->total_points = $userTotalPoints;
