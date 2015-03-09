@@ -60,7 +60,7 @@
 			<br>
 			<span id="final-score">{{ finalScore() }}%</span>
 			<br/>
-			<span id="level-up">{{ levelUp() }}</span>
+			<span id="level-up">{{ levelUpMessage }}</span>
 			<hr>
 			<h4>Recommended</h4>
 			<div id="recommended"></div>

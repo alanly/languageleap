@@ -35,8 +35,11 @@ class ApiLevelProgressController extends \BaseController {
 		if($userTotalPoints >= $requiredPoints)
 		{
 			$currentLevel += $levelIncrease;
-			$levelUp = true;
+			$user->level_id = $currentLevel;
 		}
+		
+		$user->total_points = $userTotalPoints;
+		$user->save();
 		
 		return $this->apiResponse(
 			'success',

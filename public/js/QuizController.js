@@ -36,6 +36,8 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 	//Get the redirect link for after the quiz
 	var redirect = $scope.redirect = JSON.parse(localStorage.getItem("redirect"));
 
+	var levelUpMessage = $scope.levelUpMessage = "";
+
 	/**
 	 * Load questions from the API on boot.
 	 */
@@ -180,7 +182,19 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			resolve: {
 				correctQuestionsCount: function() { return $scope.correctQuestionsCount; },
 				questionsCount: function() { return $scope.questions.length; },
-				redirect: function() { return $scope.redirect.redirect; }
+				redirect: function() { return $scope.redirect.redirect; },
+				levelUpMessage: function ()
+				{
+					$http.post('/api/levelProgress').
+					success(function(data, status, headers, config) 
+					{
+						$scope.levelUpMessage = "Hello";
+						return $scope.levelUpMessage;
+					});
+					
+					$scope.levelUpMessage = "Error";
+					return $scope.levelUpMessage;
+				}
 			},
 			backdrop: 'static',
 			keyboard: false
@@ -231,11 +245,12 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
  */
 quizApp.controller(
 	'ScoreModalInstanceController',
-	function($scope, $modalInstance, correctQuestionsCount, questionsCount, redirect)
+	function($scope, $http, $modalInstance, correctQuestionsCount, questionsCount, redirect, levelUpMessage)
 	{
 		$scope.correctQuestionsCount = correctQuestionsCount;
 		$scope.questionsCount = questionsCount;
 		$scope.redirect = redirect;
+		$scope.levelUpMessage = levelUpMessage;
 
 		$scope.finalScore = function()
 		{
@@ -245,27 +260,5 @@ quizApp.controller(
 
 			return score;
 		};
-
-
-		$scope.levelUp = function()
-		{
-			$.ajax(
-			{
-				type: 'GET',
-				url: "/api/metadata/levelProgress",
-				data: {
-					_method: "PATCH"
-				},
-				success: function(data)
-				{
-					return data.message;
-				},
-				error: function(data)
-				{
-					console.log(data);
-				},
-			});
-		};
-
 	}
 );
