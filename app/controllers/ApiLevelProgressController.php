@@ -7,6 +7,11 @@ use LangLeap\Accounts\User;
  */
 class ApiLevelProgressController extends \BaseController {
 
+	const exponentFactor = 2.5;
+	const levelFactor = 1.5;
+	const scoreMultiplier = 0.1;
+	const levelIncrease = 1;
+	
 	public function __construct()
 	{
 		$this->beforeFilter('auth');
@@ -18,23 +23,18 @@ class ApiLevelProgressController extends \BaseController {
 		
 		$quizScore = Input::get('score');
 		
-		$exponentFactor = 2.5;
-		$levelFactor = 1.5;
-		$scoreMultiplier = 0.1;
-		$levelIncrease = 1;
-		
 		$currentLevel = $user->level_id;
 		$userTotalPoints = $user->total_points;
 		
-		$requiredPoints = ceil((pow($currentLevel, $exponentFactor)) * $levelFactor);
+		$requiredPoints = ceil((pow($currentLevel, ApiLevelProgressController::exponentFactor)) * ApiLevelProgressController::levelFactor);
 		
-		$pointsEarned = ceil($quizScore * $scoreMultiplier * $levelFactor * $currentLevel);
+		$pointsEarned = ceil($quizScore * ApiLevelProgressController::scoreMultiplier * ApiLevelProgressController::levelFactor * $currentLevel);
 		
 		$userTotalPoints += $pointsEarned;
 		
 		if($userTotalPoints >= $requiredPoints)
 		{
-			$currentLevel += $levelIncrease;
+			$currentLevel += ApiLevelProgressController::levelIncrease;
 			$user->level_id = $currentLevel;
 		}
 		
