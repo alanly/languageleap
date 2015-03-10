@@ -45,6 +45,34 @@ class ApiLevelProgressControllerTest extends TestCase {
 		$this->assertJson($response->getContent());
 	}
 	
+	public function testNegativeScore()
+	{
+		$this->seed();
+		
+		$user = User::first();
+		$this->be($user);
+		
+		$score = -1;
+		
+		$response = $this->action('POST', 'ApiLevelProgressController@postIndex', [], ['score' => $score]);
+		
+		$this->assertResponseStatus(400);
+	}
+	
+	public function testNullScore()
+	{
+		$this->seed();
+		
+		$user = User::first();
+		$this->be($user);
+		
+		$score = null;
+		
+		$response = $this->action('POST', 'ApiLevelProgressController@postIndex', [], ['score' => $score]);
+		
+		$this->assertResponseStatus(400);
+	}
+	
 	public function testSameLevel()
 	{
 		$this->seed();

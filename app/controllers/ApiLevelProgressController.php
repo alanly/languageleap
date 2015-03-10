@@ -21,7 +21,20 @@ class ApiLevelProgressController extends \BaseController {
 	{
 		$user = Auth::user();
 		
+		$message = "";
+		
 		$quizScore = Input::get('score');
+		
+		if($quizScore === null || $quizScore < 0)
+		{
+			$message = Lang::get('controllers.quiz.level_error');
+			
+			return $this->apiResponse(
+				'error',
+				['message' => $message],
+				400
+			);
+		}
 		
 		$currentLevel = $user->level_id;
 		$userTotalPoints = $user->total_points;
@@ -32,9 +45,7 @@ class ApiLevelProgressController extends \BaseController {
 		//earned = ceiling(quizScore * 0.1 * 1.5 * userLevel)
 		$pointsEarned = ceil($quizScore * ApiLevelProgressController::scoreMultiplier * ApiLevelProgressController::levelFactor * $currentLevel);
 		
-		$userTotalPoints += $pointsEarned;	
-
-		$message = "";
+		$userTotalPoints += $pointsEarned;
 
 		if($userTotalPoints >= $requiredPoints)
 		{

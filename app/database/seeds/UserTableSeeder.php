@@ -41,18 +41,6 @@ class UserTableSeeder extends Seeder {
 			'is_admin'	=> false,
 			'is_confirmed'	=> true
 		]);
-		
-		$user->create([
-			'username'	=> 'user2',
-			'password'	=> Hash::make('test'),
-			'email'		=> 'user@test.com',
-			'first_name'	=> 'level',
-			'last_name'	=> 'progress',
-			'language_id'	=> $lang->id,
-			'level_id'	=> $level->id,
-			'is_admin'	=> false,
-			'is_confirmed'	=> true
-		]);
 	}
 
 }
