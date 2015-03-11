@@ -31,7 +31,7 @@ class ApiLevelProgressController extends \BaseController {
 			
 			return $this->apiResponse(
 				'error',
-				['message' => $message],
+				Lang::get('controllers.quiz.level_error'),
 				400
 			);
 		}
@@ -68,11 +68,9 @@ class ApiLevelProgressController extends \BaseController {
 	{
 		$user = Auth::user();
 		
-		$currentLevel = $user->level_id;
-		
 		return $this->apiResponse(
 			'success',
-			['level_id' => $currentLevel],
+			['level_id' => $user->level_id],
 			200
 		);
 	}
