@@ -2,9 +2,12 @@
 
 	var app = angular.module('adminApp');
 
-	app.controller('MovieController', ['$scope', '$log', '$routeParams', '$http', function($scope, $log, $routeParams, $http) {
+
+	app.controller('MovieController', ['$scope', '$log', '$routeParams', '$http', '$modal', function($scope, $log, $routeParams, $http, $modal) {
 
 		$scope.movies = [];
+
+		var modal_instance;
 
 		// Load all of the movies
 		$http.get('/api/metadata/movies').
@@ -34,6 +37,18 @@
 			$http.put('/api/metadata/movies/' + movie.id, movie);
 		};
 
+		$scope.openModal = function(movie) {
+
+			var modal_instance = $modal.open({
+				templateUrl: 'movieModalTemplate.html',
+				controller: 'MovieController',
+				size: 'md',
+				resolve : {
+
+				},
+				backdrop : 'static',
+			});
+		};
 
 	}]);
 })();

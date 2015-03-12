@@ -21,6 +21,7 @@
 	<script src="/js/admin/app.js"></script>
 	<script src="/js/admin/routes.js"></script>
 	<script src="/js/admin/directives/common.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.2/ui-bootstrap-tpls.min.js"></script>
 	<script src="/js/admin/controllers/commercial/CommercialController.js"></script>
 	<script src="/js/admin/controllers/movie/MovieController.js"></script>
 	<script src="/js/admin/controllers/show/ShowController.js"></script>

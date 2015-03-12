@@ -20,6 +20,12 @@
 	</table>
 </div>
 
+<script type="text/ng-template" id="movieModalTemplate.html">
+	<div class="container">
+		<h1> Test</h1>
+	</div>
+</script
+
 
 <script type="text/javascript">
 	$(document).ready(function () {

@@ -12,7 +12,7 @@
 	<tbody>
 		<tr ng-repeat="movie in movies">
 			<td class="id">{{ movie.id }}</td>
-			<td><a href="#"><i class="fa fa-edit fa-fw"></i></a><a ng-click="remove(movie);"><i class="fa fa-trash fa-fw"></i></a></td>
+			<td><a ng-click="openModal(movie);"><i class="fa fa-edit fa-fw"></i></a><a ng-click="remove(movie);"><i class="fa fa-trash fa-fw"></i></a></td>
 			<td>{{ movie.name }}</td>
 			<td><input class="publish" type="checkbox" ng-model="movie.is_published" ng-click="onPublishClick($event, movie);" ng-checked="movie.is_published" /></td>
 		</tr>
@@ -22,3 +22,9 @@
 <div ng-if="movies.length === 0">
 	There doesn't seem to be anything here.
 </div>
+
+<script type="text/ng-template" id="movieModalTemplate.html">
+	<div class="container">
+		<h1> Test</h1>
+	</div>
+</script

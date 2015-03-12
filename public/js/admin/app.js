@@ -1,5 +1,5 @@
 (function() {
 
-	var app = angular.module('adminApp', ['ngRoute', 'ngResource']);
+	var app = angular.module('adminApp', ['ngRoute', 'ngResource', 'ui.bootstrap']);
 	
 })();
