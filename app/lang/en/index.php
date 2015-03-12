@@ -58,6 +58,7 @@ return array(
 		'search' => array(
 			'search' => 'Search',
 			'for' => 'Search for...',
+			'empty' => 'No results matching your search were found!',
 		),
 		'general' => array(
 			'difficulty' => 'Difficulty level',
@@ -66,6 +67,7 @@ return array(
 			'length' => 'Length',
 			'play' => 'Play',
 			'error' => 'There was a problem loading the information, Please try again at a later time.',
+			'score' => 'Quiz Score',
 		),
 		'movie' => array(
 			'director' => 'Director',
@@ -77,6 +79,9 @@ return array(
 			),
 		),
 		'commercial' => array(
+		),
+		'filter' => array(
+			'error' => 'There was a problem loading the information, Please try again at a later time.',
 		),
 	),
 );

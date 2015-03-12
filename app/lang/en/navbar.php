@@ -26,7 +26,10 @@ return array(
 			'profile' => 'Profile',
 			'settings' => 'Settings',
 			'level' => 'My Level',
+			'history' => 'History',
 		),
+
+		'logout' => 'Logout',
 	),
 	'brand' => 'Language Leap'
 );

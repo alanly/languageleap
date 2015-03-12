@@ -36,6 +36,11 @@ class Video extends ValidatedModel {
 		return $this->morphTo();
 	}	
 
+	public function videoQuizzes()
+	{
+		return $this->hasMany('LangLeap\Quizzes\VideoQuiz');
+	}
+	
 	/**
 	 * This function will return the next video in the sequence or null if there is none.
 	 *
@@ -64,7 +69,26 @@ class Video extends ValidatedModel {
 			'viewable_type' => $this->viewable_type,
 			'script'        => ['id' => $script->id, 'text' => $script->text],
 			'timestamps_json'=> $this->timestamps_json,
+			'score'        => $this->getUserScore(\Auth::user()),
 		];
+	}
+	
+	private function getUserScore($user)
+	{
+		$score = 0;
+		if($user)
+		{
+			$videoQuizzes = $this->videoQuizzes;
+			
+			foreach($videoQuizzes as $videoQuiz)
+			{
+				if($videoQuiz->quiz->user_id == $user->id && $videoQuiz->quiz->score > $score)
+				{
+					$score = $videoQuiz->quiz->score;
+				}
+			}
+		}
+		return $score;
 	}
 
 }

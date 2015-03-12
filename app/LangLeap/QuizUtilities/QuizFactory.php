@@ -6,12 +6,15 @@ use LangLeap\Core\UserInputResponse;
 use LangLeap\Quizzes\Answer;
 use LangLeap\QuestionUtilities\QuestionFactory;
 use LangLeap\Quizzes\Quiz;
+use LangLeap\Quizzes\ReminderQuiz;
 use LangLeap\Quizzes\Result;
 use LangLeap\Quizzes\VideoQuestion;
+use LangLeap\Quizzes\VideoQuiz;
 use LangLeap\Videos\Video;
 use LangLeap\Words\Definition;
 use LangLeap\WordUtilities\WordInformation;
 use LangLeap\Words\Script;
+use Lang;
 
 /**
  * Factory that creates quizzes based on selected words in a script
@@ -81,10 +84,16 @@ class QuizFactory implements UserInputResponse {
 		// Retrieve the word, its associated definition, and the sentence it is in.
 		$wordsInformation = WordInformation::fromInput($selectedWords, $video_id);
 		
-		// Create a new quiz
-		$quiz = Quiz::create(['user_id'	=> $user_id]);
+		$category = VideoQuiz::create([ 'video_id' => $video_id ]);
 		
-		$questionPrepend = 'What is the definition of ';
+		// Create a new quiz
+		$quiz = Quiz::create([
+			'user_id'	=> $user_id,
+			'category_id'	=> $category->id,
+			'category_type'	=> 'LangLeap\Quizzes\VideoQuiz',
+		]);
+		
+		$questionPrepend = Lang::get('quiz.definition_of');
 		
 		// Check for questions for each selected definition
 		foreach ($wordsInformation as $word)
@@ -96,15 +105,15 @@ class QuizFactory implements UserInputResponse {
 			$dragAndDropQuestion = $this->createDragAndDropQuestion($word, 4, $video_id);
 
 			$videoQuestionDefinition = VideoQuestion::create([
-				'question_id' => $definitionQuestion->id,
-				'video_id'		=> $video_id,
-				'is_custom'		=> false // TODO Might not be required later on
+				'question_id' 	=> $definitionQuestion->id,
+				'video_id'	=> $video_id,
+				'is_custom'	=> false // TODO Might not be required later on
 			]);
 
 			$videoQuestionDragAndDrop = VideoQuestion::create([
-				'question_id' => $dragAndDropQuestion->id,
-				'video_id'		=> $video_id,
-				'is_custom'		=> false // TODO Might not be required later on
+				'question_id' 	=> $dragAndDropQuestion->id,
+				'video_id'	=> $video_id,
+				'is_custom'	=> false // TODO Might not be required later on
 			]);
 
 			$videoQuestionDefinition->save();
@@ -138,40 +147,60 @@ class QuizFactory implements UserInputResponse {
 	 */
 	public function getReminderQuiz($user_id)
 	{
-		$allQuestions = VideoQuestion::select(
-			array('videoquestions.*', 
-			\DB::raw('COUNT(NULLIF(videoquestion_quiz.is_correct, 0)) as correct'), 
-			\DB::raw('COUNT(NULLIF(videoquestion_quiz.is_correct, 1)) as incorrect'))
-		)
-			->join('videoquestion_quiz', 'videoquestion_quiz.videoquestion_id', '=', 'videoquestions.id')->join('quizzes', 'quizzes.id', '=', 'videoquestion_quiz.quiz_id')
-			->where('videoquestions.is_custom', '=', false)->where('videoquestion_quiz.attempted', '=', true)
-			->where('quizzes.user_id', '=', $user_id)->groupBy('videoquestions.id')->get();
+		// Check if a reminder quiz has been created but not attempted
+		$quiz = Quiz::select('quizzes.*')
+					->where('quizzes.user_id', '=', $user_id)
+					->where('quizzes.category_type', '=', 'LangLeap\Quizzes\ReminderQuiz')
+					->join('reminder_quizzes', 'quizzes.category_id', '=', 'reminder_quizzes.id')
+					->where('reminder_quizzes.attempted', '=', false)->first();
 		
-		$videoQuestions = new Collection([]);
-		foreach($allQuestions as $q) // Possibly add the question to the reminder quiz if it has been wrong more than 34% of the time.
+		if(!$quiz)
 		{
-			$percentRight = (float)$q->correct/(float)($q->correct + $q->incorrect);
-			if($percentRight < 0.66)
+			$category = ReminderQuiz::create(['attempted' => false]);
+			
+			$allQuestions = VideoQuestion::select(
+				array('videoquestions.*', 
+				\DB::raw('COUNT(NULLIF(videoquestion_quiz.is_correct, 0)) as correct'), 
+				\DB::raw('COUNT(NULLIF(videoquestion_quiz.is_correct, 1)) as incorrect'))
+			)
+				->join('videoquestion_quiz', 'videoquestion_quiz.videoquestion_id', '=', 'videoquestions.id')->join('quizzes', 'quizzes.id', '=', 'videoquestion_quiz.quiz_id')
+				->where('videoquestions.is_custom', '=', false)->where('videoquestion_quiz.attempted', '=', true)
+				->where('quizzes.user_id', '=', $user_id)->groupBy('videoquestions.id')->get();
+			
+			$videoQuestions = new Collection([]);
+			foreach($allQuestions as $q) // Possibly add the question to the reminder quiz if it has been wrong more than 34% of the time.
 			{
-				$videoQuestions->add($q);
+				$percentRight = (float)$q->correct/(float)($q->correct + $q->incorrect);
+				if($percentRight < 0.66)
+				{
+					$videoQuestions->add($q);
+				}
 			}
+			
+			if($videoQuestions->count() > 0)
+			{
+				$quiz = Quiz::create([
+					'user_id' 	=> $user_id,
+					'category_id'	=> $category->id,
+					'category_type'	=> 'LangLeap\Quizzes\ReminderQuiz',
+				]);
+				
+				while($videoQuestions->count() > 0 && $quiz->videoQuestions()->count() < 5)
+				{
+					$vq = $videoQuestions->shift();
+					$quiz->videoQuestions()->attach($vq->id);
+				}
+				$quiz->save();
+				
+				return $quiz;
+			}
+			
+			return null;
 		}
-		
-		if($videoQuestions->count() > 0)
+		else
 		{
-			$quiz = Quiz::create(['user_id' => $user_id]);
-			
-			while($videoQuestions->count() > 0 && $quiz->videoQuestions()->count() < 5)
-			{
-				$vq = $videoQuestions->shift();
-				$quiz->videoQuestions()->attach($vq->id);
-			}
-			$quiz->save();
-			
 			return $quiz;
 		}
-		
-		return null;
 	}
 	
 	/**

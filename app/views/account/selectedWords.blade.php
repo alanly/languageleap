@@ -18,19 +18,12 @@
 	<table id="selectedWords" class="table table-striped table-bordered" cellspacing="0" width="100%">
 		<thead>
 			<tr>
-				<th>Word</th>
-				<th>Definition</th>
-				<th>Pronunciation</th>
+				<th>@lang('account.words.word')</th>
+				<th>@lang('account.words.definition')</th>
+				<th>@lang('account.words.pronunciation')</th>
 			</tr>
 		</thead>
- 
-		<tfoot>
-			<tr>
-				<th>Word</th>
-				<th>Definition</th>
-				<th>Pronunciation</th>
-			</tr>
-		</tfoot>
+
 	</table>
 </div>
 <audio id="word-audio" autoplay></audio>

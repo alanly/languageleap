@@ -42,34 +42,34 @@
 <div class="container">
 
 	<?php
-	//$script contains the full string of the script
-	$script = Session::get('script');
-	$script_id = Session::get('script_id');
-	
-	$script = strtolower($script);
-	$script = preg_replace('/[^[:alpha:] ]/', '', $script);
-	$words = explode(" ", $script);
-	
-	echo Form::open(array('url' => 'api/words')) . "\n";
-	echo Form::hidden('script_id', $script_id) . "\n";
-	echo '<table>'."\n";
-	echo '<th>Word</th><th>Definition</th><th>Full Definition</th><th>Pronunciation</th>'."\n";
-	foreach($words as $word)
-	{
-		if(!$word)
+		//$script contains the full string of the script
+		$script = Session::get('script');
+		$script_id = Session::get('script_id');
+		
+		$script = strtolower($script);
+		$script = preg_replace('/[^[:alpha:] ]/', '', $script);
+		$words = explode(" ", $script);
+		
+		echo Form::open(array('url' => 'api/words')) . "\n";
+		echo Form::hidden('script_id', $script_id) . "\n";
+		echo '<table>'."\n";
+		echo '<tr><th>'.Lang::choice('admin.terms.words', 1).'</th><th>'.Lang::choice('admin.terms.definitions', 1).'</th><th>'.Lang::choice('admin.terms.full_defin').'</th><th>'.Lang::choice('admin.terms.pronunciations').'</th></tr>';
+		foreach($words as $word)
 		{
-			continue;
+			if(!$word)
+			{
+				continue;
+			}
+			echo '<tr>';
+			echo '<td>' . Form::label('definitions['.$word.']', $word) . '</td>';
+			echo '<td>' . Form::text('definitions['.$word.'][def]', null, array('class'=>'load-definitions tt-query', 'data-word'=>$word)) . '</td>';
+			echo '<td>' . Form::text('definitions['.$word.'][full_def]', null, array('class'=>'tt-query')) . '</td>';
+			echo '<td>' . Form::text('definitions['.$word.'][pronun]', null, array('class'=>'tt-query')) . '</td>';
+			echo "</tr>\n";
 		}
-		echo '<tr>';
-		echo '<td>' . Form::label('definitions['.$word.']', $word) . '</td>';
-		echo '<td>' . Form::text('definitions['.$word.'][def]', null, array('class'=>'load-definitions tt-query', 'data-word'=>$word)) . '</td>';
-		echo '<td>' . Form::text('definitions['.$word.'][full_def]', null, array('class'=>'tt-query')) . '</td>';
-		echo '<td>' . Form::text('definitions['.$word.'][pronun]', null, array('class'=>'tt-query')) . '</td>';
-		echo "</tr>\n";
-	}
-	echo '</table>'."\n<br><br>";
-	echo Form::submit() . "\n";
-	echo Form::close() . "\n";
+		echo '</table>'."\n<br><br>";
+		echo Form::submit() . "\n";
+		echo Form::close() . "\n";
 	?>
 	
 </div>

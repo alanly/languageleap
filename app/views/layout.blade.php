@@ -280,7 +280,7 @@
 		*/
 		function showNoResults($panel) {
 			var noResults = '<div class="alert" role="alert">' +
-								'<h2><small>No results matching your search were found</small></h2>' +
+								'<h2><small>@lang("index.layout.search.empty")</small></h2>' +
 							'</div>';
 
 			$panel.children('.elements').html(noResults);
@@ -296,7 +296,7 @@
 			var message = data.responseJSON.data;
 
 			if(message === undefined)
-				message = 'There was a problem loading the information, Please try again at a later time.';
+				message = '@lang("index.layout.filter.error")';
 			
 			var error = '<div class="alert alert-danger" role="alert">' + message + '</div>';
 			$('.tab-content .active .elements').html(error);

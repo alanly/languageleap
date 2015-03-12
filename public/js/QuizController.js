@@ -36,6 +36,8 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 	//Get the redirect link for after the quiz
 	var redirect = $scope.redirect = JSON.parse(localStorage.getItem("redirect"));
 
+	var levelUpMessage = $scope.levelUpMessage = "";
+
 	/**
 	 * Load questions from the API on boot.
 	 */
@@ -180,7 +182,27 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 			resolve: {
 				correctQuestionsCount: function() { return $scope.correctQuestionsCount; },
 				questionsCount: function() { return $scope.questions.length; },
-				redirect: function() { return $scope.redirect.redirect; }
+				redirect: function() { return $scope.redirect.redirect; },
+				levelUpMessage: function ()
+				{
+					var message = "Error";
+
+					$.ajax({
+						type: "POST",
+						url: "/api/levelProgress",
+						async: false,
+						success: function(data) 
+						{
+							message = data.data.message;
+						},
+					    error: function() 
+					    {
+							message = "Error";
+					    }
+					});
+
+					return message;
+				}
 			},
 			backdrop: 'static',
 			keyboard: false
@@ -231,12 +253,12 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
  */
 quizApp.controller(
 	'ScoreModalInstanceController',
-	function($scope, $modalInstance, correctQuestionsCount, questionsCount, redirect)
+	function($scope, $http, $modalInstance, correctQuestionsCount, questionsCount, redirect, levelUpMessage)
 	{
-
 		$scope.correctQuestionsCount = correctQuestionsCount;
 		$scope.questionsCount = questionsCount;
 		$scope.redirect = redirect;
+		$scope.levelUpMessage = levelUpMessage;
 
 		$scope.finalScore = function()
 		{
@@ -246,6 +268,5 @@ quizApp.controller(
 
 			return score;
 		};
-
 	}
 );

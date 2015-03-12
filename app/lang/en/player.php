@@ -22,4 +22,18 @@ return array(
 	'audio' => array(
 		'error' => 'Your browser does not support HTML5 audio.',
 	),
+	'functions' => array(
+		'faster' => 'Faster',
+		'normal' => 'Normal',
+		'slower' => 'Slower',
+	),
+	'load' => array(
+		'error' => 'An error occured while attempting to play this video.',
+	),
+	'quiz' => array(
+		'select_words' => 'Select words to learn',
+		'synonym_not_found' => 'Synonym not found.',
+	),
+	'error' => 'Error',
+
 );
