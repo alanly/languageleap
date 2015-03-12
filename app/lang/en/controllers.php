@@ -49,6 +49,7 @@ return array(
 		'blank-fields_error' => 'Fields not filled in properly.',
 		'quiz_error' => 'Quiz :quiz_id not found.',
 		'quiz_no-auth' => 'Not authorized to view quiz :quiz_id.',
+		'level_default' => 'Waiting for score...',
 		'level_up' => 'Level Up!',
 		'level_error' => 'There was a problem retrieving your score.'
 	),

@@ -188,18 +188,18 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 					var message = "Error";
 
 					$.ajax({
-							  type: "POST",
-							  url: "/api/levelProgress",
-							  async: false,
-							success: function(data) 
-							{
-								message = data.data.message;
-							},
-					      	error: function() 
-					      	{
-								message = "Error";
-					     	}
-					   });
+						type: "POST",
+						url: "/api/levelProgress",
+						async: false,
+						success: function(data) 
+						{
+							message = data.data.message;
+						},
+					    error: function() 
+					    {
+							message = "Error";
+					    }
+					});
 
 					return message;
 				}

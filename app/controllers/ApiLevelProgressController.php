@@ -21,14 +21,12 @@ class ApiLevelProgressController extends \BaseController {
 	{
 		$user = Auth::user();
 		
-		$message = "";
+		$message = Lang::get('controllers.quiz.level_default');
 		
 		$quizScore = Input::get('score');
 		
 		if($quizScore === null || $quizScore < 0)
 		{
-			$message = Lang::get('controllers.quiz.level_error');
-			
 			return $this->apiResponse(
 				'error',
 				Lang::get('controllers.quiz.level_error'),
