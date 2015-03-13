@@ -9,6 +9,8 @@
 
 		var modal_instance;
 
+		$scope.current_movie;
+
 		// Load all of the movies
 		$http.get('/api/metadata/movies').
 			success(function(data) {
@@ -37,18 +39,37 @@
 			$http.put('/api/metadata/movies/' + movie.id, movie);
 		};
 
-		$scope.openModal = function(movie) {
+		$scope.openEditModal = function(movie) {
+
+			$scope.current_movie = movie;
 
 			var modal_instance = $modal.open({
 				templateUrl: 'movieModalTemplate.html',
-				controller: 'MovieController',
-				size: 'md',
+				controller: 'EditMovieController',
+				size: 'lg',
 				resolve : {
-
+					movie : function() { return movie; }
 				},
-				backdrop : 'static',
+				backdrop : 'static'
 			});
 		};
 
+		$scope.openAddModal = function() {
+
+		};
+
 	}]);
+
+	app.controller('EditMovieController',function($scope, $http, $modalInstance, movie){
+
+		$scope.movie = movie;
+
+		$scope.saveMovie = function() {
+			$http.put('/api/metadata/movies/' + movie.id, $scope.movie)
+			.success(function(data){
+				$modalInstance.dismiss('cancel');
+			});
+		}
+	});
+
 })();

@@ -42,6 +42,9 @@ return array(
 				'id'          => 'Id',
 				'name'        => 'Name',
 				'description' => 'Description',
+				'actor'		  => 'Actor',
+				'director' 	  => 'Director',
+				'genre' 	  => 'Genre',
 				'manage'      => 'Manage'
 			),
 		),
@@ -141,6 +144,7 @@ return array(
 			'info'       => 'Info',
 			'script'     => 'Script',
 			'media'      => 'Media',
+			'title' 	 => 'Edit Media',
 		),
 
 		'edit_script' => array(
