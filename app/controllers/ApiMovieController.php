@@ -5,15 +5,18 @@ use LangLeap\Words\Script;
 
 /**
  * @author David Siekut
+ * @author Alan Ly <hello@alan.ly>
  */
 class ApiMovieController extends \BaseController {
 
 	protected $movies;
+	protected $scripts;
 
 
-	public function __construct(Movie $movies)
+	public function __construct(Movie $movies, Script $scripts)
 	{
 		$this->movies = $movies;
+		$this->scripts = $scripts;
 	}
 
 
@@ -126,32 +129,26 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function updateScript($id)
 	{
-		$movie = $this->movies->find($id);
-		$video_id = $movie->videos()->first()->id;
-		
-		$script = Script::where('video_id', '=', $video_id)->firstOrFail();
+		// Attempt to find the specified movie; if it doesn't exist, then we'll
+		// fail with an exception.
+		$movie = $this->movies->with('videos')->findOrFail($id);
 
-		if (! $script)
-		{
-			return $this->apiResponse('error', "Movie {$id} not found.", 404);
-		}
+		// Get the ID of the associated video; if there isn't an associated video,
+		// then we fail with an exception.
+		$video_id = $movie->videos()->firstOrFail()->id;
+
+		// Get the script associated with the video; if there isn't one, we fail
+		// with an exception.
+		$script = $this->scripts->where('video_id', $video_id)->firstOrFail();
 		
 		$script->text = Input::get('text');
 
 		if (! $script->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$script->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $script->getErrors(), 400);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$script->toArray(),
-			200
-		);
+		return $this->apiResponse('success', $script->toArray(), 200);
 	}
 	
 	

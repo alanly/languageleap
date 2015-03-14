@@ -79,3 +79,17 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+/*
+|--------------------------------------------------------------------------
+| Require The Errors File
+|--------------------------------------------------------------------------
+|
+| We will load the errors file for the application. This gives us a
+| separate location to define our global application error handlers
+| instead of having to define each one in here, and potentially
+| cluttering up this file.
+|
+*/
+
+require app_path().'/errors.php';
