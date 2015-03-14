@@ -87,12 +87,6 @@
 
 		$scope.movie = {};
 
-		$scope.movie.name = "";
-		$scope.movie.description = "";
-		$scope.movie.actor = "";
-		$scope.movie.director = "";
-		$scope.movie.genre = "";
-
 		$scope.storeMovie = function() {
 			$http.post('/api/metadata/movies/', $scope.movie)
 			.success(function(data){
