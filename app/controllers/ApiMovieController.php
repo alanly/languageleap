@@ -5,15 +5,18 @@ use LangLeap\Words\Script;
 
 /**
  * @author David Siekut
+ * @author Alan Ly <hello@alan.ly>
  */
 class ApiMovieController extends \BaseController {
 
 	protected $movies;
+	protected $scripts;
 
 
-	public function __construct(Movie $movies)
+	public function __construct(Movie $movies, Script $scripts)
 	{
 		$this->movies = $movies;
+		$this->scripts = $scripts;
 	}
 
 
