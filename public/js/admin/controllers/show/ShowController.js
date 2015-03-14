@@ -56,12 +56,14 @@
 
 	app.controller('EditShowController', ['$scope', '$log', '$routeParams', '$http', '$modalInstance', 'show', function($scope, $log, $routeParams, $http, $modalInstance, show) {
 		
-		$scope.show = show;
+		$scope.show = angular.copy(show);
 
 		// Save the updated show
 		$scope.saveShow = function() {
-			$http.put('/api/metadata/shows/' + show.id, $scope.show).
+			$http.put('/api/metadata/shows/' + $scope.show.id, $scope.show).
 				success(function(data){
+					// Copy the changed data back to the binded show object
+					angular.copy($scope.show, show);
 					$modalInstance.dismiss('saved');
 				});
 		};
