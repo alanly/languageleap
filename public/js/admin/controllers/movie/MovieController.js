@@ -73,11 +73,12 @@
 
 	app.controller('EditMovieController', ['$scope', '$http', '$modalInstance', 'movie', function($scope, $http, $modalInstance, movie){
 
-		$scope.movie = movie;
+		$scope.movie = angular.copy(movie);
 
 		$scope.saveMovie = function() {
 			$http.put('/api/metadata/movies/' + movie.id, $scope.movie)
 			.success(function(data){
+				angular.copy($scope.movie, movie)
 				$modalInstance.dismiss('cancel');
 			});
 		}
