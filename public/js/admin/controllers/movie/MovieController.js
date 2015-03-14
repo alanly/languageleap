@@ -88,6 +88,7 @@
 		$scope.movie = {};
 
 		$scope.storeMovie = function() {
+			
 			$http.post('/api/metadata/movies/', $scope.movie)
 			.success(function(data){
 				$rootScope.$broadcast('addMovie', data.data);
