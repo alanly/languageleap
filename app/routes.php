@@ -71,22 +71,33 @@ Route::group(['prefix' => 'admin', 'before' => 'admin'], function()
 	});
 
 	// New admin pages
-	Route::group(['prefix' => 'pages'], function()
+
+	// This route should be used to reference pages
+	// from AngularJS (eg. 'pages/manage-shows')
+	Route::get('pages/{name}', function($name)
 	{
-		Route::get('manage-commercials', function()
-		{
-			return View::make('admin-new.pages.manage-commercials');
-		});
+		$view_path = 'admin-new.pages.' . $name;
 
-		Route::get('manage-movies', function()
+		if (View::exists($view_path))
 		{
-			return View::make('admin-new.pages.manage-movies');
-		});
+			return View::make($view_path);
+		}
 
-		Route::get('manage-shows', function()
+		App::abort(404);
+	});
+
+	// This route should be used to reference partials 
+	// from AngularJS (eg. 'partials/edit-show-modal')
+	Route::get('partials/{name}', function($name)
+	{
+		$view_path = 'admin-new.partials.' . $name;
+
+		if (View::exists($view_path))
 		{
-			return View::make('admin-new.pages.manage-shows');
-		});
+			return View::make($view_path);
+		}
+
+		App::abort(404);
 	});
 
 	/************************** END NEW ANGULAR ADMIN ************************/

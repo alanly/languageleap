@@ -2,7 +2,7 @@
 
 	var app = angular.module('adminApp');
 
-	app.controller('ShowController', ['$scope', '$log', '$routeParams', '$http', function($scope, $log, $routeParams, $http) {
+	app.controller('ShowController', ['$scope', '$log', '$routeParams', '$http', '$modal', function($scope, $log, $routeParams, $http, $modal) {
 
 		$scope.shows = [];
 
@@ -35,6 +35,25 @@
 		$scope.deleteShow = function(show) {
 			$http.delete('/api/metadata/shows/' + show.id);
 		};
+
+		// Open the edit modal
+		$scope.openEditModal = function(show) {
+
+			var modalInstance = $modal.open({
+				templateUrl: 'partials/edit-show-modal',
+				controller: 'EditShowController',
+				size: 'lg',
+				resolve: {
+					show: function() { return show; }
+				},
+				backdrop: 'static'
+			});
+
+		};
+
+	}]);
+
+	app.controller('EditShowController', ['$scope', '$log', '$routeParams', '$http', '$modal', function($scope, $log, $routeParams, $http, $modal) {
 
 	}]);
 
