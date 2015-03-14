@@ -131,6 +131,7 @@ class ApiMovieTest extends TestCase {
 		$this->assertNUll($movie);
 
 	}
+
 	public function testDestroyWithInvalidID()
 	{
 		$response = $this->action(
@@ -141,4 +142,105 @@ class ApiMovieTest extends TestCase {
 
 		$this->assertResponseStatus(404);
 	}
+
+	public function testUpdatingAnExistingScriptShouldSuccess() {
+		$this->seed();
+
+		$movie = App::make('LangLeap\Videos\Movie');
+		$movie = $movie->first();
+
+		$response = $this->action(
+			'PATCH',
+			'ApiMovieController@updateScript',
+			$movie->id,
+			['text' => 'test']
+		);
+
+		$this->assertResponseOk();
+	}
+
+	/**
+	 * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
+	 */
+	public function testUpdatingTheScriptForANonexistantMovieShouldFailWithException()
+	{
+		$this->seed();
+
+		$movie = App::make('LangLeap\Videos\Movie');
+
+		$response = $this->action(
+			'PATCH',
+			'ApiMovieController@updateScript',
+			0,
+			['text' => 'test']
+		);
+	}
+
+	/**
+	 * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
+	 */
+	public function testUpdatingTheScriptForAMovieWithNoVideosShouldFailWithException()
+	{
+		$movie = App::make('LangLeap\Videos\Movie');
+
+		$movie->create(['name' => 'test', 'description' => 'test']);
+
+		$response = $this->action(
+			'PATCH',
+			'ApiMovieController@updateScript',
+			$movie->id,
+			['text' => 'test']
+		);
+	}
+
+	/**
+	 * @expectedException Illuminate\Database\Eloquent\ModelNotFoundException
+	 */
+	public function testUpdatingTheScriptForAMovieWithNoAssociatedScriptsFailsWithException()
+	{
+		$movie = App::make('LangLeap\Videos\Movie');
+		$movie->create(['name' => 'test', 'description' => 'test']);
+
+		$video = App::make('LangLeap\Videos\Video');
+		$video->path = '...';
+		$video->viewable_id = '0';
+		$video->viewable_type = 'test';
+		$video->language_id = '0';
+
+		$movie->videos()->save($video);
+
+		$response = $this->action(
+			'PATCH',
+			'ApiMovieController@updateScript',
+			$movie->id,
+			['text' => 'test']
+		);
+	}
+
+	public function testWhenScriptSaveFailsWeGetAnAppropriateResponse()
+	{
+		$this->seed();
+
+		$movie = App::make('LangLeap\Videos\Movie');
+		$movie = $movie->first();
+
+		$script = Mockery::mock('LangLeap\Words\Script');
+		$script->shouldReceive('where')->andReturn($script);
+		$script->shouldReceive('firstOrFail')->andReturn($script);
+		$script->shouldReceive('setAttribute');
+		$script->shouldReceive('save')->once()->andReturn(false);
+		$script->shouldReceive('getErrors')->once()->andReturn('foobar');
+
+		App::instance('LangLeap\Words\Script', $script);
+
+		$response = $this->action(
+			'PATCH',
+			'ApiMovieController@updateScript',
+			$movie->id,
+			['text' => 'test']
+		);
+
+		$this->assertResponseStatus(400);
+	}
+
 }
