@@ -53,8 +53,8 @@
 
 	}]);
 
-	app.controller('EditShowController', ['$scope', '$log', '$routeParams', '$http', '$modal', function($scope, $log, $routeParams, $http, $modal) {
-
+	app.controller('EditShowController', ['$scope', '$log', '$routeParams', '$http', '$modalInstance', 'show', function($scope, $log, $routeParams, $http, $modalInstance, show) {
+		console.log(show);
 	}]);
 
 })();
