@@ -7,7 +7,7 @@ use LangLeap\Videos\Filtering\Filterable;
 class Show extends ValidatedModel implements Billable, Filterable {
 
 	public    $timestamps = false;
-	protected $fillable   = ['name', 'description', 'image_path', 'director', 'is_published'];
+	protected $fillable   = ['name', 'description', 'image_path', 'director', 'actor', 'genre', 'is_published'];
 	protected $hidden     = ['episodes', 'seasons'];
 	protected $rules      = [
 		'name'        => 'required',

@@ -37,6 +37,36 @@
 	<title>LanguageLeap - Admin</title>
 </head>
 <body>
+	<!-- Navbar Container -->
+	<nav class="navbar navbar-static-top navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+					<i class="fa fa-bars fa-fw"></i>
+				</button>
+
+				<span class="navbar-brand"><i class="fa fa-language"></i></span>
+			</div>
+
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav">
+						<li>
+							<a href="javascript:;" data-target="#m-media-types" data-toggle="collapse" data-parent="#m-media-types"><i class="fa fa-film fa-fw"></i> <?php echo Lang::get('admin.index.menu.videos'); ?></a>
+							<div class="collapse list-group-submenu list-group-submenu-1" id="m-media-types">
+								<a href="#/movies" class="list-group-item"> <?php echo Lang::get('admin.media.movie.name'); ?></a>
+								<a href="#/commercials" class="list-group-item"> <?php echo Lang::get('admin.media.commercial.name'); ?></a>
+								<a href="#/shows" class="list-group-item manage-shows"> <?php echo Lang::get('admin.media.show.name'); ?></a>
+							</div>
+						</li>
+						<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> <?php echo Lang::get('admin.index.menu.scripts'); ?></a></li>
+						<li><a href="#"><i class="fa fa-users fa-fw"></i> <?php echo Lang::get('admin.index.menu.users'); ?></a></li>
+						<li><a href="/"><i class="fa fa-road fa-fw"></i> <?php echo Lang::get('admin.index.menu.client'); ?></a></li>
+						<li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> <?php echo Lang::get('admin.index.menu.logout'); ?></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
 	<!-- Primary App Container -->
 	<div class="container-fluid">
 		<div class="row">
@@ -54,11 +84,11 @@
 
 				<ul class="nav nav-sidebar">
 					<li>
-						<a href="javascript:;" data-target="#media-types" data-toggle="collapse" data-parent="#media-types"><i class="fa fa-film fa-fw"></i><?php echo Lang::get('admin.index.menu.videos'); ?></a>
+						<a href="javascript:;" data-target="#media-types" data-toggle="collapse" data-parent="#media-types"><i class="fa fa-film fa-fw"></i> <?php echo Lang::get('admin.index.menu.videos'); ?></a>
 						<div class="collapse list-group-submenu list-group-submenu-1" id="media-types">
-							<a href="#/movies" class="list-group-item"><?php echo Lang::get('admin.media.movie.name'); ?></a>
-							<a href="#/commercials" class="list-group-item"><?php echo Lang::get('admin.media.commercial.name'); ?></a>
-							<a href="#/shows" class="list-group-item manage-shows"><?php echo Lang::get('admin.media.show.name'); ?></a>
+							<a href="#/movies" class="list-group-item"> <?php echo Lang::get('admin.media.movie.name'); ?></a>
+							<a href="#/commercials" class="list-group-item"> <?php echo Lang::get('admin.media.commercial.name'); ?></a>
+							<a href="#/shows" class="list-group-item manage-shows"> <?php echo Lang::get('admin.media.show.name'); ?></a>
 						</div>
 					</li>
 
