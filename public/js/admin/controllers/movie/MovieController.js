@@ -85,22 +85,11 @@
 
 	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', function($scope, $http, $modalInstance, $rootScope){
 
-		$scope.movie = [];
-
-		$scope.movie.name = "";
-		$scope.movie.description = "";
-		$scope.movie.actor = "";
-		$scope.movie.director = "";
-		$scope.movie.genre = "";
+		$scope.movie = {};
 
 		$scope.storeMovie = function() {
-			$http.post('/api/metadata/movies/', {
-				name : $scope.movie.name,
-				description : $scope.movie.description,
-				actor : $scope.movie.actor,
-				director : $scope.movie.director,
-				genre : $scope.movie.genre,
-			})
+			
+			$http.post('/api/metadata/movies/', $scope.movie)
 			.success(function(data){
 				$rootScope.$broadcast('addMovie', data.data);
 				$modalInstance.dismiss('cancel');
