@@ -18,6 +18,10 @@
 				$scope.movies = data.data;
 			}
 		);
+
+		$scope.$on('addMovie', function(event, movie){
+			$scope.movies.push(movie);
+		});
 		
 		$scope.remove = function(movie){
 			
@@ -56,7 +60,13 @@
 		};
 
 		$scope.openAddModal = function() {
-
+			var modal_instance = $modal.open({
+				templateUrl: 'partials/new-movie-modal',
+				controller: 'NewMovieController',
+				size: 'lg',
+				backdrop : 'static',
+				backdropClass: 'modal-backdrop-fix'
+			});
 		};
 
 	}]);
@@ -68,6 +78,31 @@
 		$scope.saveMovie = function() {
 			$http.put('/api/metadata/movies/' + movie.id, $scope.movie)
 			.success(function(data){
+				$modalInstance.dismiss('cancel');
+			});
+		}
+	}]);
+
+	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', function($scope, $http, $modalInstance, $rootScope){
+
+		$scope.movie = [];
+
+		$scope.movie.name = "";
+		$scope.movie.description = "";
+		$scope.movie.actor = "";
+		$scope.movie.director = "";
+		$scope.movie.genre = "";
+
+		$scope.storeMovie = function() {
+			$http.post('/api/metadata/movies/', {
+				name : $scope.movie.name,
+				description : $scope.movie.description,
+				actor : $scope.movie.actor,
+				director : $scope.movie.director,
+				genre : $scope.movie.genre,
+			})
+			.success(function(data){
+				$rootScope.$broadcast('addMovie', data.data);
 				$modalInstance.dismiss('cancel');
 			});
 		}
