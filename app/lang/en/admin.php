@@ -45,7 +45,8 @@ return array(
 				'actor'		  => 'Actor',
 				'director' 	  => 'Director',
 				'genre' 	  => 'Genre',
-				'manage'      => 'Manage'
+				'manage'      => 'Manage',
+				'poster'	  => 'Poster',
 			),
 		),
 		'commercial' => array(
