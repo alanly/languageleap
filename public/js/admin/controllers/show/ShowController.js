@@ -55,7 +55,22 @@
 	}]);
 
 	app.controller('EditShowController', ['$scope', '$log', '$routeParams', '$http', '$modalInstance', 'show', function($scope, $log, $routeParams, $http, $modalInstance, show) {
-		console.log(show);
+		
+		$scope.show = show;
+
+		// Save the updated show
+		$scope.saveShow = function() {
+			$http.put('/api/metadata/shows/' + show.id, $scope.show).
+				success(function(data){
+					$modalInstance.dismiss('saved');
+				});
+		};
+
+		// Cancel any changes that were made
+		$scope.cancelEdit = function() {
+			$modalInstance.dismiss('cancel');
+		};
+
 	}]);
 
 })();
