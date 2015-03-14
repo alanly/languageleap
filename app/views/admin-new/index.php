@@ -11,7 +11,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic|Raleway:200,500,600">
-	<link rel="stylesheet" href="/css/main.css">
 
 	<script src="https://code.angularjs.org/1.3.0/angular.min.js"></script>
 	<script src="https://code.angularjs.org/1.3.0/angular-route.min.js"></script>
@@ -25,6 +24,8 @@
 	<script src="/js/admin/controllers/commercial/CommercialController.js"></script>
 	<script src="/js/admin/controllers/movie/MovieController.js"></script>
 	<script src="/js/admin/controllers/show/ShowController.js"></script>
+
+	<link rel="stylesheet" href="/css/main.css">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

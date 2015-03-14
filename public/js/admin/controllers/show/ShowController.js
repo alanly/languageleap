@@ -46,7 +46,8 @@
 				resolve: {
 					show: function() { return show; }
 				},
-				backdrop: 'static'
+				backdrop: 'static',
+				backdropClass: 'modal-backdrop-fix'
 			});
 
 		};

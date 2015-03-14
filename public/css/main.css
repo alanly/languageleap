@@ -110,3 +110,11 @@ h1,h2,h3,h4,h5,h6 {
 .control-label {
   font-weight: 600;
 }
+
+/**
+ * Angular/Boostrap Modal fix
+ */
+.modal-backdrop-fix {
+  bottom: 0 !important;
+  position: fixed !important;
+}
