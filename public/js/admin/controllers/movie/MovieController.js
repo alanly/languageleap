@@ -44,13 +44,14 @@
 			$scope.current_movie = movie;
 
 			var modal_instance = $modal.open({
-				templateUrl: 'movieModalTemplate.html',
+				templateUrl: 'partials/edit-movie-modal',
 				controller: 'EditMovieController',
 				size: 'lg',
 				resolve : {
 					movie : function() { return movie; }
 				},
-				backdrop : 'static'
+				backdrop : 'static',
+				backdropClass: 'modal-backdrop-fix'
 			});
 		};
 
@@ -60,7 +61,7 @@
 
 	}]);
 
-	app.controller('EditMovieController',function($scope, $http, $modalInstance, movie){
+	app.controller('EditMovieController', ['$scope', '$http', '$modalInstance', 'movie', function($scope, $http, $modalInstance, movie){
 
 		$scope.movie = movie;
 
@@ -70,6 +71,6 @@
 				$modalInstance.dismiss('cancel');
 			});
 		}
-	});
+	}]);
 
 })();
