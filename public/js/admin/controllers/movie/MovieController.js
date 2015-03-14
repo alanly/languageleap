@@ -81,6 +81,10 @@
 				$modalInstance.dismiss('cancel');
 			});
 		}
+
+		$scope.closeModel = function() {
+			$modalInstance.dismiss('cancel');
+		}
 	}]);
 
 	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', function($scope, $http, $modalInstance, $rootScope){
@@ -88,12 +92,16 @@
 		$scope.movie = {};
 
 		$scope.storeMovie = function() {
-			
+
 			$http.post('/api/metadata/movies/', $scope.movie)
 			.success(function(data){
 				$rootScope.$broadcast('addMovie', data.data);
 				$modalInstance.dismiss('cancel');
 			});
+		}
+
+		$scope.closeModel = function() {
+			$modalInstance.dismiss('cancel');
 		}
 	}]);
 

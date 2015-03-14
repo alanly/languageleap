@@ -81,6 +81,10 @@
 				$modalInstance.dismiss('cancel');
 			});
 		}
+
+		$scope.closeModel = function() {
+			$modalInstance.dismiss('cancel');
+		}
 	}]);
 
 	app.controller('NewCommercialController', ['$scope', '$http', '$modalInstance','$rootScope', function($scope, $http, $modalInstance, $rootScope){
@@ -94,6 +98,10 @@
 				$rootScope.$broadcast('addcommercial', data.data);
 				$modalInstance.dismiss('cancel');
 			});
+		}
+
+		$scope.closeModel = function() {
+			$modalInstance.dismiss('cancel');
 		}
 	}]);
 

@@ -42,5 +42,5 @@
 
 <div class="modal-footer">
 	<a ng-click="saveCommercial(commercial);" class="btn btn-primary"><?php echo Lang::get('admin.buttons.save'); ?> </a>
-	<a ng-click="" class="btn btn-primary"><?php echo Lang::get('admin.buttons.cancel'); ?> </a>
+	<a ng-click="closeModel();" class="btn btn-primary"><?php echo Lang::get('admin.buttons.cancel'); ?> </a>
 </div>
