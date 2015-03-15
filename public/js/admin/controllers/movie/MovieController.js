@@ -38,7 +38,7 @@
 			$scope.updateMovie(movie);
 		};
 
-		// Update a given show
+		// Update a given movie
 		$scope.updateMovie = function(movie) {
 			$http.put('/api/metadata/movies/' + movie.id, movie);
 		};

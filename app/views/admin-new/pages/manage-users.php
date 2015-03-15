@@ -7,6 +7,7 @@
 			<th>Actions</th>
 			<th>UserName</th>
 			<th>Email</th>
+			<th>Active</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -14,7 +15,8 @@
 			<td class="id">{{ user.id }}</td>
 			<td><a ng-click="remove(user);"><i class="fa fa-trash fa-fw"></i></a></td>
 			<td>{{ user.username }}</td>
-			<td><input class="publish" type="checkbox" ng-model="user.is_active" ng-click="onPublishClick($event, user);" ng-checked="user.is_active" /></td>
+			<td>{{ user.email }}</td>
+			<td><input class="publish" type="checkbox" ng-model="user.is_active" ng-click="onActiveClick($event, user);" ng-checked="user.is_active" /></td>
 		</tr>
 	</tbody>
 </table>
