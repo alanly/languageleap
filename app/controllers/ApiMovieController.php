@@ -51,6 +51,45 @@ class ApiMovieController extends \BaseController {
 			return $this->apiResponse('error', $movie->getErrors(), 400);
 		}
 
+		// Perform additional validation on input values.
+		$validator = Validator::make(
+			Input::get(),
+			['media-image' => 'image']
+		);
+
+		if ($validator->fails())
+		{
+			return $this->apiResponse('error', $validator->messages(), 400);
+		}
+
+		// Check if the input includes an image file, and if it does, check if the
+		// upload was successful or not. If both conditions are fine, then we'll
+		// handle saving the uploaded image. We would ideally delegate this logic
+		// to another class, but for the sake of laziness, we'll just perform the
+		// task in-controller.
+		if (Input::hasFile('media-image') && Input::file('media-image')->isValid())
+		{
+			$splFile = Input::file('media-image');
+
+			// Determine the appropriate file name for the image.
+			$filename = get_class($movie)."_{$movie->id}.".$splFile->getExtension();
+
+			if (! App::environment('testing'))
+			{
+				// Move the image to the appropriate storage location if we're production.
+				$splFile = $splFile->move(Config::get('media.paths.img'), $filename);
+			}
+
+			if (! $splFile->isReadable())
+			{
+				return $this->apiResponse('error', ['media-image' => Lang::get('admin.upload.image_store_failed')], 500);
+			}
+
+			// Update the movie instance with the image path.
+			$movie->image_path = $splFile->getRealPath();
+			$movie->save();
+		}
+
 		return $this->apiResponse('success', $movie->toArray(), 201);
 	}
 

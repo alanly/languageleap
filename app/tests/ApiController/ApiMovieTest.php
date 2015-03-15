@@ -243,4 +243,73 @@ class ApiMovieTest extends TestCase {
 		$this->assertResponseStatus(400);
 	}
 
+	public function testStoringANewMovieWorksSuccessfully()
+	{
+		$response = $this->action(
+			'POST',
+			'ApiMovieController@store',
+			[],
+			['name' => 'test', 'description' => 'test']
+		);
+
+		$this->assertResponseStatus(201);
+	}
+
+	public function testProperResponseWhenSaveFailsDuringStoreRequest()
+	{
+		$movie = Mockery::mock('LangLeap\Videos\Movie');
+		$movie->shouldReceive('newInstance')->andReturn($movie);
+		$movie->shouldReceive('save')->andReturn(false);
+		$movie->shouldReceive('getErrors')->andReturn('foobar');
+
+		App::instance('LangLeap\Videos\Movie', $movie);
+
+		$response = $this->action(
+			'POST',
+			'ApiMovieController@store',
+			[],
+			['name' => 'test', 'description' => 'test']
+		);
+
+		$this->assertResponseStatus(400);
+	}
+
+	public function testProperResponseWhenValidationFails()
+	{
+		$v = Mockery::mock('Illuminate\Validation\Validator');
+		$v->shouldReceive('passes')->andReturn(false);
+		$v->shouldReceive('errors')->andReturn('foobar');
+
+		$f = Mockery::mock('Illuminate\Validation\Factory');
+		$f->shouldReceive('make')->once()->andReturn($v);
+
+		Validator::swap($f);
+
+		$response = $this->action(
+			'POST',
+			'ApiMovieController@store',
+			[],
+			['name' => 'test', 'description' => 'test']
+		);
+
+		$this->assertResponseStatus(400);
+	}
+
+	public function testGivenAnAppropriateUploadWeStoreTheImage()
+	{
+		$file = new Symfony\Component\HttpFoundation\File\UploadedFile(
+			Config::get('media.test').'/image.jpg',
+			'image.jpg', 'image/jpeg', null, null, true);
+
+		$response = $this->action(
+			'POST',
+			'ApiMovieController@store',
+			[],
+			['name' => 'test', 'description' => 'test'],
+			['media-image' => $file]
+		);
+
+		$this->assertResponseStatus(201);
+	}
+
 }

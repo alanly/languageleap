@@ -52,6 +52,32 @@
 
 		};
 
+		$scope.loadSeasons = function(show) {
+
+			if (show.seasons) {
+				$('.show-' + show.id).toggle();
+			} else {
+				$http.get('/api/metadata/shows/' + show.id + '/seasons').
+					success(function(data) {
+						show.seasons = data.data.seasons;
+					});
+			}
+
+		};
+
+		$scope.loadEpisodes = function(show, season) {
+
+			if (season.episodes) {
+				$('.season-' + season.id).toggle();
+			} else {
+				$http.get('/api/metadata/shows/' + show.id + '/seasons/' + season.id + '/episodes').
+					success(function(data) {
+						season.episodes = data.data.episodes;
+					});
+			}
+
+		};
+
 	}]);
 
 	app.controller('EditShowController', ['$scope', '$log', '$routeParams', '$http', '$modalInstance', 'show', function($scope, $log, $routeParams, $http, $modalInstance, show) {
