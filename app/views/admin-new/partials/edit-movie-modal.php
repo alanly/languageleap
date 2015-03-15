@@ -2,7 +2,7 @@
 	<h1><?php echo Lang::get('admin.modal.edit_media.title'); ?></h1>
 </div>
 <div class="modal-body">
-	<form class="row">
+	<form class="row" enctype="multipart/form-data">
 		<div class="col-md-8" >
 			<div class="form-group" ng-class="{ 'has-error' : movie.name.length === 0 }">
 				<label for="movie-name"> <?php echo Lang::get('admin.media.movie.table.name'); ?></label>
