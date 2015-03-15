@@ -51,8 +51,6 @@ class ApiMovieController extends \BaseController {
 			return $this->apiResponse('error', $movie->getErrors(), 400);
 		}
 
-		dd(Input::file('media_image'));
-
 		// Check if the input includes an image file, and if it does, check if the
 		// upload was successful or not. If both conditions are fine, then we'll
 		// handle saving the uploaded image. We would ideally delegate this logic
