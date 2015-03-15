@@ -55,7 +55,12 @@
 		$scope.loadSeasons = function(show) {
 
 			if (show.seasons) {
-				$('.show-' + show.id).toggle();
+				var seasons = $('.show-' + show.id);
+				seasons.toggle();
+
+				// If the seasons are not shown, do not show the episodes
+				if (! seasons.is(':visible')) 
+					seasons.nextAll('tr').hide();
 			} else {
 				$http.get('/api/metadata/shows/' + show.id + '/seasons').
 					success(function(data) {
