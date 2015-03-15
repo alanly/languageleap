@@ -13,22 +13,6 @@
 				<label for="commercial-desc"> <?php echo Lang::get('admin.media.commercial.table.description'); ?></label>
 				<textarea class="form-control" id="commercial-desc" name="description" rows="3" ng-model="commercial.description"  placeholder="<?php echo Lang::get('admin.media.commercial.table.description'); ?>"/>
 			</div>
-
-			<div class="form-group">
-				<label for="commercial-director"> <?php echo Lang::get('admin.media.commercial.table.director'); ?></label>
-				<input type="input" id="commercial-director" name="director" class="form-control" ng-model="commercial.director"  placeholder="<?php echo Lang::get('admin.media.commercial.table.director'); ?>">
-			</div>
-
-			<div class="form-group">
-				<label for="commercial-actor"> <?php echo Lang::get('admin.media.commercial.table.actor'); ?></label>
-				<input type="input" id="commercial-actor" name="actor" class="form-control" ng-model="commercial.actor"  placeholder="<?php echo Lang::get('admin.media.commercial.table.actor'); ?>">
-			</div>
-
-			<div class="form-group" >
-				<label for="commercial-genre"> <?php echo Lang::get('admin.media.commercial.table.genre'); ?></label>
-				<input type="input" id="commercial-genre" name="genre" class="form-control" ng-model="commercial.genre" placeholder="<?php echo Lang::get('admin.media.commercial.table.genre'); ?>">
-			</div>
-
 		</div>
 		<div class="col-md-4">
 			<h3><?php echo Lang::get('admin.media.commercial.table.poster'); ?></h3>

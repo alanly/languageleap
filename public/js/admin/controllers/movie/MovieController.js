@@ -83,6 +83,11 @@
 			});
 		}
 
+		$scope.uploadFile = function(files) {
+			//set the media image to the file that was selected by the user
+			$scope.movie.media_image = files[0];
+		}
+
 		$scope.closeModel = function() {
 			$modalInstance.dismiss('cancel');
 		}
