@@ -13,22 +13,6 @@
 				<label for="commercial-desc"> <?php echo Lang::get('admin.media.commercial.table.description'); ?></label>
 				<textarea class="form-control" id="commercial-desc"  rows="3" ng-model="commercial.description"  placeholder="<?php echo Lang::get('admin.media.commercial.table.description'); ?>"/>
 			</div>
-
-			<div class="form-group">
-				<label for="commercial-director"> <?php echo Lang::get('admin.media.commercial.table.director'); ?></label>
-				<input type="input" id="commercial-director" class="form-control" ng-model="commercial.director"  placeholder="<?php echo Lang::get('admin.media.commercial.table.director'); ?>">
-			</div>
-
-			<div class="form-group">
-				<label for="commercial-actor"> <?php echo Lang::get('admin.media.commercial.table.actor'); ?></label>
-				<input type="input" id="commercial-actor" class="form-control" ng-model="commercial.actor"  placeholder="<?php echo Lang::get('admin.media.commercial.table.actor'); ?>">
-			</div>
-
-			<div class="form-group">
-				<label for="commercial-genre"> <?php echo Lang::get('admin.media.commercial.table.genre'); ?></label>
-				<input type="input" id="commercial-genre" class="form-control" ng-model="commercial.genre" placeholder="<?php echo Lang::get('admin.media.commercial.table.genre'); ?>">
-			</div>
-
 		</div>
 		<div class="col-md-4">
 			<h3><?php echo Lang::get('admin.media.commercial.table.poster'); ?></h3>
@@ -42,5 +26,5 @@
 
 <div class="modal-footer">
 	<a ng-click="saveCommercial(commercial);" class="btn btn-primary"><?php echo Lang::get('admin.buttons.save'); ?> </a>
-	<a ng-click="" class="btn btn-primary"><?php echo Lang::get('admin.buttons.cancel'); ?> </a>
+	<a ng-click="closeModel();" class="btn btn-primary"><?php echo Lang::get('admin.buttons.cancel'); ?> </a>
 </div>

@@ -306,7 +306,7 @@ class ApiMovieTest extends TestCase {
 			'ApiMovieController@store',
 			[],
 			['name' => 'test', 'description' => 'test'],
-			['media-image' => $file]
+			['media_image' => $file]
 		);
 
 		$this->assertResponseStatus(201);

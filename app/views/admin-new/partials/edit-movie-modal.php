@@ -2,7 +2,7 @@
 	<h1><?php echo Lang::get('admin.modal.edit_media.title'); ?></h1>
 </div>
 <div class="modal-body">
-	<form class="row">
+	<form class="row" enctype="multipart/form-data">
 		<div class="col-md-8" >
 			<div class="form-group" ng-class="{ 'has-error' : movie.name.length === 0 }">
 				<label for="movie-name"> <?php echo Lang::get('admin.media.movie.table.name'); ?></label>
@@ -34,7 +34,7 @@
 			<h3><?php echo Lang::get('admin.media.movie.table.poster'); ?></h3>
 			<img height="300px" ng-src="{{ movie.image_path }}"/>
 			<div class="form-group">
-				<input type="file" id="media-image" name="media-image" ng-model="movie.media_image">
+				<input type="file" onchange="angular.element(this).scope().uploadFile(this.files)"/>
 			</div>
 		</div>
 	</form>
@@ -42,5 +42,5 @@
 
 <div class="modal-footer">
 	<a ng-click="saveMovie(movie);" class="btn btn-primary"><?php echo Lang::get('admin.buttons.save'); ?> </a>
-	<a ng-click="" class="btn btn-primary"><?php echo Lang::get('admin.buttons.cancel'); ?> </a>
+	<a ng-click="closeModel();" class="btn btn-primary"><?php echo Lang::get('admin.buttons.cancel'); ?> </a>
 </div>

@@ -73,13 +73,23 @@
 
 	app.controller('EditMovieController', ['$scope', '$http', '$modalInstance', 'movie', function($scope, $http, $modalInstance, movie){
 
-		$scope.movie = movie;
+		$scope.movie = angular.copy(movie);
 
 		$scope.saveMovie = function() {
 			$http.put('/api/metadata/movies/' + movie.id, $scope.movie)
 			.success(function(data){
+				angular.copy($scope.movie, movie)
 				$modalInstance.dismiss('cancel');
 			});
+		}
+
+		$scope.uploadFile = function(files) {
+			//set the media image to the file that was selected by the user
+			$scope.movie.media_image = files[0];
+		}
+
+		$scope.closeModel = function() {
+			$modalInstance.dismiss('cancel');
 		}
 	}]);
 
@@ -88,12 +98,21 @@
 		$scope.movie = {};
 
 		$scope.storeMovie = function() {
-			
+
 			$http.post('/api/metadata/movies/', $scope.movie)
 			.success(function(data){
 				$rootScope.$broadcast('addMovie', data.data);
 				$modalInstance.dismiss('cancel');
 			});
+		}
+
+		$scope.uploadFile = function(files) {
+			//set the media image to the file that was selected by the user
+			$scope.movie.media_image = files[0];
+		}
+
+		$scope.closeModel = function() {
+			$modalInstance.dismiss('cancel');
 		}
 	}]);
 

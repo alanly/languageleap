@@ -73,13 +73,18 @@
 
 	app.controller('EditCommercialController', ['$scope', '$http', '$modalInstance', 'commercial', function($scope, $http, $modalInstance, commercial){
 
-		$scope.commercial = commercial;
+		$scope.commercial = angular.copy(commercial);
 
 		$scope.saveCommercial = function() {
 			$http.put('/api/metadata/commercials/' + commercial.id, $scope.commercial)
 			.success(function(data){
+				angular.copy($scope.movie, movie)
 				$modalInstance.dismiss('cancel');
 			});
+		}
+
+		$scope.closeModel = function() {
+			$modalInstance.dismiss('cancel');
 		}
 	}]);
 
@@ -94,6 +99,10 @@
 				$rootScope.$broadcast('addcommercial', data.data);
 				$modalInstance.dismiss('cancel');
 			});
+		}
+
+		$scope.closeModel = function() {
+			$modalInstance.dismiss('cancel');
 		}
 	}]);
 
