@@ -87,8 +87,9 @@ return array(
 	),
 
 	'upload' => array(
-		'uploading' => 'Uploading Media, Please Wait...',
-		'success'   => 'Media Uploaded Successfully',
+		'uploading'          => 'Uploading Media, Please Wait...',
+		'success'            => 'Media Uploaded Successfully',
+		'image_store_failed' => 'An error occured while storing the media image.',
 	),
 
 	'quiz' => array(
