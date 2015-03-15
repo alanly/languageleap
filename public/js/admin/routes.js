@@ -23,6 +23,11 @@
 			{
 				templateUrl: 'pages/manage-shows',
 				controller: 'ShowController'
+			})
+			.when('/users',
+			{
+				templateUrl: 'pages/manage-users',
+				controller: 'UserController'
 			});
 
 	}]);
