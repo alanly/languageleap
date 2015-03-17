@@ -3,7 +3,7 @@
 	var app = angular.module('adminApp');
 
 
-	app.controller('MovieController', ['$scope', '$log', '$routeParams', '$http', '$modal', function($scope, $log, $routeParams, $http, $modal) {
+	app.controller('MovieController', ['$scope', '$log', '$routeParams', '$http', '$modal', '$upload', function($scope, $log, $routeParams, $http, $modal, $upload) {
 
 		$scope.movies = [];
 
@@ -93,7 +93,7 @@
 		}
 	}]);
 
-	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', function($scope, $http, $modalInstance, $rootScope){
+	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', '$upload', function($scope, $http, $modalInstance, $rootScope, $upload){
 
 		$scope.movie = {};
 
@@ -101,19 +101,38 @@
 
 			$http.post('/api/metadata/movies/', $scope.movie)
 			.success(function(data){
-				$rootScope.$broadcast('addMovie', data.data);
-				$modalInstance.dismiss('cancel');
-			});
-		}
+				var formData = new FormData();
+				formData.append("media_image", $("#test").prop('files')[0]);
 
-		$scope.uploadFile = function(files) {
-			//set the media image to the file that was selected by the user
-			$scope.movie.media_image = files[0];
+				xhr = $.ajax({
+					type: "PUT",
+					url: "/api/metadata/movies/"+data.data.id,
+					data: formData,
+					cache: false,
+					processData: false,
+					contentType: false,
+					xhr: function() {
+						myXhr = $.ajaxSettings.xhr();
+						
+						return myXhr;
+					}
+					})
+					.done(function(data, status, xhr) {
+						console.log("Upload complete! Redirecting...");
+					})
+					.fail(function(xhr, status, error) {
+						console.log(xhr);
+						console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+					});
+
+				});
+			
 		}
 
 		$scope.closeModel = function() {
 			$modalInstance.dismiss('cancel');
 		}
+
 	}]);
 
 })();
