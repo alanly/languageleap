@@ -138,6 +138,7 @@ class ApiMovieController extends \BaseController {
 		// handle saving the uploaded image. We would ideally delegate this logic
 		// to another class, but for the sake of laziness, we'll just perform the
 		// task in-controller.
+
 		if (Input::hasFile('media_image') && Input::file('media_image')->isValid())
 		{
 			// Perform additional validation on input values.

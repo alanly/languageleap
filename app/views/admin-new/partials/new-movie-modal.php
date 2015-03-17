@@ -34,7 +34,7 @@
 			<h3><?php echo Lang::get('admin.media.movie.table.poster'); ?></h3>
 			<img height="300px" ng-src="{{ movie.image_path }}"/>
 			<div class="form-group">
-				<input type="file" name="media_image" id="test"/>
+				<input type="file" name="media_image" id="media_image"/>
 			</div>
 		</div>
 	</form>

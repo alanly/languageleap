@@ -3,7 +3,7 @@
 	var app = angular.module('adminApp');
 
 
-	app.controller('MovieController', ['$scope', '$log', '$routeParams', '$http', '$modal', '$upload', function($scope, $log, $routeParams, $http, $modal, $upload) {
+	app.controller('MovieController', ['$scope', '$log', '$routeParams', '$http', '$modal', function($scope, $log, $routeParams, $http, $modal) {
 
 		$scope.movies = [];
 
@@ -93,7 +93,7 @@
 		}
 	}]);
 
-	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', '$upload', function($scope, $http, $modalInstance, $rootScope, $upload){
+	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', function($scope, $http, $modalInstance, $rootScope){
 
 		$scope.movie = {};
 
@@ -102,10 +102,13 @@
 			$http.post('/api/metadata/movies/', $scope.movie)
 			.success(function(data){
 				var formData = new FormData();
-				formData.append("media_image", $("#test").prop('files')[0]);
+				formData.append("media_image", $("#media_image").prop('files')[0]);
 
+				//var formData = new FormData($('#new-movie-form')[0]);
+
+				formData.append("_method", "PUT");
 				xhr = $.ajax({
-					type: "PUT",
+					type: "POST",
 					url: "/api/metadata/movies/"+data.data.id,
 					data: formData,
 					cache: false,
