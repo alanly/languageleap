@@ -2,11 +2,13 @@
 
 use LangLeap\Videos\Show;
 use LangLeap\Videos\Episode;
+use LangLeap\VideoUtilities\MediaUpdaterListener;
 
-class ApiShowController extends \BaseController {
+class ApiShowController extends \BaseController implements MediaUpdaterListener {
 
 	protected $shows;
 	protected $episodes;
+	private   $isCreate = false;
 
 
 	public function __construct(Show $shows, Episode $episodes)
@@ -43,7 +45,14 @@ class ApiShowController extends \BaseController {
 			return $this->apiResponse('error', $show->getErrors(), 500);
 		}
 
-		return $this->apiResponse('success', $show->toArray(), 201);
+		// Create a new updater instance.
+		$imageUpdater = App::make('LangLeap\VideoUtilities\MediaImageUpdater');
+
+		// Set the `isCreate` flag so that we generate the correct response.
+		$this->isCreate = true;
+
+		// Attempt to update the image.
+		return $imageUpdater->update($show, Request::instance(), $this);
 	}
 
 
@@ -96,7 +105,14 @@ class ApiShowController extends \BaseController {
 			return $this->apiResponse('error', $show->getErrors(), 500);
 		}
 
-		return $this->apiResponse('success', $show->toArray(), 200);
+		// Create a new updater instance.
+		$imageUpdater = App::make('LangLeap\VideoUtilities\MediaImageUpdater');
+
+		// Set the `isCreate` flag so that we generate the correct response.
+		$this->isCreate = false;
+
+		// Attempt to update the image.
+		return $imageUpdater->update($show, Request::instance(), $this);
 	}
 
 
@@ -189,6 +205,35 @@ class ApiShowController extends \BaseController {
 		}
 		
 		return $this->apiResponse('success', $video->toResponseArray());
+	}
+
+
+	/**
+	 * Handle the event that the media instance has been successfully updated.
+	 * @param  mixed  $media the media instance that has been updated.
+	 * @return mixed
+	 */
+	public function mediaUpdated($media)
+	{
+		// Determine which success HTTP code we should use.
+		$code = $this->isCreate ? 201 : 200;
+
+		// Reset our flag.
+		$this->isCreate = false;
+
+		return $this->apiResponse('success', $media->toArray(), $code);
+	}
+
+
+	/**
+	 * Handle the event that the attempt to update the Media instance results in
+	 * validation errors.
+	 * @param  mixed $errors a collection of error messages from the validator.
+	 * @return mixed
+	 */
+	public function mediaValidationError($errors)
+	{
+		return $this->apiResponse('error', $errors, 400);
 	}
 	
 }

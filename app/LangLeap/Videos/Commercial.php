@@ -12,6 +12,9 @@ class Commercial extends Media implements Classifiable, Filterable {
 	{
 		parent::boot();
 
+		// Add this model's attributes to the mass-assignable parameter.
+		array_push($this->fillable, 'image_path');
+
 		static::deleting(function($commercial)
 		{
 			$commercial->videos()->delete();

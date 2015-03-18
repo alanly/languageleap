@@ -1,10 +1,11 @@
 <?php namespace LangLeap\Videos;
 
+use LangLeap\Core\Imageable;
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
 use LangLeap\Videos\Filtering\Filterable;
 
-class Show extends ValidatedModel implements Billable, Filterable {
+class Show extends ValidatedModel implements Billable, Filterable, Imageable {
 
 	public    $timestamps = false;
 	protected $fillable   = ['name', 'description', 'image_path', 'director', 'actor', 'genre', 'is_published'];
@@ -45,7 +46,7 @@ class Show extends ValidatedModel implements Billable, Filterable {
 
 		$query = Show::query();
 		$query->select('shows.*')
-		->where(function($q) use ($input, $searchableAttributes)
+		      ->where(function($q) use ($input, $searchableAttributes)
 		{
 			foreach ($searchableAttributes as $a)
 			{

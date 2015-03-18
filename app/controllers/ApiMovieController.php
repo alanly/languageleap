@@ -1,6 +1,5 @@
 <?php
 
-use LangLeap\Videos\Media;
 use LangLeap\Videos\Movie;
 use LangLeap\VideoUtilities\MediaUpdaterListener;
 use LangLeap\Words\Script;
@@ -196,11 +195,11 @@ class ApiMovieController extends \BaseController implements MediaUpdaterListener
 
 
 	/**
-	 * Handle the event that the Media instance has been successfully updated.
-	 * @param  Media  $media the Media instance that has been updated.
+	 * Handle the event that the media instance has been successfully updated.
+	 * @param  mixed  $media the media instance that has been updated.
 	 * @return mixed
 	 */
-	public function mediaUpdated(Media $media)
+	public function mediaUpdated($media)
 	{
 		// Determine which success HTTP code we should use.
 		$code = $this->isCreate ? 201 : 200;

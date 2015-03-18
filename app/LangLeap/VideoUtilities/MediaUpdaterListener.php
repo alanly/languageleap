@@ -1,7 +1,5 @@
 <?php namespace LangLeap\VideoUtilities;
 
-use LangLeap\Videos\Media;
-
 /**
  * Defines the interface that clients listening to update operations on Media
  * instances must implement.
@@ -10,11 +8,11 @@ use LangLeap\Videos\Media;
 interface MediaUpdaterListener {
 
 	/**
-	 * Handle the event that the Media instance has been successfully updated.
-	 * @param  Media  $media the Media instance that has been updated.
+	 * Handle the event that the media instance has been successfully updated.
+	 * @param  mixed  $media the media instance that has been updated.
 	 * @return mixed
 	 */
-	public function mediaUpdated(Media $media);
+	public function mediaUpdated($media);
 
 
 	/**

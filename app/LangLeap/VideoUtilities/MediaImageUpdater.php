@@ -2,7 +2,7 @@
 
 use App, Config, Validator;
 use Illuminate\Http\Request;
-use LangLeap\Videos\Media;
+use LangLeap\Core\Imageable;
 
 /**
  * The updater utility class that handles updating a media instance with an
@@ -35,7 +35,7 @@ class MediaImageUpdater {
 	private $listener;
 
 
-	public function update(Media $media, Request $request, MediaUpdaterListener $listener)
+	public function update(Imageable $media, Request $request, MediaUpdaterListener $listener)
 	{
 		// Get the relevant instances.
 		$this->media    = $media;
@@ -56,7 +56,7 @@ class MediaImageUpdater {
 	}
 
 
-	private function generateFilename(Media $media, $file)
+	private function generateFilename(Imageable $media, $file)
 	{
 		return get_class($media)."_{$media->id}.".$file->getClientOriginalExtension();
 	}

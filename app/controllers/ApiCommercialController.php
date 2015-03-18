@@ -1,19 +1,24 @@
 <?php
 
 use LangLeap\Videos\Commercial;
+use LangLeap\VideoUtilities\MediaUpdaterListener;
 use LangLeap\Words\Script;
 
 /**
  * @author David Siekut
+ * @author Alan Ly <hello@alan.ly>
  */
-class ApiCommercialController extends \BaseController {
+class ApiCommercialController extends \BaseController implements MediaUpdaterListener {
 
 	protected $commercials;
+	private   $isCreate = false;
+
 
 	public function __construct(Commercial $commercials)
 	{
 		$this->commercials = $commercials;
 	}
+
 
 	/**
 	 * Display a listing of the resource.
@@ -22,7 +27,7 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function index()
 	{
-		$commercials = Commercial::all();
+		$commercials = $this->commercials->all();
 
 		$commercial_array = array();
 		foreach($commercials as $commercial)
@@ -46,25 +51,23 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function store()
 	{
-		$commercial = new Commercial;
-
-		$commercial->fill(Input::get());
+		$commercial = $this->commercials->newInstance(Input::all());
 
 		if (! $commercial->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$commercial->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $commercial->getErrors(), 500);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$commercial->toArray(),
-			201
-		);	
+		// Create a new updater instance.
+		$imageUpdater = App::make('LangLeap\VideoUtilities\MediaImageUpdater');
+
+		// Set the `isCreate` flag to true so that we generate the correct response.
+		$this->isCreate = true;
+
+		// Attempt to update the image.
+		return $imageUpdater->update($commercial, Request::instance(), $this);
 	}
+
 
 	/**
 	 * Display the specified resource.
@@ -74,7 +77,7 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function show($commercialId)
 	{
-		$commercial = Commercial::find($commercialId);
+		$commercial = $this->commercials->find($commercialId);
 
 		if (! $commercial)
 		{
@@ -98,7 +101,7 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$commercial = Commercial::find($id);
+		$commercial = $this->commercials->find($id);
 
 		if (! $commercial)
 		{
@@ -113,17 +116,17 @@ class ApiCommercialController extends \BaseController {
 		
 		if (! $commercial->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$commercial->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $commercial->getErrors(), 500);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$commercial->toArray()
-		);
+		// Create a new updater instance.
+		$imageUpdater = App::make('LangLeap\VideoUtilities\MediaImageUpdater');
+
+		// Set the `isCreate` flag to false so that we generate the correct response.
+		$this->isCreate = false;
+
+		// Attempt to update the image.
+		return $imageUpdater->update($commercial, Request::instance(), $this);
 	}
 
 
@@ -135,7 +138,7 @@ class ApiCommercialController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$commercial = Commercial::find($id);
+		$commercial = $this->commercials->find($id);
 
 		if (! $commercial)
 		{
@@ -193,6 +196,7 @@ class ApiCommercialController extends \BaseController {
 		);
 	}
 	
+
 	/**
 	*	This method updates timestamps for this video.
 	*
@@ -200,7 +204,7 @@ class ApiCommercialController extends \BaseController {
 	*/
 	public function saveTimestamps($id)
 	{
-		$commercial = Commercial::find($id);
+		$commercial = $this->commercials->find($id);
 		$video = $commercial->videos()->first();
 
 		if (!$video)
@@ -215,6 +219,35 @@ class ApiCommercialController extends \BaseController {
 		$video->timestamps_json = Input::get('text');
 		$video->save();
 		return $this->apiResponse("success", $video->toResponseArray());
+	}
+
+
+	/**
+	 * Handle the event that the media instance has been successfully updated.
+	 * @param  mixed  $media the media instance that has been updated.
+	 * @return mixed
+	 */
+	public function mediaUpdated($media)
+	{
+		// Determine which success HTTP code we should use.
+		$code = $this->isCreate ? 201 : 200;
+
+		// Reset our flag.
+		$this->isCreate = false;
+
+		return $this->apiResponse('success', $media->toArray(), $code);
+	}
+
+
+	/**
+	 * Handle the event that the attempt to update the Media instance results in
+	 * validation errors.
+	 * @param  mixed $errors a collection of error messages from the validator.
+	 * @return mixed
+	 */
+	public function mediaValidationError($errors)
+	{
+		return $this->apiResponse('error', $errors, 400);
 	}
 	
 }

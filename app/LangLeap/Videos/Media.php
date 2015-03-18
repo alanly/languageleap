@@ -1,11 +1,12 @@
 <?php namespace LangLeap\Videos;
 
+use LangLeap\Core\Imageable;
 use LangLeap\Core\ValidatedModel;
 
 /**
  * @author Dror Ozgaon
  */
-abstract class Media extends ValidatedModel {
+abstract class Media extends ValidatedModel implements Imageable {
 	
 	protected $fillable = ['name', 'description', 'level_id', 'is_published'];
 	protected $rules    = ['name' => 'required'];
