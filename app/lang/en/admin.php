@@ -63,6 +63,14 @@ return array(
 		'show' => array(
 			'name' => 'TV Shows',
 			'table' => array(
+				'id'          => 'Id',
+				'name'        => 'Name',
+				'description' => 'Description',
+				'actor'		  => 'Actor',
+				'director' 	  => 'Director',
+				'genre' 	  => 'Genre',
+				'manage'      => 'Manage',
+				'poster'	  => 'Poster',
 			),
 		),
 		'add' => 'Add Media',
@@ -118,6 +126,18 @@ return array(
 		'confirm' => 'Are you sure that you want to delete this?'
 	),
 
+	'form' => array(
+		'placeholders' => array(
+			'show' => array(
+				'name'           => 'Enter TV show name',
+				'description'    => 'Enter a description',
+				'director'       => 'Enter director names separated by commas (eg. \'Samuel Jackson, Steve Nolan\')',
+				'actor'          => 'Enter actor names separated by commas',
+				'genre'          => 'Enter genres separated by commas',
+			),
+		),
+	),
+
 	'modal' => array(
 
 		/**
@@ -133,6 +153,7 @@ return array(
 		'actor'       => 'Actor',
 		'genre'       => 'Genre',
 		'file'        => 'File',
+		'cancel'      => 'Cancel',
 
 		/**
 		 * The translations specific to each modal.
