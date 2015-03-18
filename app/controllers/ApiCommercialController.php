@@ -235,7 +235,7 @@ class ApiCommercialController extends \BaseController implements MediaUpdaterLis
 		// Reset our flag.
 		$this->isCreate = false;
 
-		return $this->apiResponse('success', $media->toArray(), $code);
+		return $this->apiResponse('success', $media->toResponseArray(), $code);
 	}
 
 
