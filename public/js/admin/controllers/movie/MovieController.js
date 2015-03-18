@@ -76,7 +76,7 @@
 		$scope.movie = angular.copy(movie);
 
 		$scope.saveMovie = function() {
-			
+
 			$http.put('/api/metadata/movies/' + movie.id, $scope.movie)
 			.success(function(data){
 
@@ -90,12 +90,7 @@
 					data: formData,
 					cache: false,
 					processData: false,
-					contentType: false,
-					xhr: function() {
-						myXhr = $.ajaxSettings.xhr();
-						
-						return myXhr;
-					}
+					contentType: false
 				})
 				.done(function(data, status, xhr) {
 					movie.image_path = data.data.image_path;
@@ -103,7 +98,6 @@
 					$modalInstance.dismiss('cancel');
 				})
 				.fail(function(xhr, status, error) {
-					console.log(xhr);
 					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
 				});
 			});
@@ -132,19 +126,13 @@
 					data: formData,
 					cache: false,
 					processData: false,
-					contentType: false,
-					xhr: function() {
-						myXhr = $.ajaxSettings.xhr();
-						
-						return myXhr;
-					}
+					contentType: false
 				})
 				.done(function(data, status, xhr) {
 					$rootScope.$broadcast('addMovie', data.data);
 					$modalInstance.dismiss('cancel');
 				})
 				.fail(function(xhr, status, error) {
-					console.log(xhr);
 					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
 				});
 
