@@ -174,4 +174,8 @@ return array(
 		),
 
 	),
+	'video' => array(
+		'video_editing' => 'Video Editing',
+		'title' 		=> 'Editing :name ',
+	),
 );

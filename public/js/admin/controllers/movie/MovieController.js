@@ -73,10 +73,32 @@
 
 			$http.get('/api/metadata/movies/' + movie.id).
 			success(function(data){
+
 				$scope.current_movie = data.data;
+				$scope.video = $scope.current_movie.videos[0] !== undefined ? $scope.current_movie.videos[0] : {};
+				
+				$scope.video.media_type = "movie";
+				$scope.video.media_id = $scope.current_movie.id;
+				$scope.video.script = "";
+				$scope.video.timestamps = [];
+
 				$scope.movie_media = 'partials/movie-media';	
 			});
-			
+		};
+
+		$scope.addTimestamp = function() {
+			$scope.video.timestamps.push({
+				'start' : 0, 
+				'end' : 0
+			});
+		}
+
+		$scope.removeTimestamp = function(timestamp) {
+			var index = $scope.video.timestamps.indexOf(timestamp);
+			$scope.video.timestamps.splice(index, 1);
+		}
+		$scope.saveMedia = function() {
+			$http.post('/api/videos', $scope.video);
 		};
 	}]);
 

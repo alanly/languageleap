@@ -76,10 +76,14 @@ class VideoFactory {
 	 */
 	public function setVideo($input, Video $video = null)
 	{
-
-		$lang = Language::find($input['language_id'])->first();
+		$lang = Language::first();
+		if(array_key_exists('language_id', $input))
+		{
+			$lang = Language::find($input['language_id'])->first();
+		}
+		
 		$file = $input['video'];
-		$type = $input['info-radio'];
+		$type = $input['media_type'];
 
 		$ext = $file->getClientOriginalExtension();
 
