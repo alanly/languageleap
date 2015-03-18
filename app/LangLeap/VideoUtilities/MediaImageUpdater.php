@@ -1,6 +1,6 @@
 <?php namespace LangLeap\VideoUtilities;
 
-use App, Validator;
+use App, Config, Validator;
 use Illuminate\Http\Request;
 use LangLeap\Videos\Media;
 
