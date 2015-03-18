@@ -1,16 +1,21 @@
 <?php
+
 use LangLeap\Videos\Show;
-use LangLeap\Videos\Video;
-use LangLeap\Words\Script;
+use LangLeap\Videos\Episode;
 
 class ApiShowController extends \BaseController {
 
 	protected $shows;
+	protected $episodes;
 
-	public function __construct(Show $shows)
+
+	public function __construct(Show $shows, Episode $episodes)
 	{
-		$this->shows = $shows;
+		$this->shows    = $shows;
+		$this->episodes = $episodes;
 	}
+
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -18,10 +23,9 @@ class ApiShowController extends \BaseController {
 	 */
 	public function index()
 	{
-		$shows = Show::all();
+		$shows = $this->shows->all();
 	
-		return $this->apiResponse("success",$shows->toArray());
-		
+		return $this->apiResponse('success', $shows->toArray());
 	}
 
 
@@ -32,24 +36,14 @@ class ApiShowController extends \BaseController {
 	 */
 	public function store()
 	{
-		$show = new Show;
-
-		$show->fill(Input::get());
+		$show = $this->shows->newInstance(Input::all());
 
 		if (! $show->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$show->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $show->getErrors(), 500);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$show->toArray(),
-			201
-		);	
+		return $this->apiResponse('success', $show->toArray(), 201);
 	}
 
 
@@ -61,9 +55,9 @@ class ApiShowController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$shows = Show::find($id);
+		$show = $this->shows->find($id);
 		
-		if (!$shows)
+		if (! $show)
 		{
 			return $this->apiResponse(
 				'error',
@@ -72,8 +66,9 @@ class ApiShowController extends \BaseController {
 			);
 		}
 		
-		return $this->apiResponse("success", $shows->toArray());
+		return $this->apiResponse('success', $show->toArray());
 	}
+
 
 	/**
 	 * Update the specified resource in storage.
@@ -83,7 +78,7 @@ class ApiShowController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$show = Show::find($id);
+		$show = $this->shows->find($id);
 
 		if (! $show)
 		{
@@ -98,18 +93,10 @@ class ApiShowController extends \BaseController {
 
 		if (! $show->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$show->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $show->getErrors(), 500);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$show->toArray(),
-			200
-		);
+		return $this->apiResponse('success', $show->toArray(), 200);
 	}
 
 
@@ -121,7 +108,7 @@ class ApiShowController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$show = Show::find($id);
+		$show = $this->shows->find($id);
 
 		if (! $show)
 		{
@@ -141,41 +128,46 @@ class ApiShowController extends \BaseController {
 			200
 		);
 	}
-	
+
+
 	/**
 	 * Update the script for this show.
+	 *
+	 * Editor's Note (Alan): I'll be frank, I do not quite understand why this
+	 * method is in this class at all. `updateScript`? Doesn't that act upon a
+	 * specific _episode_? And as of writing this, I believe episodes have their
+	 * own individual controller, disregarding the fact that this contains biznit
+	 * logic that would very well be much better suited outside the concern of a
+	 * response controller. The whole concept of this method is batshit terrible.
+	 * Not to mention that (as of this writing) this method has no test coverage.
+	 * I'm not kidding, throw in a `return null;` anywhere you want. The covering
+	 * test class passes regardless. I'm trying to refactor things, but the idea
+	 * of rewriting half the application shouldn't fall under the definition of
+	 * "refactoring." I will let git-blame determine who the offending party is.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function updateScript($id)
 	{
-		$episode = Video::where('viewable_id', '=', Input::get('episode'))->firstOrFail();		
-		$script = Script::where('video_id', '=', $episode->id)->firstOrFail();
+		$episode = $this->episodes
+		                ->with('videos.scripts')
+		                ->findOrFail(Input::get('episode'));
 
-		if (! $script)
-		{
-			return $this->apiResponse('error', "Episode {$id} not found.", 404);
-		}
+		$script = $episode->videos()->firstOrFail()
+		                  ->script()->firstOrFail();
 		
 		$script->text = Input::get('text');
 
 		if (! $script->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$script->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $script->getErrors(), 500);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$script->toArray(),
-			200
-		);
+		return $this->apiResponse('success', $script->toArray(), 200);
 	}
-	
+
+
 	/**
 	*	This method updates timestamps for this video.
 	*
@@ -183,21 +175,20 @@ class ApiShowController extends \BaseController {
 	*/
 	public function saveTimestamps($id)
 	{
-		$episode = Video::where('viewable_id', '=', Input::get('episode'))->firstOrFail();		
-		$video = $episode->videos()->first();
+		$episode = $this->episodes
+		                ->with('videos')
+		                ->findOrFail(Input::get('episode'));
 
-		if (!$video)
-		{
-			return $this->apiResponse(
-				'error',
-				"Video {$id} not found.",
-				404
-			);
-		}
+		$video = $episode->videos()->firstOrFail();
 		
 		$video->timestamps_json = Input::get('text');
-		$video->save();
-		return $this->apiResponse("success", $video->toResponseArray());
+
+		if (! $video->save())
+		{
+			return $this->apiResponse('error', $script->getErrors(), 500);
+		}
+		
+		return $this->apiResponse('success', $video->toResponseArray());
 	}
 	
 }
