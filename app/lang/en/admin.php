@@ -33,6 +33,7 @@ return array(
 		'pronunciations' => 'Pronunciation|Pronunciations',
 		'timestamps'     => 'Timestamp|Timestamps',
 		'words'          => 'Word|Words',
+		'empty'			 => 'There doesn\'t seem to be anything here',
 	),
 
 	'media' => array(
@@ -152,6 +153,9 @@ return array(
 			'script'     => 'Script',
 			'media'      => 'Media',
 			'title' 	 => 'Edit Media',
+		),
+		'new_media' => array(
+			'title'		=> 'New Media',
 		),
 
 		'edit_script' => array(

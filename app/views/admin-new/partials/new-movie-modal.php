@@ -1,8 +1,8 @@
 <div class="modal-header">
-	<h1><?php echo Lang::get('admin.modal.edit_media.title'); ?></h1>
+	<h1><?php echo Lang::get('admin.modal.new_media.title'); ?></h1>
 </div>
 <div class="modal-body">
-	<form class="row" id="new-movie-form" enctype="multipart/form-data">
+	<form class="row" id="new-movie-form">
 		<div class="col-md-8" >
 			<div class="form-group">
 				<label for="movie-name"> <?php echo Lang::get('admin.media.movie.table.name'); ?></label>

@@ -2,7 +2,7 @@
 	<h1><?php echo Lang::get('admin.modal.edit_media.title'); ?></h1>
 </div>
 <div class="modal-body">
-	<form class="row">
+	<form class="row" id="edit-commercial-form">
 		<div class="col-md-8" >
 			<div class="form-group" ng-class="{ 'has-error' : commercial.name.length === 0 }">
 				<label for="commercial-name"> <?php echo Lang::get('admin.media.commercial.table.name'); ?></label>
@@ -18,7 +18,7 @@
 			<h3><?php echo Lang::get('admin.media.commercial.table.poster'); ?></h3>
 			<img height="300px" ng-src="{{ commercial.image_path }}"/>
 			<div class="form-group">
-				<input type="file" id="media-image" name="media-image" ng-model="commercial.media_image">
+				<input type="file" id="media_image" name="media_image">
 			</div>
 		</div>
 	</form>

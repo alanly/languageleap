@@ -20,5 +20,5 @@
 </table>
 
 <div ng-if="movies.length === 0">
-	There doesn't seem to be anything here.
+	<?php echo Lang::get('admin.terms.empty'); ?>
 </div>

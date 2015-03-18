@@ -19,7 +19,7 @@
 			}
 		);
 
-		$scope.$on('addcommercial', function(event, commercial){
+		$scope.$on('addCommercial', function(event, commercial){
 			$scope.commercials.push(commercial);
 		});
 		
@@ -78,8 +78,27 @@
 		$scope.saveCommercial = function() {
 			$http.put('/api/metadata/commercials/' + commercial.id, $scope.commercial)
 			.success(function(data){
-				angular.copy($scope.movie, movie)
-				$modalInstance.dismiss('cancel');
+				var formData = new FormData();
+				formData.append("media_image", $("#media_image").prop('files')[0]);
+				formData.append("_method", "PUT");
+
+				$.ajax({
+					type: "POST",
+					url: "/api/metadata/commercials/"+data.data.id,
+					data: formData,
+					cache: false,
+					processData: false,
+					contentType: false
+				})
+				.done(function(data, status, xhr) {
+					commercial.image_path = data.data.image_path;
+					angular.copy($scope.commercial, commercial)
+					$modalInstance.dismiss('cancel');
+				})
+				.fail(function(xhr, status, error) {
+					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+				});
+			
 			});
 		}
 
@@ -96,8 +115,26 @@
 			
 			$http.post('/api/metadata/commercials/', $scope.commercial)
 			.success(function(data){
-				$rootScope.$broadcast('addcommercial', data.data);
-				$modalInstance.dismiss('cancel');
+				var formData = new FormData();
+				formData.append("media_image", $("#media_image").prop('files')[0]);
+				formData.append("_method", "PUT");
+
+				$.ajax({
+					type: "POST",
+					url: "/api/metadata/commercials/"+data.data.id,
+					data: formData,
+					cache: false,
+					processData: false,
+					contentType: false
+				})
+				.done(function(data, status, xhr) {
+					$rootScope.$broadcast('addCommercial', data.data);
+					$modalInstance.dismiss('cancel');
+				})
+				.fail(function(xhr, status, error) {
+					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+				});
+			
 			});
 		}
 
