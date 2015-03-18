@@ -1,5 +1,6 @@
 <?php namespace LangLeap\Videos;
 
+use URL;
 use LangLeap\Core\Imageable;
 use LangLeap\Core\ValidatedModel;
 
@@ -8,7 +9,7 @@ use LangLeap\Core\ValidatedModel;
  */
 abstract class Media extends ValidatedModel implements Imageable {
 	
-	protected $fillable = ['name', 'description', 'level_id', 'is_published'];
+	protected $fillable = ['name', 'description', 'level_id', 'is_published', 'image_path'];
 	protected $rules    = ['name' => 'required'];
 
 
@@ -35,6 +36,13 @@ abstract class Media extends ValidatedModel implements Imageable {
 		// We will use the SHA1 algorithm, as it is less prone to collision attacks,
 		// while still being quick enough for mass hashing.
 		return hash('sha1', $string);
+	}
+
+
+	public function getImagePath()
+	{
+		return URL::action('ImageContentController@getImage',
+			['model' => class_basename(get_class($this)), 'id' => $this->id]);
 	}
 
 

@@ -1,5 +1,6 @@
 <?php namespace LangLeap\Videos;
 
+use URL;
 use LangLeap\Core\Imageable;
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
@@ -33,6 +34,16 @@ class Show extends ValidatedModel implements Billable, Filterable, Imageable {
 	public function seasons()
 	{
 		return $this->hasMany('LangLeap\Videos\Season');
+	}
+
+	public function toArray()
+	{
+		$serialized = parent::toArray();
+
+		$serialized['image_path'] = URL::action('ImageContentController@getImage',
+			['model' => class_basename(get_class($this)), 'id' => $this->id]);
+
+		return $serialized;
 	}
 
 	public static function getSearchableAttributes()

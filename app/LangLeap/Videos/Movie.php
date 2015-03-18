@@ -12,7 +12,7 @@ class Movie extends Media implements Billable, Classifiable, Filterable {
 	function __construct(array $attributes = [])
 	{
 		// Add this model's attributes to the mass-assignable parameter.
-		array_push($this->fillable, 'director', 'actor', 'genre', 'image_path');
+		array_push($this->fillable, 'director', 'actor', 'genre');
 
 		/*
 		 * Pass any construction parameters to the base constructor.
@@ -43,7 +43,7 @@ class Movie extends Media implements Billable, Classifiable, Filterable {
 			'director'    => $this->director,
 			'actor'       => $this->actor,
 			'genre'       => $this->genre,
-			'image_path'  => $this->image_path,
+			'image_path'  => $this->getImagePath(),
 			'level'       => $this->level->description,
 			'is_published'=> $this->is_published,
 			'videos'      => $videos,
