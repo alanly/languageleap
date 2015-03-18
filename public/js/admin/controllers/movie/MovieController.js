@@ -159,8 +159,8 @@
 					processData: false,
 					contentType: false
 				})
-				.done(function(data, status, xhr) {
-					$rootScope.$broadcast('addMovie', data.data);
+				.done(function(newMovie, status, xhr) {
+					$rootScope.$broadcast('addMovie', newMovie.data);
 					$modalInstance.dismiss('cancel');
 				})
 				.fail(function(xhr, status, error) {
