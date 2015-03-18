@@ -76,16 +76,37 @@
 		$scope.movie = angular.copy(movie);
 
 		$scope.saveMovie = function() {
+			
 			$http.put('/api/metadata/movies/' + movie.id, $scope.movie)
 			.success(function(data){
-				angular.copy($scope.movie, movie)
-				$modalInstance.dismiss('cancel');
-			});
-		}
 
-		$scope.uploadFile = function(files) {
-			//set the media image to the file that was selected by the user
-			$scope.movie.media_image = files[0];
+				var formData = new FormData();
+				formData.append("media_image", $("#media_image").prop('files')[0]);
+				formData.append("_method", "PUT");
+
+				$.ajax({
+					type: "POST",
+					url: "/api/metadata/movies/"+data.data.id,
+					data: formData,
+					cache: false,
+					processData: false,
+					contentType: false,
+					xhr: function() {
+						myXhr = $.ajaxSettings.xhr();
+						
+						return myXhr;
+					}
+				})
+				.done(function(data, status, xhr) {
+					movie.image_path = data.data.image_path;
+					angular.copy($scope.movie, movie)
+					$modalInstance.dismiss('cancel');
+				})
+				.fail(function(xhr, status, error) {
+					console.log(xhr);
+					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+				});
+			});
 		}
 
 		$scope.closeModel = function() {
@@ -103,11 +124,9 @@
 			.success(function(data){
 				var formData = new FormData();
 				formData.append("media_image", $("#media_image").prop('files')[0]);
-
-				//var formData = new FormData($('#new-movie-form')[0]);
-
 				formData.append("_method", "PUT");
-				xhr = $.ajax({
+
+				$.ajax({
 					type: "POST",
 					url: "/api/metadata/movies/"+data.data.id,
 					data: formData,
@@ -119,16 +138,17 @@
 						
 						return myXhr;
 					}
-					})
-					.done(function(data, status, xhr) {
-						console.log("Upload complete! Redirecting...");
-					})
-					.fail(function(xhr, status, error) {
-						console.log(xhr);
-						console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
-					});
-
+				})
+				.done(function(data, status, xhr) {
+					$rootScope.$broadcast('addMovie', data.data);
+					$modalInstance.dismiss('cancel');
+				})
+				.fail(function(xhr, status, error) {
+					console.log(xhr);
+					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
 				});
+
+			});
 			
 		}
 
