@@ -196,31 +196,31 @@ class ApiMovieController extends \BaseController implements MediaUpdaterListener
 
 
 	/**
-   * Handle the event that the Media instance has been successfully updated.
-   * @param  Media  $media the Media instance that has been updated.
-   * @return mixed
-   */
-  public function mediaUpdated(Media $media)
-  {
-  	// Determine which success HTTP code we should use.
-  	$code = $this->isCreate ? 201 : 200;
+	 * Handle the event that the Media instance has been successfully updated.
+	 * @param  Media  $media the Media instance that has been updated.
+	 * @return mixed
+	 */
+	public function mediaUpdated(Media $media)
+	{
+		// Determine which success HTTP code we should use.
+		$code = $this->isCreate ? 201 : 200;
 
-  	// Reset our flag.
-  	$this->isCreate = false;
+		// Reset our flag.
+		$this->isCreate = false;
 
-  	return $this->apiResponse('success', $media->toArray(), $code);
-  }
+		return $this->apiResponse('success', $media->toArray(), $code);
+	}
 
 
-  /**
-   * Handle the event that the attempt to update the Media instance results in
-   * validation errors.
-   * @param  mixed $errors a collection of error messages from the validator.
-   * @return mixed
-   */
-  public function mediaValidationError($errors)
-  {
-  	return $this->apiResponse('error', $errors, 400);
-  }
+	/**
+	 * Handle the event that the attempt to update the Media instance results in
+	 * validation errors.
+	 * @param  mixed $errors a collection of error messages from the validator.
+	 * @return mixed
+	 */
+	public function mediaValidationError($errors)
+	{
+		return $this->apiResponse('error', $errors, 400);
+	}
 
 }
