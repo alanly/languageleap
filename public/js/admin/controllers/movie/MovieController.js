@@ -69,6 +69,15 @@
 			});
 		};
 
+		$scope.manageMedia = function(movie) {
+
+			$http.get('/api/metadata/movies/' + movie.id).
+			success(function(data){
+				$scope.current_movie = data.data;
+				$scope.movie_media = 'partials/movie-media';	
+			});
+			
+		};
 	}]);
 
 	app.controller('EditMovieController', ['$scope', '$http', '$modalInstance', 'movie', function($scope, $http, $modalInstance, movie){
@@ -145,5 +154,4 @@
 		}
 
 	}]);
-
 })();
