@@ -52,7 +52,7 @@ class ApiMovieController extends \BaseController implements MediaUpdaterListener
 		{
 			return $this->apiResponse('error', $movie->getErrors(), 400);
 		}
-
+		
 		// Create a new updater instance.
 		$imageUpdater = App::make('LangLeap\VideoUtilities\MediaImageUpdater');
 
@@ -207,7 +207,7 @@ class ApiMovieController extends \BaseController implements MediaUpdaterListener
 		// Reset our flag.
 		$this->isCreate = false;
 
-		return $this->apiResponse('success', $media->toResponseArray(), $code);
+		return $this->apiResponse('success', $media->toArray(), $code);
 	}
 
 
