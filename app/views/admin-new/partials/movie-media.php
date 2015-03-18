@@ -6,7 +6,7 @@
 				<h4><?= Lang::get('admin.video.title', ['name' => '{{ current_movie.name }}']); ?></h4>
 			</div>
 			<div ng-if="current_movie.video.id === null">
-			
+				<video ng-src="video.path"/>
 			</div>
 
 			<div ng-if="current_movie.video.length !== 0">
@@ -25,7 +25,7 @@
 		</div>
 	</div>
 	<div style="clear:both;"></div>
-	
+
 <br/>
 <br/>
 <br/>

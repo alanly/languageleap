@@ -37,7 +37,7 @@ class VideoFactoryTest extends TestCase {
 		$text = "text";
 
 		$input =  [
-				'info-radio'	=> 'commercial',
+				'media_type'	=> 'commercial',
 				'media_id'		=> $commercial->id, 
 				'language_id' 	=> $language->id, 
 				"script" 		=> $text,
@@ -81,7 +81,7 @@ class VideoFactoryTest extends TestCase {
 			true);
 
 		$input =  [
-				'info-radio'	=> 'commercial',
+				'media_type'	=> 'commercial',
 				'media_id'		=> $commercial->id, 
 				'language_id' 	=> $language->id, 
 				'video'=> $video
@@ -109,7 +109,7 @@ class VideoFactoryTest extends TestCase {
 			true);
 
 		$input =  [
-				'info-radio'	=> 'movie',
+				'media_type'	=> 'movie',
 				'media_id'		=> $commercial->id, 
 				'language_id' 	=> $language->id, 
 				'video'=> $video
@@ -137,7 +137,7 @@ class VideoFactoryTest extends TestCase {
 			true);
 
 		$input =  [
-				'info-radio'	=> 'show',
+				'media_type'	=> 'show',
 				'media_id'		=> $commercial->id, 
 				'language_id' 	=> $language->id, 
 				'video'=> $video
