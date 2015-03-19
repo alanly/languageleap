@@ -120,6 +120,11 @@
 
 			}
 		};
+
+		$scope.setScript = function()
+		{
+			$scope.video.script = $(".script-editor").html();
+		}
 	}]);
 
 	app.controller('EditMovieController', ['$scope', '$http', '$modalInstance', 'movie', function($scope, $http, $modalInstance, movie){

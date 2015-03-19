@@ -30,6 +30,7 @@
 	<br/>
 	<br/>
 	<br/>
+	Script: {{ video.script }} END
 
 	<div class="script-section">
 
@@ -40,7 +41,7 @@
 			related to the script editor. Note that the script editor was implemented way before
 			the decision to use AngularJS was made and has not been migrated to use Angular.
 		-->
-		<div class="script-editor" contenteditable="true" ng-model="video.script">
+		<div class="script-editor" ng-blur="setScript();" contenteditable="true">
 		</div>
 
 		<div id="edit-modal" class="modal fade" data-backdrop="static" data-keyboard="false">
