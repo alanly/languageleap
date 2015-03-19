@@ -63,7 +63,7 @@
 						</li>
 						<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> <?php echo Lang::get('admin.index.menu.scripts'); ?></a></li>
 						<li><a href="#/users"><i class="fa fa-users fa-fw"></i> <?php echo Lang::get('admin.index.menu.users'); ?></a></li>
-						<li><a href="#/quizzes"><i class="fa fa-users fa-fw"></i> <?php echo Lang::get('admin.index.menu.quizzes'); ?></a></li>
+						<li><a href="#/quizzes"><i class="fa fa-graduation-cap fa-fw"></i> <?php echo Lang::get('admin.index.menu.quizzes'); ?></a></li>
 						<li><a href="/"><i class="fa fa-road fa-fw"></i> <?php echo Lang::get('admin.index.menu.client'); ?></a></li>
 						<li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> <?php echo Lang::get('admin.index.menu.logout'); ?></a></li>
 				</ul>
@@ -98,7 +98,7 @@
 
 					<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> <?php echo Lang::get('admin.index.menu.scripts'); ?></a></li>
 					<li><a href="#/users"><i class="fa fa-users fa-fw"></i> <?php echo Lang::get('admin.index.menu.users'); ?></a></li>
-					<li><a href="#/quizzes"><i class="fa fa-users fa-fw"></i> <?php echo Lang::get('admin.index.menu.quizzes'); ?></a></li>
+					<li><a href="#/quizzes"><i class="fa fa-graduation-cap fa-fw"></i> <?php echo Lang::get('admin.index.menu.quizzes'); ?></a></li>
 				</ul>
 
 				<ul class="nav nav-sidebar">
