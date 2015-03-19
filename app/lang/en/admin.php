@@ -72,6 +72,15 @@ return array(
 				'manage'      => 'Manage',
 				'poster'	  => 'Poster',
 			),
+			'manage' => 'Manage TV Shows',
+			'action' => 'Action',
+			'publish' => 'Publish',
+		),
+		'episode' => array(
+			'name' => 'Episode',
+		),
+		'season' => array(
+			'name' => 'Season',
 		),
 		'add' => 'Add Media',
 	),
