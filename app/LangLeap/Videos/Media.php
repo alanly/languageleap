@@ -9,8 +9,9 @@ use LangLeap\Core\ValidatedModel;
  */
 abstract class Media extends ValidatedModel implements Imageable {
 	
-	protected $fillable = ['name', 'description', 'level_id', 'is_published', 'image_path'];
-	protected $rules    = ['name' => 'required'];
+	protected $fillable   = ['name', 'description', 'level_id', 'is_published', 'image_path'];
+	protected $attributes = ['level_id' => 1];
+	protected $rules      = ['name' => 'required'];
 
 
 	public function level()
