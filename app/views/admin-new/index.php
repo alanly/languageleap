@@ -26,7 +26,7 @@
 	<script src="/js/admin/controllers/movie/MovieController.js"></script>
 	<script src="/js/admin/controllers/show/ShowController.js"></script>
 	<script src="/js/admin/controllers/user/UserController.js"></script>
-	<script src="/js/admin/controllers/user/QuizzesController.js"></script>
+	<script src="/js/admin/controllers/quiz/QuizzesController.js"></script>
 
 	<link rel="stylesheet" href="/css/main.css">
 
