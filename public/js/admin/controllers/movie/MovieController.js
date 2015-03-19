@@ -80,7 +80,17 @@
 				$scope.video.media_type = "movie";
 				$scope.video.media_id = $scope.current_movie.id;
 				$scope.video.script = "";
-				$scope.video.timestamps = [];
+				$scope.video.path = "/" + $scope.video.path;
+				console.log($scope.video);
+
+				if($scope.video.timestamps_json !== undefined)
+				{
+					$scope.video.timestamps = angular.fromJson($scope.video.timestamps_json);
+				}
+				else
+				{
+					$scope.video.timestamps = [];
+				}
 
 				$scope.movie_media = 'partials/movie-media';	
 			});
@@ -88,8 +98,8 @@
 
 		$scope.addTimestamp = function() {
 			$scope.video.timestamps.push({
-				'start' : 0, 
-				'end' : 0
+				'from' : 0, 
+				'to' : 0
 			});
 		}
 
@@ -97,8 +107,18 @@
 			var index = $scope.video.timestamps.indexOf(timestamp);
 			$scope.video.timestamps.splice(index, 1);
 		}
+
 		$scope.saveMedia = function() {
-			$http.post('/api/videos', $scope.video);
+			$scope.video.timestamps_json = angular.toJson($scope.video.timestamps);
+			if($scope.video.id === null)//New video
+			{
+				console.log($scope.video.timestamps_json);
+				$http.post('/api/videos', $scope.video);
+			}
+			else //Update
+			{
+
+			}
 		};
 	}]);
 

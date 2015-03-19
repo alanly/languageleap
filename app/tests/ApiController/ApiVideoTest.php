@@ -50,11 +50,11 @@ class ApiVideoControllerTest extends TestCase {
                 'ApiVideoController@store',
                 [],
                 [
-                	'media_type'	=> 'commercial',
-                	'media_id'		=> $commercial->id, 
-                	'language_id' 	=> $language->id, 
-                	"script" 		=> $text,
-                	'timestamps'	=> "",
+                	'media_type'		=> 'commercial',
+                	'media_id'			=> $commercial->id, 
+                	'language_id' 		=> $language->id, 
+                	"script" 			=> $text,
+                	'timestamps_json'	=> "",
                 ],
                 ['video'=> $video]
         );
@@ -78,10 +78,10 @@ class ApiVideoControllerTest extends TestCase {
 			'ApiVideoController@update',
 			[$video->id],
 			[
-				'media_type'	=> 'episode',
-				'episode'		=> $episode->id, 
-				'language_id' 	=> $language->id,
-				'timestamps'	=> "",
+				'media_type'		=> 'episode',
+				'episode'			=> $episode->id, 
+				'language_id' 		=> $language->id,
+				'timestamps_json'	=> "",
 			],
 			['video'=> $video_file, 'script' => $script]
 		);

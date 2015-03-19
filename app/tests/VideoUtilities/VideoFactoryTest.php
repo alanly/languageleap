@@ -37,12 +37,12 @@ class VideoFactoryTest extends TestCase {
 		$text = "text";
 
 		$input =  [
-				'media_type'	=> 'commercial',
-				'media_id'		=> $commercial->id, 
-				'language_id' 	=> $language->id, 
-				"script" 		=> $text,
-				'video'			=> $video,
-				'timestamps'	=> ""
+				'media_type'		=> 'commercial',
+				'media_id'			=> $commercial->id, 
+				'language_id' 		=> $language->id, 
+				"script" 			=> $text,
+				'video'				=> $video,
+				'timestamps_json'	=> ""
 			];
 
 		$factory = VideoFactory::getInstance();
@@ -82,11 +82,11 @@ class VideoFactoryTest extends TestCase {
 			true);
 
 		$input =  [
-				'media_type'	=> 'commercial',
-				'media_id'		=> $commercial->id, 
-				'language_id' 	=> $language->id, 
-				'video'			=> $video,
-				'timestamps'	=> "",
+				'media_type'		=> 'commercial',
+				'media_id'			=> $commercial->id, 
+				'language_id' 		=> $language->id, 
+				'video'				=> $video,
+				'timestamps_json'	=> "",
 			];
 
 		$factory = VideoFactory::getInstance();
@@ -111,11 +111,11 @@ class VideoFactoryTest extends TestCase {
 			true);
 
 		$input =  [
-				'media_type'	=> 'movie',
-				'media_id'		=> $commercial->id, 
-				'language_id' 	=> $language->id, 
-				'video'			=> $video,
-				'timestamps'	=> "",
+				'media_type'		=> 'movie',
+				'media_id'			=> $commercial->id, 
+				'language_id' 		=> $language->id, 
+				'video'				=> $video,
+				'timestamps_json'	=> "",
 			];
 
 		$factory = VideoFactory::getInstance();
@@ -140,11 +140,11 @@ class VideoFactoryTest extends TestCase {
 			true);
 
 		$input =  [
-				'media_type'	=> 'show',
-				'media_id'		=> $commercial->id, 
-				'language_id' 	=> $language->id, 
-				'video'			=> $video,
-				'timestamps'	=> ""
+				'media_type'		=> 'show',
+				'media_id'			=> $commercial->id, 
+				'language_id' 		=> $language->id, 
+				'video'				=> $video,
+				'timestamps_json'	=> ""
 			];
 
 		$factory = VideoFactory::getInstance();

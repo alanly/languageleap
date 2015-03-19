@@ -118,7 +118,7 @@ class VideoFactory {
 			$video->path = $path;
 		}
 
-		$video->timestamps_json = $input['timestamps'];
+		$video->timestamps_json = $input['timestamps_json'];
 		$video->save();
 
 		//Only update video if the video was sent in

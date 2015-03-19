@@ -5,20 +5,20 @@
 			<div class="title">
 				<h4><?= Lang::get('admin.video.title', ['name' => '{{ current_movie.name }}']); ?></h4>
 			</div>
-			<div ng-if="current_movie.video.id === null">
-				<video ng-src="video.path"/>
+			<div ng-if="current_movie.video.id !== null">
+				<video style="width:100%;" ng-src="{{video.path}}" controls/>
 			</div>
 
-			<div ng-if="current_movie.video.length !== 0">
+			<div>
 				<input type="file" name="video" id="video"/>
 			</div>
 		</div>
 		<div class="timestamps col-md-6">
 			<h4>Timestamps</h4>
 			<div ng-repeat="timestamp in video.timestamps">
-				<input type="text" class="input-sm" ng-model="timestamp.start"/> 
+				<input type="text" class="input-sm" ng-model="timestamp.from"/> 
 				TO:
-				<input type="text" class="input-sm" ng-model="timestamp.end"/> 
+				<input type="text" class="input-sm" ng-model="timestamp.to"/> 
 				<a href="" ng-click="removeTimestamp(timestamp);">X</a>
 			</div>
 			<a href="" ng-click="addTimestamp()">+</a>
