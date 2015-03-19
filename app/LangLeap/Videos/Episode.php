@@ -43,6 +43,12 @@ class Episode extends Media implements Billable, Classifiable {
 	}
 
 
+	public function show()
+	{
+		return $this->season->show;
+	}
+
+
 	public function season()
 	{
 		return $this->belongsTo('LangLeap\Videos\Season');
