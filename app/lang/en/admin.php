@@ -63,7 +63,24 @@ return array(
 		'show' => array(
 			'name' => 'TV Shows',
 			'table' => array(
+				'id'          => 'Id',
+				'name'        => 'Name',
+				'description' => 'Description',
+				'actor'		  => 'Actor',
+				'director' 	  => 'Director',
+				'genre' 	  => 'Genre',
+				'manage'      => 'Manage',
+				'poster'	  => 'Poster',
 			),
+			'manage' => 'Manage TV Shows',
+			'action' => 'Action',
+			'publish' => 'Publish',
+		),
+		'episode' => array(
+			'name' => 'Episode',
+		),
+		'season' => array(
+			'name' => 'Season',
 		),
 		'add' => 'Add Media',
 	),
@@ -119,6 +136,27 @@ return array(
 		'confirm' => 'Are you sure that you want to delete this?'
 	),
 
+	'form' => array(
+		'placeholders' => array(
+			'show' => array(
+				'name'           => 'Enter TV show name',
+				'description'    => 'Enter a description',
+				'director'       => 'Enter director names separated by commas (eg. \'Samuel Jackson, Steve Nolan\')',
+				'actor'          => 'Enter actor names separated by commas',
+				'genre'          => 'Enter genres separated by commas',
+			),
+			'season' => array(
+				'number'         => 'Enter the season (eg. \'1\')',
+				'description'    => 'Enter a description',
+			),
+			'episode' => array(
+				'number'         => 'Enter the episode (eg. \'1\')',
+				'name'           => 'Enter the name',
+				'description'    => 'Enter the description',
+			),
+		),
+	),
+
 	'modal' => array(
 
 		/**
@@ -134,6 +172,7 @@ return array(
 		'actor'       => 'Actor',
 		'genre'       => 'Genre',
 		'file'        => 'File',
+		'cancel'      => 'Cancel',
 
 		/**
 		 * The translations specific to each modal.
@@ -145,15 +184,17 @@ return array(
 		),
 
 		'edit_media' => array(
-			'save'       => 'Save',
-			'season'     => 'Season|Seasons',
-			'episode'    => 'Episode',
-			'add'        => 'Add',
-			'timestamps' => 'Timestamps',
-			'info'       => 'Info',
-			'script'     => 'Script',
-			'media'      => 'Media',
-			'title' 	 => 'Edit Media',
+			'save'           => 'Save',
+			'season'         => 'Season|Seasons',
+			'episode'        => 'Episode',
+			'add'            => 'Add',
+			'timestamps'     => 'Timestamps',
+			'info'           => 'Info',
+			'script'         => 'Script',
+			'media'          => 'Media',
+			'title' 	     => 'Edit Media',
+			'season_number'  => 'Season Number',
+			'episode_number' => 'Episode Number',
 		),
 		'new_media' => array(
 			'title'		=> 'New Media',

@@ -140,10 +140,20 @@ class ApiEpisodeControllerTest extends TestCase {
 	{
 		$this->seed();
 
+		// Get Show 1 > Season 1 > Episode 2; make sure it exists before we
+		// try to delete it.
+		$response = $this->action(
+			'GET',
+			'ApiEpisodeController@show',
+			[1, 1, 2]
+		);
+
+		$this->assertResponseOk();
+
 		// Delete Show 1 > Season 1 > Episode 1
 		$response = $this->action(
 			'DELETE',
-			'ApiEpisodeController@show',
+			'ApiEpisodeController@destroy',
 			[1, 1, 1]
 		);
 
@@ -154,6 +164,39 @@ class ApiEpisodeControllerTest extends TestCase {
 			'GET',
 			'ApiEpisodeController@show',
 			[1, 1, 1]
+		);
+
+		$this->assertResponseStatus(404);
+	}
+
+	public function testDestroyEpisodeThatIsNotTheFirst()
+	{
+		$this->seed();
+
+		// Get Show 1 > Season 1 > Episode 2; make sure it exists before we
+		// try to delete it.
+		$response = $this->action(
+			'GET',
+			'ApiEpisodeController@show',
+			[1, 1, 2]
+		);
+
+		$this->assertResponseOk();
+
+		// Delete Show 1 > Season 1 > Episode 2
+		$response = $this->action(
+			'DELETE',
+			'ApiEpisodeController@destroy',
+			[1, 1, 2]
+		);
+
+		$this->assertResponseStatus(204);
+
+		// Get Show 1 > Season 1 > Episode 2
+		$response = $this->action(
+			'GET',
+			'ApiEpisodeController@show',
+			[1, 1, 2]
 		);
 
 		$this->assertResponseStatus(404);
