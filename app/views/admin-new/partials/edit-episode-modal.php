@@ -1,20 +1,20 @@
 <div class="modal-header">
-	<h2 class="modal-title"><?php echo Lang::get('admin.modal.edit_media.title'); ?></h2>
+	<h2 class="modal-title"><?= Lang::get('admin.modal.edit_media.title') ?></h2>
 </div>
 <div class="modal-body">
 	<form class="row">
 		<div class="col-md-12">
 			<div class="form-group">
-				<label for="number">Episode Number</label>
-				<input type="text" class="form-control" id="number" placeholder="Enter the episode (eg. '1')" ng-model="episode.number">
+				<label for="number"><?= Lang::get('admin.modal.edit_media.episode_number') ?></label>
+				<input type="text" class="form-control" id="number" placeholder="<?= Lang::get('admin.form.placeholders.episode.number') ?>" ng-model="episode.number">
 			</div>
 			<div class="form-group">
-				<label for="name">Name</label>
-				<input type="text" class="form-control" id="name" placeholder="Enter the name" ng-model="episode.name">
+				<label for="name"><?= Lang::get('admin.modal.name') ?></label>
+				<input type="text" class="form-control" id="name" placeholder="<?= Lang::get('admin.form.placeholders.episode.name') ?>" ng-model="episode.name">
 			</div>
 			<div class="form-group">
-				<label for="description">Description</label>
-				<textarea name="description" class="form-control" id="description" cols="30" rows="5" placeholder="Enter a description" ng-model="episode.description"></textarea>
+				<label for="description"><?= Lang::get('admin.modal.description') ?></label>
+				<textarea name="description" class="form-control" id="description" cols="30" rows="5" placeholder="<?= Lang::get('admin.form.placeholders.episode.description') ?>" ng-model="episode.description"></textarea>
 			</div>
 		</div>
 	</form>

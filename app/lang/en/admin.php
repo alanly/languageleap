@@ -145,6 +145,15 @@ return array(
 				'actor'          => 'Enter actor names separated by commas',
 				'genre'          => 'Enter genres separated by commas',
 			),
+			'season' => array(
+				'number'         => 'Enter the season (eg. \'1\')',
+				'description'    => 'Enter a description',
+			),
+			'episode' => array(
+				'number'         => 'Enter the episode (eg. \'1\')',
+				'name'           => 'Enter the name',
+				'description'    => 'Enter the description',
+			),
 		),
 	),
 
@@ -175,15 +184,17 @@ return array(
 		),
 
 		'edit_media' => array(
-			'save'       => 'Save',
-			'season'     => 'Season|Seasons',
-			'episode'    => 'Episode',
-			'add'        => 'Add',
-			'timestamps' => 'Timestamps',
-			'info'       => 'Info',
-			'script'     => 'Script',
-			'media'      => 'Media',
-			'title' 	 => 'Edit Media',
+			'save'           => 'Save',
+			'season'         => 'Season|Seasons',
+			'episode'        => 'Episode',
+			'add'            => 'Add',
+			'timestamps'     => 'Timestamps',
+			'info'           => 'Info',
+			'script'         => 'Script',
+			'media'          => 'Media',
+			'title' 	     => 'Edit Media',
+			'season_number'  => 'Season Number',
+			'episode_number' => 'Episode Number',
 		),
 		'new_media' => array(
 			'title'		=> 'New Media',
