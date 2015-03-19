@@ -158,5 +158,28 @@ class ApiEpisodeControllerTest extends TestCase {
 
 		$this->assertResponseStatus(404);
 	}
+
+	public function testDestroyEpisodeThatIsNotTheFirst()
+	{
+		$this->seed();
+
+		// Delete Show 1 > Season 1 > Episode 2
+		$response = $this->action(
+			'DELETE',
+			'ApiEpisodeController@destroy',
+			[1, 1, 2]
+		);
+
+		$this->assertResponseStatus(204);
+
+		// Get Show 1 > Season 1 > Episode 2
+		$response = $this->action(
+			'GET',
+			'ApiEpisodeController@show',
+			[1, 1, 2]
+		);
+
+		$this->assertResponseStatus(404);
+	}
 	
 }
