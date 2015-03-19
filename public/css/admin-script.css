@@ -1,25 +1,20 @@
-#edit-container {
-	line-height: 45px;
-	letter-spacing: 3px;
-	margin: 0 auto;
-	outline: none;
-	width: 800px;
-}
-
 .script-editor {
-	border: 1px solid #000;
+	border: 2px solid #ddd;
 	outline: none;
 	padding: 2px;
 	margin-bottom: 20px;
+	min-height: 200px;
+	line-height: 45px;
+	letter-spacing: 3px;
 }
 
 /* Important: Keep the -moz-selection and other selections separate for firefox compatibility */
 .script-editor::-moz-selection {
-	color: #cba;
+	color: #337AB7;
 }
 
 .script-editor::selection {
-	color: #cba;
+	color: #337AB7;
 }
 
 .script-editor span::-moz-selection {
@@ -52,13 +47,14 @@
 
 [data-type="actor"],
 .actor-button {
-	background-color: #6B6B6B;
-	color: #FFF;
+	background-color: #5c5c5c;
+	color: #fff;
 }
 
 [data-type="word"],
 .word-button {
-	background-color: #CBA;
+	background-color: #337AB7;
+	color: #fff;
 }
 
 .radio {
@@ -78,4 +74,9 @@
 .script-editor .tooltip-arrow::selection,
 .script-editor .tooltip-inner::selection {
 	background-color: transparent;
+}
+
+#edit-modal .modal-backdrop {
+	bottom: 0 !important;
+	position: fixed !important;
 }

@@ -408,7 +408,7 @@ function getScriptText() {
 //////////////////////////////////////////////////////////////
 $(function() {
 	// Load the script into the contenteditable div
-	loadScript(1);
+	//loadScript(1);
 
 	// Prevent pasting into the script contenteditable field
 	$('.script-editor').on('paste', function(e){ 
@@ -525,6 +525,12 @@ function loadScript(scriptId) {
 		if (data.status == 'success') {
 			var scriptText = data.data.text;
 			$('.script-editor').html(scriptText);
+
+			// If a script is loaded that does not have a br tag
+			// at the end, if the user places the cursor at the end of
+			// the content, he will need to press enter twice to get a line-break.
+			// This fixes that issue.
+			$('.script-editor').append('<br>');
 
 			// Make sure that tooltips are added to existing spans
 			refreshTooltips();
