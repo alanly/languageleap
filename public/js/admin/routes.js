@@ -24,6 +24,11 @@
 				templateUrl: 'pages/manage-shows',
 				controller: 'ShowController'
 			})
+			.when('/quizzes',
+			{
+				templateUrl: 'pages/manage-quizzes',
+				controller: 'QuizzesController'
+			})
 			.when('/users',
 			{
 				templateUrl: 'pages/manage-users',
