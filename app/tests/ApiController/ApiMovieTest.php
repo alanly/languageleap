@@ -245,6 +245,8 @@ class ApiMovieTest extends TestCase {
 
 	public function testStoringANewMovieWorksSuccessfully()
 	{
+		$this->seed();
+
 		$response = $this->action(
 			'POST',
 			'ApiMovieController@store',
@@ -297,6 +299,8 @@ class ApiMovieTest extends TestCase {
 
 	public function testGivenAnAppropriateUploadWeStoreTheImage()
 	{
+		$this->seed();
+		
 		$file = new Symfony\Component\HttpFoundation\File\UploadedFile(
 			Config::get('media.test').'/image.jpg',
 			'image.jpg', 'image/jpeg', null, null, true);

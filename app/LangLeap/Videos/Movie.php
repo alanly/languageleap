@@ -28,7 +28,6 @@ class Movie extends Media implements Billable, Classifiable, Filterable {
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
-
 	public function toResponseArray()
 	{
 		$videos = $this->videos->map(function($video)
@@ -43,7 +42,7 @@ class Movie extends Media implements Billable, Classifiable, Filterable {
 			'director'    => $this->director,
 			'actor'       => $this->actor,
 			'genre'       => $this->genre,
-			'image_path'  => $this->image_path,
+			'image_path'  => $this->getImagePath(),
 			'level'       => $this->level->description,
 			'is_published'=> $this->is_published,
 			'videos'      => $videos,

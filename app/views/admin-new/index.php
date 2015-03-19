@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic|Raleway:200,500,600">
+	<link rel="stylesheet" href="/css/admin-script.css">
 
 	<script src="https://code.angularjs.org/1.3.0/angular.min.js"></script>
 	<script src="https://code.angularjs.org/1.3.0/angular-route.min.js"></script>
@@ -25,6 +26,7 @@
 	<script src="/js/admin/controllers/movie/MovieController.js"></script>
 	<script src="/js/admin/controllers/show/ShowController.js"></script>
 	<script src="/js/admin/controllers/user/UserController.js"></script>
+	<script src="/js/admin/controllers/quiz/QuizzesController.js"></script>
 
 	<link rel="stylesheet" href="/css/main.css">
 
@@ -61,6 +63,7 @@
 						</li>
 						<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> <?php echo Lang::get('admin.index.menu.scripts'); ?></a></li>
 						<li><a href="#/users"><i class="fa fa-users fa-fw"></i> <?php echo Lang::get('admin.index.menu.users'); ?></a></li>
+						<li><a href="#/quizzes"><i class="fa fa-graduation-cap fa-fw"></i> <?php echo Lang::get('admin.index.menu.quizzes'); ?></a></li>
 						<li><a href="/"><i class="fa fa-road fa-fw"></i> <?php echo Lang::get('admin.index.menu.client'); ?></a></li>
 						<li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> <?php echo Lang::get('admin.index.menu.logout'); ?></a></li>
 				</ul>
@@ -95,6 +98,7 @@
 
 					<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> <?php echo Lang::get('admin.index.menu.scripts'); ?></a></li>
 					<li><a href="#/users"><i class="fa fa-users fa-fw"></i> <?php echo Lang::get('admin.index.menu.users'); ?></a></li>
+					<li><a href="#/quizzes"><i class="fa fa-graduation-cap fa-fw"></i> <?php echo Lang::get('admin.index.menu.quizzes'); ?></a></li>
 				</ul>
 
 				<ul class="nav nav-sidebar">

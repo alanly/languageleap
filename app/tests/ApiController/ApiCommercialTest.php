@@ -50,6 +50,8 @@ class ApiCommercialTest extends TestCase {
 
 	public function testStore()
 	{
+		$this->seed();
+
 		$response = $this->action(
 			'POST',
 			'ApiCommercialController@store',

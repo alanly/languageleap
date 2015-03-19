@@ -224,6 +224,9 @@ Route::group(array('prefix' => 'content'), function()
 	// Handle requests for scripts.
 	Route::get('scripts/{id}', 'ScriptContentController@getScript');
 
+	// Handle requests for media images.
+	Route::get('images/{model}/{id}', 'ImageContentController@getImage');
+
 });
 
 

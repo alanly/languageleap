@@ -1,21 +1,23 @@
 <?php
 
 use LangLeap\Videos\Movie;
+use LangLeap\VideoUtilities\MediaUpdaterListener;
 use LangLeap\Words\Script;
 
 /**
  * @author David Siekut
  * @author Alan Ly <hello@alan.ly>
  */
-class ApiMovieController extends \BaseController {
+class ApiMovieController extends \BaseController implements MediaUpdaterListener {
 
 	protected $movies;
 	protected $scripts;
+	private   $isCreate = false;
 
 
 	public function __construct(Movie $movies, Script $scripts)
 	{
-		$this->movies = $movies;
+		$this->movies  = $movies;
 		$this->scripts = $scripts;
 	}
 
@@ -50,46 +52,15 @@ class ApiMovieController extends \BaseController {
 		{
 			return $this->apiResponse('error', $movie->getErrors(), 400);
 		}
+		
+		// Create a new updater instance.
+		$imageUpdater = App::make('LangLeap\VideoUtilities\MediaImageUpdater');
 
-		// Check if the input includes an image file, and if it does, check if the
-		// upload was successful or not. If both conditions are fine, then we'll
-		// handle saving the uploaded image. We would ideally delegate this logic
-		// to another class, but for the sake of laziness, we'll just perform the
-		// task in-controller.
-		if (Input::hasFile('media_image') && Input::file('media_image')->isValid())
-		{
-			// Perform additional validation on input values.
-			$validator = Validator::make(
-				Input::get(),
-				['media_image' => 'image']
-			);
+		// Set the `isCreate` flag to true so that we generate the correct response.
+		$this->isCreate = true;
 
-			if ($validator->fails())
-			{
-				return $this->apiResponse('error', $validator->messages(), 400);
-			}
-
-			$splFile = Input::file('media_image');
-			// Determine the appropriate file name for the image.
-			$filename = get_class($movie)."_{$movie->id}.".$splFile->getClientOriginalExtension();
-
-			if (! App::environment('testing'))
-			{
-				// Move the image to the appropriate storage location if we're production.
-				$splFile = $splFile->move(Config::get('media.paths.img'), $filename);
-			}
-
-			if (! $splFile->isReadable())
-			{
-				return $this->apiResponse('error', ['media_image' => Lang::get('admin.upload.image_store_failed')], 500);
-			}
-
-			// Update the movie instance with the image path.
-			$movie->image_path = $splFile->getRealPath();
-			$movie->save();
-		}
-
-		return $this->apiResponse('success', $movie->toArray(), 201);
+		// Attempt to update the image.
+		return $imageUpdater->update($movie, Request::instance(), $this);
 	}
 
 
@@ -123,7 +94,8 @@ class ApiMovieController extends \BaseController {
 
 		if (! $movie)
 		{
-			return $this->apiResponse('error', Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
+			return $this->apiResponse('error',
+				Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
 		}
 
 		$movie->fill(Input::get());
@@ -133,47 +105,14 @@ class ApiMovieController extends \BaseController {
 			return $this->apiResponse('error', $movie->getErrors(), 400);
 		}
 
-		// Check if the input includes an image file, and if it does, check if the
-		// upload was successful or not. If both conditions are fine, then we'll
-		// handle saving the uploaded image. We would ideally delegate this logic
-		// to another class, but for the sake of laziness, we'll just perform the
-		// task in-controller.
+		// Create a new updater instance.
+		$imageUpdater = App::make('LangLeap\VideoUtilities\MediaImageUpdater');
 
-		if (Input::hasFile('media_image') && Input::file('media_image')->isValid())
-		{
-			// Perform additional validation on input values.
-			$validator = Validator::make(
-				Input::get(),
-				['media_image' => 'image']
-			);
+		// Set the `isCreate` flag to false so that we generate the correct response.
+		$this->isCreate = false;
 
-			if ($validator->fails())
-			{
-				return $this->apiResponse('error', $validator->messages(), 400);
-			}
-
-			$splFile = Input::file('media_image');
-			// Determine the appropriate file name for the image.
-			$filename = get_class($movie)."_{$movie->id}.".$splFile->getClientOriginalExtension();
-
-			if (! App::environment('testing'))
-			{
-				// Move the image to the appropriate storage location if we're production.
-				$splFile = $splFile->move(Config::get('media.paths.img'), $filename);
-			}
-
-			if (! $splFile->isReadable())
-			{
-				return $this->apiResponse('error', ['media_image' => Lang::get('admin.upload.image_store_failed')], 500);
-			}
-
-			// Update the movie instance with the image path.
-			$movie->image_path = $splFile->getRealPath();
-			$movie->save();
-		}
-
-		return $this->apiResponse('success', $movie->toArray(), 200);
-
+		// Attempt to update the image.
+		return $imageUpdater->update($movie, Request::instance(), $this);
 	}
 
 
@@ -231,10 +170,10 @@ class ApiMovieController extends \BaseController {
 	
 	
 	/**
-	*	This method updates timestamps for this video.
-	*
-	*	@param int $video_id 
-	*/
+	 *	This method updates timestamps for this video.
+	 *
+	 *	@param int $video_id 
+	 */
 	public function saveTimestamps($id)
 	{
 		$movie = Movie::find($id);
@@ -253,4 +192,34 @@ class ApiMovieController extends \BaseController {
 		$video->save();
 		return $this->apiResponse("success", $video->toResponseArray());
 	}
+
+
+	/**
+	 * Handle the event that the media instance has been successfully updated.
+	 * @param  mixed  $media the media instance that has been updated.
+	 * @return mixed
+	 */
+	public function mediaUpdated($media)
+	{
+		// Determine which success HTTP code we should use.
+		$code = $this->isCreate ? 201 : 200;
+
+		// Reset our flag.
+		$this->isCreate = false;
+
+		return $this->apiResponse('success', $media->toResponseArray(), $code);
+	}
+
+
+	/**
+	 * Handle the event that the attempt to update the Media instance results in
+	 * validation errors.
+	 * @param  mixed $errors a collection of error messages from the validator.
+	 * @return mixed
+	 */
+	public function mediaValidationError($errors)
+	{
+		return $this->apiResponse('error', $errors, 400);
+	}
+
 }

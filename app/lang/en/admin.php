@@ -119,7 +119,8 @@ return array(
 			'client' => 'Client Side',
 			'videos' => 'Manage Videos',
 			'scripts' => 'Manage Scripts',
-			'users' => 'Manager Users',
+			'users' => 'Manage Users',
+			'quizzes' => 'Manage Quizzes'
 		),
 	),
 	'delete' => array(
@@ -194,5 +195,9 @@ return array(
 			'pronun_placehold' => 'Enter the pronunciation',
 		),
 
+	),
+	'video' => array(
+		'video_editing' => 'Video Editing',
+		'title' 		=> 'Editing :name ',
 	),
 );
