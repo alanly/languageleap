@@ -81,11 +81,8 @@ class VideoFactory {
 		{
 			$lang = Language::find($input['language_id'])->first();
 		}
-		
-		$file = $input['video'];
+				
 		$type = $input['media_type'];
-
-		$ext = $file->getClientOriginalExtension();
 
 		if($video == null)
 		{
@@ -114,18 +111,31 @@ class VideoFactory {
 		}
 
 		$video->language_id = $lang->id;
-		$video->path = $path;
-		$video->save();
 
-		//set the path
-		$new_name = $video->id . "." . $ext;
-		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
-
-		if (!App::environment('testing')) {
-			$video_file = $file->move($path,$new_name);
+		//only set the path if its null
+		if($video->path === null)
+		{
+			$video->path = $path;
 		}
+
+		$video->timestamps_json = $input['timestamps'];
 		$video->save();
 
+		//Only update video if the video was sent in
+		if(array_key_exists("video", $input))
+		{
+			$file = $input['video'];
+			$ext = $file->getClientOriginalExtension();
+			//set the path
+			$new_name = $video->id . "." . $ext;
+			$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
+
+			if (!App::environment('testing')) {
+				$video_file = $file->move($path,$new_name);
+			}
+
+			$video->save();
+		}
 		return $video;
 	}
 }

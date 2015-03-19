@@ -41,7 +41,8 @@ class VideoFactoryTest extends TestCase {
 				'media_id'		=> $commercial->id, 
 				'language_id' 	=> $language->id, 
 				"script" 		=> $text,
-				'video'=> $video
+				'video'			=> $video,
+				'timestamps'	=> ""
 			];
 
 		$factory = VideoFactory::getInstance();
@@ -84,7 +85,8 @@ class VideoFactoryTest extends TestCase {
 				'media_type'	=> 'commercial',
 				'media_id'		=> $commercial->id, 
 				'language_id' 	=> $language->id, 
-				'video'=> $video
+				'video'			=> $video,
+				'timestamps'	=> "",
 			];
 
 		$factory = VideoFactory::getInstance();
@@ -112,7 +114,8 @@ class VideoFactoryTest extends TestCase {
 				'media_type'	=> 'movie',
 				'media_id'		=> $commercial->id, 
 				'language_id' 	=> $language->id, 
-				'video'=> $video
+				'video'			=> $video,
+				'timestamps'	=> "",
 			];
 
 		$factory = VideoFactory::getInstance();
@@ -140,7 +143,8 @@ class VideoFactoryTest extends TestCase {
 				'media_type'	=> 'show',
 				'media_id'		=> $commercial->id, 
 				'language_id' 	=> $language->id, 
-				'video'=> $video
+				'video'			=> $video,
+				'timestamps'	=> ""
 			];
 
 		$factory = VideoFactory::getInstance();
