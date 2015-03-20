@@ -89,7 +89,7 @@ return array(
 			'update' => 'Update Video',
 		),
 		'script' => array(
-			'parse' => 'Parse',
+			'import' => 'Import',
 			'save' => 'Save Script',
 		),
 	),
@@ -228,5 +228,8 @@ return array(
 	'video' => array(
 		'video_editing' => 'Video Editing',
 		'title' 		=> 'Editing :name ',
+	),
+	'script' => array(
+		'script_editing' => 'Script Editing',
 	),
 );

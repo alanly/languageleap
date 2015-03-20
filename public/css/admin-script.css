@@ -4,8 +4,10 @@
 	padding: 2px;
 	margin-bottom: 20px;
 	min-height: 200px;
+	max-height: 500px;
 	line-height: 45px;
 	letter-spacing: 3px;
+	overflow-y: scroll;
 }
 
 /* Important: Keep the -moz-selection and other selections separate for firefox compatibility */
@@ -79,4 +81,12 @@
 #edit-modal .modal-backdrop {
 	bottom: 0 !important;
 	position: fixed !important;
+}
+
+.file-input {
+	margin: 20px 5px 20px 5px;
+}
+
+.btn-primary {
+	margin: 10px;
 }

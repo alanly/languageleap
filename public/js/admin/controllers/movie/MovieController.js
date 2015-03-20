@@ -104,7 +104,24 @@
 			}
 			else //Update
 			{
+				var formData = new FormData();
+				formData.append('video', $("#video").prop('files')[0]);
 
+				$.ajax({
+					type : "POST",
+					url : '/api/parse/script',
+					data : formData,
+					cache : false,
+					processData : false,
+					contentType : false
+				})
+				.done(function(data, status, xhr){
+					$scope.video.script = data.data;
+					$(".script-editor").html($scope.video.script);
+				})
+				.fail(function(xhr, status, error) {
+					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+				});
 			}
 		};
 
