@@ -83,6 +83,10 @@ return array(
 			'name' => 'Season',
 		),
 		'add' => 'Add Media',
+		'video' => array(
+			'save' => 'Save',
+			'save_timestamps' => 'Save Timestamps',
+		),
 	),
 
 	'new_video' => array(

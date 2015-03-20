@@ -1,36 +1,46 @@
 <h1><?= Lang::get('admin.video.video_editing'); ?></h1>
 <div>
-	<div class="video-section">
-		<div class="col-md-6">
-			<div class="title">
-				<h4><?= Lang::get('admin.video.title', ['name' => '{{ current_movie.name }}']); ?></h4>
-			</div>
-			<div ng-if="current_movie.video.id !== null">
-				<video style="width:100%;" ng-src="{{video.path}}" controls/>
-			</div>
 
-			<div>
-				<input type="file" name="video" id="video"/>
+<tabset>
+	<tab heading="Video">
+		<div class="tab-content">
+			<div id="video-section">
+				<div class="col-md-6">
+					<div class="title">
+						<h4><?= Lang::get('admin.video.title', ['name' => '{{ current_movie.name }}']); ?></h4>
+					</div>
+					<div ng-if="current_movie.video.id !== null">
+						<video style="width:100%;" ng-src="{{video.path}}" controls></video>
+					</div>
+				</div>
+				<div class="timestamps col-md-6">
+					<h4>Timestamps</h4>
+					<div ng-repeat="timestamp in video.timestamps">
+						<input type="text" class="input-sm" ng-model="timestamp.from"/> 
+						TO:
+						<input type="text" class="input-sm" ng-model="timestamp.to"/> 
+						<a href="" ng-click="removeTimestamp(timestamp);">X</a>
+					</div>
+					<a href="" ng-click="addTimestamp()">+</a>
+				</div>
 			</div>
 		</div>
-		<div class="timestamps col-md-6">
-			<h4>Timestamps</h4>
-			<div ng-repeat="timestamp in video.timestamps">
-				<input type="text" class="input-sm" ng-model="timestamp.from"/> 
-				TO:
-				<input type="text" class="input-sm" ng-model="timestamp.to"/> 
-				<a href="" ng-click="removeTimestamp(timestamp);">X</a>
-			</div>
-			<a href="" ng-click="addTimestamp()">+</a>
+		<div style="clear:both;"></div>
+		<a href="" ng-click="saveTimestamps()" class="btn btn-primary"><?= Lang::get('admin.media.video.save_timestamps'); ?></a>
+	</tab>
+	<tab heading="Update Video">
+		<div id="new-media">
+			<input type="file" name="video" id="video"/>
 		</div>
-	</div>
-	<div style="clear:both;"></div>
+		<a href="" ng-click="saveTimestamps()" class="btn btn-primary"><?= Lang::get('admin.media.video.update'); ?></a>
+	</tab>
+</tabset>
 
+<div style="clear:both;"></div>	
 	<br/>
 	<br/>
 	<br/>
 	<br/>
-	Script: {{ video.script }} END
 
 	<div class="script-section">
 
@@ -41,6 +51,8 @@
 			related to the script editor. Note that the script editor was implemented way before
 			the decision to use AngularJS was made and has not been migrated to use Angular.
 		-->
+		<input type="file" id="parsable-script"/>
+		<a href="" ng-click="parseFile();" class="btn btn-primary">TEST</a>
 		<div class="script-editor" ng-blur="setScript();" contenteditable="true">
 		</div>
 
