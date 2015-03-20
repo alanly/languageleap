@@ -53,8 +53,11 @@ class VideoFactory {
 	 * @param int 		$video_id 
 	 * @param Script 	$script
 	 */
-	public function setScript($script_text,$video_id, Script $script = null)
+	public function setScript($script_text, $video_id, Script $script = null)
 	{
+		if(empty($script_text))
+			return;
+		
 		if($script == null)
 		{
 			$script = new Script;
@@ -118,7 +121,6 @@ class VideoFactory {
 			$video->path = $path;
 		}
 
-		$video->timestamps_json = $input['timestamps_json'];
 		$video->save();
 
 		//Only update video if the video was sent in

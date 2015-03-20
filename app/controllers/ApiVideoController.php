@@ -92,7 +92,7 @@ class ApiVideoController extends \BaseController {
 			);
 		}
 
-		$script_file = Input::file('script');
+		$script_file = Input::get('script');
 		
 		$video_factory = VideoFactory::getInstance();
 
