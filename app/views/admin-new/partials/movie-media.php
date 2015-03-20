@@ -52,7 +52,8 @@
 			the decision to use AngularJS was made and has not been migrated to use Angular.
 		-->
 		<input type="file" id="parsable-script"/>
-		<a href="" ng-click="parseFile();" class="btn btn-primary">TEST</a>
+		<a href="" ng-click="parseFile();" class="btn btn-primary"><?= Lang::get('admin.media.script.parse'); ?></a>
+		<br/>
 		<div class="script-editor" ng-blur="setScript();" contenteditable="true">
 		</div>
 
@@ -124,7 +125,7 @@
 		</div><!-- /.modal -->
 	</div>
 
-	<a href="" ng-click="saveMedia()" class="btn btn-primary"><?= Lang::get('admin.media.video.save'); ?></a>
+	<a href="" ng-click="saveMedia()" class="btn btn-primary"><?= Lang::get('admin.media.script.save'); ?></a>
 </div>	
 
 <script src="/js/admin-script.js"></script>

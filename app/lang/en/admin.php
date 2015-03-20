@@ -86,6 +86,11 @@ return array(
 		'video' => array(
 			'save' => 'Save',
 			'save_timestamps' => 'Save Timestamps',
+			'update' => 'Update Video',
+		),
+		'script' => array(
+			'parse' => 'Parse',
+			'save' => 'Save Script',
 		),
 	),
 
