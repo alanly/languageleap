@@ -105,4 +105,42 @@ class ApiVideoControllerTest extends TestCase {
 		$this->assertResponseOk();
 		$this->assertNull(Video::find($id));
 	}
+
+	public function testPostingTimestamps()
+	{
+		$this->seed();
+
+		$video = Video::first();
+		$id = $video->id;
+		$timestamps_json = "{'from' : '4','to' : '5'}";
+		$response = $this->action(
+			'post',
+			'ApiVideoController@postTimestamps',
+			[$id],
+			[
+				'timestamps_json' => $timestamps_json
+			]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+
+		$video = Video::find($video->id);
+		$this->assertEquals($video->timestamps_json, $timestamps_json);
+	}
+
+	public function testPostingTimestampsWithNoVideo()
+	{
+		$this->seed();
+
+		$response = $this->action(
+			'post',
+			'ApiVideoController@postTimestamps',
+			[-1],
+			[]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(404);
+	}
 }
