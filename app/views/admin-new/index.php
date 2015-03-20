@@ -16,7 +16,6 @@
 	<script src="https://code.angularjs.org/1.3.0/angular.min.js"></script>
 	<script src="https://code.angularjs.org/1.3.0/angular-route.min.js"></script>
 	<script src="https://code.angularjs.org/1.3.0/angular-resource.min.js"></script>
-	<script src="https://code.angularjs.org/1.3.0/angular-sanitize.js"></script>
 
 	<!-- adminApp Angular Imports -->
 	<script src="/js/admin/app.js"></script>
