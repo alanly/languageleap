@@ -29,7 +29,7 @@
 	<tab heading="Update Video">
 		<input type="file" name="video" id="video" class="file-input"/>
 
-		<a href="" ng-click="saveTimestamps()" class="btn btn-primary"><?= Lang::get('admin.media.video.update'); ?></a>
+		<a href="" ng-click="saveMedia()" class="btn btn-primary"><?= Lang::get('admin.media.video.update'); ?></a>
 	</tab>
 </tabset>
 
@@ -40,7 +40,7 @@
 <h3><?= Lang::get('admin.script.script_editing'); ?></h3>
 
 <div class="alert alert-info">
-	You can import an SRT file here
+	<?= Lang::get('admin.media.script.srt_info'); ?>
 </div>
 
 <input type="file" id="parsable-script" class="file-input"/>

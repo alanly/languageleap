@@ -108,6 +108,7 @@ return array(
 	'script' => array(
 		'upload'       => 'Script Upload',
 		'save_success' => 'Script saved successfully',
+		'srt_info'	=> 'You can import an SRT file and convert it into a script here',
 	),
 
 	'upload' => array(
