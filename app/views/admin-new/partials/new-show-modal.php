@@ -29,12 +29,14 @@
 			<div class="form-group">
 				<label for="cover"><?php echo Lang::get('admin.media.show.table.poster'); ?></label>
 				<img class="thumbnail cover" ng-src="{{ show.image_path }}">
-				<input type="file" id="cover">
+				<div class="form-group">
+					<input type="file" name="media_image" id="media_image"/>
+				</div>
 			</div>
 		</div>
 	</form>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" ng-click="saveShow()"><?php echo Lang::get('admin.modal.edit_media.save'); ?></button>
-	<button class="btn btn-default" ng-click="cancelEdit()"><?php echo Lang::get('admin.modal.cancel'); ?></button>
+	<button class="btn btn-primary" ng-click="storeShow()"><?php echo Lang::get('admin.modal.edit_media.save'); ?></button>
+	<button class="btn btn-default" ng-click="cancelNew()"><?php echo Lang::get('admin.modal.cancel'); ?></button>
 </div>

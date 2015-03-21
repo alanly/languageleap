@@ -10,7 +10,7 @@
 			</div>
 			<div class="form-group">
 				<label for="name"><?= Lang::get('admin.modal.name') ?></label>
-				<input type="text" class="form-control" id="name" placeholder="<?= Lang::get('admin.form.placeholders.episode.name') ?>" ng-model="episode.name">
+				<input type="number" class="form-control" id="name" placeholder="<?= Lang::get('admin.form.placeholders.episode.name') ?>" ng-model="episode.name">
 			</div>
 			<div class="form-group">
 				<label for="description"><?= Lang::get('admin.modal.description') ?></label>
