@@ -133,6 +133,7 @@ class VideoFactory {
 			$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
 
 			if (!App::environment('testing')) {
+				
 				$video_file = $file->move($path,$new_name);
 			}
 
