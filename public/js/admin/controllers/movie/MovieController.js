@@ -69,6 +69,8 @@
 			});
 		};
 
+		//MEDIA SECTION
+
 		$scope.manageMedia = function(movie) {
 
 			$http.get('/api/metadata/movies/' + movie.id).
@@ -77,11 +79,10 @@
 				$scope.current_movie = data.data;
 				$scope.video = $scope.current_movie.videos[0] !== undefined ? $scope.current_movie.videos[0] : {};
 				
+				//Initializations
 				$scope.video.media_type = "movie";
 				$scope.video.media_id = $scope.current_movie.id;
-				$scope.video.script = "";
 				$scope.video.path = "/" + $scope.video.path;
-				console.log($scope.video);
 
 				if($scope.video.timestamps_json !== undefined)
 				{
@@ -96,6 +97,38 @@
 			});
 		};
 
+		$scope.saveMedia = function() {
+			if($scope.video.id === null)//New video
+			{
+				$http.post('/api/videos', $scope.video);
+			}
+			else //Update
+			{
+				var formData = new FormData();
+				formData.append('video', $("#video").prop('files')[0]);
+
+				$.ajax({
+					type : "POST",
+					url : '/api/parse/script',
+					data : formData,
+					cache : false,
+					processData : false,
+					contentType : false
+				})
+				.done(function(data, status, xhr){
+					$scope.video.script = data.data;
+					$(".script-editor").html($scope.video.script);
+				})
+				.fail(function(xhr, status, error) {
+					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+				});
+			}
+		};
+
+		//END MEDIA SECTION
+
+		//START TIME STAMPS SECTION
+
 		$scope.addTimestamp = function() {
 			$scope.video.timestamps.push({
 				'from' : 0, 
@@ -108,23 +141,50 @@
 			$scope.video.timestamps.splice(index, 1);
 		}
 
-		$scope.saveMedia = function() {
+		$scope.saveTimestamps = function() {
 			$scope.video.timestamps_json = angular.toJson($scope.video.timestamps);
-			if($scope.video.id === null)//New video
-			{
-				console.log($scope.video.timestamps_json);
-				$http.post('/api/videos', $scope.video);
-			}
-			else //Update
-			{
+			console.log($scope.video.timestamps_json);
+			$http.post('/api/videos/timestamps/' + $scope.video.id, {
+				'timestamps_json' : $scope.video.timestamps_json
+			})
+			.success(function(data){
+				
+			});
+		}
 
-			}
-		};
+		//END TIME STAMP SECTION
+
+		//SCRIPT SECTION
 
 		$scope.setScript = function()
 		{
 			$scope.video.script = $(".script-editor").html();
 		}
+
+		$scope.parseFile = function()
+		{
+			var formData = new FormData();
+			formData.append('script-file', $("#parsable-script").prop('files')[0]);
+
+			$.ajax({
+				type : "POST",
+				url : '/api/parse/script',
+				data : formData,
+				cache : false,
+				processData : false,
+				contentType : false
+			})
+			.done(function(data, status, xhr){
+				$scope.video.script = data.data;
+				$(".script-editor").html($scope.video.script);
+			})
+			.fail(function(xhr, status, error) {
+				console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+			});
+		}
+
+		//END SCRIPT SECTION
+
 	}]);
 
 	app.controller('EditMovieController', ['$scope', '$http', '$modalInstance', 'movie', function($scope, $http, $modalInstance, movie){

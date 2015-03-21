@@ -83,6 +83,15 @@ return array(
 			'name' => 'Season',
 		),
 		'add' => 'Add Media',
+		'video' => array(
+			'save' => 'Save',
+			'save_timestamps' => 'Save Timestamps',
+			'update' => 'Update Video',
+		),
+		'script' => array(
+			'import' => 'Import',
+			'save' => 'Save Script',
+		),
 	),
 
 	'new_video' => array(
@@ -219,5 +228,8 @@ return array(
 	'video' => array(
 		'video_editing' => 'Video Editing',
 		'title' 		=> 'Editing :name ',
+	),
+	'script' => array(
+		'script_editing' => 'Script Editing',
 	),
 );

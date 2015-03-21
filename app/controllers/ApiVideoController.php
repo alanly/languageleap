@@ -127,5 +127,34 @@ class ApiVideoController extends \BaseController {
 	}
 
 	
+	/**
+	 * Save the timestamps for a video
+	 *
+	 * @param string json
+	 */
+	public function postTimestamps($id)
+	{
+		$video = Video::find($id);
+		if(!$video)
+		{
+			return $this->apiResponse(
+				'error',
+				Lang::get('controllers.videos.error', ['id' => $id]),
+				404
+			);
+		}
 
+		$video->timestamps_json = Input::get('timestamps_json');
+
+		if(! $video->save())
+		{
+			return $this->apiResponse('error', $video->getErrors(), 400);
+		}
+
+		return $this->apiResponse(
+			'success',
+			$video->toResponseArray(),
+			200
+		);
+	}
 }

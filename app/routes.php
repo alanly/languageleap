@@ -185,6 +185,7 @@ Route::group(['prefix' => 'api'], function()
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
+	Route::post('videos/timestamps/{id}', 'ApiVideoController@postTimestamps');
 	Route::controller('videos/cut', 'ApiCutVideoController');
 
 	// Scripts
