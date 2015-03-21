@@ -138,7 +138,7 @@ h1,h2,h3,h4,h5,h6 {
 
 .show-selected > tr:first-child {
   background-color: #d3e4f2 !important;
-  border-bottom: 2px solid #337ab7 !important;
+  outline: 2px solid #337ab7 !important;
   font-weight: bold !important;
 }
 
@@ -160,4 +160,8 @@ table.shows tbody:first-child tr:first-child {
 
 .episode-name {
   margin-left: 40px;
+}
+
+.sortable {
+  cursor: pointer;
 }

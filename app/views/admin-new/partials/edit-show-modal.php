@@ -29,7 +29,9 @@
 			<div class="form-group">
 				<label for="cover"><?php echo Lang::get('admin.media.show.table.poster'); ?></label>
 				<img class="thumbnail cover" ng-src="{{ show.image_path }}">
-				<input type="file" id="cover">
+				<div class="form-group">
+					<input type="file" name="media_image" id="media_image"/>
+				</div>
 			</div>
 		</div>
 	</form>
