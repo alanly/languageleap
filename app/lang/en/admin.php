@@ -105,13 +105,6 @@ return array(
 		'script' => 'Script',
 		'submit' => 'Submit',
 	),
-
-	'script' => array(
-		'upload'       => 'Script Upload',
-		'save_success' => 'Script saved successfully',
-		'srt_info'	=> 'You can import an SRT file and convert it into a script here',
-	),
-
 	'upload' => array(
 		'uploading'          => 'Uploading Media, Please Wait...',
 		'success'            => 'Media Uploaded Successfully',
@@ -241,8 +234,16 @@ return array(
 	'video' => array(
 		'video_editing' => 'Video Editing',
 		'title' 		=> 'Editing :name ',
+		'timestamps' => array(
+			'to' => 'TO:',
+			'title' => 'Timestamps',
+			'remove' => 'X',
+		),
 	),
 	'script' => array(
 		'script_editing' => 'Script Editing',
+		'upload'       => 'Script Upload',
+		'save_success' => 'Script saved successfully',
+		'srt_info'	=> 'You can import an SRT file and convert it into a script here',
 	),
 );

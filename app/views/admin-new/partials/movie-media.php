@@ -12,12 +12,12 @@
 					</div>
 				</div>
 				<div class="timestamps col-md-6">
-					<h4>Timestamps</h4>
+					<h4><?= Lang::get('admin.video.timestamps.title'); ?></h4>
 					<div ng-repeat="timestamp in video.timestamps">
 						<input type="text" class="input-sm" ng-model="timestamp.from"/> 
-						TO:
+						<?= Lang::get('admin.video.timestamps.to'); ?>
 						<input type="text" class="input-sm" ng-model="timestamp.to"/> 
-						<a href="" ng-click="removeTimestamp(timestamp);">X</a>
+						<a href="" ng-click="removeTimestamp(timestamp);"><?= Lang::get('admin.video.timestamps.remove'); ?></a>
 					</div>
 					<a href="" ng-click="addTimestamp()">+</a>
 				</div>
@@ -40,7 +40,7 @@
 <h3><?= Lang::get('admin.script.script_editing'); ?></h3>
 
 <div class="alert alert-info">
-	<?= Lang::get('admin.media.script.srt_info'); ?>
+	<?= Lang::get('admin.script.srt_info'); ?>
 </div>
 
 <input type="file" id="parsable-script" class="file-input"/>
