@@ -42,6 +42,7 @@ return array(
 	'question' => array(
 		'answer_invalid' => 'The selected definition :selected_id is invalid',
 		'question_error' => 'Question :question_id not found',
+		'question_deletion' => 'Question :question_id has been removed.',
 	),
 	'quiz' => array(
 		'saved' => 'Custom question saved successfully',

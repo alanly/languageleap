@@ -68,6 +68,7 @@ class Video extends ValidatedModel {
 			'path'          	=> $this->getVideoPath(),
 			'viewable_id'   	=> $this->viewable_id,
 			'viewable_type' 	=> $this->viewable_type,
+			'name' 			=> $this->viewable->name,
 			'script'        	=> ['id' => $script->id, 'text' => $script->text],
 			'timestamps_json'	=> $this->timestamps_json,
 			'score'        		=> $this->getUserScore(\Auth::user()),

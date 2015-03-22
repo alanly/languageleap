@@ -20,6 +20,7 @@ return array(
 		'remove' => 'Remove',
 		'cancel' => 'Cancel',
 		'add'    => 'Add',
+		'exit' => 'Exit',
 	),
 
 	/**
@@ -119,7 +120,7 @@ return array(
 
 	'quiz' => array(
 		'insert' => array(
-			'heading'              => 'Insert Custom Quiz',
+			'heading'              => 'Insert Custom Question',
 			'video_label'          => 'Video',
 			'question_label'       => 'Question',
 			'correct_answer_label' => 'Correct Answer',
@@ -129,6 +130,17 @@ return array(
 			'save_fail'            => 'Save Failed',
 			'question_placeholder' => 'Insert question here',
 			'answer_placeholder'   => 'Insert answer here',
+		),
+		'manage' => array(
+			'title' => 'Manage Quizzes',
+			'id' => 'ID',
+			'action' => 'Action',
+			'name' => 'Name',
+			'timestamp' => 'Time Stamp',
+			'question' => 'Question',
+		),
+		'remove' => array(
+			'heading' => 'Remove Custom Question',
 		),
 	),
 	'index' => array(
