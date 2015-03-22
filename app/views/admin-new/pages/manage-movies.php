@@ -3,10 +3,10 @@
 <table class="table table-hover movies" ng-if="movies.length !== 0">
 	<thead>
 		<tr>
-			<th>ID</th>
-			<th>Action</th>
-			<th>Name</th>
-			<th>Publish</th>
+			<th class="col-md-1">ID</th>
+			<th class="col-md-2">Action</th>
+			<th class="col-md-8">Name</th>
+			<th class="col-md-1">Publish</th>
 		</tr>
 	</thead>
 	<tbody>
