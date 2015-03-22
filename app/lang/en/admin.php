@@ -20,6 +20,7 @@ return array(
 		'remove' => 'Remove',
 		'cancel' => 'Cancel',
 		'add'    => 'Add',
+		'exit' => 'Exit',
 	),
 
 	/**
@@ -104,12 +105,6 @@ return array(
 		'script' => 'Script',
 		'submit' => 'Submit',
 	),
-
-	'script' => array(
-		'upload'       => 'Script Upload',
-		'save_success' => 'Script saved successfully',
-	),
-
 	'upload' => array(
 		'uploading'          => 'Uploading Media, Please Wait...',
 		'success'            => 'Media Uploaded Successfully',
@@ -118,7 +113,7 @@ return array(
 
 	'quiz' => array(
 		'insert' => array(
-			'heading'              => 'Insert Custom Quiz',
+			'heading'              => 'Insert Custom Question',
 			'video_label'          => 'Video',
 			'question_label'       => 'Question',
 			'correct_answer_label' => 'Correct Answer',
@@ -128,6 +123,17 @@ return array(
 			'save_fail'            => 'Save Failed',
 			'question_placeholder' => 'Insert question here',
 			'answer_placeholder'   => 'Insert answer here',
+		),
+		'manage' => array(
+			'title' => 'Manage Quizzes',
+			'id' => 'ID',
+			'action' => 'Action',
+			'name' => 'Name',
+			'timestamp' => 'Time Stamp',
+			'question' => 'Question',
+		),
+		'remove' => array(
+			'heading' => 'Remove Custom Question',
 		),
 	),
 	'index' => array(
@@ -228,8 +234,16 @@ return array(
 	'video' => array(
 		'video_editing' => 'Video Editing',
 		'title' 		=> 'Editing :name ',
+		'timestamps' => array(
+			'to' => 'TO:',
+			'title' => 'Timestamps',
+			'remove' => 'X',
+		),
 	),
 	'script' => array(
 		'script_editing' => 'Script Editing',
+		'upload'       => 'Script Upload',
+		'save_success' => 'Script saved successfully',
+		'srt_info'	=> 'You can import an SRT file and convert it into a script here',
 	),
 );

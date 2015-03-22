@@ -132,12 +132,6 @@ Route::group(['prefix' => 'admin', 'before' => 'admin'], function()
 	// store script
 	Route::resource('save-script', 'ApiScriptController@store');
 
-	// Dev quiz interface
-	Route::get('quiz/new', function()
-	{
-		return View::make('admin.quiz.index')->with('videos', Video::All());
-	});
-
 	Route::post('user', 'ApiAdminUserController@postActive');
 });
 

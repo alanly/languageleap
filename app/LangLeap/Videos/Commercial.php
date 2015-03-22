@@ -42,6 +42,7 @@ class Commercial extends Media implements Classifiable, Filterable {
 			'description' => $this->description,
 			'image_path'  => $this->getImagePath(),
 			'level'       => $this->level->description,
+			'is_published'=> $this->is_published,
 			'videos'      => $videos,
 		];
 	}

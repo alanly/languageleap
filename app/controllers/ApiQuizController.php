@@ -59,71 +59,30 @@ class ApiQuizController extends \BaseController {
 	
 	public function putCustomQuestion()
 	{
-		$video_id = Input::get('video_id');
-		$question = Input::get('question');
-		$answers = Input::get('answer');
-		
-		$message = Lang::get('controllers.quiz.saved');
-		$success = true;
-
-		$video = Video::find($video_id);
-
-		if (! $video)
+		return $this->apiResponse('error', Lang::get('controllers.quiz.blank-fields_error'), 400);
+	}
+	
+	public function getCustomQuestions($video_id)
+	{
+		$data = VideoQuestion::where('video_id', '=', $video_id)->where('is_custom', '=', true)->get();
+		$json = [];
+		foreach($data as $vq)
 		{
-			$success = false;
-			$message = Lang::get('controllers.quiz.database_error');
+			array_push($json, $vq->toResponseArray());
+		}
+		return $this->apiResponse('success', $json);
+	}
+	
+	public function deleteCustomQuestion($videoQuestion_id)
+	{
+		$vq = VideoQuestion::find($videoQuestion_id);
+		if(!$vq)
+		{
+			return $this->apiResponse('error', Lang::get('controllers.question.question_error', ['question_id' => $videoQuestion_id]), 404);
 		}
 		
-		if(! $question || ! $answers || count($answers) < 1)
-		{
-			$success = false;
-			$message = Lang::get('controllers.quiz.blank-fields_error');
-		}
-
-		if($success) // Create the question if the input is correct
-		{
-			$customQuestion = CustomQuestion::create([
-				'question' => $question
-				]);
-
-			$question = Question::create([
-				'question_type'  	=> 'LangLeap\Questions\CustomQuestion',
-				'question_id'		=> $customQuestion->id,
-				'answer_id' 		=> -1
-			]);
-			
-			// Shuffle the answers
-			$answer_id = -1;
-			while (count($answers) > 0)
-			{
-				$answer_key = array_rand($answers);
-
-				$answer = Answer::create([
-					'answer'      => $answers[$answer_key],
-					'question_id' => $question->id
-				]);
-
-				if ($answer_key == 0)
-				{
-					$answer_id = $answer->id;
-				}
-
-				unset($answers[$answer_key]);
-			}
-			
-			$question->answer_id = $answer_id;
-			$question->save();
-			
-			$vq = VideoQuestion::create([
-				'video_id'    => $video_id,
-				'question_id' => $question->id,
-				'is_custom'   => true
-			]);
-		}
-		
-		return Redirect::to('admin/quiz/new')
-		               ->with('success', $success)
-		               ->with('message', $message);
+		$vq->delete();
+		return $this->apiResponse('success', Lang::get('controllers.question.question_deletion', ['question_id' => $videoQuestion_id]), 200);
 	}
 	
 	public function getScore($quiz_id)

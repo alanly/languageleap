@@ -35,11 +35,11 @@
 		// Publish checkbox handler
 		$scope.onPublishClick = function($event, commercial) {
 			commercial.is_published = $event.target.checked;
-			$scope.updatecommercial(commercial);
+			$scope.updateCommercial(commercial);
 		};
 
 		// Update a given show
-		$scope.updatecommercial = function(commercial) {
+		$scope.updateCommercial = function(commercial) {
 			$http.put('/api/metadata/commercials/' + commercial.id, commercial);
 		};
 

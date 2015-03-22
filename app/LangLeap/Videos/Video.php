@@ -2,6 +2,7 @@
 
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Words\Script;
+use URL;
 
 class Video extends ValidatedModel {
 
@@ -63,16 +64,23 @@ class Video extends ValidatedModel {
 		if (! $script) return null;
 
 		return [
-			'id'            => $this->id,
-			'path'          => $this->path,
-			'viewable_id'   => $this->viewable_id,
-			'viewable_type' => $this->viewable_type,
-			'script'        => ['id' => $script->id, 'text' => $script->text],
-			'timestamps_json'=> $this->timestamps_json,
-			'score'        => $this->getUserScore(\Auth::user()),
+			'id'            	=> $this->id,
+			'path'          	=> $this->getVideoPath(),
+			'viewable_id'   	=> $this->viewable_id,
+			'viewable_type' 	=> $this->viewable_type,
+			'name' 			=> $this->viewable->name,
+			'script'        	=> ['id' => $script->id, 'text' => $script->text],
+			'timestamps_json'	=> $this->timestamps_json,
+			'score'        		=> $this->getUserScore(\Auth::user()),
 		];
 	}
 	
+	public function getVideoPath()
+	{
+		return URL::action('VideoContentController@getVideo',
+			['id' => $this->id]);
+	}
+
 	private function getUserScore($user)
 	{
 		$score = 0;
