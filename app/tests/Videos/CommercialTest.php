@@ -26,9 +26,10 @@ class CommercialTest extends TestCase {
 	public function testMassAssigningAttributesOnInstanceCreation()
 	{
 		$a = [
-			'name'        => 'Test',
-			'description' => 'Test Commercial',
-			'level_id'    => 1,
+			'name'         => 'Test',
+			'description'  => 'Test Commercial',
+			'level_id'     => 1,
+			'is_published' => 1
 		];
 
 		$i = new Commercial($a);

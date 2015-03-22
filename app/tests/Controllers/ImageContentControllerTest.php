@@ -14,6 +14,7 @@ class ImageContentControllerTest extends TestCase {
 			'name' => 'test',
 			'description' => 'test',
 			'image_path' => $path,
+			'is_published' => 1
 		]);
 
 		$response = $this->action('GET', 'ImageContentController@getImage', ['movie', $movie->id]);
@@ -40,6 +41,7 @@ class ImageContentControllerTest extends TestCase {
 			'name' => 'test',
 			'description' => 'test',
 			'image_path' => 'foobar',
+			'is_published' => 1
 		]);
 
 		$this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');

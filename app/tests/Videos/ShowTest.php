@@ -16,12 +16,14 @@ class ShowTest extends TestCase {
 		$show->name = 'TestShow';
 		$show->description = 'Test';
 		$show->image_path = 'test';
+		$show->is_published = 1;
 		$show->save();
 
 		
 		$season = $this->getSeasonInstance();	
 		$season->show_id = $show->id;
 		$season->number = 1;
+		$season->is_published = 1;
 		$season->save();
 		$this->assertCount(1, $show->seasons()->get());			
 	}

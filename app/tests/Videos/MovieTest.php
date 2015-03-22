@@ -24,12 +24,13 @@ class MovieTest extends TestCase {
 	public function testMassAssigningAttributesOnInstanceCreation()
 	{
 		$a = [
-			'name'        => 'Test',
-			'description' => 'Test Model',
-			'level_id'    => 1,
-			'director'    => 'Mr. Director',
-			'actor'       => 'Dr. Actor',
-			'genre'       => 'Japanese Fusion Drama',
+			'name'         => 'Test',
+			'description'  => 'Test Model',
+			'level_id'     => 1,
+			'director'     => 'Mr. Director',
+			'actor'        => 'Dr. Actor',
+			'genre'        => 'Japanese Fusion Drama',
+			'is_published' => 1
 		];
 
 		$i = Movie::create($a);

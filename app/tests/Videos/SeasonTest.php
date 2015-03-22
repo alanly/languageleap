@@ -11,6 +11,7 @@ class SeasonTest extends TestCase {
 		$show->name = 'TestShow';
 		$show->description = 'Test';
 		$show->image_path = 'test';
+		$show->is_published = 1;
 		$show->save();
 
 		$season = $this->getSeasonInstance();	
@@ -26,11 +27,13 @@ class SeasonTest extends TestCase {
 		$show->name = 'TestShow';
 		$show->description = 'Test';
 		$show->image_path = 'test';
+		$show->is_published = 1;
 		$show->save();
 
 		$season = $this->getSeasonInstance();
 		$season->show_id = $show->id;
 		$season->number = 1;
+		$season->is_published = 1;
 		$season->save();
 
 		$episode = $this->getEpisodeInstance();
@@ -38,6 +41,7 @@ class SeasonTest extends TestCase {
 		$episode->number = 1;
 		$episode->level_id = 1;
 		$episode->name = 'test';
+		$episode->is_published = 1;
 		$episode->save();
 	
 		$this->assertCount(1, $season->episodes()->get());
