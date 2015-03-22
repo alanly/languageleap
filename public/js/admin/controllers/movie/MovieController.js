@@ -258,8 +258,31 @@
 					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
 				});
 
+				$scope.addVideo(data.data);
+				
+
 			});
 			
+		}
+
+		$scope.addVideo = function(movie){
+
+			var newVideoData = new FormData();
+			newVideoData.append('media_type', 'movie');
+			newVideoData.append('media_id', movie.id);
+			newVideoData.append('script', 'Placeholder');
+			
+			$.ajax({
+				type : "POST",
+				url: "/api/videos",
+				data: newVideoData,
+				processData: false,
+				contentType: false,
+				cache: false,
+				success : function(data){
+
+				}
+			});
 		}
 
 		$scope.closeModel = function() {
