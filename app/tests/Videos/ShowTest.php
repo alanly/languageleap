@@ -30,7 +30,7 @@ class ShowTest extends TestCase {
 	{
 		$this->seed();
 
-		$show = Show::first();
+		$show = Show::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $show->name,
@@ -46,7 +46,7 @@ class ShowTest extends TestCase {
 	{
 		$this->seed();
 
-		$show = Show::first();
+		$show = Show::where('is_published', 1)->first();
 
 		// There should be more than one show
 		// containing the same letter in the searchable attributes.
@@ -65,7 +65,7 @@ class ShowTest extends TestCase {
 	{
 		$this->seed();
 
-		$show = Show::first();
+		$show = Show::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $show->name,
@@ -82,7 +82,7 @@ class ShowTest extends TestCase {
 	{
 		$this->seed();
 
-		$show = Show::first();
+		$show = Show::where('is_published', 1)->first();
 
 		// There should be more than one show
 		// containing the same letter in the searchable attributes.

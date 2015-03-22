@@ -44,7 +44,7 @@ class CommercialTest extends TestCase {
 	{
 		$this->seed();
 
-		$commercial = Commercial::first();
+		$commercial = Commercial::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $commercial->name,
@@ -62,8 +62,9 @@ class CommercialTest extends TestCase {
 
 		// Get the first commercial along with all the other commercials that
 		// have the same level id
-		$commercial = Commercial::first();
-		$commercials = Commercial::where('level_id', '=', $commercial->level_id)->get();
+		$commercial = Commercial::where('is_published', 1)->first();
+		$commercials = Commercial::where('level_id', '=', $commercial->level_id)
+		->where('is_published', 1)->get();
 
 		$count = count($commercials);
 		$skip = (int)($count / 2);
@@ -86,7 +87,7 @@ class CommercialTest extends TestCase {
 	{
 		$this->seed();
 
-		$commercial = Commercial::first();
+		$commercial = Commercial::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $commercial->name,
@@ -103,7 +104,7 @@ class CommercialTest extends TestCase {
 	{
 		$this->seed();
 
-		$commercial = Commercial::first();
+		$commercial = Commercial::where('is_published', 1)->first();
 
 		$input = [
 			'level' => $commercial->level->description,
@@ -118,7 +119,7 @@ class CommercialTest extends TestCase {
 	{
 		$this->seed();
 
-		$commercial = Commercial::first();
+		$commercial = Commercial::where('is_published', 1)->first();
 
 		$input = [
 			'level' => $commercial->level->description,

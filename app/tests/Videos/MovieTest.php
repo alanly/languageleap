@@ -47,7 +47,7 @@ class MovieTest extends TestCase {
 	{
 		$this->seed();
 
-		$movie = Movie::first();
+		$movie = Movie::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $movie->name,
@@ -65,8 +65,9 @@ class MovieTest extends TestCase {
 
 		// Get the first movie along with all the other movies that
 		// have the same level id
-		$movie = Movie::first();
-		$movies = Movie::where('level_id', '=', $movie->level_id)->get();
+		$movie = Movie::where('is_published', 1)->first();
+		$movies = Movie::where('level_id', '=', $movie->level_id)
+		->where('is_published', 1)->get();
 
 		$count = count($movies);
 		$skip = (int)($count / 2);
@@ -89,7 +90,7 @@ class MovieTest extends TestCase {
 	{
 		$this->seed();
 
-		$movie = Movie::first();
+		$movie = Movie::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $movie->name,
@@ -106,7 +107,7 @@ class MovieTest extends TestCase {
 	{
 		$this->seed();
 
-		$movie = Movie::first();
+		$movie = Movie::where('is_published', 1)->first();
 
 		$input = [
 			'level' => $movie->level->description,
@@ -121,7 +122,7 @@ class MovieTest extends TestCase {
 	{
 		$this->seed();
 
-		$movie = Movie::first();
+		$movie = Movie::where('is_published', 1)->first();
 
 		$input = [
 			'level' => $movie->level->description,

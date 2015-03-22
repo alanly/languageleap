@@ -2,6 +2,7 @@
 
 use LangLeap\TestCase;
 use LangLeap\Videos\Show;
+use Mockery as m;
 
 
 /**
@@ -11,8 +12,21 @@ use LangLeap\Videos\Show;
 */
 class ApiShowTest extends TestCase {
 
+	protected function getUserInstance($admin = false) {
+		$user = App::make('LangLeap\Accounts\User');
+		$user->username = 'username';
+		$user->email = 'username@email.com';
+		$user->password = Hash::make('password');
+		$user->first_name = 'John';
+		$user->last_name = 'Doe';
+		$user->language_id = 1;
+		$user->is_admin = $admin;
+
+		return m::mock($user);
+	}
+
 	/**
-	 * Test geting all movies.
+	 * Test geting all published movies.
 	 *
 	 * @return void
 	 */
@@ -23,10 +37,22 @@ class ApiShowTest extends TestCase {
 		$this->assertJson($response->getContent());
 	}
 
-	public function testShow()
+	public function testIndexAsAdmin()
 	{
 		$this->seed();
-		$response = $this->action('GET', 'ApiShowController@show', [1]);
+		$this->be($this->getUserInstance(true));
+
+		$response = $this->action('GET', 'ApiShowController@index');
+
+		$this->assertResponseOk();
+		$this->assertJson($response->getContent());
+	}
+
+	public function testShow()
+	{
+		$show = Show::create(['name' => 'test show', 'description' => 'test show description', 'is_published' => 1]);
+
+		$response = $this->action('GET', 'ApiShowController@show', [$show->id]);
 
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
@@ -35,7 +61,26 @@ class ApiShowTest extends TestCase {
 
 		$this->assertObjectHasAttribute('name', $data);
 
-		$this->assertEquals(1, $data->id);
+		$this->assertEquals($show->id, $data->id);
+	}
+
+	public function testShowAsAdmin()
+	{
+		$this->be($this->getUserInstance(true));
+
+		// Create unpublished show
+		$show = Show::create(['name' => 'test show 1', 'description' => 'test show description', 'is_published' => 0]);
+
+		$response = $this->action('GET', 'ApiShowController@show', [$show->id]);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+
+		$data = $response->getData()->data;
+
+		$this->assertObjectHasAttribute('name', $data);
+
+		$this->assertEquals($show->id, $data->id);
 	}
 
 	public function testShowWithInvalidId()
