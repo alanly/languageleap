@@ -21,7 +21,8 @@ class EpisodeTableSeeder extends Seeder {
 		{
 			for ($i = 1; $i < 4; $i++)
 			{
-				$season->episodes()->create(['number' => $i, 'name' => "Test $i", 'description' => "Test episode $i.", 'level_id' => $level->id]);
+				$published = ($i % 2 == 0) ? 1 : 0;
+				$season->episodes()->create(['number' => $i, 'name' => "Test $i", 'description' => "Test episode $i.", 'level_id' => $level->id, 'is_published' => $published]);
 			}
 		}
 

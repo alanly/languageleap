@@ -2,8 +2,11 @@
 
 use LangLeap\Videos\RecommendationSystem\Classifiable;
 use LangLeap\Videos\Filtering\Filterable;
+use LangLeap\Core\PublishedTrait;
 
 class Commercial extends Media implements Classifiable, Filterable {
+
+	use PublishedTrait;
 
 	public $timestamps = false;
 

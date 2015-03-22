@@ -2,8 +2,11 @@
 
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
+use LangLeap\Core\PublishedTrait;
 
 class Season extends ValidatedModel implements Billable {
+
+	use PublishedTrait;
 
 	public    $timestamps = false;
 	protected $fillable   = ['show_id', 'number', 'description', 'is_published'];

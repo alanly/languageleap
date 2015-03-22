@@ -3,8 +3,11 @@
 use LangLeap\Payments\Billable;
 use LangLeap\Videos\RecommendationSystem\Classifiable;
 use LangLeap\Videos\Filtering\Filterable;
+use LangLeap\Core\PublishedTrait;
 
 class Movie extends Media implements Billable, Classifiable, Filterable {
+
+	use PublishedTrait;
 
 	public $timestamps = false;
 

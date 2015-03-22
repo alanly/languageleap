@@ -17,7 +17,8 @@ class SeasonTableSeeder extends Seeder {
 		{
 			for ($i = 1; $i < 4; $i++)
 			{
-				$show->seasons()->create(['number' => $i]);
+				$published = ($i % 2 == 0) ? 1 : 0;
+				$show->seasons()->create(['number' => $i, 'is_published' => $published]);
 			}
 		}
 	}
