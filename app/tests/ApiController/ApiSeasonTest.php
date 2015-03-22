@@ -3,11 +3,25 @@
 use LangLeap\TestCase;
 use LangLeap\Videos\Show;
 use LangLeap\Videos\Season;
+use Mockery as m;
 
 /**
  * @author Alan Ly <hello@alan.ly>
  */
 class ApiSeasonControllerTest extends TestCase {
+
+	protected function getUserInstance($admin = false) {
+		$user = App::make('LangLeap\Accounts\User');
+		$user->username = 'username';
+		$user->email = 'username@email.com';
+		$user->password = Hash::make('password');
+		$user->first_name = 'John';
+		$user->last_name = 'Doe';
+		$user->language_id = 1;
+		$user->is_admin = $admin;
+
+		return m::mock($user);
+	}
 
 	public function testForInvalidWildcards()
 	{
@@ -96,6 +110,21 @@ class ApiSeasonControllerTest extends TestCase {
 		$this->assertResponseOk();
 	}
 
+	public function testIndexForShowAsAdmin()
+	{
+		$this->be($this->getUserInstance(true));
+
+		$show = $this->createShow(0);
+
+		$response = $this->action(
+			'GET',
+			'ApiSeasonController@index',
+			['showId' => $show->id]
+		);
+
+		$this->assertResponseOk();
+	}
+
 	public function testStore()
 	{
 		$show = $this->createShow();
@@ -124,6 +153,22 @@ class ApiSeasonControllerTest extends TestCase {
 	{
 		$show = $this->createShow();
 		$season = $this->createSeason($show);
+
+		$response = $this->action(
+			'GET',
+			'ApiSeasonController@show',
+			['showId' => $show->id, 'seasonId' => $season->id]
+		);
+
+		$this->assertResponseOk();
+	}
+
+	public function testShowForSeasonAsAdmin()
+	{
+		$this->be($this->getUserInstance(true));
+
+		$show = $this->createShow(0);
+		$season = $this->createSeason($show, 0);
 
 		$response = $this->action(
 			'GET',
@@ -179,15 +224,16 @@ class ApiSeasonControllerTest extends TestCase {
 		$this->assertCount(0, $seasons);
 	}
 
-	protected function createShow()
+	protected function createShow($published = 1)
 	{
 		return Show::create([
 			'name' => 'Test Show',
-			'description' => 'Test Show'
+			'description' => 'Test Show',
+			'is_published' => $published
 		]);
 	}
 
-	protected function createSeason(Show $show)
+	protected function createSeason(Show $show, $published = 1)
 	{
 		if (! $show->exists())
 		{
@@ -196,7 +242,8 @@ class ApiSeasonControllerTest extends TestCase {
 
 		return Season::create([
 			'show_id' => $show->id,
-			'number' => 1
+			'number' => 1,
+			'is_published' => $published
 		]);
 	}
 	

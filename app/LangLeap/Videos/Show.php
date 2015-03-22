@@ -5,8 +5,11 @@ use LangLeap\Core\Imageable;
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
 use LangLeap\Videos\Filtering\Filterable;
+use LangLeap\Core\PublishedTrait;
 
 class Show extends ValidatedModel implements Billable, Filterable, Imageable {
+
+	use PublishedTrait;
 
 	public    $timestamps = false;
 	protected $fillable   = ['name', 'description', 'image_path', 'director', 'actor', 'genre', 'is_published'];

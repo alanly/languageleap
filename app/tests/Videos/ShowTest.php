@@ -16,12 +16,14 @@ class ShowTest extends TestCase {
 		$show->name = 'TestShow';
 		$show->description = 'Test';
 		$show->image_path = 'test';
+		$show->is_published = 1;
 		$show->save();
 
 		
 		$season = $this->getSeasonInstance();	
 		$season->show_id = $show->id;
 		$season->number = 1;
+		$season->is_published = 1;
 		$season->save();
 		$this->assertCount(1, $show->seasons()->get());			
 	}
@@ -30,7 +32,7 @@ class ShowTest extends TestCase {
 	{
 		$this->seed();
 
-		$show = Show::first();
+		$show = Show::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $show->name,
@@ -46,7 +48,7 @@ class ShowTest extends TestCase {
 	{
 		$this->seed();
 
-		$show = Show::first();
+		$show = Show::where('is_published', 1)->first();
 
 		// There should be more than one show
 		// containing the same letter in the searchable attributes.
@@ -65,7 +67,7 @@ class ShowTest extends TestCase {
 	{
 		$this->seed();
 
-		$show = Show::first();
+		$show = Show::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $show->name,
@@ -82,7 +84,7 @@ class ShowTest extends TestCase {
 	{
 		$this->seed();
 
-		$show = Show::first();
+		$show = Show::where('is_published', 1)->first();
 
 		// There should be more than one show
 		// containing the same letter in the searchable attributes.
