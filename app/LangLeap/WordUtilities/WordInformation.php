@@ -101,7 +101,9 @@ class WordInformation
 			if(!$sentence) continue;
 
 			// If the definition doesn't exist, the WordInformation class will fetch the definition.
-			$wordInformation = new WordInformation($word, $selectedWords[$i]['definition'], $sentence, $video_id);
+			$definition = isset($selectedWords[$i]['definition']) ? $selectedWords[$i]['definition'] : null;
+
+			$wordInformation = new WordInformation($word, $definition, $sentence, $video_id);
 
 			if(strlen($wordInformation->getDefinition()) < 1) continue;
 
