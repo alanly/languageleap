@@ -1,16 +1,16 @@
 <h1>Manage Commercials</h1>
 <a ng-click="openAddModal();" class="btn btn-primary pull-right">+</a>
 <table class="table table-hover commercials" ng-if="commercials.length !== 0">
-	<thead>
+	<thead ng-init="orderByReverse = false; orderByPredicate = 'name';">
 		<tr>
-			<th>ID</th>
-			<th>Action</th>
-			<th>Name</th>
-			<th>Publish</th>
+			<th class="col-md-1">ID</th>
+			<th class="col-md-2">Action</th>
+			<th class="col-md-8"><span class="sortable" ng-click="orderByReverse = !orderByReverse; orderByPredicate = 'name'">Name<i ng-class="{ 'fa fa-caret-up fa-fw': (orderByPredicate == 'name'), 'fa-flip-vertical': !orderByReverse }"></i></span></th>
+			<th class="col-md-1"><span class="sortable" ng-click="orderByReverse = !orderByReverse; orderByPredicate = 'is_published'">Publish<i ng-class="{ 'fa fa-caret-up fa-fw': (orderByPredicate == 'is_published'), 'fa-flip-vertical': !orderByReverse }"></i></span></th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="commercial in commercials">
+		<tr ng-repeat="commercial in commercials | orderBy:orderByPredicate:orderByReverse">
 			<td class="id">{{ commercial.id }}</td>
 			<td><a ng-click="openEditModal(commercial);"><i class="fa fa-edit fa-fw"></i></a><a ng-click="remove(commercial);"><i class="fa fa-trash fa-fw"></i></a></td>
 			<td>{{ commercial.name }}</td>
