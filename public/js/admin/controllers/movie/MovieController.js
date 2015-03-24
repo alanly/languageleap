@@ -84,7 +84,8 @@
 				//Initializations
 				$scope.video.media_id = $scope.current_movie.id;
 				$scope.video.path = $scope.video.path;
-				$(".script-editor").html(data.data.videos[0].script.text);
+				$scope.video.script_text = $scope.video.script.text;
+				$(".script-editor").html($scope.video.script_text);
 				
 				if($scope.video.timestamps_json !== undefined)
 				{
@@ -109,7 +110,7 @@
 
 			formData.append('media_id', $scope.current_movie.id);
 			formData.append('media_type', $scope.media_type);
-			formData.append('script', $scope.video.script);
+			formData.append('script', $scope.video.script_text);
 			formData.append('_method', 'PUT');
 
 			$.ajax({
@@ -164,7 +165,7 @@
 
 		$scope.setScript = function()
 		{
-			$scope.video.script = $(".script-editor").html();
+			$scope.video.script_text = $(".script-editor").html();
 		}
 
 		$scope.parseFile = function()
@@ -181,8 +182,8 @@
 				contentType : false
 			})
 			.done(function(data, status, xhr){
-				$scope.video.script = data.data;
-				$(".script-editor").html($scope.video.script);
+				$scope.video.script_text = data.data;
+				$(".script-editor").html($scope.video.script_text);
 			})
 			.fail(function(xhr, status, error) {
 				console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
