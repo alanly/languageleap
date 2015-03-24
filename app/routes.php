@@ -65,18 +65,16 @@ Route::group(['prefix' => 'admin', 'before' => 'admin'], function()
 	/************************** NEW ANGULAR ADMIN ***************************/
 
 	// New admin index
-	Route::get('new', function()
+	Route::get('/', function()
 	{
-		return View::make('admin-new.index');
+		return View::make('admin.index');
 	});
-
-	// New admin pages
 
 	// This route should be used to reference pages
 	// from AngularJS (eg. 'pages/manage-shows')
 	Route::get('pages/{name}', function($name)
 	{
-		$view_path = 'admin-new.pages.' . $name;
+		$view_path = 'admin.pages.' . $name;
 
 		if (View::exists($view_path))
 		{
@@ -90,7 +88,7 @@ Route::group(['prefix' => 'admin', 'before' => 'admin'], function()
 	// from AngularJS (eg. 'partials/edit-show-modal')
 	Route::get('partials/{name}', function($name)
 	{
-		$view_path = 'admin-new.partials.' . $name;
+		$view_path = 'admin.partials.' . $name;
 
 		if (View::exists($view_path))
 		{
@@ -99,38 +97,6 @@ Route::group(['prefix' => 'admin', 'before' => 'admin'], function()
 
 		App::abort(404);
 	});
-
-	/************************** END NEW ANGULAR ADMIN ************************/
-
-	// Interface index
-	Route::get('/', function()
-	{
-		return View::make('admin.index');
-	});
-
-	// Video interface
-	Route::get('video', function()
-	{
-		return View::make('admin.video.video');
-	});
-
-	// Script interface
-	Route::get('new/script', function()
-	{
-		return View::make('admin.video.script');
-	});
-
-	// Dev script interface
-	Route::get('dev/script', function()
-	{
-		return View::make('admin.script.index');
-	});
-	
-	// new media upload
-	Route::any('add-new-form-submit', 'FileUploadController@saveMedia');
-
-	// store script
-	Route::resource('save-script', 'ApiScriptController@store');
 
 	Route::post('user', 'ApiAdminUserController@postActive');
 });
