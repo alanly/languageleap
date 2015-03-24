@@ -1,16 +1,16 @@
 <h1>Manage Movies</h1>
 <a ng-click="openAddModal();" class="btn btn-primary pull-right">+</a>
 <table class="table table-hover movies" ng-if="movies.length !== 0">
-	<thead>
+	<thead ng-init="orderByReverse = false; orderByPredicate = 'name';">
 		<tr>
 			<th class="col-md-1">ID</th>
 			<th class="col-md-2">Action</th>
-			<th class="col-md-8">Name</th>
-			<th class="col-md-1">Publish</th>
+			<th class="col-md-8"><span class="sortable" ng-click="orderByReverse = !orderByReverse; orderByPredicate = 'name'">Name<i ng-class="{ 'fa fa-caret-up fa-fw': (orderByPredicate == 'name'), 'fa-flip-vertical': !orderByReverse }"></i></span></th>
+			<th class="col-md-1"><span class="sortable" ng-click="orderByReverse = !orderByReverse; orderByPredicate = 'is_published'">Publish<i ng-class="{ 'fa fa-caret-up fa-fw': (orderByPredicate == 'is_published'), 'fa-flip-vertical': !orderByReverse }"></i></span></th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="movie in movies">
+		<tr ng-repeat="movie in movies | orderBy:orderByPredicate:orderByReverse">
 			<td class="id">{{ movie.id }}</td>
 			<td>
 				<a ng-click="openEditModal(movie);"><i class="fa fa-edit fa-fw"></i></a>
