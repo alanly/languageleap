@@ -2,7 +2,7 @@
 
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Words\Script;
-use URL;
+use Auth, URL;
 
 class Video extends ValidatedModel {
 
@@ -68,35 +68,46 @@ class Video extends ValidatedModel {
 			'path'          	=> $this->getVideoPath(),
 			'viewable_id'   	=> $this->viewable_id,
 			'viewable_type' 	=> $this->viewable_type,
-			'name' 			=> $this->viewable->name,
+			'name'            => $this->viewable->name,
 			'script'        	=> ['id' => $script->id, 'text' => $script->text],
 			'timestamps_json'	=> $this->timestamps_json,
-			'score'        		=> $this->getUserScore(\Auth::user()),
+			'score'        		=> $this->getUserScore(Auth::user()),
 		];
 	}
 	
 	public function getVideoPath()
 	{
-		return URL::action('VideoContentController@getVideo',
-			['id' => $this->id]);
+		return URL::action('VideoContentController@getVideo', ['id' => $this->id]);
 	}
 
 	private function getUserScore($user)
 	{
-		$score = 0;
-		if($user)
+		if (! $user) return 0;
+
+		$highScore = 0;
+
+		// Get all the video quizzes, eager-loading the associated quiz instances
+		// that belong to the specified user.
+		$videoQuizzes = $this->videoQuizzes()
+		                     ->with(['quiz' => function($query) use($user)
+			                     {
+				                     	$query->where('user_id', '=', $user->id);
+			                     }])
+		                     ->get();
+
+		// Determine what is the max score across all quizzes.
+		foreach ($videoQuizzes as $vq)
 		{
-			$videoQuizzes = $this->videoQuizzes;
-			
-			foreach($videoQuizzes as $videoQuiz)
+			// Check if this pivot has an associated quiz (filtered above by user).
+			// Determien if the associated quiz has a higher score than our current
+			// tracking value.
+			if (($quiz = $vq->quiz) && $quiz->score > $highScore)
 			{
-				if($videoQuiz->quiz->user_id == $user->id && $videoQuiz->quiz->score > $score)
-				{
-					$score = $videoQuiz->quiz->score;
-				}
+				$highScore = $quiz->score;
 			}
 		}
-		return $score;
+
+		return $highScore;
 	}
 
 }
