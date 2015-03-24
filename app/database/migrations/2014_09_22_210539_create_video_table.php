@@ -17,7 +17,7 @@ class CreateVideoTable extends Migration {
 			$table->morphs('viewable');
 			$table->integer('language_id')->unsigned();
 			$table->integer('video_number')->unsigned()->default(0); // Denotes the number in the video sequence.
-			$table->string('path');
+			$table->string('path')->nullable();
 			$table->string('timestamps_json')->nullable();
 		});
 	}

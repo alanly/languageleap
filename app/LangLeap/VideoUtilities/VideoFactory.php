@@ -92,7 +92,7 @@ class VideoFactory {
 			$video = new Video;
 		}	
 		
-		$path = "Temp";
+		$path = "";
 
 		if($type === "commercial")
 		{
@@ -114,12 +114,6 @@ class VideoFactory {
 		}
 
 		$video->language_id = $lang->id;
-
-		//only set the path if its null
-		if($video->path === null)
-		{
-			$video->path = $path;
-		}
 
 		$video->save();
 

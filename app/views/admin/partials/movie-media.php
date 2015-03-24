@@ -1,6 +1,6 @@
 <h3><?= Lang::get('admin.video.video_editing'); ?></h3>
 <tabset>
-	<tab heading="Video" id="video-view">
+	<tab heading="Video" id="video-view" >
 		<div class="tab-content">
 			<div id="video-section">
 				<div class="col-md-6">
@@ -8,7 +8,7 @@
 						<h4><?= Lang::get('admin.video.title', ['name' => '{{ current_movie.name }}']); ?></h4>
 					</div>
 					<div ng-if="current_movie.video.id !== null">
-						<video style="width:100%;" ng-src="{{video.path}}" controls></video>
+						<video style="width:100%;" id="admin-player" ng-src="{{video.path}}" controls></video>
 					</div>
 				</div>
 				<div class="timestamps col-md-6">
@@ -26,9 +26,10 @@
 		<div style="clear:both;"></div>
 		<a href="" ng-click="saveTimestamps()" class="btn btn-primary"><?= Lang::get('admin.media.video.save_timestamps'); ?></a>
 	</tab>
-	<tab heading="Update Video">
-		<input type="file" name="video" id="video" class="file-input"/>
-
+	<tab heading="Update Video" active="isActive">
+		<form id="file-input-form">
+			<input type="file" name="video" id="video" class="file-input"/>
+		</form>
 		<a href="" ng-click="saveMedia()" class="btn btn-primary"><?= Lang::get('admin.media.video.update'); ?></a>
 	</tab>
 </tabset>

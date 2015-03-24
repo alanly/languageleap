@@ -10,6 +10,7 @@
 		var modal_instance;
 
 		$scope.current_movie;
+		$scope.media_type = "movie";
 
 		// Load all of the movies
 		$http.get('/api/metadata/movies').
@@ -72,7 +73,6 @@
 		//MEDIA SECTION
 
 		$scope.manageMedia = function(movie) {
-
 			$scope.movie_media = 'admin/partials/movie-media';	
 			
 			$http.get('/api/metadata/movies/' + movie.id).
@@ -81,9 +81,7 @@
 				$scope.current_movie = data.data;
 				$scope.video = $scope.current_movie.videos[0] !== undefined ? $scope.current_movie.videos[0] : {};
 				
-				console.log($scope.video);
 				//Initializations
-				$scope.video.media_type = "movie";
 				$scope.video.media_id = $scope.current_movie.id;
 				$scope.video.path = $scope.video.path;
 				$(".script-editor").html(data.data.videos[0].script.text);
@@ -96,43 +94,41 @@
 				{
 					$scope.video.timestamps = [];
 				}
-
+				
+				$scope.isActive = $scope.video.path == null;
 			});
 		};
 
 		$scope.saveMedia = function() {
-			if($scope.video.id === null)//New video
-			{
-				$http.post('/api/videos', $scope.video);
-			}
-			else //Update
-			{
-				var formData = new FormData();
-				var file = $("#video").prop('files')[0];
-				if(file !== undefined) {
-					formData.append('video', file);
-				}
-				formData.append('media_id', $scope.current_movie.id);
-				formData.append('media_type', $scope.video.media_type);
-				formData.append('script', $scope.video.script);
-				formData.append('_method', 'PUT');
+			var formData = new FormData();
+			var file = $("#video").prop('files')[0];
 
-				$.ajax({
-					type : "POST",
-					url : '/api/videos/' + $scope.video.id,
-					data : formData,
-					cache : false,
-					processData : false,
-					contentType : false
-				})
-				.done(function(data, status, xhr){
-					$scope.video = data.data;
-					$("#video-view").click();
-				})
-				.fail(function(xhr, status, error) {
-					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
-				});
+			if(file !== undefined) {
+				formData.append('video', file);
 			}
+
+			formData.append('media_id', $scope.current_movie.id);
+			formData.append('media_type', $scope.media_type);
+			formData.append('script', $scope.video.script);
+			formData.append('_method', 'PUT');
+
+			$.ajax({
+				type : "POST",
+				url : '/api/videos/' + $scope.video.id,
+				data : formData,
+				cache : false,
+				processData : false,
+				contentType : false
+			})
+			.done(function(data, status, xhr){
+				$scope.video = data.data;
+				$("#admin-player").get(0).load();
+				$("#video-view").find("a").click();
+				$("#file-input-form")[0].reset();
+			})
+			.fail(function(xhr, status, error) {
+				console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+			});
 		};
 
 		//END MEDIA SECTION
@@ -264,7 +260,6 @@
 
 				$scope.addVideo(data.data);
 				
-
 			});
 			
 		}

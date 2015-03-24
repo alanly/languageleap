@@ -9,7 +9,6 @@ class Video extends ValidatedModel {
 	public    $timestamps = false;
 	protected $fillable   = ['path', 'timestamps_json'];
 	protected $rules      = [
-		'path'          => 'required',
 		'viewable_id'   => 'required|integer',
 		'viewable_type' => 'required',
 		'language_id'   => 'required'
@@ -68,7 +67,7 @@ class Video extends ValidatedModel {
 			'path'          	=> $this->getVideoPath(),
 			'viewable_id'   	=> $this->viewable_id,
 			'viewable_type' 	=> $this->viewable_type,
-			'name'            => $this->viewable->name,
+			'name'           	=> $this->viewable->name,
 			'script'        	=> ['id' => $script->id, 'text' => $script->text],
 			'timestamps_json'	=> $this->timestamps_json,
 			'score'        		=> $this->getUserScore(Auth::user()),
@@ -77,6 +76,9 @@ class Video extends ValidatedModel {
 	
 	public function getVideoPath()
 	{
+		if($this->path === null)
+			return null;
+		
 		return URL::action('VideoContentController@getVideo', ['id' => $this->id]);
 	}
 
