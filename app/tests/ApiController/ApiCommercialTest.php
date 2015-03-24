@@ -23,7 +23,9 @@ class ApiCommercialTest extends TestCase {
 		$user->language_id = 1;
 		$user->is_admin = $admin;
 
-		return m::mock($user);
+		$user->save();
+
+		return $user;
 	}
 
 	/**
