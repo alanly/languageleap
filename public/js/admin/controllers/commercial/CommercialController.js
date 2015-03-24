@@ -48,7 +48,7 @@
 			$scope.current_commercial = commercial;
 
 			var modal_instance = $modal.open({
-				templateUrl: 'partials/edit-commercial-modal',
+				templateUrl: 'admin/partials/edit-commercial-modal',
 				controller: 'EditCommercialController',
 				size: 'lg',
 				resolve : {
@@ -61,7 +61,7 @@
 
 		$scope.openAddModal = function() {
 			var modal_instance = $modal.open({
-				templateUrl: 'partials/new-commercial-modal',
+				templateUrl: 'admin/partials/new-commercial-modal',
 				controller: 'NewCommercialController',
 				size: 'lg',
 				backdrop : 'static',

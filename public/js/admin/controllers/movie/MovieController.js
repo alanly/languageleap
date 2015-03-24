@@ -48,7 +48,7 @@
 			$scope.current_movie = movie;
 
 			var modal_instance = $modal.open({
-				templateUrl: 'partials/edit-movie-modal',
+				templateUrl: 'admin/partials/edit-movie-modal',
 				controller: 'EditMovieController',
 				size: 'lg',
 				resolve : {
@@ -61,7 +61,7 @@
 
 		$scope.openAddModal = function() {
 			var modal_instance = $modal.open({
-				templateUrl: 'partials/new-movie-modal',
+				templateUrl: 'admin/partials/new-movie-modal',
 				controller: 'NewMovieController',
 				size: 'lg',
 				backdrop : 'static',
@@ -94,7 +94,7 @@
 					$scope.video.timestamps = [];
 				}
 
-				$scope.movie_media = 'partials/movie-media';	
+				$scope.movie_media = 'admin/partials/movie-media';	
 			});
 		};
 

@@ -18,7 +18,7 @@
 		$scope.openAddModal = function(video) {
 			
 			var modalInstance = $modal.open({
-				templateUrl: 'partials/add-quiz-modal',
+				templateUrl: 'admin/partials/add-quiz-modal',
 				controller: 'AddController',
 				size: 'lg',
 				resolve : {
@@ -32,7 +32,7 @@
 		$scope.openRemoveModal = function(video) {
 			
 			var modalInstance = $modal.open({
-				templateUrl: 'partials/remove-quiz-modal',
+				templateUrl: 'admin/partials/remove-quiz-modal',
 				controller: 'RemoveController',
 				size: 'lg',
 				resolve : {

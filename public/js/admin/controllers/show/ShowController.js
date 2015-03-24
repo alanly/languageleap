@@ -81,7 +81,7 @@
 		$scope.openEditShowModal = function(show) {
 
 			var modalInstance = $modal.open({
-				templateUrl: 'partials/edit-show-modal',
+				templateUrl: 'admin/partials/edit-show-modal',
 				controller: 'EditShowController',
 				size: 'lg',
 				resolve: {
@@ -96,7 +96,7 @@
 		// Open the add modal for shows
 		$scope.openNewShowModal = function() {
 			var modal_instance = $modal.open({
-				templateUrl: 'partials/new-show-modal',
+				templateUrl: 'admin/partials/new-show-modal',
 				controller: 'NewShowController',
 				size: 'lg',
 				resolve: {
@@ -111,7 +111,7 @@
 		$scope.openEditSeasonModal = function(show, season) {
 
 			var modalInstance = $modal.open({
-				templateUrl: 'partials/edit-season-modal',
+				templateUrl: 'admin/partials/edit-season-modal',
 				controller: 'EditSeasonController',
 				size: 'lg',
 				resolve: {
@@ -127,7 +127,7 @@
 		// Open the add modal for seasons
 		$scope.openNewSeasonModal = function(show) {
 			var modal_instance = $modal.open({
-				templateUrl: 'partials/new-season-modal',
+				templateUrl: 'admin/partials/new-season-modal',
 				controller: 'NewSeasonController',
 				size: 'lg',
 				resolve: {
@@ -142,7 +142,7 @@
 		$scope.openEditEpisodeModal = function(show, season, episode) {
 
 			var modalInstance = $modal.open({
-				templateUrl: 'partials/edit-episode-modal',
+				templateUrl: 'admin/partials/edit-episode-modal',
 				controller: 'EditEpisodeController',
 				size: 'lg',
 				resolve: {
@@ -159,7 +159,7 @@
 		// Open the add modal for episodes
 		$scope.openNewEpisodeModal = function(show, season) {
 			var modal_instance = $modal.open({
-				templateUrl: 'partials/new-episode-modal',
+				templateUrl: 'admin/partials/new-episode-modal',
 				controller: 'NewEpisodeController',
 				size: 'lg',
 				resolve: {
