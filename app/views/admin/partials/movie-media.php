@@ -1,6 +1,6 @@
 <h3><?= Lang::get('admin.video.video_editing'); ?></h3>
 <tabset>
-	<tab heading="Video">
+	<tab heading="Video" id="video-view">
 		<div class="tab-content">
 			<div id="video-section">
 				<div class="col-md-6">

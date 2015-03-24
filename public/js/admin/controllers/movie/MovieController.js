@@ -73,17 +73,20 @@
 
 		$scope.manageMedia = function(movie) {
 
+			$scope.movie_media = 'admin/partials/movie-media';	
+			
 			$http.get('/api/metadata/movies/' + movie.id).
 			success(function(data){
 
 				$scope.current_movie = data.data;
 				$scope.video = $scope.current_movie.videos[0] !== undefined ? $scope.current_movie.videos[0] : {};
 				
+				console.log($scope.video);
 				//Initializations
 				$scope.video.media_type = "movie";
 				$scope.video.media_id = $scope.current_movie.id;
 				$scope.video.path = $scope.video.path;
-				$scope.video.script = $scope.video.script.text;
+				$(".script-editor").html(data.data.videos[0].script.text);
 				
 				if($scope.video.timestamps_json !== undefined)
 				{
@@ -94,7 +97,6 @@
 					$scope.video.timestamps = [];
 				}
 
-				$scope.movie_media = 'admin/partials/movie-media';	
 			});
 		};
 
@@ -112,6 +114,7 @@
 				}
 				formData.append('media_id', $scope.current_movie.id);
 				formData.append('media_type', $scope.video.media_type);
+				formData.append('script', $scope.video.script);
 				formData.append('_method', 'PUT');
 
 				$.ajax({
@@ -124,6 +127,7 @@
 				})
 				.done(function(data, status, xhr){
 					$scope.video = data.data;
+					$("#video-view").click();
 				})
 				.fail(function(xhr, status, error) {
 					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
