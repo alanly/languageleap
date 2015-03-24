@@ -9,29 +9,29 @@
 
 			.when('/movies',
 			{
-				templateUrl: 'pages/manage-movies',
+				templateUrl: 'admin/pages/manage-movies',
 				controller: 'MovieController'
 			})
 
 			.when('/commercials',
 			{
-				templateUrl: 'pages/manage-commercials',
+				templateUrl: 'admin/pages/manage-commercials',
 				controller: 'CommercialController'
 			})
 
 			.when('/shows',
 			{
-				templateUrl: 'pages/manage-shows',
+				templateUrl: 'admin/pages/manage-shows',
 				controller: 'ShowController'
 			})
 			.when('/quizzes',
 			{
-				templateUrl: 'pages/manage-quizzes',
+				templateUrl: 'admin/pages/manage-quizzes',
 				controller: 'QuizzesController'
 			})
 			.when('/users',
 			{
-				templateUrl: 'pages/manage-users',
+				templateUrl: 'admin/pages/manage-users',
 				controller: 'UserController'
 			});
 
