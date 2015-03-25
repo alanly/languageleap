@@ -5,8 +5,24 @@ use LangLeap\Accounts\User;
 use LangLeap\Videos\Video;
 use LangLeap\Quizzes\VideoQuestion;
 use LangLeap\Quizzes\Quiz;
+use LangLeap\DictionaryUtilities\DictionaryFactory;
 
 class CreateQuizTest extends TestCase {
+
+	private function getDefinitionMock()
+	{
+		return Mockery::mock('LangLeap\Words\Definition');
+	}
+
+	private function getAdapterMock()
+	{
+		return Mockery::mock('LangLeap\DictionaryUtilities\IDictionaryAdapter');
+	}
+
+	private function getFactoryMock()
+	{
+		return Mockery::mock('LangLeap\DictionaryUtilities\DictionaryFactory');
+	}
 
 	public function setUp()
 	{
@@ -24,6 +40,20 @@ class CreateQuizTest extends TestCase {
 	//5. Check for the word in the wordbank (should be empty)
 	public function testCreateQuizAnswerCorrectly()
 	{
+		// Mock the definition instance.
+		$definition = $this->getDefinitionMock();
+		$definition->shouldReceive('getAttribute')->andReturn('foobar');
+
+		// Mock the dictionary adapter.
+		$adapter = $this->getAdapterMock();
+		$adapter->shouldReceive('getDefinition')->atLeast()->once()->andReturn($definition);
+		
+		// Mock the factory.
+		$factory = $this->getFactoryMock();
+		$factory->shouldReceive('getDictionary')->atLeast()->once()->andReturn($adapter);
+
+		DictionaryFactory::getInstance($factory);
+
 		$video = $this->getVideo();
 		$wordFromScript = $this->getWordFromScript($video);
 		$quiz = $this->createQuiz($video->video->id, $wordFromScript);
@@ -40,6 +70,22 @@ class CreateQuizTest extends TestCase {
 	//5. Check for the word in the wordbank (should have 1 word)
 	public function testCreateQuizAnswerIncorrectly()
 	{
+		// Mock the definition instance.
+		$definition = $this->getDefinitionMock();
+		$definition->shouldReceive('getAttribute')->atLeast()->once()->andReturn('foobar');
+		$definition->shouldReceive('setAttribute')->atLeast()->once();
+		$definition->shouldReceive('toResponseArray')->once()->andReturn(['word' => 'this']);
+
+		// Mock the dictionary adapter.
+		$adapter = $this->getAdapterMock();
+		$adapter->shouldReceive('getDefinition')->atLeast()->once()->andReturn($definition);
+		
+		// Mock the factory.
+		$factory = $this->getFactoryMock();
+		$factory->shouldReceive('getDictionary')->atLeast()->once()->andReturn($adapter);
+
+		DictionaryFactory::getInstance($factory);
+
 		$video = $this->getVideo();
 		$wordFromScript = $this->getWordFromScript($video);
 		$quiz = $this->createQuiz($video->video->id, $wordFromScript);
