@@ -86,6 +86,25 @@
 				$scope.video.path = $scope.video.path;
 				$scope.video.script_text = $scope.video.script.text;
 				$(".script-editor").html($scope.video.script_text);
+
+				// If a script is loaded that does not have a br tag
+				// at the end, if the user places the cursor at the end of
+				// the content, he will need to press enter twice to get a line-break.
+				// This fixes that issue.
+				var scriptEditor = $('.script-editor');
+				var lastChild = $('.script-editor').children().last();
+
+				if (lastChild.prop('tagName') == 'BR') {
+					if (lastChild[0].nextSibling != null && lastChild[0].nextSibling.nodeValue.trim() != '')
+						$('.script-editor').append('<br>');
+				} else {
+					$('.script-editor').append('<br>');
+				}
+
+				// Make sure that tooltips are added to existing spans
+				refreshTooltips(); // Function from admin-script.js
+
+				loadDefinitions(); // Function from admin-script.js
 				
 				if($scope.video.timestamps_json !== null)
 				{
@@ -101,34 +120,44 @@
 		};
 
 		$scope.saveMedia = function() {
-			var formData = new FormData();
-			var file = $("#video").prop('files')[0];
+			// The anonymous function gets called once all of the
+			// definitions have been saved
+			saveDefinitions($scope.video.script.id, function() {
+				var formData = new FormData();
+				var file = $("#video").prop('files')[0];
 
-			if(file !== undefined) {
-				formData.append('video', file);
-			}
+				if(file !== undefined) {
+					formData.append('video', file);
+				}
 
-			formData.append('media_id', $scope.current_movie.id);
-			formData.append('media_type', $scope.media_type);
-			formData.append('script', $scope.video.script_text);
-			formData.append('_method', 'PUT');
+				// Some sanitization of the script before saving to the database
+				removeTooltips(); // Function from admin-script.js
 
-			$.ajax({
-				type : "POST",
-				url : '/api/videos/' + $scope.video.id,
-				data : formData,
-				cache : false,
-				processData : false,
-				contentType : false
-			})
-			.done(function(data, status, xhr){
-				$scope.video = data.data;
-				$("#admin-player").get(0).load();
-				$("#video-view").find("a").click();
-				$("#file-input-form")[0].reset();
-			})
-			.fail(function(xhr, status, error) {
-				console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+				formData.append('media_id', $scope.current_movie.id);
+				formData.append('media_type', $scope.media_type);
+
+				// Need to take the data directly from the script editor because
+				// angular doesn't easily bind to content-editable divs
+				formData.append('script', $(".script-editor").html());
+				formData.append('_method', 'PUT');
+
+				$.ajax({
+					type : "POST",
+					url : '/api/videos/' + $scope.video.id,
+					data : formData,
+					cache : false,
+					processData : false,
+					contentType : false
+				})
+				.done(function(data, status, xhr){
+					$scope.video = data.data;
+					$("#admin-player").get(0).load();
+					$("#video-view").find("a").click();
+					$("#file-input-form")[0].reset();
+				})
+				.fail(function(xhr, status, error) {
+					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
+				});
 			});
 		};
 
