@@ -479,19 +479,26 @@
 			$('#word-audio').attr('src', url);
 		}
 
-		function getMinutesFromTimestamp(timestamp)
+		function getHoursFromTimestamp(timestamp)
 		{
 			return parseInt(timestamp.split(':')[0]);
 		}
 
-		function getSecondsFromTimestamp(timestamp)
+		function getMinutesFromTimestamp(timestamp)
 		{
 			return parseInt(timestamp.split(':')[1]);
 		}
 
+		function getSecondsFromTimestamp(timestamp)
+		{
+			return parseInt(timestamp.split(':')[2]);
+		}
+
 		function getTimeInSecondsFromTimestamp(timestamp)
 		{
-			return (getMinutesFromTimestamp(timestamp) * 60) + getSecondsFromTimestamp(timestamp);
+			return	getHoursFromTimestamp(timestamp) * 3600 +
+					getMinutesFromTimestamp(timestamp) * 60 +
+					getSecondsFromTimestamp(timestamp);
 		}
 
 		function updateCurrentSpeaker()
@@ -613,6 +620,7 @@
 			{
 				$(this).toggleClass('word-selected');
 			});
+
 			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
 			
 			// Handle when the video is completely loaded
