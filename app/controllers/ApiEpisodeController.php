@@ -307,7 +307,13 @@ class ApiEpisodeController extends \BaseController {
 		if ($episodes instanceof Episode)
 		{
 			$data['episode'] = $episodes->toResponseArray();
-			$data['videos'] = $episodes->videos;
+			//$data['videos'] = $episodes->videos;
+			$data['videos'] = [];
+
+			foreach ($episodes->videos as $video) {
+				array_push($data['videos'], $video->toResponseArray());
+			}
+
 		}
 		elseif ($episodes instanceof Collection)
 		{
