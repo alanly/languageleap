@@ -192,7 +192,7 @@ Route::group(array('prefix' => 'content'), function()
 
 
 // Video Player
-Route::get('/video/play/{id}', function($id)
+Route::get('/video/play/{id}', ['before' => 'auth'] ,function($id)
 {
 	return View::make('player.player')->with('video_id', $id);
 });
