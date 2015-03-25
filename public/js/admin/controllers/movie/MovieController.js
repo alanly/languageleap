@@ -137,9 +137,22 @@
 		//START TIME STAMPS SECTION
 
 		$scope.addTimestamp = function() {
+			var from = 0;
+			var to = 1;
+			
+			if($scope.video.timestamps.length > 0)
+			{
+				from = $scope.video.timestamps[$scope.video.timestamps.length - 1].to;
+				to = from;
+				if(! isNaN(from))
+				{
+					to = parseInt(from) + 1;
+				}
+			}
+			
 			$scope.video.timestamps.push({
-				'from' : 0, 
-				'to' : 0
+				'from' : from, 
+				'to' : to
 			});
 		}
 

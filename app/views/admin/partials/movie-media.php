@@ -1,6 +1,6 @@
 <h3><?= Lang::get('admin.video.video_editing'); ?></h3>
 <tabset>
-	<tab heading="Video" id="video-view" >
+	<tab heading="Video" id="video-view">
 		<div class="tab-content">
 			<div id="video-section">
 				<div class="col-md-6">
@@ -14,9 +14,9 @@
 				<div class="timestamps col-md-6">
 					<h4><?= Lang::get('admin.video.timestamps.title'); ?></h4>
 					<div ng-repeat="timestamp in video.timestamps | orderBy:'from'">
-						<input type="text" class="input-sm" ng-model="timestamp.from"/> 
+						<input type="text" class="input-sm" ng-model="timestamp.from" min="0"/> 
 						<?= Lang::get('admin.video.timestamps.to'); ?>
-						<input type="text" class="input-sm" ng-model="timestamp.to"/> 
+						<input type="text" class="input-sm" ng-model="timestamp.to" min="0"/> 
 						<a href="" ng-click="removeTimestamp(timestamp);"><?= Lang::get('admin.video.timestamps.remove'); ?></a>
 					</div>
 					<a href="" ng-click="addTimestamp()">+</a>
