@@ -21,8 +21,8 @@ class CommercialTableSeeder extends Seeder {
 		$c = $c->create(['name' => 'Doritos', 'level_id' => $level->id, 'is_published' => 1]);
 		$c = $c->create(['name' => 'Gillete', 'image_path' => '/img/misc/TestImage.jpg', 'is_published' => 1]);
 		$c = $c->create(['name' => 'Old Spice', 'level_id' => $level->id, 'is_published' => 1]);
-		$c = $c->create(['name' => 'Test Commercial', 'image_path' => '/img/misc/TestImage.jpg', 'level_id' => $level->id]);
-		$c = $c->create(['name' => 'Statefarm', 'level_id' => $level->id]);
-		$c = $c->create(['name' => 'Nike', 'image_path' => '/img/misc/TestImage.jpg', 'level_id' => $level->id]);
+		$c = $c->create(['name' => 'Test Commercial', 'image_path' => '/img/misc/TestImage.jpg', 'level_id' => $level->id, 'is_published' => 1]);
+		$c = $c->create(['name' => 'Statefarm', 'level_id' => $level->id, 'is_published' => 1]);
+		$c = $c->create(['name' => 'Nike', 'image_path' => '/img/misc/TestImage.jpg', 'level_id' => $level->id, 'is_published' => 1]);
 	}
 }
