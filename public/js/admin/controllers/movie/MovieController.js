@@ -140,6 +140,11 @@
 			var from = 0;
 			var to = 1;
 			
+			if($scope.video.timestamps == undefined)
+			{
+				$scope.video.timestamps	= [];
+			}
+
 			if($scope.video.timestamps.length > 0)
 			{
 				from = $scope.video.timestamps[$scope.video.timestamps.length - 1].to;
