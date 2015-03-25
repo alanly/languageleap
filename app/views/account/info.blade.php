@@ -122,7 +122,8 @@
 			{  	
 				$('#alert').attr('class','alert alert-success');
 				$('#alert-text').text("Success! Changes were made!");
-				$('#alert-glyph').attr('class','glyphicon glyphicon-ok');			
+				$('#alert-glyph').attr('class','glyphicon glyphicon-ok');	
+				$("#ConfirmPassword").val("");
 			},
 			error: function(data)
 			{  	
@@ -137,7 +138,8 @@
 
 				$('#alert-text').html(errors);
 				
-				$('#alert-glyph').attr('class','glyphicon glyphicon-exclamation-sign');				
+				$('#alert-glyph').attr('class','glyphicon glyphicon-exclamation-sign');
+				$("#ConfirmPassword").val("");				
 			}
 		});
 	});
