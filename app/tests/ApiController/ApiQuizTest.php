@@ -10,8 +10,24 @@ use LangLeap\Quizzes\Answer;
 use LangLeap\Quizzes\Result;
 use LangLeap\Quizzes\Quiz;
 use LangLeap\Accounts\User;
+use LangLeap\DictionaryUtilities\DictionaryFactory;
 
 class ApiQuizControllerTest extends TestCase {
+
+	private function getDefinitionMock()
+	{
+		return Mockery::mock('LangLeap\Words\Definition');
+	}
+
+	private function getAdapterMock()
+	{
+		return Mockery::mock('LangLeap\DictionaryUtilities\IDictionaryAdapter');
+	}
+
+	private function getFactoryMock()
+	{
+		return Mockery::mock('LangLeap\DictionaryUtilities\DictionaryFactory');
+	}
 
 	public function setUp()
 	{
@@ -61,6 +77,20 @@ class ApiQuizControllerTest extends TestCase {
 	 */
 	public function testVideo()
 	{
+		// Mock the definition instance.
+		$definition = $this->getDefinitionMock();
+		$definition->shouldReceive('getAttribute')->atLeast()->times(3)->andReturn('foobar');
+
+		// Mock the dictionary adapter.
+		$adapter = $this->getAdapterMock();
+		$adapter->shouldReceive('getDefinition')->atLeast()->times(3)->andReturn($definition);
+		
+		// Mock the factory.
+		$factory = $this->getFactoryMock();
+		$factory->shouldReceive('getDictionary')->andReturn($adapter);
+
+		DictionaryFactory::getInstance($factory);
+
 		$video = Video::first();
 		$selected_words = 
 		[
@@ -173,6 +203,16 @@ class ApiQuizControllerTest extends TestCase {
 	 */	
 	public function testVideoNoDefinitionForWordSelected()
 	{
+		// Mock the dictionary adapter.
+		$adapter = $this->getAdapterMock();
+		$adapter->shouldReceive('getDefinition')->once()->andReturn(null);
+		
+		// Mock the factory.
+		$factory = $this->getFactoryMock();
+		$factory->shouldReceive('getDictionary')->andReturn($adapter);
+
+		DictionaryFactory::getInstance($factory);
+
 		$video = Video::first();
 		$selected_words = 
 		[
@@ -372,74 +412,6 @@ class ApiQuizControllerTest extends TestCase {
 		
 		$data = $response->getData()->data;
 		$this->assertFalse($data->is_correct);
-	}
-	
-	public function testPutCustomQuestion()
-	{
-		$video = Video::first();
-		$question = 'test question';
-		$answers = ['1', '2', '3', '4'];
-		
-		$response = $this->action(
-			'PUT',
-			'ApiQuizController@putCustomQuestion',
-			[], 
-			[
-				'video_id' => $video->id, 
-				'question' => $question, 
-				'answer' => $answers
-			]
-		);
-		
-		$this->assertRedirectedTo('admin/quiz/new');
-		
-		$this->assertSessionHas('success', true);
-		$this->assertSessionHas('message');
-	}
-	
-	public function testPutCustomQuestionInvalidVideo()
-	{
-		$question = 'test question';
-		$answers = ['1', '2', '3', '4'];
-		
-		$response = $this->action(
-			'PUT',
-			'ApiQuizController@putCustomQuestion',
-			[], 
-			[
-				'video_id' => -1, 
-				'question' => $question, 
-				'answer' => $answers
-			]
-		);
-		
-		$this->assertRedirectedTo('admin/quiz/new');
-		
-		$this->assertSessionHas('success', false);
-		$this->assertSessionHas('message');
-	}
-	
-	public function testPutCustomQuestionInvalidAnswers()
-	{
-		$video = Video::first();
-		$question = 'test question';
-		$answers = [];
-		
-		$response = $this->action(
-			'PUT',
-			'ApiQuizController@putCustomQuestion',
-			[], 
-			[
-				'video_id' => $video->id, 
-				'question' => $question, 
-				'answer' => $answers
-			]
-		);
-		
-		$this->assertRedirectedTo('admin/quiz/new');
-		
-		$this->assertSessionHas('success', false);
-		$this->assertSessionHas('message');
 	}
 	
 	public function testQuizScore()

@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration {
 			$table->string('confirmation_code')->nullable();
 			$table->integer('total_points')->default(0);
 			$table->integer('level_id')->default(0);
+			$table->boolean('is_active')->default(1);
 			$table->rememberToken();
 		});
 	}

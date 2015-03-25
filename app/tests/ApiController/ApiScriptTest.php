@@ -14,22 +14,6 @@ class ApiScriptControllerTest extends TestCase {
 		$this->assertJson($response->getContent());
 	}
 
-	public function testStore()
-	{
-		$script = Script::create(['text' => 'Test script.', 'video_id' => '1']);
-
-		$response = $this->action(
-			'POST',
-			'ApiScriptController@store',
-			[],
-			['text' => $script->text, 'video_id' => $script->video_id]
-		);
-
-		$this->assertResponseStatus(201);
-		$data = $response->getData();
-		$this->assertEquals('success', $data->status);
-	}
-
 	public function testShow()
 	{
 		$this->seed();

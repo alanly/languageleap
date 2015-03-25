@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDraganddropquestionTable extends Migration {
+class CreateDragAndDropQuestionTable extends Migration {
 
 	/**
 	 * Run the migrations.

@@ -26,37 +26,6 @@ class ApiScriptController extends \BaseController {
 		);
 	}
 
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		$script = $this->scripts->newInstance();
-
-		$script->fill(Input::get());
-		$script->text = Input::get('text');
-		$script->video_id = Input::get('video_id');
-
-		if (! $script->save())
-		{
-			return $this->apiResponse(
-				'error',
-				$script->getErrors(),
-				500
-			);
-		}
-
-		return $this->apiResponse(
-			'success',
-			$script->toArray(),
-			201
-		);
-	}
-
-
 	/**
 	 * Display the specified resource.
 	 *

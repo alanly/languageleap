@@ -12,6 +12,6 @@ class LanguageTableSeeder extends Seeder {
 		DB::table('languages')->delete();
 
 		$l = App::make('LangLeap\Core\Language');
-		$l = $l->create(['code' => 'en', 'description'=>'Engrish']);
+		$l = $l->create(['code' => 'en', 'description'=>'English']);
 	}
 }

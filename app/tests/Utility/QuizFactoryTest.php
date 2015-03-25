@@ -5,8 +5,24 @@ use LangLeap\Quizzes\Quiz;
 use LangLeap\QuizUtilities\QuizFactory;
 use LangLeap\Accounts\User;
 use LangLeap\Videos\Video;
+use LangLeap\DictionaryUtilities\DictionaryFactory;
 
 class QuizFactoryTest extends TestCase {
+
+	private function getDefinitionMock()
+	{
+		return Mockery::mock('LangLeap\Words\Definition');
+	}
+
+	private function getAdapterMock()
+	{
+		return Mockery::mock('LangLeap\DictionaryUtilities\IDictionaryAdapter');
+	}
+
+	private function getFactoryMock()
+	{
+		return Mockery::mock('LangLeap\DictionaryUtilities\DictionaryFactory');
+	}
 
 	public function setUp()
 	{
@@ -19,6 +35,20 @@ class QuizFactoryTest extends TestCase {
 
 	public function testQuestionReturned()
 	{
+		// Mock the definition instance.
+		$definition = $this->getDefinitionMock();
+		$definition->shouldReceive('getAttribute')->atLeast()->times(3)->andReturn('foobar');
+
+		// Mock the dictionary adapter.
+		$adapter = $this->getAdapterMock();
+		$adapter->shouldReceive('getDefinition')->atLeast()->times(3)->andReturn($definition);
+		
+		// Mock the factory.
+		$factory = $this->getFactoryMock();
+		$factory->shouldReceive('getDictionary')->atLeast()->times(3)->andReturn($adapter);
+
+		DictionaryFactory::getInstance($factory);
+
 		$video_id = Video::first()->id;
 		$wordsInformation = [
 			['word' => 'cat', 'definition' => 'vicious, animal', 'sentence' => 'the cat is annoying'],

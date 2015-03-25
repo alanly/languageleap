@@ -60,44 +60,45 @@ Route::controller('register', 'RegistrationController');
 
 
 // Route grouping for administration interface.
-Route::group(['prefix' => 'admin'], function()
+Route::group(['prefix' => 'admin', 'before' => 'admin'], function()
 {
+	/************************** NEW ANGULAR ADMIN ***************************/
 
-	// Interface index
+	// New admin index
 	Route::get('/', function()
 	{
-		return View::make('admin.index')->with('levels', Level::all())->with('languages', Language::all());
+		return View::make('admin.index');
 	});
 
-	// Video interface
-	Route::get('video', function()
+	// This route should be used to reference pages
+	// from AngularJS (eg. 'pages/manage-shows')
+	Route::get('pages/{name}', function($name)
 	{
-		return View::make('admin.video.video');
+		$view_path = 'admin.pages.' . $name;
+
+		if (View::exists($view_path))
+		{
+			return View::make($view_path);
+		}
+
+		App::abort(404);
 	});
 
-	// Script interface
-	Route::get('new/script', function()
+	// This route should be used to reference partials 
+	// from AngularJS (eg. 'partials/edit-show-modal')
+	Route::get('partials/{name}', function($name)
 	{
-		return View::make('admin.video.script');
+		$view_path = 'admin.partials.' . $name;
+
+		if (View::exists($view_path))
+		{
+			return View::make($view_path);
+		}
+
+		App::abort(404);
 	});
 
-	// Dev script interface
-	Route::get('dev/script', function()
-	{
-		return View::make('admin.script.index');
-	});
-	
-	// new media upload
-	Route::any('add-new-form-submit', 'FileUploadController@saveMedia');
-
-	// store script
-	Route::resource('save-script', 'ApiScriptController@store');
-
-	// Dev quiz interface
-	Route::get('quiz/new', function()
-	{
-		return View::make('admin.quiz.index')->with('videos', Video::All());
-	});
+	Route::post('user', 'ApiAdminUserController@postActive');
 });
 
 
@@ -144,6 +145,7 @@ Route::group(['prefix' => 'api'], function()
 
 	// Videos
 	Route::resource('videos', 'ApiVideoController');
+	Route::post('videos/timestamps/{id}', 'ApiVideoController@postTimestamps');
 	Route::controller('videos/cut', 'ApiCutVideoController');
 
 	// Scripts
@@ -183,14 +185,17 @@ Route::group(array('prefix' => 'content'), function()
 	// Handle requests for scripts.
 	Route::get('scripts/{id}', 'ScriptContentController@getScript');
 
+	// Handle requests for media images.
+	Route::get('images/{model}/{id}', 'ImageContentController@getImage');
+
 });
 
 
 // Video Player
-Route::get('/video/play/{id}', function($id)
+Route::get('/video/play/{id}', ['before' => 'auth' , function($id)
 {
 	return View::make('player.player')->with('video_id', $id);
-});
+}]);
 
 
 // Quiz View

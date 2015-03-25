@@ -35,7 +35,6 @@ class CutVideoResponseTest extends TestCase {
 		$this->assertGreaterThan(0, count($response[1]));
 		
 		$this->assertArrayHasKey('id', $response[1][0]);
-		$this->assertEquals($this->videoPath, $response[1][0]['path']);
 		$this->assertEquals(1, $response[1][0]['viewable_id']);
 		$this->assertEquals($this->viewableType, $response[1][0]['viewable_type']);
 		$this->assertArrayHasKey('script', $response[1][0]);
@@ -60,8 +59,14 @@ class CutVideoResponseTest extends TestCase {
 	
 	protected function getVideoInstance()
 	{
+		$viewable = App::make('LangLeap\Videos\Commercial');
+		$viewable->name = 'Test Commercial';
+		$viewable->description = 'test';
+		$viewable->is_published = true;
+		$viewable->save();
+		
 		$video = App::make('LangLeap\Videos\Video');
-		$video->viewable_id = 1;
+		$video->viewable_id = $viewable->id;
 		$video->viewable_type = $this->viewableType;
 		$video->language_id = 1;
 		$video->path = $this->videoPath;

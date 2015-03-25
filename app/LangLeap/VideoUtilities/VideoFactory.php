@@ -53,8 +53,11 @@ class VideoFactory {
 	 * @param int 		$video_id 
 	 * @param Script 	$script
 	 */
-	public function setScript($script_text,$video_id, Script $script = null)
+	public function setScript($script_text, $video_id, Script $script = null)
 	{
+		if(empty($script_text))
+			return;
+		
 		if($script == null)
 		{
 			$script = new Script;
@@ -76,19 +79,20 @@ class VideoFactory {
 	 */
 	public function setVideo($input, Video $video = null)
 	{
-
-		$lang = Language::find($input['language_id'])->first();
-		$file = $input['video'];
-		$type = $input['info-radio'];
-
-		$ext = $file->getClientOriginalExtension();
+		$lang = Language::first();
+		if(array_key_exists('language_id', $input))
+		{
+			$lang = Language::find($input['language_id'])->first();
+		}
+				
+		$type = $input['media_type'];
 
 		if($video == null)
 		{
 			$video = new Video;
 		}	
 		
-		$path = "Temp";
+		$path = "";
 
 		if($type === "commercial")
 		{
@@ -110,18 +114,25 @@ class VideoFactory {
 		}
 
 		$video->language_id = $lang->id;
-		$video->path = $path;
+
 		$video->save();
 
-		//set the path
-		$new_name = $video->id . "." . $ext;
-		$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
+		//Only update video if the video was sent in
+		if(array_key_exists("video", $input))
+		{
+			$file = $input['video'];
+			$ext = $file->getClientOriginalExtension();
+			//set the path
+			$new_name = $video->id . "." . $ext;
+			$video->path = $path . DIRECTORY_SEPARATOR . $new_name;
 
-		if (!App::environment('testing')) {
-			$video_file = $file->move($path,$new_name);
+			if (!App::environment('testing')) {
+				
+				$video_file = $file->move($path,$new_name);
+			}
+
+			$video->save();
 		}
-		$video->save();
-
 		return $video;
 	}
 }

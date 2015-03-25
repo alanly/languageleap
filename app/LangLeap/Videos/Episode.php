@@ -2,6 +2,7 @@
 
 use LangLeap\Payments\Billable;
 use LangLeap\Videos\RecommendationSystem\Classifiable;
+use LangLeap\Core\PublishedTrait;
 
 /**
  * @author  Thomas Rahn <thomas@rahn.ca>
@@ -9,6 +10,8 @@ use LangLeap\Videos\RecommendationSystem\Classifiable;
  * @author  Dror Ozgaon <dror.ozgaon@gmail.com>
  */
 class Episode extends Media implements Billable, Classifiable {
+
+	use PublishedTrait;
 
 	public $timestamps = false;
 
@@ -40,6 +43,12 @@ class Episode extends Media implements Billable, Classifiable {
 			$episode->videos()->delete();
 		});
 
+	}
+
+
+	public function show()
+	{
+		return $this->season->show;
 	}
 
 

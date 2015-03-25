@@ -1,13 +1,18 @@
 <?php namespace LangLeap\Videos;
 
+use URL;
+use LangLeap\Core\Imageable;
 use LangLeap\Core\ValidatedModel;
 use LangLeap\Payments\Billable;
 use LangLeap\Videos\Filtering\Filterable;
+use LangLeap\Core\PublishedTrait;
 
-class Show extends ValidatedModel implements Billable, Filterable {
+class Show extends ValidatedModel implements Billable, Filterable, Imageable {
+
+	use PublishedTrait;
 
 	public    $timestamps = false;
-	protected $fillable   = ['name', 'description', 'image_path', 'director'];
+	protected $fillable   = ['name', 'description', 'image_path', 'director', 'actor', 'genre', 'is_published'];
 	protected $hidden     = ['episodes', 'seasons'];
 	protected $rules      = [
 		'name'        => 'required',
@@ -34,6 +39,16 @@ class Show extends ValidatedModel implements Billable, Filterable {
 		return $this->hasMany('LangLeap\Videos\Season');
 	}
 
+	public function toArray()
+	{
+		$serialized = parent::toArray();
+
+		$serialized['image_path'] = URL::action('ImageContentController@getImage',
+			['model' => class_basename(get_class($this)), 'id' => $this->id]);
+
+		return $serialized;
+	}
+
 	public static function getSearchableAttributes()
 	{
 		return ['name', 'director'];
@@ -45,7 +60,7 @@ class Show extends ValidatedModel implements Billable, Filterable {
 
 		$query = Show::query();
 		$query->select('shows.*')
-		->where(function($q) use ($input, $searchableAttributes)
+		      ->where(function($q) use ($input, $searchableAttributes)
 		{
 			foreach ($searchableAttributes as $a)
 			{

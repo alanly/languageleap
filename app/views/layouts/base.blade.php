@@ -8,7 +8,6 @@
 
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
 
 		<link rel="stylesheet" href="/css/layout.css">
 
@@ -56,7 +55,7 @@
 									<span class="caret"></span></a>
 									<ul class="dropdown-menu" role="menu">
 										<li><a href="{{ URL::to('user/info') }}" role="menu-item">@lang('navbar.buttons.account.profile')</a></li>
-										<li><a href="#" role="menu-item">@lang('navbar.buttons.account.settings')</a></li>
+										<li><a href="{{ URL::to('user/level') }}" role="menu-item">@lang('navbar.buttons.account.level')</a></li>
 										<li><a href="{{ URL::to('user/wordBank') }}" role="menu-item">@lang('navbar.buttons.account.review')</a></li>
 										<li class="divider"></li>
 										<li><a href="{{ URL::to('logout') }}" role="menu-item">@lang('navbar.buttons.logout')</a></li>

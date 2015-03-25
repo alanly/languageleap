@@ -13,8 +13,8 @@
 		</nav>
 		<h3 class="text-muted">@lang('sitename.name.no_space')</h3>
 	</div>
-
-	
+	<h2>@lang('account.level.level')</h2>
+	<hr>
 	<div class="jumbotron">
 		<h1>{{ $level->description }}</h1>
 	</div>

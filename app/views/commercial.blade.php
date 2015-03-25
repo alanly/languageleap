@@ -129,11 +129,15 @@
 				if(value != null)
 				{
 					table_records += "<tr>"
-								+ "<td>" + value.id + "</td>"
-								+ "<td></td>" //end time - start time converted to time string
-								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>" //get duration
+					var array = JSON.parse(value.timestamps_json);
+					$.each(array, function(i,v){
+						table_records += "<tr>"
+								+ "<td>" + (i+1) + "</td>"
+								+ "<td>" + (v.to - v.from) +"s</td>"//end time - start time converted to time string
+								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>"//get duration
 								+ "<td>" + getVideoScore(value) + "</td>"
 								+ "</tr>";
+					});
 				}
 			});
 

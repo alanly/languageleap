@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDefinitionquestionTable extends Migration {
+class CreateDefinitionQuestionTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,8 @@ class CreateDefinitionquestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('definition_questions', function($table){
+		Schema::create('definition_questions', function($table)
+		{
 			$table->increments('id');
 			$table->string('question');
 			$table->string('word');

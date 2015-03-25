@@ -50,10 +50,11 @@ class ApiVideoControllerTest extends TestCase {
                 'ApiVideoController@store',
                 [],
                 [
-                	'info-radio'	=> 'commercial',
-                	'media_id'		=> $commercial->id, 
-                	'language_id' 	=> $language->id, 
-                	"script" 		=> $text,
+                	'media_type'		=> 'commercial',
+                	'media_id'			=> $commercial->id, 
+                	'language_id' 		=> $language->id, 
+                	"script" 			=> $text,
+                	'timestamps_json'	=> "",
                 ],
                 ['video'=> $video]
         );
@@ -75,7 +76,13 @@ class ApiVideoControllerTest extends TestCase {
 		$response = $this->action(
 			'PATCH',
 			'ApiVideoController@update',
-			[$video->id],['info-radio'=>'episode','episode'=>$episode->id, 'language_id' => $language->id],
+			[$video->id],
+			[
+				'media_type'		=> 'episode',
+				'episode'			=> $episode->id, 
+				'language_id' 		=> $language->id,
+				'timestamps_json'	=> "",
+			],
 			['video'=> $video_file, 'script' => $script]
 		);
 
@@ -97,5 +104,43 @@ class ApiVideoControllerTest extends TestCase {
 		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
 		$this->assertResponseOk();
 		$this->assertNull(Video::find($id));
+	}
+
+	public function testPostingTimestamps()
+	{
+		$this->seed();
+
+		$video = Video::first();
+		$id = $video->id;
+		$timestamps_json = "{'from' : '4','to' : '5'}";
+		$response = $this->action(
+			'post',
+			'ApiVideoController@postTimestamps',
+			[$id],
+			[
+				'timestamps_json' => $timestamps_json
+			]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseOk();
+
+		$video = Video::find($video->id);
+		$this->assertEquals($video->timestamps_json, $timestamps_json);
+	}
+
+	public function testPostingTimestampsWithNoVideo()
+	{
+		$this->seed();
+
+		$response = $this->action(
+			'post',
+			'ApiVideoController@postTimestamps',
+			[-1],
+			[]
+		);
+
+		$this->assertInstanceOf('Illuminate\Http\JsonResponse', $response);
+		$this->assertResponseStatus(404);
 	}
 }
