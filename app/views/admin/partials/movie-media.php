@@ -13,7 +13,7 @@
 				</div>
 				<div class="timestamps col-md-6">
 					<h4><?= Lang::get('admin.video.timestamps.title'); ?></h4>
-					<div ng-repeat="timestamp in video.timestamps">
+					<div ng-repeat="timestamp in video.timestamps | orderBy:'from'">
 						<input type="text" class="input-sm" ng-model="timestamp.from"/> 
 						<?= Lang::get('admin.video.timestamps.to'); ?>
 						<input type="text" class="input-sm" ng-model="timestamp.to"/> 

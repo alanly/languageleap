@@ -87,7 +87,7 @@
 				$scope.video.script_text = $scope.video.script.text;
 				$(".script-editor").html($scope.video.script_text);
 				
-				if($scope.video.timestamps_json !== undefined)
+				if($scope.video.timestamps_json !== null)
 				{
 					$scope.video.timestamps = angular.fromJson($scope.video.timestamps_json);
 				}
