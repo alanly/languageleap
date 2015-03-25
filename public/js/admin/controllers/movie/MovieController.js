@@ -3,7 +3,7 @@
 	var app = angular.module('adminApp');
 
 
-	app.controller('MovieController', ['$scope', '$log', '$routeParams', '$http', '$modal', function($scope, $log, $routeParams, $http, $modal) {
+	app.controller('MovieController', ['$scope', '$log', '$routeParams', '$http', '$modal', '$timeout', function($scope, $log, $routeParams, $http, $modal, $timeout) {
 
 		$scope.movies = [];
 
@@ -126,6 +126,7 @@
 				$("#admin-player").get(0).load();
 				$("#video-view").find("a").click();
 				$("#file-input-form")[0].reset();
+				$scope.savedMedia();
 			})
 			.fail(function(xhr, status, error) {
 				console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
@@ -173,7 +174,7 @@
 				'timestamps_json' : $scope.video.timestamps_json
 			})
 			.success(function(data){
-				
+				$scope.savedMedia();
 			});
 		}
 
@@ -210,6 +211,14 @@
 
 		//END SCRIPT SECTION
 
+
+		$scope.savedMedia = function()
+		{
+			$scope.saved = true;
+			$timeout(function(){
+				$scope.saved = false;
+			}, 5000)
+		}
 	}]);
 
 	app.controller('EditMovieController', ['$scope', '$http', '$modalInstance', 'movie', function($scope, $http, $modalInstance, movie){

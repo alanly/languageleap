@@ -1,4 +1,7 @@
 <h3><?= Lang::get('admin.video.video_editing'); ?></h3>
+<div class="alert alert-success" ng-if="saved">
+	<?= Lang::get('admin.video.saved'); ?>
+</div>
 <tabset>
 	<tab heading="Video" id="video-view">
 		<div class="tab-content">
