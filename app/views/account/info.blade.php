@@ -25,24 +25,26 @@
 
 @section('content')
 <div class="container">
-	<div class="page-header">
-	   
-		<div id="alert" class="alert">
-			<strong id="alert-text"><span id="alert-glyph" class="glyphicon"></span></strong>
-		</div>
+	<div class="row">
+		<div class="col-lg-6 col-lg-offset-3">
+			<div class="page-header">
+			   
+				<div id="alert" class="alert">
+					<strong id="alert-text"><span id="alert-glyph" class="glyphicon"></span></strong>
+				</div>
 
-		<div class="clearfix">
-			<div class="col-md-12">
-				<h1>@lang('account.info.title')<small><br/>@lang('account.info.subtitle')</small></h1>
+				<div class="clearfix">
+					<div class="col-md-12">
+						<h1>@lang('account.info.title')<small><br/>@lang('account.info.subtitle')</small></h1>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<br/>
-
 	<div class="row">
 		<form role="form" id="user-update-form">
-			<div class="col-lg-6">
+			<div class="col-lg-6 col-lg-offset-3">
 				<div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>@lang('account.info.required')</strong></div>
 				
 				<div class="form-group">
