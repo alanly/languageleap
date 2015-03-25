@@ -65,7 +65,7 @@
 				templateUrl: 'admin/partials/new-movie-modal',
 				controller: 'NewMovieController',
 				resolve : {
-					media_type : function() { return $scope.media_type }
+					media_type : function() { return $scope.media_type; }
 				},
 				size: 'lg',
 				backdrop : 'static',
