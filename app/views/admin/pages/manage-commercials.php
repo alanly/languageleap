@@ -14,7 +14,7 @@
 			<td class="id">{{ commercial.id }}</td>
 			<td>
 				<a ng-click="openEditModal(commercial);"><i class="fa fa-edit fa-fw"></i></a>
-				<a ng-click="remove(commercial);"><i class="fa fa-trash fa-fw"></i></a>
+				<a ng-confirm-message="<?= Lang::get('admin.delete.confirm') ?>" ng-confirm-click="remove(commercial);"><i class="fa fa-trash fa-fw"></i></a>
 				<a ng-click="manageMedia(commercial);"><i class="fa fa-film fa-fw"></i></a>
 			</td>
 			<td>{{ commercial.name }}</td>
