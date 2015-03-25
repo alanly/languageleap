@@ -8,7 +8,7 @@
 			<div id="video-section">
 				<div class="col-md-6">
 					<div class="title">
-						<h4><?= Lang::get('admin.video.title', ['name' => '{{ current_movie.name }}']); ?></h4>
+						<h4><?= Lang::get('admin.video.title', ['name' => '{{ current_commercial.name }}']); ?></h4>
 					</div>
 					<div>
 						<video style="width:100%;" id="admin-player" ng-src="{{video.path}}" controls></video>

@@ -12,7 +12,11 @@
 	<tbody>
 		<tr ng-repeat="commercial in commercials | orderBy:orderByPredicate:orderByReverse">
 			<td class="id">{{ commercial.id }}</td>
-			<td><a ng-click="openEditModal(commercial);"><i class="fa fa-edit fa-fw"></i></a><a ng-click="remove(commercial);"><i class="fa fa-trash fa-fw"></i></a></td>
+			<td>
+				<a ng-click="openEditModal(commercial);"><i class="fa fa-edit fa-fw"></i></a>
+				<a ng-click="remove(commercial);"><i class="fa fa-trash fa-fw"></i></a>
+				<a ng-click="manageMedia(commercial);"><i class="fa fa-film fa-fw"></i></a>
+			</td>
 			<td>{{ commercial.name }}</td>
 			<td><input class="publish" type="checkbox" ng-model="commercial.is_published" ng-click="onPublishClick($event, commercial);" ng-checked="commercial.is_published" /></td>
 		</tr>
@@ -21,4 +25,7 @@
 
 <div ng-if="commercials.length === 0">
 	<?php echo Lang::get('admin.terms.empty'); ?>
+</div>
+<div class="manage-media" ng-include="commercial_media">
+
 </div>
