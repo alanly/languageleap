@@ -355,6 +355,7 @@
 			var noPunctuation = removePunctuation(nonDefinedWords); //Remove all ',' and '.' in the string
 			var noDoubleSpaces = removeDoubleSpaces(noPunctuation); //Replace any number of spaces greater than 1, with 1 space
 			var trimmedText = noDoubleSpaces.trim();
+
 			return trimmedText;
 		}
 
@@ -386,12 +387,12 @@
 
 		function removePunctuation(text)
 		{
-			return text.replace(/\./g, "").replace(/,/g, "");
+			return text.replace(/\./g, "").replace(/,/g, "").replace(/:/g, '');
 		}
 
 		function removeDoubleSpaces(text)
 		{
-			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
+			return text.replace(/\n/g, " ").replace(/\s{2,}/g, " ");
 		}
 		
 		function loadAdminDefinition($word)
