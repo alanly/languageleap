@@ -64,6 +64,9 @@
 			var modal_instance = $modal.open({
 				templateUrl: 'admin/partials/new-movie-modal',
 				controller: 'NewMovieController',
+				resolve : {
+					media_type : function() { return $scope.media_type }
+				},
 				size: 'lg',
 				backdrop : 'static',
 				backdropClass: 'modal-backdrop-fix'
@@ -169,7 +172,7 @@
 
 		$scope.saveTimestamps = function() {
 			$scope.video.timestamps_json = angular.toJson($scope.video.timestamps);
-			console.log($scope.video.timestamps_json);
+
 			$http.post('/api/videos/timestamps/' + $scope.video.id, {
 				'timestamps_json' : $scope.video.timestamps_json
 			})
@@ -258,10 +261,10 @@
 		}
 	}]);
 
-	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', function($scope, $http, $modalInstance, $rootScope){
+	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', 'media_type', function($scope, $http, $modalInstance, $rootScope, media_type){
 
 		$scope.movie = {};
-
+		$scope.media_type = media_type
 		$scope.storeMovie = function() {
 
 			$http.post('/api/metadata/movies/', $scope.movie)
