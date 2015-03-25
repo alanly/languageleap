@@ -583,7 +583,7 @@ function loadDefinitions() {
 	});
 }
 
-function saveDefinitions(scriptId) {
+function saveDefinitions(scriptId, callback) {
 	var $wordSpans = $('.script-editor span[data-type=word]');
 	
 	// When this becomes 0, all definitions have been saved
@@ -608,14 +608,14 @@ function saveDefinitions(scriptId) {
 				dataType: "json",
 				success: function(data) {
 					if (data.status == 'success') {
-						console.log('definition updated');
 					}
 				},
 				complete: function() {
 					ajaxRequestsRemaining--;
 
 					if (ajaxRequestsRemaining <= 0) {
-						saveScript(scriptId);
+						callback();
+						//saveScript(scriptId);
 					}
 				}
 			});
@@ -628,7 +628,6 @@ function saveDefinitions(scriptId) {
 				dataType: "json",
 				success: function(data) {
 					if (data.status == 'success') {
-						console.log('definition stored');
 						$this.attr('data-id', data.data.id);
 					}
 				},
@@ -636,12 +635,13 @@ function saveDefinitions(scriptId) {
 					ajaxRequestsRemaining--;
 
 					if (ajaxRequestsRemaining <= 0) {
-						saveScript(scriptId);
+						callback();
+						//saveScript(scriptId);
 					}
 				}
 			});
 		}
 	});
 
-	if (ajaxRequestsRemaining < 1) saveScript(scriptId);
+	if (ajaxRequestsRemaining < 1) callback();//saveScript(scriptId);
 }
