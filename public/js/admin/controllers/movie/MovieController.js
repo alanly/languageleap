@@ -292,7 +292,7 @@
 	app.controller('NewMovieController', ['$scope', '$http', '$modalInstance','$rootScope', 'media_type', function($scope, $http, $modalInstance, $rootScope, media_type){
 
 		$scope.movie = {};
-		$scope.media_type = media_type
+		$scope.media_type = media_type;
 		$scope.storeMovie = function() {
 
 			$http.post('/api/metadata/movies/', $scope.movie)
