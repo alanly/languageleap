@@ -100,7 +100,7 @@
 						<div id="actor-form">
 							<div id="timestamp" class="form-group">
 								<label>Timestamp</label>
-								<input type="text" class="form-control" title="'#:##' (ie. 2:46)" placeholder="Enter the clip time (ie. 2:46)" pattern="^\d+:\d\d$" />
+								<input type="text" class="form-control" title="'HH:MM:SS' (ie. 00:02:46)" placeholder="Enter the clip time (ie. 00:02:46)" pattern="\d{2}:\d{2}:\d{2}" />
 							</div>
 						</div>
 						<div id="word-form">
