@@ -68,7 +68,6 @@ class Episode extends Media implements Billable, Classifiable {
 	{
 		return [
 			'id'            => $this->id,
-			'image_path'    => $this->season->show->image_path,
 			'season_id'     => $this->season_id,
 			'season_number' => $this->season->number,
 			'number'        => $this->number,
