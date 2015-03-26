@@ -1,6 +1,6 @@
 <h1>Manage Movies</h1>
 <a ng-click="openAddModal();" class="btn btn-primary pull-right">+</a>
-<table class="table table-hover movies" ng-if="movies.length !== 0">
+<table class="table table-hover movies">
 	<thead ng-init="orderByReverse = false; orderByPredicate = 'name';">
 		<tr>
 			<th class="col-md-1">ID</th>
@@ -24,7 +24,7 @@
 </table>
 
 <div ng-if="movies.length === 0">
-	<?php echo Lang::get('admin.terms.empty'); ?>
+	<?= Lang::get('admin.terms.empty') ?>
 </div>
 
 <div class="manage-media" ng-include="movie_media">

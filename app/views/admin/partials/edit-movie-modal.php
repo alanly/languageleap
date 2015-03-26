@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h1><?= Lang::get('admin.modal.edit_media.title'); ?></h1>
+	<h2 class="modal-title"><?= Lang::get('admin.modal.edit_media.title'); ?></h2>
 </div>
 <div class="modal-body">
 	<form class="row" id="new-movie-form">
@@ -31,16 +31,18 @@
 
 		</div>
 		<div class="col-md-4">
-			<h3><?= Lang::get('admin.media.movie.table.poster'); ?></h3>
-			<img height="300px" ng-src="{{ movie.image_path }}"/>
 			<div class="form-group">
-				<input type="file" name="media_image" id="media_image"/>
+				<label for="cover"><?php echo Lang::get('admin.media.movie.table.poster'); ?></label>
+				<img class="thumbnail cover" ng-src="{{ movie.image_path }}">
+				<div class="form-group">
+					<input type="file" name="media_image" id="media_image"/>
+				</div>
 			</div>
 		</div>
 	</form>
 </div>
 
 <div class="modal-footer">
-	<a ng-click="saveMovie(movie);" class="btn btn-primary"><?= Lang::get('admin.buttons.save'); ?> </a>
-	<a ng-click="closeModel();" class="btn btn-primary"><?= Lang::get('admin.buttons.cancel'); ?> </a>
+	<button ng-click="saveMovie(movie);" class="btn btn-primary"><?= Lang::get('admin.buttons.save'); ?> </button>
+	<button ng-click="closeModel();" class="btn btn-default"><?= Lang::get('admin.buttons.cancel'); ?> </button>
 </div>

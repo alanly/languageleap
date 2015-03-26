@@ -1,6 +1,6 @@
 <h1><?php echo Lang::get('admin.quiz.manage.title'); ?></h1>
 
-<table class="table table-hover videos" ng-if="videos.length !== 0">
+<table class="table table-hover videos">
 	<thead ng-init="orderByReverse = false; orderByPredicate = 'name';">
 		<tr>
 			<th class="col-md-1"><?php echo Lang::get('admin.quiz.manage.id') ?></th>

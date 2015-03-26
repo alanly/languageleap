@@ -1,6 +1,6 @@
 <h1>Manage Commercials</h1>
 <a ng-click="openAddModal();" class="btn btn-primary pull-right">+</a>
-<table class="table table-hover commercials" ng-if="commercials.length !== 0">
+<table class="table table-hover commercials">
 	<thead ng-init="orderByReverse = false; orderByPredicate = 'name';">
 		<tr>
 			<th class="col-md-1">ID</th>
@@ -24,8 +24,9 @@
 </table>
 
 <div ng-if="commercials.length === 0">
-	<?php echo Lang::get('admin.terms.empty'); ?>
+	<?= Lang::get('admin.terms.empty') ?>
 </div>
+
 <div class="manage-media" ng-include="commercial_media">
 
 </div>

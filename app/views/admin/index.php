@@ -61,7 +61,6 @@
 								<a href="#/shows" class="list-group-item manage-shows"> <?php echo Lang::get('admin.media.show.name'); ?></a>
 							</div>
 						</li>
-						<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> <?php echo Lang::get('admin.index.menu.scripts'); ?></a></li>
 						<li><a href="#/users"><i class="fa fa-users fa-fw"></i> <?php echo Lang::get('admin.index.menu.users'); ?></a></li>
 						<li><a href="#/quizzes"><i class="fa fa-graduation-cap fa-fw"></i> <?php echo Lang::get('admin.index.menu.quizzes'); ?></a></li>
 						<li><a href="/"><i class="fa fa-road fa-fw"></i> <?php echo Lang::get('admin.index.menu.client'); ?></a></li>
@@ -95,8 +94,6 @@
 							<a href="#/shows" class="list-group-item manage-shows"> <?php echo Lang::get('admin.media.show.name'); ?></a>
 						</div>
 					</li>
-
-					<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i> <?php echo Lang::get('admin.index.menu.scripts'); ?></a></li>
 					<li><a href="#/users"><i class="fa fa-users fa-fw"></i> <?php echo Lang::get('admin.index.menu.users'); ?></a></li>
 					<li><a href="#/quizzes"><i class="fa fa-graduation-cap fa-fw"></i> <?php echo Lang::get('admin.index.menu.quizzes'); ?></a></li>
 				</ul>

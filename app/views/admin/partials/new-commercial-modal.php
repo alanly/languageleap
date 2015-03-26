@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h1><?php echo Lang::get('admin.modal.new_media.title'); ?></h1>
+	<h2 class="modal-title"><?php echo Lang::get('admin.modal.new_media.title'); ?></h2>
 </div>
 <div class="modal-body">
 	<form class="row" id="new-commercial-form">
@@ -15,16 +15,18 @@
 			</div>
 		</div>
 		<div class="col-md-4">
-			<h3><?php echo Lang::get('admin.media.commercial.table.poster'); ?></h3>
-			<img height="300px" ng-src="{{ commercial.image_path }}"/>
 			<div class="form-group">
-				<input type="file" id="media_image" name="media_image">
+				<label for="cover"><?php echo Lang::get('admin.media.commercial.table.poster'); ?></label>
+				<img class="thumbnail cover" ng-src="{{ commercial.image_path }}">
+				<div class="form-group">
+					<input type="file" id="media_image" name="media_image">
+				</div>
 			</div>
 		</div>
 	</form>
 </div>
 
 <div class="modal-footer">
-	<a ng-click="storeCommercial(commercial);" class="btn btn-primary"><?php echo Lang::get('admin.buttons.save'); ?> </a>
-	<a ng-click="closeModel();" class="btn btn-primary"><?php echo Lang::get('admin.buttons.cancel'); ?> </a>
+	<button ng-click="storeCommercial(commercial);" class="btn btn-primary"><?php echo Lang::get('admin.buttons.save'); ?> </button>
+	<button ng-click="closeModel();" class="btn btn-default"><?php echo Lang::get('admin.buttons.cancel'); ?> </button>
 </div>
