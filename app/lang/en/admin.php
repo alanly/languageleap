@@ -113,7 +113,7 @@ return array(
 
 	'quiz' => array(
 		'insert' => array(
-			'heading'              => 'Insert Custom Question',
+			'heading'              => 'Insert Custom Question for ',
 			'video_label'          => 'Video',
 			'question_label'       => 'Question',
 			'correct_answer_label' => 'Correct Answer',

@@ -1,7 +1,7 @@
 .script-editor {
 	border: 2px solid #ddd;
 	outline: none;
-	padding: 2px;
+	padding: 15px;
 	margin-bottom: 20px;
 	min-height: 200px;
 	max-height: 500px;
@@ -12,11 +12,11 @@
 
 /* Important: Keep the -moz-selection and other selections separate for firefox compatibility */
 .script-editor::-moz-selection {
-	color: #337AB7;
+	color: #5cb85c;
 }
 
 .script-editor::selection {
-	color: #337AB7;
+	color: #5cb85c;
 }
 
 .script-editor span::-moz-selection {
@@ -55,7 +55,7 @@
 
 [data-type="word"],
 .word-button {
-	background-color: #337AB7;
+	background-color: #5cb85c;
 	color: #fff;
 }
 

@@ -1,6 +1,6 @@
 <h1>Manage Users</h1>
 
-<table class="table table-hover users" ng-if="users.length !== 0">
+<table class="table table-hover users">
 	<thead ng-init="orderByReverse = false; orderByPredicate = 'username';">
 		<tr>
 			<th class="col-md-1">ID</th>

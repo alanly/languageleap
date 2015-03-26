@@ -1,6 +1,5 @@
 <div class="modal-header">
-	<h1>{{ video.name }}</h1>
-	<h3><?php echo Lang::get('admin.quiz.insert.heading'); ?></h3>
+	<h2 class="modal-title"><?php echo Lang::get('admin.quiz.insert.heading'); ?> '{{ video.name }}'</h2>
 </div>
 
 <div class="modal-body">
@@ -18,9 +17,15 @@
 		
 		<div class="form-group">
 			<label for="answer"> <?php echo Lang::get('admin.quiz.insert.other_answers_label'); ?></label>
-			<input type="input" id="answer[]" class="form-control" ng-model="question.answer[1]"  placeholder="<?php echo Lang::get('admin.quiz.insert.answer_placeholder'); ?>">
-			<input type="input" id="answer[]" class="form-control" ng-model="question.answer[2]"  placeholder="<?php echo Lang::get('admin.quiz.insert.answer_placeholder'); ?>">
-			<input type="input" id="answer[]" class="form-control" ng-model="question.answer[3]"  placeholder="<?php echo Lang::get('admin.quiz.insert.answer_placeholder'); ?>">
+			<div class="form-group">
+				<input type="input" id="answer[]" class="form-control" ng-model="question.answer[1]"  placeholder="<?php echo Lang::get('admin.quiz.insert.answer_placeholder'); ?>">
+			</div>
+			<div class="form-group">
+				<input type="input" id="answer[]" class="form-control" ng-model="question.answer[2]"  placeholder="<?php echo Lang::get('admin.quiz.insert.answer_placeholder'); ?>">
+			</div>
+			<div class="form-group">
+				<input type="input" id="answer[]" class="form-control" ng-model="question.answer[3]"  placeholder="<?php echo Lang::get('admin.quiz.insert.answer_placeholder'); ?>">
+			</div>
 		</div>
 		
 	</form>
