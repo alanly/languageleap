@@ -34,7 +34,7 @@ class ImageContentControllerTest extends TestCase {
 		$response = $this->action('get', 'ImageContentController@getImage', ['movie', 123]);
 	}
 
-	public function testBadFileShouldThrowNotFoundHttpException()
+	public function testBadFileShouldJustReturnADefaultImage()
 	{
 		$movie = App::make('LangLeap\Videos\Movie');
 		$movie = $movie->create([
@@ -44,8 +44,9 @@ class ImageContentControllerTest extends TestCase {
 			'is_published' => 1
 		]);
 
-		$this->setExpectedException('Symfony\Component\HttpKernel\Exception\NotFoundHttpException');
 		$response = $this->action('GET', 'ImageContentController@getImage', ['movie', $movie->id]);
+
+		$this->assertResponseOk();
 	}
 
 	public function testSlashyModelNameThrowsNotFoundHttpException()

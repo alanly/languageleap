@@ -59,4 +59,6 @@ return array(
 
 	'test' => __DIR__.'/../storage/media/tests',
 
+	'default_cover' => __DIR__.'/../storage/media/defaults/cover_image.png',
+
 );	

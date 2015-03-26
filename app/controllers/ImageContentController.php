@@ -27,6 +27,11 @@ class ImageContentController extends \BaseController {
 		// Attempt to get the image path for the model.
 		$path = $model->findOrFail($id)->image_path;
 
+		if (! is_file($path) || ! $path)
+		{
+			$path = Config::get('media.default_cover');
+		}
+
 		// Create a file info instance from the image path.
 		$file = $this->fileInfo->makeInstance($path);
 
