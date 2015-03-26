@@ -48,7 +48,10 @@ class ApiFilterController extends \BaseController {
 
 		return $this->apiResponse(
 			'success',
-			$res,
+			$res->map(function($r)
+			{
+				return ($r instanceof LangLeap\Videos\Media) ? $r->toResponseArray() : $r;
+			}),
 			200
 		);
 	}
