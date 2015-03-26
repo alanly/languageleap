@@ -6,7 +6,7 @@
 	app.controller('CommercialController', ['$scope', '$log', '$routeParams', '$http', '$modal', '$timeout', function($scope, $log, $routeParams, $http, $modal, $timeout) {
 
 		$scope.commercials = [];
-
+		$scope.media_type = "commercial";
 		var modal_instance;
 
 		$scope.current_commercial;
@@ -65,6 +65,9 @@
 				templateUrl: 'admin/partials/new-commercial-modal',
 				controller: 'NewCommercialController',
 				size: 'lg',
+				resolve : {
+					media_type : function() { return $scope.media_type; }
+				},
 				backdrop : 'static',
 				backdropClass: 'modal-backdrop-fix'
 			});
@@ -284,10 +287,10 @@
 		}
 	}]);
 
-	app.controller('NewCommercialController', ['$scope', '$http', '$modalInstance','$rootScope', function($scope, $http, $modalInstance, $rootScope){
+	app.controller('NewCommercialController', ['$scope', '$http', '$modalInstance','$rootScope', 'media_type', function($scope, $http, $modalInstance, $rootScope, media_type){
 
 		$scope.commercial = {};
-
+		$scope.media_type = media_type;
 		$scope.storeCommercial = function() {
 			
 			$http.post('/api/metadata/commercials/', $scope.commercial)
@@ -312,6 +315,27 @@
 					console.log("Upload failed, please try again. Reason: " + xhr.statusCode() + "<br>" + xhr.status + "<br>" + xhr.responseText + "</pre>");
 				});
 			
+				$scope.addVideo(data.data);
+			});
+		}
+
+		$scope.addVideo = function(commercial){
+
+			var newVideoData = new FormData();
+			newVideoData.append('media_type', 'commercial');
+			newVideoData.append('media_id', commercial.id);
+			newVideoData.append('script', 'Placeholder');
+			
+			$.ajax({
+				type : "POST",
+				url: "/api/videos",
+				data: newVideoData,
+				processData: false,
+				contentType: false,
+				cache: false,
+				success : function(data){
+
+				}
 			});
 		}
 
