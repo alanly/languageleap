@@ -32,7 +32,9 @@
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-buttons">
 						</button>
-						<a class="navbar-brand" href="/" style="text-decoration: none;">@lang('navbar.brand')</a>
+						<a class="navbar-brand" href="/" style="text-decoration: none;">
+							<i class="fa fa-language fa-fw"></i> @lang('navbar.brand')
+						</a>
 					</div>
 					<div class="collapse navbar-collapse" id="navbar-buttons">
 						<ul class="nav navbar-nav navbar-right">

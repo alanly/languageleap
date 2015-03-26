@@ -15,6 +15,14 @@
 
 @section('content')
 <div class="container">
+	<div class="page-header">
+		<h2>
+			@lang('account.history.heading')
+			<br>
+			<small>@lang('account.history.subheading')</small>
+		</h2>
+	</div>
+
 	<table id="quiz-history" class="table table-striped table-bordered span12">
 		<thead>
 			<tr>
