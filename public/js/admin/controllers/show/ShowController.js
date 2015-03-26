@@ -167,7 +167,8 @@
 				size: 'lg',
 				resolve: {
 					show: function() { return show; },
-					season: function() { return season; }
+					season: function() { return season; },
+					media_type : function() { return $scope.media_type; }
 				},
 				backdrop : 'static',
 				backdropClass: 'modal-backdrop-fix'
@@ -515,11 +516,11 @@
 
 	}]);
 
-	app.controller('NewEpisodeController', ['$scope', '$http', '$modalInstance', '$rootScope', 'show', 'season', function($scope, $http, $modalInstance, $rootScope, show, season){
+	app.controller('NewEpisodeController', ['$scope', '$http', '$modalInstance', '$rootScope', 'show', 'season', 'media_type', function($scope, $http, $modalInstance, $rootScope, show, season, media_type){
 
 		$scope.episode = {};
 		$scope.episode.season_id = season.id;
-
+		$scope.media_type = media_type;
 		// Store the new episode
 		$scope.storeEpisode = function() {
 			$http.post('/api/metadata/shows/' + show.id + '/seasons/' + season.id + '/episodes', $scope.episode).
@@ -531,8 +532,30 @@
 					}
 
 					$modalInstance.dismiss('saved');
+
+					$scope.addVideo(data.data.episode);
 				});
 		};
+
+		$scope.addVideo = function(episode){
+
+			var newVideoData = new FormData();
+			newVideoData.append('media_type', 'show');
+			newVideoData.append('media_id', episode.id);
+			newVideoData.append('script', 'Placeholder');
+			
+			$.ajax({
+				type : "POST",
+				url: "/api/videos",
+				data: newVideoData,
+				processData: false,
+				contentType: false,
+				cache: false,
+				success : function(data){
+
+				}
+			});
+		}
 
 		// Cancel any changes that were made
 		$scope.cancelNew = function() {
