@@ -3,9 +3,14 @@
 @section('content')
 
 <div class="container">
+	<div class="page-header">
+		<h2>
+			@lang('account.level.level')
+			<br>
+			<small>@lang('account.level.subtitle')</small>
+		</h2>
+	</div>
 
-	<h2>@lang('account.level.level')</h2>
-	<hr>
 	<div class="jumbotron">
 		<h1>{{ $level->description }}</h1>
 	</div>

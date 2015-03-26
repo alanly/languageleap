@@ -22,10 +22,10 @@ return array(
 		
 		'account' => array(
 			'name' => 'Account',
-			'review' => 'Review',
+			'review' => 'Word Bank',
 			'profile' => 'Profile',
 			'settings' => 'Settings',
-			'level' => 'My Level',
+			'level' => 'Level',
 			'history' => 'History',
 		),
 
