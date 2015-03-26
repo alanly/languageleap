@@ -37,9 +37,18 @@
 			<td>
 				<a href="javascript:;" ng-click="openEditEpisodeModal(show, season, episode);"><i class="fa fa-edit fa-fw"></i></a>
 				<a href="javascript:;" ng-confirm-message="<?= Lang::get('admin.delete.confirm') ?>" ng-confirm-click="onDeleteEpisodeClick($event, show, season, episode)"><i class="fa fa-trash fa-fw"></i></a>
+				<a ng-click="manageMedia(show, season, episode);"><i class="fa fa-film fa-fw"></i></a>
 			</td>
 			<td><span class="episode-name"><?= Lang::get('admin.media.episode.name') ?> {{ episode.number }} - {{ episode.name }}</span></td>
 			<td><input class="publish" type="checkbox" ng-model="episode.is_published" ng-checked="episode.is_published" ng-click="onPublishEpisodeClick($event, show, season, episode)"></td>
 		</tr>
 	</tbody>
 </table>
+
+<div ng-if="shows.length === 0">
+	<?php echo Lang::get('admin.terms.empty'); ?>
+</div>
+
+<div class="manage-media" ng-include="show_media">
+
+</div>

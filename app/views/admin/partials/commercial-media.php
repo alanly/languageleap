@@ -8,7 +8,7 @@
 			<div id="video-section">
 				<div class="col-md-6">
 					<div class="title">
-						<h4><?= Lang::get('admin.video.title', ['name' => '{{ current_movie.name }}']); ?></h4>
+						<h4><?= Lang::get('admin.video.title', ['name' => '{{ current_commercial.name }}']); ?></h4>
 					</div>
 					<div>
 						<video style="width:100%;" id="admin-player" ng-src="{{video.path}}" controls></video>
@@ -100,7 +100,7 @@
 						<div id="actor-form">
 							<div id="timestamp" class="form-group">
 								<label>Timestamp</label>
-								<input type="text" class="form-control" title="'HH:MM:SS' (ie. 00:02:46)" placeholder="Enter the clip time (ie. 00:02:46)" pattern="\d{2}:\d{2}:\d{2}" />
+								<input type="text" class="form-control" title="'#:##' (ie. 2:46)" placeholder="Enter the clip time (ie. 2:46)" pattern="^\d+:\d\d$" />
 							</div>
 						</div>
 						<div id="word-form">
