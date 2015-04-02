@@ -191,14 +191,17 @@ quizApp.controller('QuizController', function($scope, $http, $modal, $window)
 						type: "POST",
 						url: "/api/levelProgress",
 						async: false,
+						data: {
+							'score': ($scope.correctQuestionsCount / $scope.questions.length)
+						},
 						success: function(data) 
 						{
 							message = data.data.message;
 						},
-					    error: function() 
-					    {
-							message = "Error";
-					    }
+				    error: function() 
+				    {
+						message = "Error";
+				    }
 					});
 
 					return message;

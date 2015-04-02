@@ -48,6 +48,11 @@ class ApiViewingHistoryController extends \BaseController {
 		                         ->get()
 		                         ->first();
 
+		if (! $history)
+		{
+			$history = ViewingHistory::create(['user_id' => $user->id, 'video_id' => $video_id]);
+		}
+
 		$history->fill(Input::get());
 
 		if (! $history->save())

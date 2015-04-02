@@ -21,7 +21,7 @@ class ApiLevelProgressController extends \BaseController {
 	{
 		$user = Auth::user();
 		
-		$message = Lang::get('controllers.quiz.level_default');
+		$message = '';
 		
 		$quizScore = Input::get('score');
 		
