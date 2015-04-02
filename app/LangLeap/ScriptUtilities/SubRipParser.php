@@ -26,7 +26,7 @@ class SubRipParser implements Parser {
 
 		// The pattern examples above with this replacement will produce the following:
 		//		<span data-type="actor" data-timestamp="00:00:02">Speaker</span>
-		$replacement = '<span data-type="actor" data-timestamp="${1}">Speaker</span>';
+		$replacement = '<span data-type="actor" data-timestamp="${1}">Speaker</span> ';
 
 		// Parse the timestamps to the correct format
 		$parsed = preg_replace($pattern, $replacement, $parsed);
