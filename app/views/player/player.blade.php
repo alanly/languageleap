@@ -182,7 +182,7 @@
 				
 				carouselItems += '<div class="item' + ((i == 0) ? ' active' : '') + '">' +
 								'<h3>' + $(this).text() + '<br>' +
-								'<small>' + $(this).data('pronunciation') +
+								'<small>' + (($(this).data('pronunciation') == null) ? 'Pronunciation not found' : $(this).data('pronunciation')) +
 								'<button class="play-pronunciation glyphicon glyphicon-volume-up' + notAvailable + '" ' + audioAttribute +
 								'></button></small></h3>' +
 								'<br>' +
@@ -387,7 +387,7 @@
 
 		function removePunctuation(text)
 		{
-			return text.replace(/\./g, "").replace(/,/g, "").replace(/:/g, '');
+			return text.replace(/\./g, "").replace(/,/g, "").replace(/:/g, '').replace(/\(|\)|\[|\]/g, '');
 		}
 
 		function removeDoubleSpaces(text)
