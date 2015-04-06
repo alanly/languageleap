@@ -7,6 +7,7 @@ return [
 		'create_account' => 'Create an account',
 		'page_name'      => 'Log in',
 		'unverified'     => 'Your account has not been verified yet. Please check your email for the confirmation message.',
+		'inactive'    	 => 'Your account has been deactivated, Please contect support.',
 		'fields' => [
 			'submit' => 'Log in',
 			'remember' => 'Remember me',

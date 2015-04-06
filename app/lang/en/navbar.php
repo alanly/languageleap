@@ -22,9 +22,11 @@ return array(
 		
 		'account' => array(
 			'name' => 'Account',
-			'review' => 'Review',
+			'review' => 'Word Bank',
 			'profile' => 'Profile',
 			'settings' => 'Settings',
+			'level' => 'Level',
+			'history' => 'History',
 		),
 
 		'logout' => 'Logout',

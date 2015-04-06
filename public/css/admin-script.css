@@ -1,25 +1,22 @@
-#edit-container {
+.script-editor {
+	border: 2px solid #ddd;
+	outline: none;
+	padding: 15px;
+	margin-bottom: 20px;
+	min-height: 200px;
+	max-height: 500px;
 	line-height: 45px;
 	letter-spacing: 3px;
-	margin: 0 auto;
-	outline: none;
-	width: 800px;
-}
-
-.script-editor {
-	border: 1px solid #000;
-	outline: none;
-	padding: 2px;
-	margin-bottom: 20px;
+	overflow-y: scroll;
 }
 
 /* Important: Keep the -moz-selection and other selections separate for firefox compatibility */
 .script-editor::-moz-selection {
-	color: #cba;
+	color: #5cb85c;
 }
 
 .script-editor::selection {
-	color: #cba;
+	color: #5cb85c;
 }
 
 .script-editor span::-moz-selection {
@@ -52,13 +49,14 @@
 
 [data-type="actor"],
 .actor-button {
-	background-color: #6B6B6B;
-	color: #FFF;
+	background-color: #5c5c5c;
+	color: #fff;
 }
 
 [data-type="word"],
 .word-button {
-	background-color: #CBA;
+	background-color: #5cb85c;
+	color: #fff;
 }
 
 .radio {
@@ -78,4 +76,17 @@
 .script-editor .tooltip-arrow::selection,
 .script-editor .tooltip-inner::selection {
 	background-color: transparent;
+}
+
+#edit-modal .modal-backdrop {
+	bottom: 0 !important;
+	position: fixed !important;
+}
+
+.file-input {
+	margin: 20px 5px 20px 5px;
+}
+
+.btn-primary {
+	margin: 10px;
 }

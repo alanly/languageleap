@@ -2,6 +2,7 @@
 
 use LangLeap\Payments\Billable;
 use LangLeap\Videos\RecommendationSystem\Classifiable;
+use LangLeap\Core\PublishedTrait;
 
 /**
  * @author  Thomas Rahn <thomas@rahn.ca>
@@ -9,6 +10,8 @@ use LangLeap\Videos\RecommendationSystem\Classifiable;
  * @author  Dror Ozgaon <dror.ozgaon@gmail.com>
  */
 class Episode extends Media implements Billable, Classifiable {
+
+	use PublishedTrait;
 
 	public $timestamps = false;
 
@@ -43,6 +46,12 @@ class Episode extends Media implements Billable, Classifiable {
 	}
 
 
+	public function show()
+	{
+		return $this->season->show;
+	}
+
+
 	public function season()
 	{
 		return $this->belongsTo('LangLeap\Videos\Season');
@@ -59,7 +68,6 @@ class Episode extends Media implements Billable, Classifiable {
 	{
 		return [
 			'id'            => $this->id,
-			'image_path'    => $this->season->show->image_path,
 			'season_id'     => $this->season_id,
 			'season_number' => $this->season->number,
 			'number'        => $this->number,

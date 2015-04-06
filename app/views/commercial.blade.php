@@ -17,6 +17,12 @@
 	</style>
 @stop
 
+@section('javascript')
+
+	<script src="/js/media.js"></script>	
+
+@stop
+
 @section('content')
 	<div class="container">
 		<h2 id="commercial-title"></h2>
@@ -46,6 +52,7 @@
 									<th>@lang('index.layout.general.part_number')</th>
 									<th>@lang('index.layout.general.length')</th>
 									<th>@lang('index.layout.general.play')</th>
+									<th>@lang('index.layout.general.score')</th>
 								</tr>
 							</thead>
 							<tbody id="commerial-videos">
@@ -122,10 +129,15 @@
 				if(value != null)
 				{
 					table_records += "<tr>"
-								+ "<td>" + value.id + "</td>"
-								+ "<td></td>" //end time - start time converted to time string
-								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>" //get duration
+					var array = JSON.parse(value.timestamps_json);
+					$.each(array, function(i,v){
+						table_records += "<tr>"
+								+ "<td>" + (i+1) + "</td>"
+								+ "<td>" + (v.to - v.from) +"s</td>"//end time - start time converted to time string
+								+ "<td><a href='/video/play/" + value.id + "' class='btn btn-default glyphicon glyphicon-play-circle'></a></td>"//get duration
+								+ "<td>" + getVideoScore(value) + "</td>"
 								+ "</tr>";
+					});
 				}
 			});
 

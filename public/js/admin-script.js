@@ -408,7 +408,7 @@ function getScriptText() {
 //////////////////////////////////////////////////////////////
 $(function() {
 	// Load the script into the contenteditable div
-	loadScript(1);
+	//loadScript(1);
 
 	// Prevent pasting into the script contenteditable field
 	$('.script-editor').on('paste', function(e){ 
@@ -526,6 +526,12 @@ function loadScript(scriptId) {
 			var scriptText = data.data.text;
 			$('.script-editor').html(scriptText);
 
+			// If a script is loaded that does not have a br tag
+			// at the end, if the user places the cursor at the end of
+			// the content, he will need to press enter twice to get a line-break.
+			// This fixes that issue.
+			$('.script-editor').append('<br>');
+
 			// Make sure that tooltips are added to existing spans
 			refreshTooltips();
 
@@ -577,7 +583,7 @@ function loadDefinitions() {
 	});
 }
 
-function saveDefinitions(scriptId) {
+function saveDefinitions(scriptId, callback) {
 	var $wordSpans = $('.script-editor span[data-type=word]');
 	
 	// When this becomes 0, all definitions have been saved
@@ -602,14 +608,14 @@ function saveDefinitions(scriptId) {
 				dataType: "json",
 				success: function(data) {
 					if (data.status == 'success') {
-						console.log('definition updated');
 					}
 				},
 				complete: function() {
 					ajaxRequestsRemaining--;
 
 					if (ajaxRequestsRemaining <= 0) {
-						saveScript(scriptId);
+						callback();
+						//saveScript(scriptId);
 					}
 				}
 			});
@@ -622,7 +628,6 @@ function saveDefinitions(scriptId) {
 				dataType: "json",
 				success: function(data) {
 					if (data.status == 'success') {
-						console.log('definition stored');
 						$this.attr('data-id', data.data.id);
 					}
 				},
@@ -630,12 +635,13 @@ function saveDefinitions(scriptId) {
 					ajaxRequestsRemaining--;
 
 					if (ajaxRequestsRemaining <= 0) {
-						saveScript(scriptId);
+						callback();
+						//saveScript(scriptId);
 					}
 				}
 			});
 		}
 	});
 
-	if (ajaxRequestsRemaining < 1) saveScript(scriptId);
+	if (ajaxRequestsRemaining < 1) callback();//saveScript(scriptId);
 }

@@ -22,11 +22,11 @@ class SubRipParserTest extends TestCase {
 
 	protected function getExpectedParsedText()
 	{
-		return	'<span data-type="actor" data-timestamp="00:00:02">Speaker</span><br>' .
+		return	'<span data-type="actor" data-timestamp="00:00:02">Speaker</span> <br>' .
 				'Kids, Im gonna tell you an incredible story<br><br>' .
-				'<span data-type="actor" data-timestamp="00:00:06">Speaker</span><br>' .
+				'<span data-type="actor" data-timestamp="00:00:06">Speaker</span> <br>' .
 				'the story of how I met your mother.<br><br>' .
-				'<span data-type="actor" data-timestamp="00:00:08">Speaker</span><br>' .
+				'<span data-type="actor" data-timestamp="00:00:08">Speaker</span> <br>' .
 				'Are we being punished for something ?<br><br>';
 	}
 

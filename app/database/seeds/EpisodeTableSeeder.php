@@ -16,12 +16,12 @@ class EpisodeTableSeeder extends Seeder {
 		DB::table('episodes')->delete();
 
 		$level = Level::first();
-
+		$published = 1;
 		foreach (Season::all() as $season)
 		{
-			for ($i = 1; $i < 4; $i++)
+			for ($i = 1; $i < 5; $i++)
 			{
-				$season->episodes()->create(['number' => $i, 'name' => "Test $i", 'description' => "Test episode $i.", 'level_id' => $level->id]);
+				$season->episodes()->create(['number' => $i, 'name' => "Test $i", 'description' => "Test episode $i.", 'level_id' => $level->id, 'is_published' => $published]);
 			}
 		}
 

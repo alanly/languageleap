@@ -13,22 +13,23 @@ return array(
 	*/
 
 	'info' => array(
-		'title' => 'Personal Information',
-		'subtitle' => 'Review and change your personal information.',
+		'title' => 'Profile',
+		'subtitle' => 'Update your account information.',
 		'required' => 'Required Field',
-		'fname' => 'Continue to Quiz',
-		'lname' => 'Define Selected',
-		'email' => 'Enter New Email',
-		'lang' => 'Select Language',
-		'pass' => 'Enter New Password',
-		'pass2' => 'Confirm New Password',
-		'cpass' => 'Enter your current password to confirm changes',
+		'fname' => 'First name',
+		'lname' => 'Last name',
+		'email' => 'Email address',
+		'lang' => 'Language',
+		'pass' => 'New password',
+		'pass2' => 'Confirm new password',
+		'cpass' => 'Current password',
 		'submit' => 'Submit',
 	),
 	'level' => array(
-		'level' => 'My Level',
+		'level' => 'Level',
 		'about' => 'About',
 		'contact' => 'Contact',
+		'subtitle' => 'Your current level and progress.'
 	),
 	'verification' => array(
 		'title' => 'Verify Your Email Address',
@@ -45,8 +46,15 @@ return array(
 		'message' => 'You have successfully verified your account! Please login.',
 	),
 	'words' => array(
+		'title' => 'Word Bank',
+		'subtitle' => 'Review words that you\'re having difficulty with.',
 		'word' => 'Word',
 		'definition' => 'Definition',
 		'pronunciation' => 'Pronunciation',
+	),
+	'history' => array(
+		'title' => 'Title',
+		'heading' => 'History',
+		'subheading' => 'View your previous quiz results.'
 	),
 );

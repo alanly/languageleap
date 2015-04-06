@@ -1,19 +1,24 @@
 <?php
 
 use LangLeap\Videos\Movie;
+use LangLeap\VideoUtilities\MediaUpdaterListener;
 use LangLeap\Words\Script;
 
 /**
  * @author David Siekut
+ * @author Alan Ly <hello@alan.ly>
  */
-class ApiMovieController extends \BaseController {
+class ApiMovieController extends \BaseController implements MediaUpdaterListener {
 
 	protected $movies;
+	protected $scripts;
+	private   $isCreate = false;
 
 
-	public function __construct(Movie $movies)
+	public function __construct(Movie $movies, Script $scripts)
 	{
-		$this->movies = $movies;
+		$this->movies  = $movies;
+		$this->scripts = $scripts;
 	}
 
 
@@ -47,8 +52,15 @@ class ApiMovieController extends \BaseController {
 		{
 			return $this->apiResponse('error', $movie->getErrors(), 400);
 		}
+		
+		// Create a new updater instance.
+		$imageUpdater = App::make('LangLeap\VideoUtilities\MediaImageUpdater');
 
-		return $this->apiResponse('success', $movie->toArray(), 201);
+		// Set the `isCreate` flag to true so that we generate the correct response.
+		$this->isCreate = true;
+
+		// Attempt to update the image.
+		return $imageUpdater->update($movie, Request::instance(), $this);
 	}
 
 
@@ -82,7 +94,8 @@ class ApiMovieController extends \BaseController {
 
 		if (! $movie)
 		{
-			return $this->apiResponse('error', Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
+			return $this->apiResponse('error',
+				Lang::get('controllers.movies.movie_error', ['id' => $id]), 404);
 		}
 
 		$movie->fill(Input::get());
@@ -92,7 +105,14 @@ class ApiMovieController extends \BaseController {
 			return $this->apiResponse('error', $movie->getErrors(), 400);
 		}
 
-		return $this->apiResponse('success', $movie->toArray(), 200);
+		// Create a new updater instance.
+		$imageUpdater = App::make('LangLeap\VideoUtilities\MediaImageUpdater');
+
+		// Set the `isCreate` flag to false so that we generate the correct response.
+		$this->isCreate = false;
+
+		// Attempt to update the image.
+		return $imageUpdater->update($movie, Request::instance(), $this);
 	}
 
 
@@ -126,40 +146,34 @@ class ApiMovieController extends \BaseController {
 	 */
 	public function updateScript($id)
 	{
-		$movie = $this->movies->find($id);
-		$video_id = $movie->videos()->first()->id;
-		
-		$script = Script::where('video_id', '=', $video_id)->firstOrFail();
+		// Attempt to find the specified movie; if it doesn't exist, then we'll
+		// fail with an exception.
+		$movie = $this->movies->with('videos')->findOrFail($id);
 
-		if (! $script)
-		{
-			return $this->apiResponse('error', "Movie {$id} not found.", 404);
-		}
+		// Get the ID of the associated video; if there isn't an associated video,
+		// then we fail with an exception.
+		$video_id = $movie->videos()->firstOrFail()->id;
+
+		// Get the script associated with the video; if there isn't one, we fail
+		// with an exception.
+		$script = $this->scripts->where('video_id', $video_id)->firstOrFail();
 		
 		$script->text = Input::get('text');
 
 		if (! $script->save())
 		{
-			return $this->apiResponse(
-				'error',
-				$script->getErrors(),
-				500
-			);
+			return $this->apiResponse('error', $script->getErrors(), 400);
 		}
 
-		return $this->apiResponse(
-			'success',
-			$script->toArray(),
-			200
-		);
+		return $this->apiResponse('success', $script->toArray(), 200);
 	}
 	
 	
 	/**
-	*	This method updates timestamps for this video.
-	*
-	*	@param int $video_id 
-	*/
+	 *	This method updates timestamps for this video.
+	 *
+	 *	@param int $video_id 
+	 */
 	public function saveTimestamps($id)
 	{
 		$movie = Movie::find($id);
@@ -178,5 +192,34 @@ class ApiMovieController extends \BaseController {
 		$video->save();
 		return $this->apiResponse("success", $video->toResponseArray());
 	}
-	
+
+
+	/**
+	 * Handle the event that the media instance has been successfully updated.
+	 * @param  mixed  $media the media instance that has been updated.
+	 * @return mixed
+	 */
+	public function mediaUpdated($media)
+	{
+		// Determine which success HTTP code we should use.
+		$code = $this->isCreate ? 201 : 200;
+
+		// Reset our flag.
+		$this->isCreate = false;
+
+		return $this->apiResponse('success', $media->toResponseArray(), $code);
+	}
+
+
+	/**
+	 * Handle the event that the attempt to update the Media instance results in
+	 * validation errors.
+	 * @param  mixed $errors a collection of error messages from the validator.
+	 * @return mixed
+	 */
+	public function mediaValidationError($errors)
+	{
+		return $this->apiResponse('error', $errors, 400);
+	}
+
 }

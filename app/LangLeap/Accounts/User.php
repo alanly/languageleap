@@ -55,4 +55,10 @@ class User extends ValidatedModel implements UserInterface, RemindableInterface,
 	{
 		return $this->history;
 	}
+
+	public function isAdmin()
+	{
+		return $this->is_admin;
+	}
+	
 }

@@ -24,12 +24,13 @@ class MovieTest extends TestCase {
 	public function testMassAssigningAttributesOnInstanceCreation()
 	{
 		$a = [
-			'name'        => 'Test',
-			'description' => 'Test Model',
-			'level_id'    => 1,
-			'director'    => 'Mr. Director',
-			'actor'       => 'Dr. Actor',
-			'genre'       => 'Japanese Fusion Drama',
+			'name'         => 'Test',
+			'description'  => 'Test Model',
+			'level_id'     => 1,
+			'director'     => 'Mr. Director',
+			'actor'        => 'Dr. Actor',
+			'genre'        => 'Japanese Fusion Drama',
+			'is_published' => 1
 		];
 
 		$i = Movie::create($a);
@@ -47,7 +48,7 @@ class MovieTest extends TestCase {
 	{
 		$this->seed();
 
-		$movie = Movie::first();
+		$movie = Movie::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $movie->name,
@@ -65,8 +66,9 @@ class MovieTest extends TestCase {
 
 		// Get the first movie along with all the other movies that
 		// have the same level id
-		$movie = Movie::first();
-		$movies = Movie::where('level_id', '=', $movie->level_id)->get();
+		$movie = Movie::where('is_published', 1)->first();
+		$movies = Movie::where('level_id', '=', $movie->level_id)
+		->where('is_published', 1)->get();
 
 		$count = count($movies);
 		$skip = (int)($count / 2);
@@ -89,7 +91,7 @@ class MovieTest extends TestCase {
 	{
 		$this->seed();
 
-		$movie = Movie::first();
+		$movie = Movie::where('is_published', 1)->first();
 
 		$input = [
 			'name' => $movie->name,
@@ -106,7 +108,7 @@ class MovieTest extends TestCase {
 	{
 		$this->seed();
 
-		$movie = Movie::first();
+		$movie = Movie::where('is_published', 1)->first();
 
 		$input = [
 			'level' => $movie->level->description,
@@ -121,7 +123,7 @@ class MovieTest extends TestCase {
 	{
 		$this->seed();
 
-		$movie = Movie::first();
+		$movie = Movie::where('is_published', 1)->first();
 
 		$input = [
 			'level' => $movie->level->description,

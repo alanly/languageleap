@@ -43,12 +43,20 @@ class AuthController extends BaseController {
 		}
 
 		// Make sure the user is verified.
-		if (! Auth::user()->is_confirmed)
+		if (! Auth::user()->is_confirmed || ! Auth::user()->is_active)
 		{
-			Auth::logout();
-			
 			Session::flash('action.failed', true);
-			Session::flash('action.message', Lang::get('auth.login.unverified'));
+
+			if(! Auth::user()->is_active)
+			{
+				Session::flash('action.message', Lang::get('auth.login.inactive'));	
+			}
+			else
+			{
+				Session::flash('action.message', Lang::get('auth.login.unverified'));
+			}
+
+			Auth::logout();
 
 			return Redirect::action('AuthController@getLogin')->withInput();
 		}

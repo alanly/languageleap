@@ -17,25 +17,25 @@
 			
 			<div id="add-new-content" class="modal-content">
 	      <div id="add-new-header" class="modal-header">
-        	<h2>@lang('admin.modal.add_media.media_info')</h2>
+        	<h2>Media Info</h2>
 				</div>
 				<!-- step one -->
 				<div id="add-new-body-info" class="modal-body clearfix" aria-hidden="false" style="display: block;">
 					<div class="form-group">
-						<label>@lang('admin.modal.add_media.media_type') </label>
+						<label>Media type: </label>
 						<div class="radio">
 							<label>
-								<input type="radio" name="info-radio" id="info-commercial-radio" value="commercial" checked /> @lang('admin.media.commercial.name')
+								<input type="radio" name="info-radio" id="info-commercial-radio" value="commercial" checked /> Commercial
 							</label>
 						</div>
 						<div class="radio">
 							<label>
-								<input type="radio" name="info-radio" id="info-tvshow-radio" value="show" /> @lang('admin.media.show.name')
+								<input type="radio" name="info-radio" id="info-tvshow-radio" value="show" /> TV Show
 							</label>
 						</div>
 						<div class="radio">
 							<label>
-								<input type="radio" name="info-radio" id="info-movie-radio" value="movie" /> @lang('admin.media.movie.name')
+								<input type="radio" name="info-radio" id="info-movie-radio" value="movie" /> Movie
 							</label>
 						</div>
 					</div>
@@ -43,15 +43,15 @@
 					<div id="info-default-form" style="width: 500px;">
 					
 						<div id="info-default-form-name" class="form-group">
-							<label>@lang('admin.modal.name')</label>
+							<label>Name</label>
 							<input id="info-commercial-form-name-input" name="name" type="text" class="form-control" placeholder="" required aria-required=”true” />
 						</div>
 						<div id="info-default-form-description" class="form-group">
-							<label>@lang('admin.modal.description')</label>
+							<label>Description</label>
 							<input id="info-default-form-description-input" name="description" type="text" class="form-control" placeholder="" required aria-required=”true” />
 						</div>
 						<div id="info-default-form-level" class="form-group">
-							<label>@lang('admin.modal.level')</label>
+							<label>Level</label>
 							<select id="info-default-form-level-select" name="level_id" class="form-control">
 								@foreach($levels as $level)
 	  								<option value="{{ $level->id }}">{{ $level->description }}</option>
@@ -59,7 +59,7 @@
 							</select>
 						</div>
 						<div id="info-default-form-language" class="form-group">
-							<label>@lang('admin.modal.language')</label>
+							<label>Language</label>
 							<select id="info-default-form-language-select" name="language_id" class="form-control">
 								@foreach($languages as $language)
 	  								<option value="{{ $language->id }}">{{ $language->description }}</option>
@@ -72,15 +72,15 @@
 					
 						<div id="info-tvshow-form" style="width: 500px;">
 							<div id="info-tvshow-form-director" class="form-group">
-								<label>@lang('admin.modal.director')</label>
+								<label>Director</label>
 								<input id="director-input" name="director" type="text" class="form-control" placeholder="" />
 							</div>
 							<div id="info-tvshow-form-actor" class="form-group">
-								<label>@lang('admin.modal.actor')</label>
+								<label>Actor</label>
 								<input id="actor-input" name="actor" type="text" class="form-control" placeholder="" />
 							</div>
 							<div id="info-tvshow-form-genre" class="form-group">
-								<label>@lang('admin.modal.genre')</label>
+								<label>Genre</label>
 								<input id="genre-input" name="genre" type="text" class="form-control" placeholder="" />
 							</div>
 						</div>
@@ -96,12 +96,12 @@
 				<!-- /step two -->
 				<!-- step three -->
 				<div id="add-new-body-media" class="modal-body clearfix" aria-hidden="true" style="display: none;">
-				  {{ Form::label('file', trans('admin.modal.file'), array('id'=>'', 'class'=>'')) }}
+				  {{ Form::label('file', 'File', array('id'=>'', 'class'=>'')) }}
 				  {{ Form::file('video', '', array('id'=>'file', 'class'=>'')) }}
 				</div>
 				<!-- /step three -->
 				<div id="add-new-body-upload" class="modal-body text-center clearfix" aria-hidden="true" style="display: none;">
-					@lang('admin.upload.uploading')
+					Uploading media, please wait...
 				</div>
 				<div class="modal-footer">
 					<button id="button-add-new-back" type="button" class="btn btn-primary" style="display: none;">Back</button>
@@ -118,7 +118,7 @@
 	<!-- /pulldown modal for adding new media -->
 	
 	<div id="button-add-new" class="pull-right">
-		<button type="button" class="btn btn-success center-block">@lang('admin.media.add')</button>
+		<button type="button" class="btn btn-success center-block">Add Media</button>
 	</div>
 	
 	<!-- search -->
@@ -129,9 +129,7 @@
 		
 	<!-- categories -->
 	<div id="select" class="container">
-		<span id="select-movies">@lang('admin.media.movie.name')</span>
-    <span id="select-commercials">@lang('admin.media.commercial.name')</span>
-    <span id="select-shows">@lang('admin.media.show.name')</span>
+		<span id="select-movies">Movies</span> <span id="select-commercials">Commercials</span> <span id="select-shows">TV Shows</span>
 	</div>
 	<div id="content" class="container">
 	</div>
@@ -155,29 +153,29 @@
 		        	<img class="modal-image" src="" />
 		        </div>
 		        <div class="col-xs-8">
-							<div class="info-row">@lang('admin.modal.id') <span class="modal-id"></span></div>
+							<div class="info-row">ID: <span class="modal-id"></span></div>
 
 							<div id="" class="form-group">
-								<label>@lang('admin.modal.name')</label>
+								<label>Name</label>
 								<input id="edit-media-info-name" name="name" type="text" class="form-control" placeholder="" />
 
-								<label>@lang('admin.modal.description')</label>
+								<label>Description</label>
 								<input id="edit-media-info-description" name="description" type="text" class="form-control" placeholder="" />
 
-								<label>@lang('admin.modal.director')</label>
+								<label>Director</label>
 								<input id="edit-media-info-director" name="director" type="text" class="form-control" placeholder="" />
 								
-								<label>@lang('admin.modal.actor')</label>
+								<label>Actor</label>
 								<input id="edit-media-info-actor" name="actor" type="text" class="form-control" placeholder="" />
 							
-								<label>@lang('admin.modal.level')</label>
+								<label>Level</label>
 								<select id="edit-media-info-level" name="level_id" class="form-control">
 									@foreach($levels as $level)
 		  								<option value="{{ $level->id }}">{{ $level->description }}</option>
 									@endforeach
 								</select>
 								
-								<label>@lang('admin.modal.language')</label>
+								<label>Language</label>
 								<select id="edit-media-info-language" name="language_id" class="form-control">
 									@foreach($languages as $language)
 		  								<option value="{{ $language->id }}">{{ $language->description }}</option>
@@ -185,7 +183,7 @@
 								</select>
 							</div>
 		        </div>
-						<button id="button-edit-info-save" type="button" class="btn btn-primary pull-right">@lang('admin.modal.edit_media.save')</button>
+						<button id="button-edit-info-save" type="button" class="btn btn-primary pull-right">Save</button>
 		    </div>
 				{{ Form::close() }}
       </div>
@@ -199,7 +197,7 @@
 					</div>
 				
 					@include('admin.script.script')
-					<button id="button-edit-script-save" type="button" class="btn btn-primary pull-right">@lang('admin.modal.edit_media.save')</button>
+					<button id="button-edit-script-save" type="button" class="btn btn-primary pull-right">Save</button>
 				</div>
       </div>
 			<!-- /script -->
@@ -208,7 +206,7 @@
       <div class="modal-body seasons clearfix" aria-hidden="true" style="display: none;">
 				<div class="row">
 					<div class="col-xs-3">
-						<label>@lang('admin.modal.edit_media.season')</label>
+						<label>Season</label>
 						<select id="edit-media-info-seasons" name="season_id" class="form-control">
 						</select>
 						<a href="#" id="popover-new-season-outer" rel="popover" data-original-title="">+</a>
@@ -217,12 +215,12 @@
 						<label>&nbsp;</label>
 						<div id="popover-new-season-inner" style="display: block;">
 							<input id="add-new-season" name="new-season" type="text" class="form-control" placeholder="" style="display: inline-block; width: 50px;" />
-							<button id="add-season" type="button" class="btn btn-primary">@lang('admin.modal.edit_media.add')</button>
+							<button id="add-season" type="button" class="btn btn-primary">Add</button>
 						</div>
 					</div>
 					
 					<div class="col-xs-3">
-						<label>@lang('admin.modal.edit_media.episode')</label>
+						<label>Episode</label>
 						<select id="edit-media-info-episodes" name="episode_id" class="form-control">
 						</select>
 						<a href="#" id="popover-new-episode-outer" rel="popover" data-original-title="">+</a>
@@ -231,24 +229,24 @@
 						<label>&nbsp;</label>
 						<div id="popover-new-episode-inner" style="display: block;">
 							<input id="add-new-episode" name="new-episode" type="text" class="form-control" placeholder="" style="display: inline-block; width: 50px;" />
-							<button id="add-episode" type="button" class="btn btn-primary" disabled="true">@lang('admin.modal.edit_media.add')</button>
+							<button id="add-episode" type="button" class="btn btn-primary" disabled="true">Add</button>
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-4">
-						<label>@lang('admin.modal.name')</label>
+						<label>Name</label>
 						<input id="edit-media-info-episode-name" name="ep_name" type="text" class="form-control" placeholder="" />
 					</div>
 				</div>
 				<div class="row">		
 					<div class="col-xs-4">
-						<label>@lang('admin.modal.description')</label>
+						<label>Description</label>
 						<input id="edit-media-info-episode-description" name="ep_description" type="text" class="form-control" placeholder="" />
 					</div>
 				</div>
 				<div class="row">	
-					<button id="button-edit-episode-save" type="button" class="btn btn-primary pull-right">@lang('admin.modal.edit_media.save')</button>
+					<button id="button-edit-episode-save" type="button" class="btn btn-primary pull-right">Save</button>
 				</div>
       </div>
 			<!-- /seasons and episodes -->
@@ -264,23 +262,23 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-4 col-xs-offset-4">
-						<h3>@lang('admin.modal.edit_media.timestamps')</h3>
+						<h3>Timestamps</h3>
 						<ul id="timestamp-list" class="list-inline">
 						</ul>
 						<i id="timestamp-add" class="fa fa-plus"></i>
 					</div>
 				</div>
 				<div class="row">	
-					<button id="button-edit-timestamp-save" type="button" class="btn btn-primary pull-right">@lang('admin.modal.edit_media.save')</button>
+					<button id="button-edit-timestamp-save" type="button" class="btn btn-primary pull-right">Save</button>
 				</div>
 			</div>
 			
       <div class="modal-footer">
 		    <div class="row-fluid">
-					<span id="footer-info">@lang('admin.modal.edit_media.info')</span>
-					<span id="footer-seasons" aria-hidden="true" style="display: none;">@choice('admin.modal.edit_media.season', 2)</span>
-					<span id="footer-script">@lang('admin.modal.edit_media.script')</span>
-					<span id="footer-media">@lang('admin.modal.edit_media.media')</span>
+					<span id="footer-info">Info</span>
+					<span id="footer-seasons" aria-hidden="true" style="display: none;">Seasons</span>
+					<span id="footer-script">Script</span>
+					<span id="footer-media">Media</span>
 				</div>				
       </div>
 		</div>

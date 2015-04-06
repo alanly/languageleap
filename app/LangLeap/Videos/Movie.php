@@ -3,8 +3,11 @@
 use LangLeap\Payments\Billable;
 use LangLeap\Videos\RecommendationSystem\Classifiable;
 use LangLeap\Videos\Filtering\Filterable;
+use LangLeap\Core\PublishedTrait;
 
 class Movie extends Media implements Billable, Classifiable, Filterable {
+
+	use PublishedTrait;
 
 	public $timestamps = false;
 
@@ -28,7 +31,6 @@ class Movie extends Media implements Billable, Classifiable, Filterable {
 		return $this->morphMany('LangLeap\Videos\Video','viewable');
 	}
 
-
 	public function toResponseArray()
 	{
 		$videos = $this->videos->map(function($video)
@@ -43,8 +45,9 @@ class Movie extends Media implements Billable, Classifiable, Filterable {
 			'director'    => $this->director,
 			'actor'       => $this->actor,
 			'genre'       => $this->genre,
-			'image_path'  => $this->image_path,
+			'image_path'  => $this->getImagePath(),
 			'level'       => $this->level->description,
+			'is_published'=> $this->is_published,
 			'videos'      => $videos,
 		];
 	}

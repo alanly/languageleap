@@ -237,45 +237,21 @@ class ApiEpisodeController extends \BaseController {
 	 */
 	public function destroy($showId, $seasonId, $episodeId)
 	{
-		// Retrieve the show, and eagerload season and episode.
-		$show = $this->shows
-			->with(['seasons' => function($query) use ($seasonId)
-			{
-				$query->where('id', $seasonId);
-			}])
-			->with(['episodes' => function($query) use ($episodeId)
-			{
-				$query->where('episodes.id', $episodeId);
-			}])
-			->find($showId);
+		// Attempt to retrieve the episode.
+		$episode = $this->episodes->findOrFail($episodeId);
 
-		if (! $show)
+		// Get a reference to the associated show.
+		$show = $episode->show();
+
+		// Make sure that we are operating against the correct episode instance.
+		if ($show->id != $showId || $episode->season_id != $seasonId)
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.episodes.show_error', ['showId' => $showId]),
-				404
-			);
-		}
-
-		$season = $show->seasons->first();
-
-		if (! $season)
-		{
-			return $this->apiResponse(
-				'error',
-				Lang::get('controllers.episodes.show-season_error', ['seasonId' => $seasonId, 'showId' => $showId]),
-				404
-			);
-		}
-
-		$episode = $season->episodes->first();
-
-		if (! $episode)
-		{
-			return $this->apiResponse(
-				'error',
-				Lang::get('controllers.episodes.episode_error', ['episodeId' => $episodeId, 'seasonId' => $seasonId, 'showId' => $showId]),
+				Lang::get(
+					'controllers.episodes.episode_error',
+					['episodeId' => $episodeId, 'seasonId' => $seasonId, 'showId' => $showId]
+				),
 				404
 			);
 		}
@@ -284,7 +260,10 @@ class ApiEpisodeController extends \BaseController {
 		{
 			return $this->apiResponse(
 				'error',
-				Lang::get('controllers.episodes.episode-deletion_error', ['episodeId' => $episodeId, 'seasonId' => $seasonId, 'showId' => $showId]),
+				Lang::get(
+					'controllers.episodes.episode-deletion_error',
+					['episodeId' => $episodeId, 'seasonId' => $seasonId, 'showId' => $showId]
+				),
 				500
 			);
 		}
@@ -328,7 +307,13 @@ class ApiEpisodeController extends \BaseController {
 		if ($episodes instanceof Episode)
 		{
 			$data['episode'] = $episodes->toResponseArray();
-			$data['videos'] = $episodes->videos;
+			//$data['videos'] = $episodes->videos;
+			$data['videos'] = [];
+
+			foreach ($episodes->videos as $video) {
+				array_push($data['videos'], $video->toResponseArray());
+			}
+
 		}
 		elseif ($episodes instanceof Collection)
 		{

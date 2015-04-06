@@ -182,7 +182,7 @@
 				
 				carouselItems += '<div class="item' + ((i == 0) ? ' active' : '') + '">' +
 								'<h3>' + $(this).text() + '<br>' +
-								'<small>' + $(this).data('pronunciation') +
+								'<small>' + (($(this).data('pronunciation') == null) ? 'Pronunciation not found' : $(this).data('pronunciation')) +
 								'<button class="play-pronunciation glyphicon glyphicon-volume-up' + notAvailable + '" ' + audioAttribute +
 								'></button></small></h3>' +
 								'<br>' +
@@ -355,6 +355,7 @@
 			var noPunctuation = removePunctuation(nonDefinedWords); //Remove all ',' and '.' in the string
 			var noDoubleSpaces = removeDoubleSpaces(noPunctuation); //Replace any number of spaces greater than 1, with 1 space
 			var trimmedText = noDoubleSpaces.trim();
+
 			return trimmedText;
 		}
 
@@ -386,12 +387,12 @@
 
 		function removePunctuation(text)
 		{
-			return text.replace(/\./g, "").replace(/,/g, "");
+			return text.replace(/\./g, "").replace(/,/g, "").replace(/:/g, '').replace(/\(|\)|\[|\]/g, '');
 		}
 
 		function removeDoubleSpaces(text)
 		{
-			return text.replace(/\n/, "").replace(/\s{2,}/, " ");
+			return text.replace(/\n/g, " ").replace(/\s{2,}/g, " ");
 		}
 		
 		function loadAdminDefinition($word)
@@ -479,19 +480,26 @@
 			$('#word-audio').attr('src', url);
 		}
 
-		function getMinutesFromTimestamp(timestamp)
+		function getHoursFromTimestamp(timestamp)
 		{
 			return parseInt(timestamp.split(':')[0]);
 		}
 
-		function getSecondsFromTimestamp(timestamp)
+		function getMinutesFromTimestamp(timestamp)
 		{
 			return parseInt(timestamp.split(':')[1]);
 		}
 
+		function getSecondsFromTimestamp(timestamp)
+		{
+			return parseInt(timestamp.split(':')[2]);
+		}
+
 		function getTimeInSecondsFromTimestamp(timestamp)
 		{
-			return (getMinutesFromTimestamp(timestamp) * 60) + getSecondsFromTimestamp(timestamp);
+			return	getHoursFromTimestamp(timestamp) * 3600 +
+					getMinutesFromTimestamp(timestamp) * 60 +
+					getSecondsFromTimestamp(timestamp);
 		}
 
 		function updateCurrentSpeaker()
@@ -613,6 +621,7 @@
 			{
 				$(this).toggleClass('word-selected');
 			});
+
 			$('#video-player').bind('timeupdate', updateCurrentSpeaker);
 			
 			// Handle when the video is completely loaded

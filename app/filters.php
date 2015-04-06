@@ -63,6 +63,16 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
+
+Route::filter('admin', function()
+{
+	if (! Auth::user() || ! Auth::user()->isAdmin())
+	{
+		return Response::make('Unauthorized', 401);
+	}
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | Guest Filter

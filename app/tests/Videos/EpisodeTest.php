@@ -18,6 +18,7 @@ class EpisodeTest extends TestCase {
 		$season = $this->getSeasonInstance();	
 		$season->show_id = $show->id;
 		$season->number = 1;
+		$season->is_published = 1;
 		$season->save();
 		
 		$episode = $this->getEpisodeInstance();
@@ -25,6 +26,7 @@ class EpisodeTest extends TestCase {
 		$episode->number = 1;
 		$episode->level_id = 1;
 		$episode->name = 'test';
+		$episode->is_published = 1;
 		$episode->save();
 
 		$this->assertCount(1, $episode->season()->get());			
@@ -67,11 +69,12 @@ class EpisodeTest extends TestCase {
 	public function testMassAssigningAttributesOnInstanceCreation()
 	{
 		$a = [
-			'name'        => 'Test',
-			'description' => 'Test Model',
-			'level_id'    => 1,
-			'season_id'   => 0,
-			'number'      => 0,
+			'name'         => 'Test',
+			'description'  => 'Test Model',
+			'level_id'     => 1,
+			'season_id'    => 0,
+			'number'       => 0,
+			'is_published' => 1
 		];
 
 		$i = Episode::create($a);
@@ -90,6 +93,7 @@ class EpisodeTest extends TestCase {
 		$show->name = 'test';
 		$show->image_path='test';
 		$show->description='test';
+		$show->is_published = 1;
 		$show->save();
 		return $show;
 	}

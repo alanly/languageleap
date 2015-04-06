@@ -20,6 +20,7 @@ return array(
 		'remove' => 'Remove',
 		'cancel' => 'Cancel',
 		'add'    => 'Add',
+		'exit' => 'Exit',
 	),
 
 	/**
@@ -33,6 +34,7 @@ return array(
 		'pronunciations' => 'Pronunciation|Pronunciations',
 		'timestamps'     => 'Timestamp|Timestamps',
 		'words'          => 'Word|Words',
+		'empty'			 => 'There doesn\'t seem to be anything here',
 	),
 
 	'media' => array(
@@ -42,20 +44,55 @@ return array(
 				'id'          => 'Id',
 				'name'        => 'Name',
 				'description' => 'Description',
-				'manage'      => 'Manage'
+				'actor'		  => 'Actor',
+				'director' 	  => 'Director',
+				'genre' 	  => 'Genre',
+				'manage'      => 'Manage',
+				'poster'	  => 'Poster',
 			),
 		),
 		'commercial' => array(
 			'name' => 'Commercials',
 			'table' => array(
+				'id'          => 'Id',
+				'name'        => 'Name',
+				'description' => 'Description',
+				'manage'      => 'Manage',
+				'poster'	  => 'Poster',
 			),
 		),
 		'show' => array(
 			'name' => 'TV Shows',
 			'table' => array(
+				'id'          => 'Id',
+				'name'        => 'Name',
+				'description' => 'Description',
+				'actor'		  => 'Actor',
+				'director' 	  => 'Director',
+				'genre' 	  => 'Genre',
+				'manage'      => 'Manage',
+				'poster'	  => 'Poster',
 			),
+			'manage' => 'Manage TV Shows',
+			'action' => 'Action',
+			'publish' => 'Publish',
+		),
+		'episode' => array(
+			'name' => 'Episode',
+		),
+		'season' => array(
+			'name' => 'Season',
 		),
 		'add' => 'Add Media',
+		'video' => array(
+			'save' => 'Save',
+			'save_timestamps' => 'Save Timestamps',
+			'update' => 'Update Video',
+		),
+		'script' => array(
+			'import' => 'Import',
+			'save' => 'Save Script',
+		),
 	),
 
 	'new_video' => array(
@@ -68,20 +105,15 @@ return array(
 		'script' => 'Script',
 		'submit' => 'Submit',
 	),
-
-	'script' => array(
-		'upload'       => 'Script Upload',
-		'save_success' => 'Script saved successfully',
-	),
-
 	'upload' => array(
-		'uploading' => 'Uploading Media, Please Wait...',
-		'success'   => 'Media Uploaded Successfully',
+		'uploading'          => 'Uploading Media, Please Wait...',
+		'success'            => 'Media Uploaded Successfully',
+		'image_store_failed' => 'An error occured while storing the media image.',
 	),
 
 	'quiz' => array(
 		'insert' => array(
-			'heading'              => 'Insert Custom Quiz',
+			'heading'              => 'Insert Custom Question for ',
 			'video_label'          => 'Video',
 			'question_label'       => 'Question',
 			'correct_answer_label' => 'Correct Answer',
@@ -91,6 +123,52 @@ return array(
 			'save_fail'            => 'Save Failed',
 			'question_placeholder' => 'Insert question here',
 			'answer_placeholder'   => 'Insert answer here',
+		),
+		'manage' => array(
+			'title' => 'Manage Quizzes',
+			'id' => 'ID',
+			'action' => 'Action',
+			'name' => 'Name',
+			'timestamp' => 'Time Stamp',
+			'question' => 'Question',
+		),
+		'remove' => array(
+			'heading' => 'Remove Custom Question',
+		),
+	),
+	'index' => array(
+		'menu' => array(
+			'dashboard' => 'Dashboard',
+			'logout' => 'Sign Out',
+			'client' => 'Client Side',
+			'videos' => 'Manage Videos',
+			'scripts' => 'Manage Scripts',
+			'users' => 'Manage Users',
+			'quizzes' => 'Manage Quizzes'
+		),
+	),
+	'delete' => array(
+		'confirm' => 'Are you sure that you want to delete this?'
+	),
+
+	'form' => array(
+		'placeholders' => array(
+			'show' => array(
+				'name'           => 'Enter TV show name',
+				'description'    => 'Enter a description',
+				'director'       => 'Enter director names separated by commas (eg. \'Samuel Jackson, Steve Nolan\')',
+				'actor'          => 'Enter actor names separated by commas',
+				'genre'          => 'Enter genres separated by commas',
+			),
+			'season' => array(
+				'number'         => 'Enter the season (eg. \'1\')',
+				'description'    => 'Enter a description',
+			),
+			'episode' => array(
+				'number'         => 'Enter the episode (eg. \'1\')',
+				'name'           => 'Enter the name',
+				'description'    => 'Enter the description',
+			),
 		),
 	),
 
@@ -109,6 +187,7 @@ return array(
 		'actor'       => 'Actor',
 		'genre'       => 'Genre',
 		'file'        => 'File',
+		'cancel'      => 'Cancel',
 
 		/**
 		 * The translations specific to each modal.
@@ -120,14 +199,20 @@ return array(
 		),
 
 		'edit_media' => array(
-			'save'       => 'Save',
-			'season'     => 'Season|Seasons',
-			'episode'    => 'Episode',
-			'add'        => 'Add',
-			'timestamps' => 'Timestamps',
-			'info'       => 'Info',
-			'script'     => 'Script',
-			'media'      => 'Media',
+			'save'           => 'Save',
+			'season'         => 'Season|Seasons',
+			'episode'        => 'Episode',
+			'add'            => 'Add',
+			'timestamps'     => 'Timestamps',
+			'info'           => 'Info',
+			'script'         => 'Script',
+			'media'          => 'Media',
+			'title' 	     => 'Edit Media',
+			'season_number'  => 'Season Number',
+			'episode_number' => 'Episode Number',
+		),
+		'new_media' => array(
+			'title'		=> 'New Media',
 		),
 
 		'edit_script' => array(
@@ -146,5 +231,19 @@ return array(
 		),
 
 	),
-
+	'video' => array(
+		'video_editing' => 'Video Editing',
+		'title' 		=> 'Editing :name ',
+		'timestamps' => array(
+			'to' => 'TO:',
+			'title' => 'Timestamps',
+			'remove' => 'X',
+		),
+	),
+	'script' => array(
+		'script_editing' => 'Script Editing',
+		'upload'       => 'Script Upload',
+		'save_success' => 'Script saved successfully',
+		'srt_info'	=> 'You can import an SRT file and convert it into a script here',
+	),
 );
